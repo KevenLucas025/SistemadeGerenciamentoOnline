@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
-def login(request):
-    return render(request, 'accounts/login.html')
+
+@login_required
+def dashboard(request):
+
+    return render(request,'dashboard.html')

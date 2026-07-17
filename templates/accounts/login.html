@@ -1,17 +1,216 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sistema de Gerenciamento{% endblock %}
 
 {% block content %}
+<div class="container-auth">
+    <!-- Removido o active_pane do Django. O JS cuidará de aplicar a classe correta antes da renderização completa -->
+    <div class="card-auth" id="cardAuth">
+        <!-- FRENTE — LOGIN -->
+        <div class="face face-login">
+            <div class="lado-login">
+                <h1>Bem-vindo de volta</h1>
+                <p>Entre para acessar o Sistema de Gerenciamento.</p>
 
-<div class="container-login">
+                <!-- MENSAGENS NO LOGIN -->
+                {% if messages %}
+                    <div class="messages-container message-login-pane">
+                        {% for message in messages %}
+                            <p class="{{ message.tags }}">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
-    <div class="card-login">
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="campo-login">
+                        <label>Usuário</label>
+                        <i class="fa-solid fa-user login"></i>
+                        <input type="text" id="username" name="username" placeholder="Usuário ou Email" autocomplete="username">
+                    </div>
+                    <div class="campo-login">
+                        <label>Senha</label>
+                        <i class="fa-solid fa-lock login"></i>
+                        <div class="senha-wrapper">
+                            <input type="password" name="password" id="password" placeholder="Digite sua senha" autocomplete="current-password">
+                            <i class="fa-solid fa-eye toggle-password olho-login"></i>
+                        </div>
+                    </div>
+                    <a class="link-senha" href="{% url 'password_reset' %}">Esqueci minha senha</a>
+                    <button type="submit">Entrar</button>
+                </form>
 
-        <div class="lado-login">
-            <h1>Faça o seu login.</h1>
+                <button type="button" class="link-cadastro" id="abrirCadastro">
+                    Ainda não tenho uma conta <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="lado-dashboard">
+                <span class="badge-sistema">Sistema de Gerenciamento</span>
+                <h2>Controle seu negócio em um solo lugar.</h2>
+                <p>Gerencie clientes, estoque, vendas, financeiro e acompanhe indicadores em tempo real.</p>
+                <div class="cards-preview">
+                    <div class="mini-card">
+                        <span>Clientes</span>
+                        <strong>1.248</strong>
+                    </div>
+                    <div class="mini-card">
+                        <span>Produtos</span>
+                        <strong>845</strong>
+                    </div>
+                    <div class="mini-card">
+                        <span>Usuários</span>
+                        <strong>58</strong>
+                    </div>
+                </div>
+                <div class="grafico-fake">
+                    <div class="barra b1"></div>
+                    <div class="barra b2"></div>
+                    <div class="barra b3"></div>
+                    <div class="barra b4"></div>
+                    <div class="barra b5"></div>
+                </div>
+            </div>
         </div>
 
-    </div>
+        <!-- VERSO — CADASTRO -->
+        <div class="face face-register">
+            <div class="register-form">
+                <div class="logo">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <h1>Criar Conta<span>.</span></h1>
+                <p class="subtitulo">Cadastre-se para acessar o Sistema de Gerenciamento</p>
 
+                <!-- MENSAGENS NO CADASTRO -->
+                {% if messages %}
+                    <div class="messages-container message-register-pane">
+                        {% for message in messages %}
+                            <p class="{{ message.tags }}">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="POST" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <div class="campo-cadastro">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" name="nome_completo" placeholder="Nome Completo" autocomplete="name" required>
+                    </div>
+                    <div class="campo-cadastro">
+                        <i class="fa-solid fa-at"></i>
+                        <input type="text" name="new_user" placeholder="Usuário" autocomplete="username" required>
+                    </div>
+                    <div class="campo-cadastro">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" name="new_email" placeholder="Email" autocomplete="email" required>
+                    </div>
+                    <div class="campo-cadastro">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" name="new_pass" placeholder="Senha" autocomplete="new-password" required>
+                        <i class="fa-solid fa-eye toggle-password olho-cadastro"></i>
+                    </div>
+                    <div class="campo-cadastro">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" name="new_confirm" placeholder="Confirmar senha" autocomplete="new-password" required>
+                        <i class="fa-solid fa-eye toggle-password olho-cadastro"></i>
+                    </div>
+                    <button type="submit" class="btn-criar-conta">
+                        <span>Criar Conta</span> <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <button type="button" class="link-login" id="voltarLogin">
+                    Já possui conta? <strong>Entrar</strong>
+                </button>
+            </div>
+
+            <div class="register-preview">
+                <div class="preview-content">
+                    <span class="preview-badge"><i class="fa-solid fa-shield-halved"></i> Sistema seguro</span>
+                    <h2>Gerencie tudo <strong>em um só lugar.</strong></h2>
+                    <p>Organize seus dados, acompanhe processos e tenha controle completo das suas informações.</p>
+                </div>
+                <div class="dashboard-preview">
+                    <div class="preview-top">
+                        <span>Visão geral</span>
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </div>
+                    <div class="preview-statistics">
+                        <div>
+                            <small>Usuários</small>
+                            <strong>248</strong>
+                        </div>
+                        <div>
+                            <small>Processos</small>
+                            <strong>86</strong>
+                        </div>
+                    </div>
+                    <div class="grafico-fake">
+                        <span class="barra b1"></span>
+                        <span class="barra b2"></span>
+                        <span class="barra b3"></span>
+                        <span class="barra b4"></span>
+                        <span class="barra b5"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<script>
+const cardAuth = document.getElementById("cardAuth");
+const abrirCadastro = document.getElementById("abrirCadastro");
+const voltarLogin = document.getElementById("voltarLogin");
+
+/* 1. VERIFICA E APLICA O ESTADO SALVO IMEDIATAMENTE */
+const activePane = localStorage.getItem("activePane") || "login";
+if (cardAuth) {
+    if (activePane === "register") {
+        cardAuth.classList.add("cadastro-aberto");
+    } else {
+        cardAuth.classList.remove("cadastro-aberto");
+    }
+}
+
+/* 2. CONTROLA O CLIQUE MANUAL E SALVA NO LOCALSTORAGE */
+if (cardAuth && abrirCadastro && voltarLogin) {
+    abrirCadastro.addEventListener("click", () => {
+        cardAuth.classList.add("cadastro-aberto");
+        localStorage.setItem("activePane", "register");
+    });
+    voltarLogin.addEventListener("click", () => {
+        cardAuth.classList.remove("cadastro-aberto");
+        localStorage.setItem("activePane", "login");
+    });
+}
+
+/* 3. CONTROLA A EXIBIÇÃO DAS MENSAGENS BASEADO NO PAINEL ATIVO */
+document.addEventListener("DOMContentLoaded", () => {
+    const currentPane = localStorage.getItem("activePane") || "login";
+    if (currentPane === "register") {
+        document.querySelectorAll(".message-login-pane").forEach(el => el.remove());
+    } else {
+        document.querySelectorAll(".message-register-pane").forEach(el => el.remove());
+    }
+});
+
+/* REMOVER MENSAGENS APÓS ALGUNS SEGUNDOS */
+setTimeout(() => {
+    document.querySelectorAll(".messages-container").forEach(container => {
+        container.style.transition = "opacity .5s ease";
+        container.style.opacity = "0";
+        setTimeout(() => container.remove(), 500);
+    });
+}, 4000);
+
+/* BLOQUEIO MOBILE */
+if (window.innerWidth <= 768) {
+    const bloqueio = document.getElementById("bloqueioMobile");
+    if (bloqueio) bloqueio.style.display = "flex";
+    document.body.style.overflow = "hidden";
+}
+</script>
 {% endblock %}
