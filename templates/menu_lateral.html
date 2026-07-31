@@ -1,0 +1,310 @@
+
+
+<div class="offcanvas offcanvas-start"
+     tabindex="-1"
+     id="menuLateral">
+
+
+    <!-- CABEÇALHO -->
+    <div class="offcanvas-header">
+
+        <div class="sidebar-brand">
+
+            <div class="sidebar-brand-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <div>
+                <h5>Sistema de</h5>
+                <strong>Gerenciamento</strong>
+            </div>
+
+        </div>
+
+
+        <button type="button"
+                class="btn-fechar-menu"
+                data-bs-dismiss="offcanvas">
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+    </div>
+
+
+    <!-- CORPO DO MENU -->
+    <div class="offcanvas-body">
+
+
+        <!-- USUÁRIO LOGADO -->
+        <div class="sidebar-user">
+
+            <div class="sidebar-user-avatar">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+
+            <div class="sidebar-user-info">
+
+                <strong>
+                    {{ request.user.get_full_name|default:request.user.username }}
+                </strong>
+
+
+                <span>
+
+                    <i class="fa-solid fa-circle"></i>
+
+                    Online
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRINCIPAL -->
+        <div class="sidebar-section">
+
+            <span class="sidebar-section-title">
+                PRINCIPAL
+            </span>
+
+
+            <a href="{% url 'dashboard' %}"
+               class="sidebar-link active">
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- GERENCIAMENTO -->
+        <div class="sidebar-section">
+
+            <span class="sidebar-section-title">
+                GERENCIAMENTO
+            </span>
+
+
+            <!-- VERIFICAR ESTOQUE -->
+            <a href="{% url 'estoque' %}"
+               class="sidebar-link">
+
+                <i class="fa-solid fa-boxes-stacked"></i>
+
+                <span>
+                    Verificar Estoque
+                </span>
+
+            </a>
+
+
+            <!-- VERIFICAR USUÁRIOS -->
+            <a href="{% url 'usuarios' %}"
+               class="sidebar-link">
+
+                <i class="fa-solid fa-users"></i>
+
+                <span>
+                    Verificar Usuários
+                </span>
+
+            </a>
+
+
+            <!-- CADASTRAR PRODUTOS -->
+            <a href="{% url 'produtos' %}"
+               class="sidebar-link">
+
+                <i class="fa-solid fa-box-open"></i>
+
+                <span>
+                    Cadastrar Produtos
+                </span>
+
+            </a>
+
+
+            <!-- CADASTRAR USUÁRIOS -->
+            <a href="{% url 'cadastrar_usuarios' %}"
+               class="sidebar-link">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                <span>
+                    Cadastrar Usuários
+                </span>
+
+            </a>
+
+
+            <!-- CLIENTES -->
+            <a href="{% url 'clientes' %}"
+               class="sidebar-link">
+
+                <i class="fa-solid fa-address-book"></i>
+
+                <span>
+                    Clientes
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- ANÁLISES -->
+        <div class="sidebar-section">
+
+            <span class="sidebar-section-title">
+                ANÁLISES
+            </span>
+
+
+            <a href="{% url 'relatorios' %}"
+               class="sidebar-link">
+
+                <i class="fa-solid fa-file-lines"></i>
+
+                <span>
+                    Relatórios
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- ADMINISTRAÇÃO -->
+        <div class="sidebar-section">
+
+            <span class="sidebar-section-title">
+                ADMINISTRAÇÃO
+            </span>
+
+
+            <a href="#"
+               class="sidebar-link">
+
+                <i class="fa-solid fa-user-gear"></i>
+
+                <span>
+                    Usuários
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- RODAPÉ -->
+        <div class="sidebar-footer">
+
+            <a href="#"
+                class="sidebar-link sidebar-logout"
+                onclick="abrirModalLogout(event)">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>
+                        Sair
+                    </span>
+
+                </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL DE LOGOUT
+===================================================== -->
+
+<div class="modal fade"
+     id="modalLogout"
+     tabindex="-1"
+     aria-hidden="true">
+
+
+    <div class="modal-dialog modal-dialog-centered">
+
+
+        <div class="modal-content modal-logout-content">
+
+
+            <!-- CABEÇALHO DO MODAL -->
+            <div class="modal-header">
+
+                <div class="modal-logout-icon">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </div>
+
+                <button type="button" 
+                        class="btn-modal-fechar" 
+                        data-bs-dismiss="modal" 
+                        aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <!-- CORPO -->
+            <div class="modal-body text-center">
+
+                <h4>
+                    Deseja sair do sistema?
+                </h4>
+
+
+                <p>
+                    Sua sessão será encerrada e você precisará fazer login novamente para acessar o sistema.
+                </p>
+
+            </div>
+
+
+            <!-- RODAPÉ -->
+            <div class="modal-footer">
+
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+
+                <form method="POST"
+                      action="{% url 'logout' %}">
+
+                    {% csrf_token %}
+
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Sair do sistema
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

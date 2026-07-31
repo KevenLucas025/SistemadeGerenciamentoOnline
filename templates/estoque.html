@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/estoque.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- BARRA VERTICAL MOBILE -->
+<div class="dashboard-sidebar-bar">
+    <button class="btn-menu-mobile"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#menuLateral">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</div>
+
+<!-- PÁGINA DE ESTOQUE -->
+<div class="dashboard-page-estoque">
+
+    <!-- TOPO -->
+    <div class="dashboard-topbar-estoque">
+        <div>
+            <h1>Estoque</h1>
+            <p>Visualize, acompanhe e gerencie os produtos disponíveis no estoque.</p>
+        </div>
+    </div>
+
+    <!-- CONTAINER PRINCIPAL COM GRID DE 2 COLUNAS -->
+    <div class="estoque-grid-layout">
+
+        <!-- COLUNA ESQUERDA: PAINEIS DE TABELAS -->
+        <div class="estoque-main-content">
+
+            <!-- CARD 1: PRODUOS EM ESTOQUE -->
+            <div class="dashboard-card">
+                <div class="estoque-header">
+                    <div>
+                        <h2>Produtos em estoque</h2>
+                    </div>
+
+                    <div class="estoque-acoes-topo">
+                        <button class="btn-estoque-outline">
+                            <i class="fa-regular fa-file-excel"></i> Exportar Excel
+                        </button>
+                        <button class="btn-estoque-outline">
+                            <i class="fa-regular fa-file-pdf"></i> Exportar PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TABELA 1 -->
+                <div class="estoque-table-container">
+                    <table class="estoque-table">
+                        <thead>
+                            <tr>
+                                <th>PRODUTO</th>
+                                <th>QUANTIDADE</th>
+                                <th>VALOR UNITÁRIO</th>
+                                <th>DESCONTO</th>
+                                <th>TOTAL SEM DESCONTO</th>
+                                <th>TOTAL COM DESCONTO</th>
+                                <th>DATA DO CADASTRO</th>
+                                <th>CÓDIGO DO PRODUTO</th>
+                                <th>CLIENTE</th>
+                                <th>DESCRIÇÃO DO PRODUTO</th>
+                                <th>USUÁRIO</th>
+                                <th>STATUS DA SAÍDA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if produtos %}
+                                {% for produto in produtos %}
+                                    <tr>
+                                        <td>{{ produto.nome }}</td>
+                                        <td>{{ produto.quantidade }}</td>
+                                        <td>R$ {{ produto.valor_unitario }}</td>
+                                        <td>R$ {{ produto.desconto }}</td>
+                                        <td>R$ {{ produto.total_sem_desconto }}</td>
+                                        <td>R$ {{ produto.total_com_desconto }}</td>
+                                        <td>{{ produto.data_cadastro }}</td>
+                                        <td>{{ produto.codigo }}</td>
+                                        <td>{{ produto.cliente }}</td>
+                                        <td>{{ produto.descricao }}</td>
+                                        <td>{{ produto.criado_por.username }}</td>
+                                        <td>
+                                            {% if produto.status_saida == 0 %}
+                                                <span class="badge bg-secondary">0 - Em estoque</span>
+                                            {% else %}
+                                                <span class="badge bg-success">1 - Saiu</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="12" class="sem-registros">
+                                        <div class="sem-registros-content-estoque">
+                                            <i class="fa-solid fa-users-slash"></i>
+                                            <p>Nenhum produto cadastrado encontrado.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CARD 2: SAÍDA -->
+            <div class="dashboard-card mt-4">
+                <div class="estoque-header">
+                    <div>
+                        <h2>Saída</h2>
+                    </div>
+                </div>
+
+                <!-- TABELA 2 -->
+                <div class="estoque-table-container">
+                    <table class="estoque-table">
+                        <thead>
+                            <tr>
+                                <th>PRODUTO</th>
+                                <th>QUANTIDADE</th>
+                                <th>VALOR UNITÁRIO</th>
+                                <th>DESCONTO</th>
+                                <th>TOTAL SEM DESCONTO</th>
+                                <th>TOTAL COM DESCONTO</th>
+                                <th>DATA DA SAÍDA</th>
+                                <th>DATA DO CADASTRO</th>
+                                <th>CÓDIGO DO PRODUTO</th>
+                                <th>CLIENTE</th>
+                                <th>DESCRIÇÃO DO PRODUTO</th>
+                                <th>USUÁRIO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if saidas %}
+                                {% for saida in saidas %}
+                                    <tr>
+                                        <td>{{ saida.nome }}</td>
+                                        <td>{{ saida.quantidade }}</td>
+                                        <td>R$ {{ saida.valor_unitario }}</td>
+                                        <td>R$ {{ saida.desconto }}</td>
+                                        <td>R$ {{ saida.total_sem_desconto }}</td>
+                                        <td>R$ {{ saida.total_com_desconto }}</td>
+                                        <td>{{ saida.data_saida }}</td>
+                                        <td>{{ saida.data_cadastro }}</td>
+                                        <td>{{ saida.codigo }}</td>
+                                        <td>{{ saida.cliente }}</td>
+                                        <td>{{ saida.descricao }}</td>
+                                        <td>{{ saida.usuario }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="12" class="sem-registros">
+                                        <div class="sem-registros-content-estoque">
+                                            <i class="fa-solid fa-users-slash"></i>
+                                            <p>Nenhum produto cadastrado encontrado.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COLUNA DIREITA: BARRA DE AÇÕES LATERAIS -->
+        <div class="estoque-side-actions">
+            <button class="btn-side-action">
+                <i class="fa-regular fa-circle-plus"></i> Novo Produto
+            </button>
+            <button class="btn-side-action">
+                <i class="fa-solid fa-rotate"></i> Atualizar saída
+            </button>
+            <button class="btn-side-action">
+                <i class="fa-solid fa-rotate"></i> Atualizar estoque
+            </button>
+            <button class="btn-side-action">
+                <i class="fa-regular fa-calendar-days"></i> Histórico
+            </button>
+            <button class="btn-side-action">
+                <i class="fa-regular fa-trash-can"></i> Limpar Tabelas
+            </button>
+            <!-- BOTÕES INFERIORES DO CARD 1 -->
+                <button class="btn-side-action">
+                    <i class="fa-solid fa-rotate-left"></i> Gerar estorno
+                </button>
+                <button class="btn-side-action">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Gerar saída
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

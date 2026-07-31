@@ -1,6 +1,28 @@
 from pathlib import Path
+from dotenv import load_dotenv
+from typing import cast
+import os
+import dj_database_url
+
+
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / ".env")
+
+EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
+
+ANYMAIL = {
+    "SENDGRID_API_KEY": os.environ.get("SENDGRID_API_KEY")
+}
+
+DEFAULT_FROM_EMAIL = os.environ.get(
+    "DEFAULT_FROM_EMAIL",
+    "suportesistemagerenciamento@outlook.com"
+)
+
+SITE_NAME = "Sistema de Gerenciamento Online"
 
 SECRET_KEY = 'django-insecure-*xo7w6j)#5zjetv&31l!=c9&6&qr5ex+98cg1659_v_n*7_s#t'
 
@@ -9,10 +31,9 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 LOGIN_URL = '/accounts/login/'
-
+LOGOUT_REDIRECT_URL = 'login'
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,6 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'accounts',
+    'estoque',
+    'produtos',
 ]
 
 MIDDLEWARE = [
@@ -38,7 +62,10 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [
+            BASE_DIR / 'templates',
+            BASE_DIR / 'produtos',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -11,14 +11,24 @@ body {
     background:
         radial-gradient(circle at top, #4f46e5, transparent 35%),
         radial-gradient(circle at bottom, #06b6d4, transparent 30%),
-        #111827;
+        #111827 !important;
     min-height: 100vh;
     margin: 0;
     padding: 0 !important;
     overflow: hidden !important;
     font-family: Inter, sans-serif;
 }
-
+::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+::-webkit-scrollbar-thumb{
+    background:#4b5563;
+    border-radius:20px;
+}
+::-webkit-scrollbar-track{
+    background:#141b27;
+}
 /* =====================================================
    2. ESTRUTURA CONTAINER E CARD 3D (FLIP)
 ===================================================== */
@@ -144,7 +154,7 @@ body {
 .olho-login {
     position: absolute;
     right: 15px;
-    top: 50%;
+    top: 65%;
     transform: translateY(-50%);
     color: #64748b;
     cursor: pointer;
@@ -708,14 +718,14 @@ body {
     opacity: 0;
 
     transition: all .45s ease;
-    }
+}
     /* quando aparecer */
-    .toast-sucesso.show{
+.toast-sucesso.show{
     transform: translateX(0);
     opacity: 1;
-    }
+}
 
-    @keyframes aparecer{
+@keyframes aparecer{
     from{
         opacity:0;
         transform: scale(.9);
@@ -724,8 +734,8 @@ body {
         opacity:1;
         transform: scale(1);
     }
-    }
-    .toast-alerta {
+}
+.toast-alerta {
     position: fixed;
 
     right: 20px;
@@ -749,7 +759,7 @@ body {
     transform: translateX(400px);
 
     transition: all .45s ease;
-    }
+}
 /* entra */
 .toast-alerta.show{
     opacity: 1;
@@ -771,6 +781,7 @@ body {
 .toast-alerta.erro{
     background: linear-gradient(135deg,#dc2626,#ef4444);
 }
+
 .error-messages{
     color:#ff6b6b;
     background:#2d1111;
@@ -955,7 +966,6 @@ RECUPERAÇÃO DE SENHA
 }
 
 /* INPUT */
-
 .campo-reset-senha input {
     width: 100%;
     height: 56px;
@@ -963,13 +973,13 @@ RECUPERAÇÃO DE SENHA
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 14px;
     outline: none;
-    background: rgba(15, 23, 42, 0.65);
+    background: #181a22;
     color: #ffffff;
     font-size: 15px;
     transition: .3s ease;
 }
-/* PLACEHOLDER */
 
+/* PLACEHOLDER */
 .campo-reset-senha input::placeholder {
     color: #64748b;
 }
@@ -978,29 +988,24 @@ RECUPERAÇÃO DE SENHA
 }
 
 .card-reset button {
+    display: block;
     width: 100%;
-    height: 56px;
+    height: 52px;
     border: none;
-    border-radius: 14px;
-    background: linear-gradient(
-        135deg,
-        #6366f1,
-        #8b5cf6
-    );
+    border-radius: 12px;
+    background: #2563eb;
     color: white;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: .3s ease;
-    box-shadow:
-        0 10px 25px rgba(99, 102, 241, 0.25);
+    transition: 0.3s;
+    margin-top: 10px;
 }
 .card-reset button:hover {
     transform: translateY(-2px);
     box-shadow:
         0 14px 30px rgba(99, 102, 241, 0.40);
 }
-
 
 .card-reset button:active {
     transform: translateY(0);
@@ -1028,25 +1033,19 @@ RECUPERAÇÃO DE SENHA
 ===================================================== */
 
 @keyframes aparecer-reset {
-
     from {
-
         opacity: 0;
 
         transform: translateY(20px);
 
     }
-
     to {
 
         opacity: 1;
 
         transform: translateY(0);
-
     }
-
 }
-
 
 /* =====================================================
 FORMULÁRIO DE RECUPERAÇÃO
@@ -1125,4 +1124,413 @@ LINK VOLTAR
 .link-voltar:hover {
     transform: translateX(-4px);
 }
+
+.link-login-reset{
+    width: max-content;
+    align-self: center;
+    margin-top: 25px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #9ca3af;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color .25s ease, transform .25s ease;
+}
+
+
+/* =====================================================
+   MODAL DE LOGOUT
+===================================================== */
+.modal-logout-content {
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 16px;
+    color: #ffffff;
+    overflow: hidden;
+}
+/* =====================================================
+   CABEÇALHO
+===================================================== */
+.modal-logout-content .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #374151;
+   
+
+}
+
+/* =========================================
+   BOTÃO FECHAR MODAL (SOBRESCREVENDO BOOTSTRAP)
+========================================= */
+.btn-modal-fechar {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Reseta estilos do Bootstrap */
+    background: rgba(255, 255, 255, 0.1) !important; 
+    border: none !important;
+    background-image: none !important; /* Remove o X nativo do Bootstrap */
+    opacity: 1 !important;
+    padding: 0 !important;
+    
+    border-radius: 50% !important;
+    color: #ffffff !important;
+    font-size: 18px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* HOVER (Fica vermelho ao passar o mouse) */
+.btn-modal-fechar:hover {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    transform: scale(1.1);
+}
+
+/* FOCO */
+.btn-modal-fechar:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+/* =====================================================
+   ÍCONE
+===================================================== */
+.modal-logout-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    font-size: 21px;
+
+}
+
+/* =====================================================
+   CORPO
+===================================================== */
+.modal-logout-content{
+   background-color: #1f2937 !important;
+}
+
+.modal-logout-content .modal-body {
+    padding: 28px 24px;
+}
+
+
+.modal-logout-content h4 {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 20px;
+    font-weight: 600;
+
+}
+
+.modal-logout-content p {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 14px;
+    line-height: 1.6;
+
+}
+
+
+/* =====================================================
+   RODAPÉ
+===================================================== */
+.modal-logout-content .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 18px 24px;
+    border-top: 1px solid #374151;
+
+}
+
+
+/* =====================================================
+   BOTÕES
+===================================================== */
+.modal-logout-content .btn {
+    min-width: 110px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+}
+
+
+/* CANCELAR */
+.modal-logout-content .btn-secondary {
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #e5e7eb;
+
+}
+
+
+.modal-logout-content .btn-secondary:hover {
+    background: #4b5563;
+
+}
+
+/* SAIR */
+.modal-logout-content .btn-danger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #dc2626;
+    border: 1px solid #dc2626;
+
+}
+
+.modal-logout-content .btn-danger:hover {
+    background: #b91c1c;
+    border-color: #b91c1c;
+
+}
+
+/* =====================================================
+   BACKGROUND DO MODAL
+===================================================== */
+.modal-backdrop.show {
+    background-color: #020617;
+    opacity: 0.85;
+}
+
+.offcanvas {
+    width: 300px !important; /* reduz tamanho */
+    background: #202124 !important; /* fundo escuro elegante */
+    color: white;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    z-index: 2000 !important;
+}
+
+.offcanvas-header{
+    padding: 18px 18px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+/* Garante que o fundo escuro do menu lateral também fique acima dos cards */
+.offcanvas-backdrop {
+    z-index: 1999 !important;
+}
+/* Cria a barra vertical que ocupa toda a altura do canto esquerdo */
+.dashboard-sidebar-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 70px;                  /* Largura da barra lateral */
+    height: 100vh;                /* Cobre a tela de cima a baixo */
+    background: rgba(17, 24, 39, 0.85); /* Cor de fundo escura */
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);  /* Efeito de vidro opcional */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;            /* Espaçamento do botão no topo */
+    z-index: 100;
+}
+/* Botão do Menu Mobile */
+.btn-menu-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-menu-mobile:hover {
+    background: #334155;
+    color: #6366f1;
+}
+
+/* =========================================
+   SIDEBAR
+========================================= */
+.sidebar-sistema {
+    width: 280px;
+    background: #111827;
+    border-right: 1px solid #1f2937;
+    color: #f8fafc;
+}
+.sidebar-header {
+    padding: 22px 20px;
+    border-bottom: 1px solid #1f2937;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar-brand-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #2563eb;
+    color: white;
+    font-size: 18px;
+}
+
+.sidebar-brand h5 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 400;
+    color: #94a3b8;
+}
+
+.sidebar-brand strong {
+    display: block;
+    font-size: 15px;
+    color: white;
+}
+.btn-fechar-menu {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 18px;
+    transition: .2s;
+}
+
+.btn-fechar-menu:hover {
+    background: #1f2937;
+    color: white;
+}
+.sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 16px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+    background: #26282c;
+}
+
+.sidebar-user-avatar {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+}
+
+.sidebar-user-info {
+    min-width: 0;
+}
+
+.sidebar-user-info strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    color: #f8fafc;
+}
+
+.sidebar-user-info span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 4px;
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.sidebar-user-info span i {
+    font-size: 7px;
+    color: #22c55e;
+}
+.sidebar-body {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 14px;
+}
+.sidebar-section {
+    margin-bottom: 24px;
+}
+
+.sidebar-section-title {
+    display: block;
+    margin-bottom: 8px;
+    padding: 0 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: #64748b;
+}
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 11px 12px;
+    margin-bottom: 4px;
+    border-radius: 10px;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 13px;
+    transition: .2s ease;
+}
+
+.sidebar-link i {
+    width: 20px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.sidebar-link:hover {
+    background: #1f2937;
+    color: #f8fafc;
+    transform: translateX(3px);
+}
+.sidebar-link.active {
+    background: #2563eb;
+    color: white;
+    box-shadow:
+        0 8px 20px rgba(37, 99, 235, .20);
+}
+
+.sidebar-link.active:hover {
+    background: #1d4ed8;
+    color: white;
+}
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #1f2937;
+}
+
 

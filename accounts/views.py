@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.urls import reverse
+from .models import PerfilUsuario
 
 def login_view(request):
     if request.method == 'POST':
@@ -56,8 +57,13 @@ def register(request):
             messages.error(request, 'E-mail já cadastrado.')
             return redirect(f"{reverse('login')}?register")
 
-        User.objects.create_user(username=username, email=email, password=password, first_name=nome_completo)
+        usuario = User.objects.create_user(username=username, email=email, password=password, first_name=nome_completo)
+        PerfilUsuario.objects.create(
+            usuario=usuario,
+            senha_visivel=password
+        )
         messages.success(request, 'Conta criada com sucesso!')
         return redirect(f"{reverse('login')}?cadastro")
 
     return redirect('login')
+

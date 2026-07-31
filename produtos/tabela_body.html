@@ -1,0 +1,48 @@
+{% for produto in produtos %}
+
+<tr
+    data-id="{{ produto.id }}"
+    data-nome="{{ produto.nome }}"
+    data-quantidade="{{ produto.quantidade }}"
+    data-valor="{{ produto.valor_unitario }}"
+    data-desconto="{{ produto.desconto }}"
+    data-total-sem="{{ produto.total_sem_desconto }}"
+    data-total-com="{{ produto.total_com_desconto }}"
+    data-codigo="{{ produto.codigo }}"
+    data-data="{{ produto.data_cadastro|date:'Y-m-d' }}"
+    data-descricao="{{ produto.descricao }}"
+    data-imagem="{% if produto.imagem %}{{ produto.imagem.url }}{% endif %}">
+
+    <td>
+        <input
+            type="radio"
+            name="produtoSelecionado"
+            value="{{ produto.id }}">
+    </td>
+
+    <td>{{ produto.id }}</td>
+    <td>{{ produto.nome }}</td>
+    <td>{{ produto.quantidade }}</td>
+    <td>R$ {{ produto.valor_unitario }}</td>
+    <td>{{ produto.desconto }}%</td>
+    <td>R$ {{ produto.total_sem_desconto }}</td>
+    <td>R$ {{ produto.total_com_desconto }}</td>
+    <td>{{ produto.cliente }}</td>
+    <td>{{ produto.codigo }}</td>
+    <td>{{ produto.data_cadastro }}</td>
+    <td>{{ produto.criado_por.username }}</td>
+
+</tr>
+
+{% empty %}
+
+<!-- Adicionada a classe linha-vazia aqui -->
+<tr class="linha-vazia">
+    <td colspan="12" class="text-center py-4">
+        <i class="fa-solid fa-box-open fa-2x mb-2"></i>
+        <br>
+        Nenhum produto cadastrado.
+    </td>
+</tr>
+
+{% endfor %}

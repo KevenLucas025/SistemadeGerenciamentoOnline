@@ -1,0 +1,959 @@
+/* =====================================================
+   PÁGINA CADASTRAR PRODUTOS
+===================================================== */
+.dashboard-page-cadastrar-produtos{
+    display:flex;
+    flex-direction:column;
+    height:calc(100vh - 10px);
+    padding:20px;
+    overflow:hidden;
+    margin-left:70px;
+}
+
+/* =====================================================
+   TOPBAR
+===================================================== */
+.dashboard-topbar-cadastrar-produtos{
+    width:100%;
+    padding:18px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;
+    box-sizing:border-box;
+    margin-bottom:10px;
+}
+
+.dashboard-topbar-cadastrar-produtos h1{
+    margin:0;
+    font-size:24px;
+    font-weight:700;
+    color:#fff;
+}
+.dashboard-topbar-cadastrar-produtos p{
+    margin: 4px 0 0 0;
+    font-size:14px;
+    font-weight:600;
+    color:#94a3b8;
+}
+
+/* =====================================================
+   GRID PRINCIPAL
+===================================================== */
+.cadastrar-produtos-grid-layout{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 360px;
+    gap:20px;
+    flex:1;
+    min-height:0;
+}
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.dashboard-card-cadastrar-produtos,
+.dashboard-card-resumo-produtos{
+    background:#121824;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    box-sizing:border-box;
+    
+}
+
+.dashboard-card-cadastrar-produtos{
+    overflow:auto;
+}
+
+.dashboard-card-resumo-produtos{
+    gap:18px;
+    min-height: 100%;
+    overflow: auto;
+}
+
+/*=====================================================
+SCROLL
+=====================================================*/
+
+/* Largura da barra */
+.dashboard-card-cadastrar-produtos::-webkit-scrollbar,
+.dashboard-card-resumo-produtos::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+/* Fundo */
+.dashboard-card-cadastrar-produtos::-webkit-scrollbar-track,
+.dashboard-card-resumo-produtos::-webkit-scrollbar-track{
+    background:#141b27;
+    border-radius:20px;
+}
+
+/* Barra */
+.dashboard-card-cadastrar-produtos::-webkit-scrollbar-thumb,
+.dashboard-card-resumo-produtos::-webkit-scrollbar-thumb{
+    background:#4b5563;
+    border-radius:20px;
+}
+
+/* Hover */
+.dashboard-card-cadastrar-produtos::-webkit-scrollbar-thumb:hover,
+.dashboard-card-resumo-produtos::-webkit-scrollbar-thumb:hover{
+    background:#6b7280;
+}
+
+/* Customização da scrollbar da tabela do modal */
+#modalTabelaProdutos .table-responsive::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+#modalTabelaProdutos .table-responsive::-webkit-scrollbar-track {
+    background: #18202c;
+    border-radius: 8px;
+    margin: 8px; /* Afasta as pontas do scroll das bordas laterais */
+}
+
+#modalTabelaProdutos .table-responsive::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 8px;
+    border: 2px solid #18202c; /* Cria um espaçamento em volta do indicador do scroll */
+}
+
+#modalTabelaProdutos .table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* =====================================================
+   CABEÇALHO
+===================================================== */
+
+.cadastrar-produtos-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.cadastrar-produtos-header h2{
+    margin:0;
+    color:#8b5cf6;
+    font-size:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+/* =====================================================
+   FORMULÁRIO
+===================================================== */
+
+.cadastrar-produtos-formulario{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    align-items: start;
+}
+
+.campo{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    margin-bottom: 8pxs;
+}
+
+.campo label{
+    font-size:13px;
+    color:#e5e7eb;
+    font-weight:500;
+}
+
+.campo input,
+.campo select,
+.campo textarea{
+    width:100%;
+    padding:10px;
+    background:#1b2230;
+    border:1px solid #313b4e;
+    border-radius:10px;
+    color:#f8fafc;
+    outline:none;
+    font-size:14px;
+    transition:.25s;
+    box-sizing:border-box;
+}
+
+.campo textarea{
+    resize:none;
+    min-height:120px;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder{
+    color:#9ca3af;
+}
+
+.campo input:focus,
+.campo textarea:focus,
+.campo select:focus{
+    border-color:#7c3aed;
+    box-shadow:0 0 0 3px rgba(124,58,237,.20);
+}
+
+/* descrição ocupa toda a altura */
+
+.campo-descricao{
+    grid-column:2;
+    grid-row: 1 / span 5;
+    display: flex;
+    flex-direction: column;
+}
+.campo-descricao textarea {
+    flex: 1; /* Faz a textarea preencher o espaço vertical proporcionalmente */
+    min-height: 220px;
+}
+
+/* =====================================================
+   UPLOAD
+===================================================== */
+
+.campo-upload{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.campo-upload label{
+    font-size:13px;
+    color:#e5e7eb;
+    font-weight:500;
+}
+
+.upload-box{
+    height:160px;
+    border:2px dashed rgba(255,255,255,.18);
+    border-radius:12px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    cursor:pointer;
+    transition:.25s;
+    background:#171e2b;
+}
+
+.upload-box:hover{
+    border-color:#7c3aed;
+    background:#1d2534;
+}
+
+.upload-box i{
+    font-size:42px;
+    color:#9ca3af;
+}
+
+.upload-box span{
+    color:#cbd5e1;
+    font-size:14px;
+    text-align:center;
+    max-width:220px;
+}
+/* =====================================================
+   BOTÕES SUPERIORES
+===================================================== */
+
+.cadastrar-produtos-acoes-topo{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.btn-cadastrar-produtos{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:10px 18px;
+    border:none;
+    border-radius:10px;
+    color:#fff;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    transition:.25s;
+}
+
+.btn-cadastrar-produtos i{
+    font-size:13px;
+}
+
+.btn-cadastrar-produtos:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.08);
+}
+
+.btn-cadastrar-produtos.adicionar{
+    background:#22c55e;
+}
+
+.btn-cadastrar-produtos.editar{
+    background:#3b82f6;
+}
+
+.btn-cadastrar-produtos.atualizar{
+    background:#8b5cf6;
+}
+
+.btn-cadastrar-produtos.sair{
+    background:#f59e0b;
+}
+
+.btn-cadastrar-produtos.apagar{
+    background:#ef4444;
+}
+
+/* =====================================================
+   BOTÕES DO UPLOAD
+===================================================== */
+
+.upload-botoes{
+    display:flex;
+    gap:10px;
+}
+
+.btn-upload-remover,
+.btn-upload-carregar{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    padding:11px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.25s;
+    font-size:13px;
+    font-weight:600;
+}
+
+.btn-upload-remover{
+    border:1px solid rgba(239,68,68,.35);
+    background:rgba(239,68,68,.10);
+    color:#ef4444;
+}
+
+.btn-upload-remover:hover{
+    background:#ef4444;
+    color:#fff;
+}
+
+.btn-upload-carregar{
+    border:1px solid rgba(34,197,94,.35);
+    background:rgba(34,197,94,.10);
+    color:#22c55e;
+}
+
+.btn-upload-carregar:hover{
+    background:#22c55e;
+    color:#fff;
+}
+
+/* =====================================================
+   BOTÃO CONFIRMAR
+===================================================== */
+
+.btn-confirmar-produto{
+    margin-top:28px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#7c3aed,#6366f1);
+    color:#fff;
+    padding:16px;
+    font-size:15px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    cursor:pointer;
+    transition:.30s;
+}
+
+.btn-confirmar-produto:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 30px rgba(124,58,237,.35);
+}
+
+/* =====================================================
+   CARD LATERAL
+===================================================== */
+.dashboard-card-resumo-produtos h2{
+    margin:0;
+    font-size:20px;
+    color:#fff;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+/* =====================================================
+   CARDS DE RESUMO
+===================================================== */
+.card-resumo-produto{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:18px;
+    border-radius:14px;
+    transition:.25s;
+    height: 80px;
+}
+
+.card-resumo-produto:hover{
+    transform:translateY(-3px);
+}
+
+.card-resumo-produto .icone{
+    width:50px;
+    height:50px;
+    border-radius:14px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:22px;
+    color:#fff;
+}
+
+.card-resumo-produto span{
+    display:block;
+    color:#cbd5e1;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.card-resumo-produto strong{
+    color:#fff;
+    font-size:20px;
+    font-weight:700;
+}
+
+/* =====================================================
+   CORES DOS CARDS
+===================================================== */
+
+.card-resumo-produto.roxo{
+    background:rgba(124,58,237,.10);
+    border:1px solid rgba(124,58,237,.25);
+}
+
+.card-resumo-produto.roxo .icone{
+    background:#7c3aed;
+}
+
+.card-resumo-produto.verde{
+    background:rgba(34,197,94,.10);
+    border:1px solid rgba(34,197,94,.25);
+}
+
+.card-resumo-produto.verde .icone{
+    background:#22c55e;
+}
+
+.card-resumo-produto.azul{
+    background:rgba(59,130,246,.10);
+    border:1px solid rgba(59,130,246,.25);
+}
+
+.card-resumo-produto.azul .icone{
+    background:#3b82f6;
+}
+
+.card-resumo-produto.laranja{
+    background:rgba(245,158,11,.10);
+    border:1px solid rgba(245,158,11,.25);
+}
+
+.card-resumo-produto.laranja .icone{
+    background:#f59e0b;
+}
+/*=====================================================
+BOTÃO ADICIONAR
+=====================================================*/
+.btn-cadastrar-produto-adicionar {
+    width: 100%;
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-cadastrar-produto-adicionar button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 30px;
+    min-width: 220px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg,#2563eb,#1d4ed8);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.btn-cadastrar-produto-adicionar button:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg,#3b82f6,#2563eb);
+    box-shadow: 0 8px 20px rgba(37,99,235,.25);
+}
+
+/*=====================================================
+RESUMO DO CÁLCULO
+=====================================================*/
+.cadastrar-produto-resumo {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 18px;
+}
+
+.cadastrar-produto-card-resumo {
+    background: #1f2937;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.cadastrar-produto-card-resumo h3 {
+    margin: 0 0 10px;
+    color: #9ca3af;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.cadastrar-produto-card-resumo span {
+    color: #fff;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+/*=====================================================
+BOTÕES LATERAIS
+=====================================================*/
+.btn-cadastrar-produto-lateral {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.10);
+    color: #e5e7eb;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .2s;
+    font-size: 13px;
+}
+
+.btn-cadastrar-produto-lateral:hover {
+    background: rgba(255,255,255,.05);
+    border-color: rgba(255,255,255,.20);
+}
+
+.btn-cadastrar-produto-lateral i {
+    width: 20px;
+    text-align: center;
+    color: #60a5fa;
+}
+
+
+/*=====================================================
+BOTÕES DO RESUMO
+=====================================================*/
+.acoes-resumo-produtos{
+    display:flex;
+    justify-content:center;
+    gap:16px;
+    margin-top:24px;
+    height: 40px;
+
+}
+
+.btn-resumo-ver-clientes,
+.btn-resumo-ver-produtos{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:12px 22px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:10px;
+    background:#1f2937;
+    color:#e5e7eb;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    transition:all .25s ease;
+}
+
+.btn-resumo-ver-clientes i,
+.btn-resumo-ver-produtos i{
+    color:#60a5fa;
+    font-size:15px;
+}
+
+.btn-resumo-ver-clientes:hover,
+.btn-resumo-ver-produtos:hover{
+    background:#2563eb;
+    border-color:#2563eb;
+    color:#fff;
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(37,99,235,.25);
+}
+
+.btn-resumo-ver-clientes:hover i,
+.btn-resumo-ver-produtos:hover i{
+    color:#fff;
+}
+
+/* =====================================================
+   CARD DE PRÉ-VISUALIZAÇÃO DA IMAGEM
+===================================================== */
+.upload-preview-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.upload-preview-container label {
+    font-size: 13px;
+    color: #e5e7eb;
+    font-weight: 500;
+}
+
+.preview-box {
+    width: 100%;
+    height: 440px;
+    background: #171e2b;
+    border: 1px solid #313b4e;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    padding: 12px; /* Garante que a imagem não encoste nas bordas */
+}
+
+#img-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* <-- Faz a imagem preencher todo o quadrado */
+    border-radius: 12px;
+}
+
+/* Estado quando não há imagem */
+.preview-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: #6b7280;
+}
+
+.preview-empty i {
+    font-size: 36px;
+}
+
+.preview-empty span {
+    font-size: 13px;
+}
+
+#codigo{
+    cursor: not-allowed;
+}
+
+.campo input.input-erro,
+.campo input.input-erro:focus,
+.campo textarea.input-erro,
+.campo textarea.input-erro:focus,
+.campo select.input-erro,
+.campo select.input-erro:focus{
+    border-color:#dc3545 !important;
+    box-shadow:0 0 0 4px rgba(220,53,69,.15) !important;
+}
+
+.modal-warning-icon{
+    background:rgba(245,158,11,.15);
+}
+
+.modal-warning-icon i{
+    color:#f59e0b;
+}
+
+.btn-continuar {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-continuar:hover {
+    background: #16a34a;
+    transform: translateY(-2px);
+}
+/* ===========================================
+   MODAL TABELA DE PRODUTOS
+=========================================== */
+
+
+#modalTabelaProdutos .modal-dialog{
+    max-width:1100px;
+
+}
+
+#modalTabelaProdutos .modal-content{
+    border-radius:16px;
+    overflow:hidden;
+    height:85vh;
+}
+
+#modalTabelaProdutos .modal-body{
+    display:flex;
+    flex-direction:column;
+    height:100%;
+    padding:24px;
+    background-color: #1f2937;
+}
+
+#modalTabelaProdutos .table-responsive{
+    flex:1;
+    overflow:auto;
+    border:1px solid #dcdcdc;
+    border-radius:12px;
+    background:#1f2937 !important;
+
+    
+}
+
+#modalTabelaProdutos .modal-header{
+    background:#1f2937;
+    color:#fff;
+    padding:18px 24px;
+}
+
+#modalTabelaProdutos .modal-header h4{
+    margin:0;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:22px;
+}
+
+
+
+.acoes-tabela-produtos{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+
+
+#modalTabelaProdutos table {
+    margin-bottom: 0;
+    white-space: nowrap;
+    color: #ffffff !important;
+    --bs-table-bg: #1f2937 !important;
+    --bs-table-color: #ffffff !important;
+}
+
+#modalTabelaProdutos thead th{
+    position:sticky;
+    top:0;
+    background:#1f2937;
+    color:#fff;
+    z-index:2;
+    text-align:center;
+    vertical-align:middle;
+}
+
+#modalTabelaProdutos tbody td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#modalTabelaProdutos tbody td.text-center {
+    height: calc(50vh - 30px); /* Ocupa a altura total do modal descontando o cabeçalho */
+    vertical-align: middle;
+    text-align: center;
+}
+
+#modalTabelaProdutos tbody tr {
+    transition: .2s;
+}
+
+/* Hover APENAS para linhas com produtos (desconsidera a .linha-vazia) */
+#modalTabelaProdutos tbody tr:not(.linha-vazia) {
+    cursor: pointer;
+}
+
+#modalTabelaProdutos tbody tr:not(.linha-vazia):hover td {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+/* Desativa COMPLETAMENTE o hover e fundo da linha vazia */
+#modalTabelaProdutos tbody tr.linha-vazia,
+#modalTabelaProdutos tbody tr.linha-vazia:hover,
+#modalTabelaProdutos tbody tr.linha-vazia td,
+#modalTabelaProdutos tbody tr.linha-vazia:hover td {
+    cursor: default !important;
+    background-color: transparent !important;
+    background: transparent !important;
+    color: white;
+    --bs-table-hover-bg: transparent !important; /* Zera a variável de hover do Bootstrap */
+    --bs-table-accent-bg: transparent !important;
+}
+
+
+#modalTabelaProdutos input[type="radio"]{
+    transform:scale(1.15);
+    cursor:pointer;
+}
+/* ===========================================
+   BOTÕES DO MODAL TABELA DE PRODUTOS
+=========================================== */
+
+#modalTabelaProdutos .btn-cadastrar-produtos{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+
+    width:100%;
+    height:46px;
+
+    border:none;
+    border-radius:10px;
+
+    font-size:14px;
+    font-weight:600;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:all .25s ease;
+}
+
+#modalTabelaProdutos .btn-cadastrar-produtos i{
+    font-size:15px;
+}
+
+#modalTabelaProdutos .btn-cadastrar-produtos:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.08);
+}
+
+/* Atualizar Produto */
+#modalTabelaProdutos .atualizar{
+    background:#2563eb;
+}
+#modalTabelaProdutos .atualizar-tabela{
+    background:#4f46e5;
+}
+
+/* Apagar Produto */
+#modalTabelaProdutos .apagar{
+    background:#dc2626;
+}
+
+/* Filtrar */
+#modalTabelaProdutos .filtrar{
+    background:#0f766e;
+}
+
+/* Ordenar */
+#modalTabelaProdutos .ordenar{
+    background:#7c3aed;
+}
+
+/* Visualizar Imagem */
+#modalTabelaProdutos .visualizar-imagem{
+    background:#0891b2;
+}
+
+/* Excel */
+#modalTabelaProdutos .gerar-arquivo-excel{
+    background:#15803d;
+}
+
+/* Duplicar */
+#modalTabelaProdutos .duplicar-produto{
+    background:#ea580c;
+}
+#modalTabelaProdutos tbody tr.produto-selecionado td{
+    background-color:#475569 !important;
+    color:#fff !important;
+}
+
+/* =========================================
+   MODAL APAGAR PRODUTO SOBRE OUTROS MODAIS
+========================================= */
+
+.modal-confirmacao-apagar {
+    z-index: 1060 !important;
+}
+
+
+.modal-confirmacao-apagar + .modal-backdrop {
+    z-index: 1055 !important;
+}
+
+/* Fundo extra quando o modal de confirmação estiver aberto */
+.backdrop-confirmacao {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 1058;
+}
+
+#modalTabelaProdutos .table > :not(caption) > * > *{
+    border-bottom-width: 0;
+}
+
+#modalFiltrarProdutos .modal-header h5{
+    color: #fff;
+
+}
+
+#modalFiltrarProdutos {
+    z-index: 1060 !important;
+}
+
+#modalOrdenarProdutos .modal-header h5{
+    color: #fff;
+}
+
+#modalVisualizarImagem .modal-header h5{
+    color: white;
+}
+
+#mensagemSemImagem{
+    color: white;
+}

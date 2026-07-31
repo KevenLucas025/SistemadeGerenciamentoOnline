@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/relatorios.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- BARRA MOBILE -->
+<div class="dashboard-sidebar-bar">
+    <button class="btn-menu-mobile" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</div>
+
+<div class="dashboard-page-relatorio">
+
+    <!-- TOPBAR -->
+    <div class="dashboard-topbar-relatorio">
+        <div class="relatorio-titulo">
+            <div class="icone-relatorio">
+                <i class="fa-solid fa-file-lines"></i>
+            </div>
+            <div>
+                <h1>Relatórios de Clientes</h1>
+                <p>Gere relatórios personalizados dos clientes cadastrados.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEÇÃO DE FILTROS PRINCIPAIS -->
+    <section class="relatorio-card-secao">
+        <div class="secao-header">
+            <i class="fa-solid fa-filter"></i>
+            <span>Filtros</span>
+        </div>
+
+        <div class="filtros-grid">
+            <!-- Período -->
+            <div class="campo-filtro">
+                <label>Período</label>
+                <div class="campo-duplo">
+                    <input type="date" placeholder="Data inicial">
+                    <span>até</span>
+                    <input type="date" placeholder="Data final">
+                </div>
+            </div>
+
+            <!-- Tipo de Cliente -->
+            <div class="campo-filtro">
+                <label>Tipo de Cliente</label>
+                <div class="radio-grupo">
+                    <label><input type="radio" name="tipo" checked> Todos</label>
+                    <label><input type="radio" name="tipo"> Jurídicos</label>
+                    <label><input type="radio" name="tipo"> Físicos</label>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="campo-filtro">
+                <label>Status</label>
+                <select>
+                    <option>Todos</option>
+                    <option>Ativo</option>
+                    <option>Inativo</option>
+                </select>
+            </div>
+
+            <!-- Categoria -->
+            <div class="campo-filtro">
+                <label>Categoria</label>
+                <select>
+                    <option>Todas as categorias</option>
+                </select>
+            </div>
+
+            <!-- Cidade -->
+            <div class="campo-filtro">
+                <label>Cidade</label>
+                <div class="input-icon">
+                    <input type="text" placeholder="Pesquisar cidade...">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+
+            <!-- Estado -->
+            <div class="campo-filtro">
+                <label>Estado</label>
+                <select>
+                    <option>Todos</option>
+                </select>
+            </div>
+
+            <!-- Pesquisar Cliente (2 colunas) -->
+            <div class="campo-filtro campo-span-2">
+                <label>Pesquisar Cliente</label>
+                <div class="input-icon">
+                    <input type="text" placeholder="Nome, CPF, CNPJ, e-mail...">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GRID DE OPCIONAIS DE CONFIGURAÇÃO DO RELATÓRIO (3 CARDS) -->
+    <div class="relatorio-config-grid">
+        
+        <!-- 1. Informações que deseja incluir -->
+        <div class="relatorio-card-secao">
+            <div class="secao-header">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Informações que deseja incluir</span>
+            </div>
+            <div class="checkbox-grid">
+                <label class="custom-checkbox"><input type="checkbox" checked> <span>Dados pessoais</span></label>
+                <label class="custom-checkbox"><input type="checkbox" checked> <span>Histórico de compras</span></label>
+                <label class="custom-checkbox"><input type="checkbox" checked> <span>Endereço</span></label>
+                <label class="custom-checkbox"><input type="checkbox" checked> <span>Valor gasto</span></label>
+                <label class="custom-checkbox"><input type="checkbox" checked> <span>Contatos</span></label>
+                <label class="custom-checkbox"><input type="checkbox" checked> <span>Última compra</span></label>
+                <label class="custom-checkbox"><input type="checkbox" checked> <span>Documentos</span></label>
+                <label class="custom-checkbox"><input type="checkbox" checked> <span>Situação do cliente</span></label>
+            </div>
+        </div>
+
+        <!-- 2. Formato do relatório -->
+        <div class="relatorio-card-secao">
+            <div class="secao-header">
+                <i class="fa-solid fa-file-export"></i>
+                <span>Formato do relatório</span>
+            </div>
+            <div class="radio-vertical-grupo">
+                <label class="custom-radio"><input type="radio" name="formato" checked> <span>PDF</span></label>
+                <label class="custom-radio"><input type="radio" name="formato"> <span>Excel (.xlsx)</span></label>
+                <label class="custom-radio"><input type="radio" name="formato"> <span>CSV</span></label>
+                <label class="custom-radio"><input type="radio" name="formato"> <span>Impressão</span></label>
+            </div>
+        </div>
+
+        <!-- 3. Ordenação -->
+        <div class="relatorio-card-secao">
+            <div class="secao-header">
+                <i class="fa-solid fa-arrow-down-short-wide"></i>
+                <span>Ordenação</span>
+            </div>
+            <div class="ordenacao-container">
+                <div class="campo-filtro">
+                    <label>Ordenar por</label>
+                    <select>
+                        <option>Nome do Cliente</option>
+                        <option>Data Cadastro</option>
+                        <option>Valor Gasto</option>
+                    </select>
+                </div>
+                <div class="campo-filtro">
+                    <label>Ordem</label>
+                    <div class="radio-grupo">
+                        <label><input type="radio" name="ordem" checked> Crescente</label>
+                        <label><input type="radio" name="ordem"> Decrescente</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CARDS RESUMO -->
+    <section class="relatorio-resumo">
+        <div class="card-resumo card-clientes">
+            <div class="icone-card"><i class="fa-solid fa-users"></i></div>
+            <div>
+                <span>Clientes encontrados</span>
+                <strong>145</strong>
+                <small>Total de clientes no período</small>
+            </div>
+        </div>
+
+        <div class="card-resumo card-juridica">
+            <div class="icone-card"><i class="fa-solid fa-building"></i></div>
+            <div>
+                <span>Pessoa Jurídica</span>
+                <strong>87</strong>
+                <small>60,00% do total</small>
+            </div>
+        </div>
+
+        <div class="card-resumo card-fisica">
+            <div class="icone-card"><i class="fa-solid fa-user"></i></div>
+            <div>
+                <span>Pessoa Física</span>
+                <strong>58</strong>
+                <small>40,00% do total</small>
+            </div>
+        </div>
+
+        <div class="card-resumo card-valor">
+            <div class="icone-card"><i class="fa-solid fa-dollar-sign"></i></div>
+            <div>
+                <span>Valor movimentado</span>
+                <strong>R$ 186.450,00</strong>
+                <small>Total no período filtrado</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRÉ-VISUALIZAÇÃO DOS RESULTADOS (TABELA) -->
+    <section class="relatorio-card-secao">
+        <div class="secao-header">
+            <span>Pré-visualização dos resultados</span>
+        </div>
+
+        <div class="tabela-container">
+            <table class="relatorio-tabela">
+                <thead>
+                    <tr>
+                        <th>NOME / RAZÃO SOCIAL</th>
+                        <th>TIPO</th>
+                        <th>CPF / CNPJ</th>
+                        <th>E-MAIL</th>
+                        <th>TELEFONE</th>
+                        <th>CIDADE / ESTADO</th>
+                        <th>STATUS</th>
+                        <th>DATA CADASTRO</th>
+                        <th>VALOR GASTO</th>
+                        <th>ÚLTIMA COMPRA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>João Silva</td>
+                        <td><span class="badge-tipo fisico">Físico</span></td>
+                        <td>123.456.789-00</td>
+                        <td>joao.silva@email.com</td>
+                        <td>(19) 99999-9999</td>
+                        <td>Campinas / SP</td>
+                        <td><span class="badge-status ativo">Ativo</span></td>
+                        <td>14/03/2026</td>
+                        <td>R$ 4.520,00</td>
+                        <td>14/07/2026</td>
+                    </tr>
+                    <tr>
+                        <td>Empresa ABC Ltda</td>
+                        <td><span class="badge-tipo juridico">Jurídico</span></td>
+                        <td>12.345.678/0001-90</td>
+                        <td>contato@abc.com.br</td>
+                        <td>(11) 3333-4444</td>
+                        <td>São Paulo / SP</td>
+                        <td><span class="badge-status ativo">Ativo</span></td>
+                        <td>10/02/2026</td>
+                        <td>R$ 18.750,00</td>
+                        <td>12/07/2026</td>
+                    </tr>
+                    <tr>
+                        <td>Maria Oliveira</td>
+                        <td><span class="badge-tipo fisico">Físico</span></td>
+                        <td>987.654.321-00</td>
+                        <td>maria.oliveira@email.com</td>
+                        <td>(19) 98888-7777</td>
+                        <td>Valinhos / SP</td>
+                        <td><span class="badge-status ativo">Ativo</span></td>
+                        <td>22/04/2026</td>
+                        <td>R$ 2.180,00</td>
+                        <td>08/07/2026</td>
+                    </tr>
+                    <tr>
+                        <td>Comércio XYZ S.A.</td>
+                        <td><span class="badge-tipo juridico">Jurídico</span></td>
+                        <td>98.765.432/0001-10</td>
+                        <td>financeiro@xyz.com.br</td>
+                        <td>(21) 2222-3333</td>
+                        <td>Rio de Janeiro / RJ</td>
+                        <td><span class="badge-status inativo">Inativo</span></td>
+                        <td>05/01/2026</td>
+                        <td>R$ 32.600,00</td>
+                        <td>01/06/2026</td>
+                    </tr>
+                    <tr>
+                        <td>Carlos Pereira</td>
+                        <td><span class="badge-tipo fisico">Físico</span></td>
+                        <td>456.123.789-00</td>
+                        <td>carlos.pereira@email.com</td>
+                        <td>(19) 97777-6666</td>
+                        <td>Paulínia / SP</td>
+                        <td><span class="badge-status ativo">Ativo</span></td>
+                        <td>18/05/2026</td>
+                        <td>R$ 950,00</td>
+                        <td>03/07/2026</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- RODAPÉ DA TABELA E PAGINAÇÃO -->
+        <div class="tabela-rodape">
+            <span>Mostrando 1 a 5 de 145 registros</span>
+            <div class="paginacao">
+                <button class="btn-paginacao" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="btn-paginacao ativo">1</button>
+                <button class="btn-paginacao">2</button>
+                <button class="btn-paginacao">3</button>
+                <span class="paginacao-poicagens">...</span>
+                <button class="btn-paginacao">29</button>
+                <button class="btn-paginacao"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- BARRA DE AÇÕES INFERIOR -->
+    <div class="relatorio-acoes-bottom">
+        <button class="btn-relatorio btn-visualizar">
+            <i class="fa-solid fa-eye"></i> Visualizar Relatório
+        </button>
+        <button class="btn-relatorio btn-pdf">
+            <i class="fa-solid fa-file-pdf"></i> Gerar PDF
+        </button>
+        <button class="btn-relatorio btn-excel">
+            <i class="fa-solid fa-file-excel"></i> Exportar Excel
+        </button>
+        <button class="btn-relatorio btn-csv">
+            <i class="fa-solid fa-file-csv"></i> Exportar CSV
+        </button>
+        <button class="btn-relatorio btn-cancelar">
+            <i class="fa-solid fa-circle-xmark"></i> Cancelar
+        </button>
+    </div>
+
+</div>
+{% endblock %}

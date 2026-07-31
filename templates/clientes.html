@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/clientes.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- BARRA VERTICAL MOBILE -->
+<div class="dashboard-sidebar-bar">
+    <button class="btn-menu-mobile" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</div>
+
+<div class="dashboard-page-clientes">
+    <!-- TOPO -->
+    <div class="dashboard-topbar-clientes">
+        <div>
+            <h1>Clientes</h1>
+            <p>Cadastre e gerencie os clientes do sistema.</p>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div class="clientes-card">
+        <!-- CABEÇALHO -->
+        <div class="clientes-header">
+            
+            <div class="clientes-tabs">
+                <button class="btn-tab-cliente ativo">
+                    <i class="fa-solid fa-building"></i> Clientes Jurídicos
+                </button>
+                <button class="btn-tab-cliente">
+                    <i class="fa-solid fa-user"></i> Clientes Físicos
+                </button>
+            </div>
+
+            <div class="clientes-acoes">
+                <div class="clientes-pesquisa">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Pesquisar cliente...">
+                </div>
+
+                <button class="btn-cliente criar">
+                    <i class="fa-solid fa-plus"></i> Criar Cliente
+                </button>
+                <button class="btn-cliente editar">
+                    <i class="fa-solid fa-pen"></i> Editar
+                </button>
+                <button class="btn-cliente excluir">
+                    <i class="fa-solid fa-trash"></i> Excluir
+                </button>
+                <button class="btn-cliente relatorio">
+                    <i class="fa-solid fa-file-lines"></i> Relatório
+                </button>
+                <button class="btn-cliente marcar">
+                    <i class="fa-solid fa-bookmark"></i> Marcar como
+                </button>
+                <button class="btn-cliente historico">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Histórico
+                </button>
+            </div>
+        </div>
+
+        <!-- TABELA -->
+        <div id="juridicos" class="clientes-pagina ativa">
+        <div class="clientes-table-container">
+            <table class="clientes-table">
+                <thead>
+                    <tr>
+                        <th>Nome do Cliente</th>
+                        <th>Razão Social</th>
+                        <th>Data da Inclusão</th>
+                        <th>CNPJ</th>
+                        <th>RG</th>
+                        <th>CPF</th>
+                        <th>E-mail</th>
+                        <th>CNH</th>
+                        <th>Categoria da CNH</th>
+                        <th>Data da Emissão da CNH</th>
+                        <th>Data de Vencimento da CNH</th>
+                        <th>Telefone</th>
+                        <th>CEP</th>
+                        <th>Endereço</th>
+                        <th>Número</th>
+                        <th>Complemento</th>
+                        <th>Cidade</th>
+                        <th>Bairro</th>
+                        <th>Número</th>
+                        <th>Estado</th>
+                        <th>Status do Cliente</th>
+                        <th>Categoria do Cliente</th>
+                        <th>Última Atualização</th>
+                        <th>Valor Gasto Total</th>
+                        <th>Última Compra</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if clientes %}
+                        {% for cliente in clientes %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ cliente.nome }}</td>
+                            <td>{{ cliente.razao_social }}</td>
+                            <td>{{ cliente.data_inclusao }}</td>
+                            <td>{{ cliente.cnpj }}</td>
+                            <td>{{ cliente.rg }}</td>
+                            <td>{{ cliente.cpf }}</td>
+                            <td>{{ cliente.email }}</td>
+                            <td>{{ cliente.cnh }}</td>
+                            <td>{{ cliente.categoria_cnh }}</td>
+                            <td>{{ cliente.emissao_cnh }}</td>
+                            <td>{{ cliente.vencimento_cnh }}</td>
+                            <td>{{ cliente.telefone }}</td>
+                            <td>{{ cliente.cep }}</td>
+                            <td>{{ cliente.cidade }}</td>
+                            <td>{{ cliente.estado }}</td>
+                            <td>{{ cliente.endereco }}</td>
+                            <td>{{ cliente.numero }}</td>
+                            <td>{{ cliente.complemento }}</td>
+                            <td>{{ cliente.bairro }}</td>
+                            <td>{{ cliente.status }}</td>
+                            <td>{{ cliente.categoria }}</td>
+                            <td>{{ cliente.ultima_atualizacao }}</td>
+                            <td>{{ cliente.valor_gasto }}</td>
+                            <td>{{ cliente.ultima_compra }}</td>
+                            <td>
+                                <button class="btn-acao editar"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn-acao excluir"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="25" class="sem-registros-clientes">
+                                <div class="sem-registros-content">
+                                    <i class="fa-solid fa-users-slash"></i>
+                                    <p>Nenhum cliente cadastrado.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="fisicos" class="clientes-pagina">
+    <div class="clientes-table-container">
+        <table class="clientes-table">
+            <thead>
+                <tr>
+
+                    <th>Nome</th>
+                    <th>RG</th>
+                    <th>CPF</th>
+                    <th>E-mail</th>
+                    <th>CNH</th>
+                    <th>Categoria CNH</th>
+                    <th>Data Emissão</th>
+                    <th>Data Vencimento</th>
+                    <th>Telefone</th>
+                    <th>CEP</th>
+                    <th>Endereço</th>
+                    <th>Número</th>
+                    <th>Complemento</th>
+                    <th>Cidade</th>
+                    <th>Bairro</th>
+                    <th>Estado</th>
+                    <th>Status</th>
+                    <th>Categoria</th>
+                    <th>Última Atualização</th>
+                    <th>Valor Gasto</th>
+                    <th>Última Compra</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="21" class="sem-registros-clientes">
+                        <div class="sem-registros-content">
+                            <i class="fa-solid fa-user-slash"></i>
+                            <p>Nenhum cliente físico cadastrado.</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div> 
+</div> 
+
+
+{% endblock %}

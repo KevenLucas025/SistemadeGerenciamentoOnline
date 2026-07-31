@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- BARRA VERTICAL NO CANTO ESQUERDO -->
+<div class="dashboard-sidebar-bar">
+    <button class="btn-menu-mobile"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#menuLateral">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</div>
+
+<!-- CONTEÚDO DA DASHBOARD -->
+<div class="dashboard-page-home">
+    <div class="dashboard-topbar-home">
+        <div>
+            <h1>Dashboard</h1>
+            <p>Visão geral do seu sistema</p>
+        </div>
+    </div>
+
+    <div class="dashboard-content">
+        
+        <!-- BANNER DE BOAS-VINDAS INTERATIVO (Pode ser dispensado) -->
+        <div class="welcome-banner" id="welcomeBanner">
+            <div class="welcome-content">
+                <div class="welcome-icon">
+                    <i class="fa-solid fa-hand-wave"></i>
+                </div>
+                <div class="welcome-text">
+                    <h3>Bem-vindo ao Sistema de Gerenciamento Online!</h3>
+                    <p>Aqui você acompanhará as atualizações mais recentes, novidades e o status do sistema em tempo real.</p>
+                </div>
+            </div>
+            <button class="btn-close-banner" type="button" onclick="dismissBanner()" title="Fechar aviso">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- SEÇÃO DE ATUALIZAÇÕES E NOTÍCIAS -->
+        <div class="news-section">
+            <h2 class="section-title">
+                <i class="fa-solid fa-bullhorn"></i> Últimas Atualizações & Notícias
+            </h2>
+
+            <div class="news-grid">
+                <!-- Card de Notícia 1 -->
+                <div class="news-card">
+                    <span class="news-badge new">Novo</span>
+                    <span class="news-date">Hoje</span>
+                    <h4>Módulo de Relatórios Atualizado</h4>
+                    <p>Melhoramos a performance na geração de relatórios financeiros em PDF e Excel.</p>
+                </div>
+
+                <!-- Card de Notícia 2 -->
+                <div class="news-card">
+                    <span class="news-badge update">Melhoria</span>
+                    <span class="news-date">Ontem</span>
+                    <h4>Nova Interface do Menu</h4>
+                    <p>Agora a navegação está mais fluida com o menu lateral redesenhado e atalhos rápidos.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- SCRIPT DE INTERATIVIDADE -->
+<script>
+    // Verifica se o usuário já fechou o banner anteriormente
+    document.addEventListener("DOMContentLoaded", function () {
+        if (localStorage.getItem("bannerDismissed") === "true") {
+            const banner = document.getElementById("welcomeBanner");
+            if (banner) banner.style.display = "none";
+        }
+    });
+
+    // Função para dispensar o banner com animação suave
+    function dismissBanner() {
+        const banner = document.getElementById("welcomeBanner");
+        if (banner) {
+            banner.style.opacity = "0";
+            banner.style.transform = "translateY(-10px)";
+            banner.style.transition = "all 0.3s ease";
+            
+            setTimeout(() => {
+                banner.style.display = "none";
+            }, 300);
+
+            // Salva a preferência no navegador do usuário
+            localStorage.setItem("bannerDismissed", "true");
+        }
+    }
+</script>
+{% endblock %}
