@@ -191,9 +191,9 @@
 .verificar-usuarios-side-actions {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 80px;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 6px;
+    border-radius: 12px;
     flex: 1;
     box-sizing: border-box;
     width: 100%;
@@ -213,7 +213,7 @@
     font-size: 13px;
     cursor: pointer;
     transition: all 0.2s ease;
-    text-align: left;
+    justify-content: center;
     width: 100%;
 }
 
@@ -263,8 +263,8 @@
 .dashboard-page-verificar-usuarios {
     display:flex;
     flex-direction:column;
-    height:calc(100vh - 10px);
-    padding:20px;
+    height:calc(100vh - 90px);
+    padding: 0px 20px 20px;
     overflow:hidden;
     margin-left: 70px;
 }
@@ -279,12 +279,14 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     box-sizing: border-box;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    height: 70px;
 }
+
 .dashboard-topbar-verificar-usuarios h1 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #ffffff;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
     margin: 0;
 }
 .dashboard-topbar-verificar-usuarios p {

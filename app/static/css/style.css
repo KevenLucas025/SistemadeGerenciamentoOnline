@@ -12,12 +12,16 @@ body {
         radial-gradient(circle at top, #4f46e5, transparent 35%),
         radial-gradient(circle at bottom, #06b6d4, transparent 30%),
         #111827 !important;
-    min-height: 100vh;
+    height: 100vh;
     margin: 0;
     padding: 0 !important;
     overflow: hidden !important;
     font-family: Inter, sans-serif;
 }
+html{
+    height: 100%;
+}
+
 ::-webkit-scrollbar{
     width:8px;
     height:8px;
@@ -1269,7 +1273,6 @@ LINK VOLTAR
 
 }
 
-
 /* CANCELAR */
 .modal-logout-content .btn-secondary {
     background: #374151;
@@ -1277,7 +1280,6 @@ LINK VOLTAR
     color: #e5e7eb;
 
 }
-
 
 .modal-logout-content .btn-secondary:hover {
     background: #4b5563;
@@ -1299,6 +1301,23 @@ LINK VOLTAR
     background: #b91c1c;
     border-color: #b91c1c;
 
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Mesma borda da barra lateral */
+    margin-bottom: 12px; /* Margem inferior para afastar do conteúdo */
+    position: relative;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Garante alinhamento total à direita */
+    position: relative;
 }
 
 /* =====================================================
@@ -1424,26 +1443,27 @@ LINK VOLTAR
     background: #1f2937;
     color: white;
 }
+
 .sidebar-user {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 18px 16px;
-    margin-bottom: 20px;
-    border-radius: 14px;
-    background: #26282c;
+    justify-content: center;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    transition: background 0.2s ease;
 }
-
 .sidebar-user-avatar {
-    width: 42px;
-    height: 42px;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: #2563eb;
-    color: white;
+    color: #ffffff;
     font-size: 16px;
 }
 
@@ -1516,6 +1536,7 @@ LINK VOLTAR
     color: #f8fafc;
     transform: translateX(3px);
 }
+
 .sidebar-link.active {
     background: #2563eb;
     color: white;
@@ -1534,3 +1555,203 @@ LINK VOLTAR
 }
 
 
+
+.menu-usuario-dropdown{
+    position:absolute;
+    left:-200px;
+    top:75px;
+    width:260px;
+    background:#1f242b;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:8px;
+    padding:8px 0;
+    z-index:9999;
+    display:none;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+
+.menu-usuario-dropdown.ativo{
+    display:block;
+}
+
+
+.status-opcao,
+.menu-opcao{
+    height:42px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 18px;
+    color:#d1d5db;
+    font-size:14px;
+    cursor:pointer;
+}
+
+.status-opcao:hover,
+.menu-opcao:hover{
+    background:#2a3038;
+
+}
+
+.status-opcao i{
+    font-size:12px;
+}
+
+.status-opcao.ativo i{
+    color:#22c55e;
+
+}
+
+
+.status-opcao.selecionado::before{
+    content:"✓";
+    color:#38bdf8;
+    margin-right:5px;
+}
+
+
+
+.menu-opcao .seta{
+    margin-left:auto;
+}
+
+
+.menu-opcao.sair{
+    color:#ef4444;
+}
+
+
+.menu-usuario-dropdown hr{
+    border-color:rgba(255,255,255,.1);
+    margin:8px 0;
+
+}
+
+.layout-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+.main-content {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+
+}
+
+.status-indicador{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    border: 2px solid #1f242b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+}
+/* =====================================================
+   1. Borda e Sombra do AVATAR (Círculo Maior)
+===================================================== */
+.sidebar-user-avatar.online {
+    border: 2px solid #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+}
+
+.sidebar-user-avatar.ausente {
+    border: 2px solid #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+}
+
+.sidebar-user-avatar.offline {
+    border: 1px solid #334155;
+    box-shadow: none;
+}
+/* =====================================================
+   2. Cor de Fundo do INDICADOR (Bolinha Pequena)
+===================================================== */
+.status-indicador.online {
+    background: #22c55e;
+}
+
+.status-indicador.ausente {
+    background: #f59e0b;
+}
+
+.status-indicador.offline {
+    background: #334155;
+}
+
+.status-indicador.offline::before{
+    content: "✕";
+    color: #cbd5e1;
+    font-size: 7px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* Cor genérica do ícone inativo */
+.status-opcao i {
+    color: #94a3b8;
+    transition: color 0.2s ease;
+}
+
+/* --- Estilos quando a opção estiver ATIVA --- */
+
+/* Online -> Verde */
+.status-opcao[data-status="online"].ativo i {
+    color: #22c55e;
+}
+
+/* Ausente -> Laranja */
+.status-opcao[data-status="ausente"].ativo i { 
+    color: #f59e0b;
+}
+
+/* Offline -> Cinza / Vermelho suave */
+.status-opcao[data-status="offline"].ativo i {
+    color: #64748b;
+}
+
+/* (Opcional) Destaque no texto quando ativo */
+.status-opcao.ativo {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Container da bolinha no menu dropdown */
+.icone-status-offline {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid #64748b; /* Borda da bolinha */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px; /* Espaçamento até a palavra Offline */
+    transition: all 0.2s ease;
+}
+
+/* Tamanho e cor do X dentro da bolinha */
+.icone-status-offline i {
+    font-size: 8px;
+    color: #64748b;
+    margin: 0 !important; /* Previne margens herdadas de outros ícones */
+}
+
+/* Quando o status Offline estiver ATIVO no menu */
+.status-opcao[data-status="offline"].ativo .icone-status-offline {
+    border-color: #cbd5e1;
+}
+
+.status-opcao[data-status="offline"].ativo .icone-status-offline i {
+    color: #cbd5e1;
+}

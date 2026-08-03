@@ -1,11 +1,12 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from estoque.models import Produto
 from decimal import Decimal
 from django.http import JsonResponse
-from django.db.models import Q
-from django.contrib import messages
+import random
+from django.shortcuts import get_object_or_404
+
 
 def moeda_para_decimal(valor):
     if not valor:
@@ -252,6 +253,40 @@ def atualizar_tabela_produtos(request):
             "produtos": produtos
         }
     )
+    
+@login_required
+def duplicar_produto(request,id):
+    if request.method == "POST":
+        produto_original = get_object_or_404(Produto,id=id)
+        
+        novo_codigo = f"PRD-{random.randint(100000,999999)}"
+        
+        while Produto.objects.filter(codigo=novo_codigo).exists():
+            novo_codigo = f"PRD-{random.randint(100000, 999999)}"
+            
+            # Cria uma nova instância copiando os dados do original
+        novo_produto = Produto.objects.create(
+            nome=f"{produto_original.nome} (Cópia)",
+            codigo=novo_codigo,
+            descricao=produto_original.descricao,
+            cliente=produto_original.cliente,
+            quantidade=produto_original.quantidade,
+            valor_unitario=produto_original.valor_unitario,
+            desconto=produto_original.desconto,
+            total_sem_desconto=produto_original.total_sem_desconto,
+            total_com_desconto=produto_original.total_com_desconto,
+            valor_total=produto_original.valor_total,
+            imagem=produto_original.imagem, # Copia a referência da imagem
+            data_cadastro=produto_original.data_cadastro,
+            criado_por=request.user,
+            status_saida=produto_original.status_saida
+        )
+        return JsonResponse({
+           "status": "ok",
+            "mensagem": f"Produto duplicado com sucesso! Novo ID: {novo_produto.id}" 
+        })
+
+    return JsonResponse({"status": "erro", "mensagem": "Método inválido."}, status=400)
 
 '''@login_required
 def listar_produtos(request):
@@ -259,4 +294,3 @@ def listar_produtos(request):
     produtos = Produto.objects.all().order_by("-id")
     
     return render(request, "modais/modal_tabela_produtos.html", {"produtos":produtos})'''
-

@@ -4,6 +4,7 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/produtos.css' %}">
 <script src="{% static 'js/produtos.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -280,11 +281,17 @@
             </div>
 
             <div class="acoes-resumo-produtos">
-                <button class="btn-resumo-ver-clientes">
+
+                <button
+                    class="btn-resumo-ver-clientes"
+                    data-url="{% url 'clientes' %}">
                     <i class="fa-solid fa-users"></i>
                     Ver Clientes
                 </button>
-                <button class="btn-resumo-ver-produtos">
+
+                <button
+                    class="btn-resumo-ver-produtos"
+                    data-url="{% url 'estoque' %}">
                     <i class="fa-solid fa-boxes-stacked"></i>
                     Ver Produtos
                 </button>
@@ -487,12 +494,12 @@
                         Visualizar Imagem
                     </button>
 
-                    <button class="btn-cadastrar-produtos gerar-arquivo-excel">
+                    <button id="btnGerarExcel" class="btn-cadastrar-produtos gerar-arquivo-excel">
                         <i class="fa-regular fa-file-excel"></i>
                         Gerar Excel
                     </button>
 
-                    <button class="btn-cadastrar-produtos duplicar-produto">
+                    <button  id="btnDuplicarProduto" class="btn-cadastrar-produtos duplicar-produto">
                         <i class="fa-regular fa-copy"></i>
                         Duplicar Produto
                     </button>

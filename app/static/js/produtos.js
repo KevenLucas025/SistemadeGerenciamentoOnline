@@ -13,6 +13,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const formulario = document.getElementById("formCadastroProduto");
     const modalSemImagem = document.getElementById("modalSemImagem");
 
+    
+        document.querySelector(".btn-resumo-ver-clientes").addEventListener("click", function () {
+        window.location.href = this.dataset.url;
+    });
+
+    document.querySelector(".btn-resumo-ver-produtos").addEventListener("click", function () {
+        window.location.href = this.dataset.url;
+    });
+
     let produtoEmEdicao = null;
     let dadosOriginais = {};
     let imagemOriginal = "";
@@ -29,8 +38,6 @@ document.addEventListener("DOMContentLoaded", function () {
     function cadastrarProdutoViaAjax() {
         const formData = new FormData(formulario);
         const csrfInput = document.querySelector("[name=csrfmiddlewaretoken]");
-
-        // Pega o action do form (ex: /produtos/) ou usa '/produtos/' diretamente
         const urlEnvio = formulario.getAttribute("action") || "/produtos/";
 
         fetch(urlEnvio, {
@@ -44,10 +51,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             if (data.status === "ok") {
                 mostrarAlerta(data.mensagem || "Produto cadastrado com sucesso!", "sucesso");
-
                 limparFormularioProduto();
                 permitirEnvioSemImagem = false;
-
                 return fetch("/produtos/atualizar-tabela/");
             } else {
                 mostrarAlerta(data.mensagem || "Erro ao cadastrar produto.", "erro");
@@ -67,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // =========================================
-    // EVENTO SUBMIT DO FORMULÁRIO
+    // EVENTO SUBMIT DO FORMULÁRIO (Confirmar/Salvar)
     // =========================================
     if (formulario) {
         formulario.addEventListener("submit", function (e) {
@@ -81,6 +86,51 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            // --- VALIDAÇÃO DOS CAMPOS VAZIOS ---
+            let nome = (document.getElementById("nome")?.value || "").trim();
+            let quantidade = Number(document.getElementById("quantidade")?.value || 0);
+            let valorUnitarioRaw = document.getElementById("valor_unitario")?.value || "";
+            let dataCadastro = document.getElementById("data_cadastro")?.value || "";
+            let descricao = (document.getElementById("descricao")?.value || "").trim();
+
+            let valorUnitario = Number(
+                valorUnitarioRaw
+                    .replace("R$", "")
+                    .replace(/\./g, "")
+                    .replace(",", ".")
+                    .trim()
+            ) || 0;
+
+            if (!nome) {
+                mostrarAlerta("Informe o nome do produto.", "erro");
+                marcarErro(document.getElementById("nome"));
+                return;
+            }
+
+            if (!quantidade || quantidade <= 0) {
+                mostrarAlerta("Informe uma quantidade válida.", "erro");
+                marcarErro(document.getElementById("quantidade"));
+                return;
+            }
+
+            if (!valorUnitario || valorUnitario <= 0) {
+                mostrarAlerta("Informe o valor unitário.", "erro");
+                marcarErro(document.getElementById("valor_unitario"));
+                return;
+            }
+
+            if (!dataCadastro) {
+                mostrarAlerta("Informe a data de cadastro.", "erro");
+                marcarErro(document.getElementById("data_cadastro"));
+                return;
+            }
+
+            if (!descricao) {
+                mostrarAlerta("Informe a descrição do produto.", "erro");
+                marcarErro(document.getElementById("descricao"));
+                return;
+            }
+
             // Valida imagem no cadastro
             if (inputImagem && !inputImagem.files.length && !permitirEnvioSemImagem) {
                 if (modalInstancia) {
@@ -89,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Se passou das validações, envia por AJAX
+            // Se passou em todas as validações, envia por AJAX
             cadastrarProdutoViaAjax();
         });
     }
@@ -119,10 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (inputDesconto) aplicarMascaraPorcentagem(inputDesconto);
     if (inputValor) aplicarMascaraMoeda(inputValor);
 
-    if (btnSalvar) {
-        btnSalvar.disabled = true;
-    }
-
+    // Botão Adicionar Apenas Calcula o Resumo
     if (btnAdicionar) {
         btnAdicionar.addEventListener("click", function () {
 
@@ -150,7 +197,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     .trim()
             ) || 0;
 
-            // Validações
             if (!nome) {
                 mostrarAlerta("Informe o nome do produto.", "erro");
                 marcarErro(document.getElementById("nome"));
@@ -186,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let valorDesconto = totalSemDesconto * (desconto / 100);
             let totalComDesconto = totalSemDesconto - valorDesconto;
 
-            // Resumo
+            // Atualiza o Resumo na tela
             document.getElementById("resumo-sem-desconto").innerText = formatarMoeda(totalSemDesconto);
             document.getElementById("resumo-desconto").innerText = formatarMoeda(valorDesconto);
             document.getElementById("resumo-total").innerText = formatarMoeda(totalComDesconto);
@@ -196,10 +242,6 @@ document.addEventListener("DOMContentLoaded", function () {
             let campoCodigo = document.getElementById("codigo");
             if (campoCodigo && !campoCodigo.value) {
                 campoCodigo.value = gerarCodigoProduto();
-            }
-
-            if (btnSalvar) {
-                btnSalvar.disabled = false;
             }
         });
     }
@@ -391,7 +433,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("valor_unitario").value = formatarMoeda(valorNum);
 
             let descontoNum = parseFloat(linha.dataset.desconto || 0);
-            document.getElementById("desconto").value = descontoNum + "%";
+            document.getElementById("desconto").value = (descontoNum % 1 === 0 ? parseInt(descontoNum) : descontoNum.toString().replace(".", ",")) + "%";
 
             document.getElementById("codigo").value = linha.dataset.codigo || "";
             document.getElementById("data_cadastro").value = linha.dataset.data || "";
@@ -422,10 +464,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 const modalTabela = bootstrap.Modal.getInstance(modalTabelaEl);
                 if (modalTabela) modalTabela.hide();
             }
-
-            if (btnSalvar) btnSalvar.disabled = false;
         });
     }
+
+    
 
     // Sair da Edição e Limpar
     const btnSairModoEdicao = document.getElementById("btnSairModoEdicao");
@@ -672,6 +714,132 @@ document.addEventListener("DOMContentLoaded", function () {
         bootstrap.Modal.getInstance(document.getElementById("modalFiltrarProdutos")).hide();
     }
 
+    const btnGerarExcel = document.getElementById("btnGerarExcel");
+    if (btnGerarExcel){
+        btnGerarExcel.addEventListener("click",exportarTabelaParaExcel);
+    }
+    function exportarTabelaParaExcel(){
+        const tabelaBody = document.getElementById("tabelaProdutosBody");
+        const linhas = tabelaBody.querySelectorAll("tr");
+
+        if (linhas.length === 0 || tabelaBody.querySelector(".linha-vazia")){
+            mostrarAlerta("Não há produtos na tabela para exportar.","erro");
+            return;
+        }
+
+        // Cabeçalhos das colunas
+        const dadosExcel = [
+            [
+                "ID",
+                "Produto",
+                "Quantidade",
+                "Valor Unitário",
+                "Desconto",
+                "Total sem Desconto",
+                "Total com Desconto",
+                "Cliente",
+                "Código",
+                "Data Cadastro",
+                "Criado Por"
+            ]
+        ];
+
+        linhas.forEach(linha => {
+            const colunas = linha.querySelectorAll("td");
+            if (colunas.length > 1){
+                dadosExcel.push([
+                    colunas[1].innerText.trim(),  // ID
+                    colunas[2].innerText.trim(),  // Produto
+                    colunas[3].innerText.trim(),  // Quantidade
+                    colunas[4].innerText.trim(),  // Valor Unitário
+                    colunas[5].innerText.trim(),  // Desconto
+                    colunas[6].innerText.trim(),  // Total sem Desconto
+                    colunas[7].innerText.trim(),  // Total com Desconto
+                    colunas[8].innerText.trim(),  // Cliente
+                    colunas[9].innerText.trim(),  // Código
+                    colunas[10].innerText.trim(), // Data Cadastro
+                    colunas[11].innerText.trim()  // Criado Por
+                ]);
+            }
+        });
+
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(dadosExcel);
+
+        // Define a largura automática das colunas
+        ws['!cols'] = [
+            { wch: 8 },  // ID
+            { wch: 25 }, // Produto
+            { wch: 12 }, // Quantidade
+            { wch: 15 }, // Valor Unitário
+            { wch: 10 }, // Desconto
+            { wch: 20 }, // Total sem Desconto
+            { wch: 20 }, // Total com Desconto
+            { wch: 20 }, // Cliente
+            { wch: 15 }, // Código
+            { wch: 15 }, // Data Cadastro
+            { wch: 15 }  // Criado Por
+        ];
+
+        XLSX.utils.book_append_sheet(wb, ws, "Produtos");
+
+        // Baixa o arquivo .xlsx
+        const dataAtual = new Date().toISOString().slice(0, 10);
+        XLSX.writeFile(wb, `produtos_${dataAtual}.xlsx`);
+
+        mostrarAlerta("Relatório em Excel gerado com sucesso!", "sucesso");
+
+    }
+
+    const duplicarProduto = document.getElementById("btnDuplicarProduto");
+
+    if (btnDuplicarProduto) {
+        btnDuplicarProduto.addEventListener("click", function () {
+            const radioSelecionado = document.querySelector(
+                "#modalTabelaProdutos input[type='radio']:checked"
+            );
+
+            if (!radioSelecionado) {
+                mostrarAlerta("Selecione um produto na tabela para duplicar.", "erro");
+                return;
+            }
+
+            const linha = radioSelecionado.closest("tr");
+            const id = linha.dataset.id;
+            const csrfInput = document.querySelector("[name=csrfmiddlewaretoken]");
+
+            fetch(`/produtos/duplicar/${id}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfInput ? csrfInput.value : "",
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "ok") {
+                    mostrarAlerta(data.mensagem, "sucesso");
+                    
+                    // Atualiza a tabela com o novo registro adicionado
+                    return fetch("/produtos/atualizar-tabela/");
+                } else {
+                    mostrarAlerta(data.mensagem || "Erro ao duplicar produto.", "erro");
+                }
+            })
+            .then(response => response ? response.text() : null)
+            .then(html => {
+                if (html) {
+                    document.getElementById("tabelaProdutosBody").innerHTML = html;
+                    inicializarEventosTabela();
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao duplicar produto:", error);
+                mostrarAlerta("Erro ao processar a duplicação do produto.", "erro");
+            });
+        });
+    }
+
     function inicializarEventosTabela() {
         document.querySelectorAll("#modalTabelaProdutos tbody tr").forEach(linha => {
             linha.addEventListener("click", function () {
@@ -717,8 +885,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (previewEmpty) {
             previewEmpty.style.display = "flex";
         }
-
-        if (btnSalvar) btnSalvar.disabled = true;
     }
 
     function sairModoEdicaoProduto() {
@@ -743,8 +909,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("resumo-desconto").innerText = "R$ 0,00";
         document.getElementById("resumo-total").innerText = "R$ 0,00";
         document.getElementById("resumo-quantidade").innerText = "0";
-
-        if (btnSalvar) btnSalvar.disabled = true;
 
         mostrarAlerta("Modo edição encerrado. Você pode cadastrar um novo produto.", "sucesso");
     }

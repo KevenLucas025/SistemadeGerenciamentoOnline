@@ -1,0 +1,65 @@
+{% load static %}
+
+<div class="topbar">
+
+    <div class="topbar-left">
+        <!-- Espaço para título ou breadcrumb futuramente -->
+    </div>
+
+    <div class="topbar-right">
+
+        <div class="sidebar-user" onclick="abrirMenuUsuario()">
+
+            <div class="sidebar-user-avatar">
+                <i class="fa-solid fa-user"></i>
+                <span id="statusUsuario" class="status-indicador online"></span>
+                {# <img src="{{ request.user.foto.url }}" alt="Foto"> #}
+            </div>
+
+        </div>
+
+        <div class="menu-usuario-dropdown" id="menuUsuarioDropdown">
+
+            <div class="status-opcao ativo" data-status="online">
+                <i class="fa-solid fa-circle"></i>
+                Online
+            </div>
+
+            <div class="status-opcao" data-status="ausente">
+                <i class="fa-solid fa-clock"></i>
+                Ausente
+            </div>
+
+            <div class="status-opcao" data-status="offline">
+                <span class="icone-status-offline">
+                    <i class="fa-solid fa-xmark"></i>
+                </span>
+                Offline
+            </div>
+
+            <hr>
+
+            <div class="menu-opcao">
+                <i class="fa-solid fa-camera"></i>
+                Alterar foto
+            </div>
+
+
+            <div class="menu-opcao">
+                <i class="fa-solid fa-palette"></i>
+                Aparência
+                <i class="fa-solid fa-chevron-right seta"></i>
+            </div>
+
+            <hr>
+
+            <div class="menu-opcao sair" onclick="abrirModalLogout(event)">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Sair
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

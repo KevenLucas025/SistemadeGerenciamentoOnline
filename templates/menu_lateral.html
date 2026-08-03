@@ -1,9 +1,6 @@
-
-
 <div class="offcanvas offcanvas-start"
      tabindex="-1"
      id="menuLateral">
-
 
     <!-- CABEÇALHO -->
     <div class="offcanvas-header">
@@ -21,7 +18,6 @@
 
         </div>
 
-
         <button type="button"
                 class="btn-fechar-menu"
                 data-bs-dismiss="offcanvas">
@@ -32,40 +28,8 @@
 
     </div>
 
-
     <!-- CORPO DO MENU -->
     <div class="offcanvas-body">
-
-
-        <!-- USUÁRIO LOGADO -->
-        <div class="sidebar-user">
-
-            <div class="sidebar-user-avatar">
-
-                <i class="fa-solid fa-user"></i>
-
-            </div>
-
-
-            <div class="sidebar-user-info">
-
-                <strong>
-                    {{ request.user.get_full_name|default:request.user.username }}
-                </strong>
-
-
-                <span>
-
-                    <i class="fa-solid fa-circle"></i>
-
-                    Online
-
-                </span>
-
-            </div>
-
-        </div>
-
 
         <!-- PRINCIPAL -->
         <div class="sidebar-section">
@@ -73,7 +37,6 @@
             <span class="sidebar-section-title">
                 PRINCIPAL
             </span>
-
 
             <a href="{% url 'dashboard' %}"
                class="sidebar-link active">
@@ -88,14 +51,12 @@
 
         </div>
 
-
         <!-- GERENCIAMENTO -->
         <div class="sidebar-section">
 
             <span class="sidebar-section-title">
                 GERENCIAMENTO
             </span>
-
 
             <!-- VERIFICAR ESTOQUE -->
             <a href="{% url 'estoque' %}"
@@ -109,7 +70,6 @@
 
             </a>
 
-
             <!-- VERIFICAR USUÁRIOS -->
             <a href="{% url 'usuarios' %}"
                class="sidebar-link">
@@ -121,7 +81,6 @@
                 </span>
 
             </a>
-
 
             <!-- CADASTRAR PRODUTOS -->
             <a href="{% url 'produtos' %}"
@@ -135,7 +94,6 @@
 
             </a>
 
-
             <!-- CADASTRAR USUÁRIOS -->
             <a href="{% url 'cadastrar_usuarios' %}"
                class="sidebar-link">
@@ -147,7 +105,6 @@
                 </span>
 
             </a>
-
 
             <!-- CLIENTES -->
             <a href="{% url 'clientes' %}"
@@ -163,14 +120,12 @@
 
         </div>
 
-
         <!-- ANÁLISES -->
         <div class="sidebar-section">
 
             <span class="sidebar-section-title">
                 ANÁLISES
             </span>
-
 
             <a href="{% url 'relatorios' %}"
                class="sidebar-link">
@@ -185,14 +140,12 @@
 
         </div>
 
-
         <!-- ADMINISTRAÇÃO -->
         <div class="sidebar-section">
 
             <span class="sidebar-section-title">
                 ADMINISTRAÇÃO
             </span>
-
 
             <a href="#"
                class="sidebar-link">
@@ -207,28 +160,26 @@
 
         </div>
 
-
         <!-- RODAPÉ -->
         <div class="sidebar-footer">
 
             <a href="#"
-                class="sidebar-link sidebar-logout"
-                onclick="abrirModalLogout(event)">
+               class="sidebar-link sidebar-logout"
+               onclick="abrirModalLogout(event)">
 
-                    <i class="fa-solid fa-right-from-bracket"></i>
+                <i class="fa-solid fa-right-from-bracket"></i>
 
-                    <span>
-                        Sair
-                    </span>
+                <span>
+                    Sair
+                </span>
 
-                </a>
+            </a>
 
         </div>
 
     </div>
 
 </div>
-
 
 <!-- =====================================================
      MODAL DE LOGOUT
@@ -239,30 +190,25 @@
      tabindex="-1"
      aria-hidden="true">
 
-
     <div class="modal-dialog modal-dialog-centered">
 
-
         <div class="modal-content modal-logout-content">
-
 
             <!-- CABEÇALHO DO MODAL -->
             <div class="modal-header">
 
                 <div class="modal-logout-icon">
                     <i class="fa-solid fa-right-from-bracket"></i>
-
                 </div>
 
-                <button type="button" 
-                        class="btn-modal-fechar" 
-                        data-bs-dismiss="modal" 
+                <button type="button"
+                        class="btn-modal-fechar"
+                        data-bs-dismiss="modal"
                         aria-label="Fechar">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
 
             </div>
-
 
             <!-- CORPO -->
             <div class="modal-body text-center">
@@ -271,17 +217,14 @@
                     Deseja sair do sistema?
                 </h4>
 
-
                 <p>
                     Sua sessão será encerrada e você precisará fazer login novamente para acessar o sistema.
                 </p>
 
             </div>
 
-
             <!-- RODAPÉ -->
             <div class="modal-footer">
-
 
                 <button type="button"
                         class="btn btn-secondary"
@@ -291,20 +234,23 @@
 
                 </button>
 
-
                 <form method="POST"
                       action="{% url 'logout' %}">
 
                     {% csrf_token %}
-
 
                     <button type="submit"
                             class="btn btn-danger">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         Sair do sistema
                     </button>
+
                 </form>
+
             </div>
+
         </div>
+
     </div>
+
 </div>

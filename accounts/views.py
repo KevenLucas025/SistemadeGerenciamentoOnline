@@ -6,13 +6,20 @@ from django.urls import reverse
 from .models import PerfilUsuario
 
 def login_view(request):
+    active_pane = 'register' if 'register' in request.GET or 'cadastro' in request.GET else 'login'
+    # Contexto padrão que SEMPRE oculta o menu na tela de login
+    context = {
+        'active_pane': active_pane,
+        'esconder_menu': True
+    }
+
     if request.method == 'POST':
         usuario_input = request.POST.get('username', '').strip()
         senha_input = request.POST.get('password', '').strip()
 
         if not usuario_input or not senha_input:
             messages.error(request, 'Por favor, preencha todos os campos.')
-            return render(request, 'accounts/login.html')
+            return render(request, 'accounts/login.html', context)
 
         user_obj = User.objects.filter(username=usuario_input).first()
         if not user_obj:
@@ -20,7 +27,7 @@ def login_view(request):
 
         if not user_obj:
             messages.error(request, 'Usuário ou e-mail não cadastrado.')
-            return render(request, 'accounts/login.html')
+            return render(request, 'accounts/login.html', context)
 
         user = authenticate(request, username=user_obj.username, password=senha_input)
         if user is not None:
@@ -28,9 +35,10 @@ def login_view(request):
             return redirect('dashboard')
 
         messages.error(request, 'Usuário ou senha inválidos.')
+        return render(request, 'accounts/login.html', context)
 
-    active_pane = 'register' if 'register' in request.GET or 'cadastro' in request.GET else 'login'
-    return render(request, 'accounts/login.html', {'active_pane': active_pane})
+    return render(request, 'accounts/login.html', context)
+
 
 def register(request):
     if request.method == 'POST':
@@ -40,7 +48,6 @@ def register(request):
         password = request.POST.get('new_pass', '').strip()
         confirm = request.POST.get('new_confirm', '').strip()
 
-        # Usamos reverse('login') para obter a URL correta e concatenamos os parâmetros dinamicamente
         if not nome_completo or not username or not email or not password or not confirm:
             messages.error(request, 'Preencha todos os campos.')
             return redirect(f"{reverse('login')}?register")
@@ -57,7 +64,12 @@ def register(request):
             messages.error(request, 'E-mail já cadastrado.')
             return redirect(f"{reverse('login')}?register")
 
-        usuario = User.objects.create_user(username=username, email=email, password=password, first_name=nome_completo)
+        usuario = User.objects.create_user(
+            username=username, 
+            email=email, 
+            password=password, 
+            first_name=nome_completo
+        )
         PerfilUsuario.objects.create(
             usuario=usuario,
             senha_visivel=password
@@ -66,4 +78,3 @@ def register(request):
         return redirect(f"{reverse('login')}?cadastro")
 
     return redirect('login')
-

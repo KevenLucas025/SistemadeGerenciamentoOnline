@@ -23,10 +23,10 @@
     <td>{{ produto.id }}</td>
     <td>{{ produto.nome }}</td>
     <td>{{ produto.quantidade }}</td>
-    <td>R$ {{ produto.valor_unitario }}</td>
-    <td>{{ produto.desconto }}%</td>
-    <td>R$ {{ produto.total_sem_desconto }}</td>
-    <td>R$ {{ produto.total_com_desconto }}</td>
+    <td>{{ produto.valor_unitario_formatado }}</td>
+    <td>{{ produto.desconto_formatado }}</td>
+    <td>{{ produto.total_sem_desconto_formatado }}</td>
+    <td>{{ produto.total_com_desconto_formatado }}</td>
     <td>{{ produto.cliente }}</td>
     <td>{{ produto.codigo }}</td>
     <td>{{ produto.data_cadastro }}</td>

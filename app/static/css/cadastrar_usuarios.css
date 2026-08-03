@@ -7,10 +7,11 @@
     gap: 20px;
     margin-left: 70px; 
     width: calc(100% - 70px);
-    height: 100vh;           /* Força a altura exata da viewport */
-    padding: 24px;
+    height: 100%;           /* Força a altura exata da viewport */
+    padding: 0px 20px 20px;
     box-sizing: border-box;
     overflow: hidden;        /* Impede que o fundo vaze */
+    
 }
 
 .dashboard-topbar-cadastrar-usuarios {
@@ -23,11 +24,13 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     box-sizing: border-box;
+    height: 70px;
+    
 }
 
 .dashboard-topbar-cadastrar-usuarios h1 {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 600;
     color: #ffffff;
     margin: 0;
 }

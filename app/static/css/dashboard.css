@@ -1,4 +1,74 @@
+/* =========================================
+   ESTRUTURA DA PÁGINA (FIX DE LARGURA)
+========================================= */
+.dashboard-page-home {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 
+    margin-left: 70px;
+
+    width: calc(100% - 70px);
+    height: 100%;
+
+    padding: 12px 24px 24px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+/* Barra Superior */
+.dashboard-topbar-home {
+    width: 100%;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-sizing: border-box;
+    min-height: 80px;
+    height: auto;
+}
+
+.dashboard-topbar-home h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+
+.dashboard-topbar-home p {
+    font-size: 13px;
+    color: #94a3b8;
+    margin: 4px 0 0 0;
+}
+
+/* Área de Conteúdo Principal */
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+
+    background: rgba(255,255,255,0.03);
+
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+
+    padding: 20px;
+
+    width: 100%;
+
+    gap: 16px;
+
+    box-sizing: border-box;
+
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+}
 
 /* =========================================
    BANNER DE BOAS-VINDAS & NOTÍCIAS
@@ -13,16 +83,19 @@
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(37, 99, 235, 0.08));
     border: 1px solid rgba(99, 102, 241, 0.3);
     border-radius: 16px;
-    margin-bottom: 28px;
     backdrop-filter: blur(8px);
-    flex-wrap:wrap;
-    gap:20px;
+    flex-wrap: wrap;
+    gap: 16px;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .welcome-content {
     display: flex;
     align-items: center;
     gap: 16px;
+    flex: 1;
+    min-width: 250px;
 }
 
 .welcome-icon {
@@ -65,6 +138,9 @@
     transition: all 0.2s ease;
     width: 40px;
     height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-close-banner:hover {
@@ -78,6 +154,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    width: 100%;
 }
 
 .section-title {
@@ -94,10 +171,12 @@
     color: #6366f1;
 }
 
+/* Grid Ajustado para não estourar telas pequenas */
 .news-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 16px;
+    width: 100%;
 }
 
 .news-card {
@@ -107,6 +186,7 @@
     padding: 18px;
     position: relative;
     transition: transform 0.2s ease, border-color 0.2s ease;
+    box-sizing: border-box;
 }
 
 .news-card:hover {
@@ -149,54 +229,4 @@
     font-size: 13px;
     color: #94a3b8;
     line-height: 1.5;
-}
-.dashboard-page-home {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    /* COMPENSAÇÃO DA SIDEBAR LATERAL DE 70PX */
-    margin-left: 70px; 
-    width: calc(100% - 70px);
-    min-height: 100vh;
-    padding: 24px;
-    box-sizing: border-box;
-}
-/* Barra Superior */
-.dashboard-topbar-home {
-    width: 100%;
-    padding: 22px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    box-sizing: border-box;
-}
-
-.dashboard-topbar-home h1 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0;
-}
-
-.dashboard-topbar-home p {
-    font-size: 14px;
-    color: #94a3b8;
-    margin: 4px 0 0 0;
-}
-
-/* Área de Conteúdo Principal */
-.dashboard-content {
-    display: flex;
-    flex-direction: column;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    padding: 24px;
-    width: 100%;
-    gap: 24px;
-    box-sizing: border-box;
-    flex: 1;
 }

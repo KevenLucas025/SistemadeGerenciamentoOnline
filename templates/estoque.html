@@ -174,9 +174,12 @@
 
         <!-- COLUNA DIREITA: BARRA DE AÇÕES LATERAIS -->
         <div class="estoque-side-actions">
-            <button class="btn-side-action">
-                <i class="fa-regular fa-circle-plus"></i> Novo Produto
-            </button>
+
+            <a href="{% url 'produtos' %}" class="btn-side-action">
+                <i class="fa-regular fa-circle-plus"></i>
+                Novo Produto
+            </a>
+
             <button class="btn-side-action">
                 <i class="fa-solid fa-rotate"></i> Atualizar saída
             </button>
