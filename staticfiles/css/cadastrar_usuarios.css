@@ -1,0 +1,1178 @@
+/* =====================================================
+   PÁGINA CADASTRAR USUÁRIOS
+===================================================== */
+.dashboard-page-cadastrar-usuarios {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-left: 70px; 
+    width: calc(100% - 70px);
+    height: 100%;           /* Força a altura exata da viewport */
+    padding: 0px 20px 20px;
+    box-sizing: border-box;
+    overflow: hidden;        /* Impede que o fundo vaze */
+    
+}
+
+.dashboard-topbar-cadastrar-usuarios {
+    width: 100%;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-sizing: border-box;
+    height: 60px;
+    
+    
+}
+
+.dashboard-topbar-cadastrar-usuarios h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.dashboard-topbar-cadastrar-usuarios p {
+    font-size: 14px;
+    color: #94a3b8;
+    margin: 4px 0 0 0;
+}
+
+/* =====================================================
+   GRID PRINCIPAL DE 2 COLUNAS
+===================================================== */
+.cadastrar-usuarios-grid-layout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex: 1;                 /* Ocupa todo o espaço vertical disponível abaixo da topbar */
+    min-height: 0;           /* PERMITE que o filho crie scroll interno */
+}
+
+.dashboard-card-cadastrar-usuarios {
+    background: #121824;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 22px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;            /* Ocupa o espaço do grid-layout */
+    overflow-y: auto;        /* ATIVA A ROLAGEM VERTICAL AQUI */
+    display: flex;
+    flex-direction: column;
+}
+
+.cadastrar-usuarios-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.cadastrar-usuarios-header h2 {
+    margin: 0;
+    color: #8b5cf6;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Botões do Topo */
+.cadastrar-usuarios-acoes-topo {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-cadastrar-usuarios {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.btn-cadastrar-usuarios.adicionar { background: #22c55e; }
+.btn-cadastrar-usuarios.editar { background: #3b82f6; }
+.btn-cadastrar-usuarios.atualizar { background: #8b5cf6; }
+.btn-cadastrar-usuarios.sair { background: #f59e0b; }
+.btn-cadastrar-usuarios.apagar { background: #ef4444; }
+
+.btn-cadastrar-usuarios:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+/* =====================================================
+   FORMULÁRIO E CAMPOS
+===================================================== */
+.cadastrar-usuarios-formulario {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 24px;
+    align-items: start;
+}
+
+.coluna-esquerda-formulario-cadastrar-usuarios {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.campo-grupo-duplo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.campo-grupo-triplo {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.campo label {
+    font-size: 13px;
+    color: #e5e7eb;
+    font-weight: 500;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 10px 12px;
+    background: #1b2230;
+    border: 1px solid #313b4e;
+    border-radius: 10px;
+    color: #f8fafc;
+    outline: none;
+    font-size: 13px;
+    box-sizing: border-box;
+    transition: 0.2s;
+}
+
+.campo input:focus,
+.campo select:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.20);
+}
+
+/* =====================================================
+   UPLOAD E PREVIEW DA FOTO
+===================================================== */
+.coluna-direita-formulario-cadastrar-usuarios {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.campo-upload-cadastrar-usuarios label,
+.upload-preview-container-cadastrar-usuarios label {
+    font-size: 13px;
+    color: #e5e7eb;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.upload-box-cadastrar-usuarios {
+    height: 140px;
+    border: 2px dashed rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    background: #171e2b;
+    transition: 0.2s;
+}
+
+.upload-box-cadastrar-usuarios:hover {
+    border-color: #7c3aed;
+    background: #1d2534;
+}
+
+.upload-box-cadastrar-usuarios i { font-size: 32px; color: #9ca3af; }
+.upload-box-cadastrar-usuarios span { color: #cbd5e1; font-size: 12px; text-align: center; padding: 0 10px; }
+
+.upload-botoes-cadastrar-usuarios {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-upload-remover-cadastrar-usuarios,
+.btn-upload-carregar-cadastrar-usuarios {
+    flex: 1;
+    padding: 9px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+}
+
+.btn-upload-remover-cadastrar-usuarios {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.btn-upload-carregar-cadastrar-usuarios {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+}
+
+/* Container de Preview */
+.preview-box-cadastrar-usuarios {
+    width: 100%;
+    height: 380px;
+    min-height: 380px;
+
+    background: #171e2b;
+    border: 1px solid #313b4e;
+    border-radius: 12px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.preview-empty-cadastrar-usuarios {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+}
+
+.preview-empty-cadastrar-usuarios i { font-size: 36px; }
+.preview-empty-cadastrar-usuarios span { font-size: 12px; }
+
+/* Botão Confirmar Principal */
+.btn-confirmar-cadastrar-usuarios {
+    width: 100%;
+    margin-top: 24px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #7c3aed, #6366f1);
+    color: #fff;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.25s;
+    margin-bottom: 12px; /* Espaço extra na parte inferior */
+}
+
+.btn-confirmar-cadastrar-usuarios:hover {
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+    transform: translateY(-1px);
+}
+
+/* Card Lateral */
+.dashboard-card-resumo-cadastrar-usuarios h2 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    color: #fff;
+}
+
+
+
+/* ===========================================
+   MODAL TABELA DE USUÁRIOS
+=========================================== */
+
+
+
+/* =====================================================
+   MODAL — TABELA DE USUÁRIOS
+===================================================== */
+
+#modalTabelaUsuarios {
+    z-index: 99999;
+}
+
+/* Fundo do modal */
+#modalTabelaUsuarios .modal-dialog {
+    max-width: 1200px;
+    width: 95%;
+    height: calc(100vh - 80px); /* Ocupa quase a tela inteira */
+    margin: 40px auto;
+}
+
+/* Conteúdo principal */
+#modalTabelaUsuarios .modal-content {
+    background: #111827 !important;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 16px;
+    overflow: hidden;
+    color: #ffffff;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.55);
+    height: 100%;
+}
+
+/* =====================================================
+   CABEÇALHO
+===================================================== */
+
+#modalTabelaUsuarios .modal-header {
+    background: #161e2b !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 20px 24px !important;
+    color: #ffffff !important;
+}
+
+#modalTabelaUsuarios .modal-header h4,
+#modalTabelaUsuarios .modal-header .modal-title {
+    color: #ffffff !important;
+    margin: 0;
+    font-size: 19px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+#modalTabelaUsuarios .modal-header h4 i,
+#modalTabelaUsuarios .modal-header .modal-title i {
+    color: #8b5cf6;
+}
+
+#modalTabelaUsuarios .modal-header p {
+    margin-top: 4px !important;
+    color: #94a3b8 !important;
+}
+
+/* Botão fechar */
+
+#modalTabelaUsuarios .btn-close {
+    opacity: 1;
+    filter: brightness(0) invert(1);
+    transition: 0.2s ease;
+}
+
+#modalTabelaUsuarios .btn-close:hover {
+    transform: rotate(90deg);
+    opacity: 0.8;
+}
+
+/* =====================================================
+   CORPO
+===================================================== */
+
+#modalTabelaUsuarios .modal-body {
+    background: #111827;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Ocupa todo o espaço vertical livre */
+    min-height: 0; /* Permite scroll interno nos filhos */
+}
+
+/* =====================================================
+   CAMPO DE BUSCA
+===================================================== */
+
+#modalTabelaUsuarios .modal-tabela-usuarios-filtros {
+    width: 100%;
+    margin-bottom: 16px !important;
+}
+
+#modalTabelaUsuarios .modal-busca-usuarios {
+    position: relative;
+    width: 100%;
+}
+
+#modalTabelaUsuarios .modal-busca-usuarios i {
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #94a3b8;
+
+    z-index: 2;
+
+    pointer-events: none;
+}
+
+#modalTabelaUsuarios #buscaModalUsuarios {
+    width: 100%;
+
+    height: 42px;
+
+    padding-left: 40px !important;
+    padding-right: 14px;
+
+    background: #1b2432 !important;
+
+    border: 1px solid #334155 !important;
+    border-radius: 9px !important;
+
+    color: #ffffff !important;
+
+    font-size: 13px;
+}
+
+#modalTabelaUsuarios #buscaModalUsuarios::placeholder {
+    color: #64748b !important;
+}
+
+#modalTabelaUsuarios #buscaModalUsuarios:focus {
+    background: #1b2432 !important;
+    border-color: #7c3aed !important;
+    box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+    outline: none !important;
+}
+
+/* =====================================================
+   TABELA — CONTAINER
+===================================================== */
+
+#modalTabelaUsuarios .table-responsive {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    border: 1px solid #475569;
+    border-radius: 12px;
+    background: #1e293b;
+    scrollbar-width: thin;
+    scrollbar-color: #475569 #18202c;
+}
+
+/* Scrollbar Chrome / Edge */
+
+#modalTabelaUsuarios .table-responsive::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+}
+
+#modalTabelaUsuarios .table-responsive::-webkit-scrollbar-track {
+    background: #18202c;
+}
+
+#modalTabelaUsuarios .table-responsive::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 10px;
+}
+
+#modalTabelaUsuarios .table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* =====================================================
+   TABELA
+===================================================== */
+
+#modalTabelaUsuarios table {
+    width: max-content;
+    min-width: 100%;
+    margin: 0 !important;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: auto;
+    background: #1e293b !important;
+    color: #ffffff !important;
+    --bs-table-bg: #1e293b;
+    --bs-table-color: #ffffff;
+    --bs-table-hover-bg: #273449;
+}
+
+/* =====================================================
+   CABEÇALHO DA TABELA
+===================================================== */
+
+#modalTabelaUsuarios thead {
+    background: #202b3b !important;
+}
+
+#modalTabelaUsuarios thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: 48px;
+    padding: 12px 16px !important;
+    background: #202b3b !important;
+    border-bottom: 1px solid #64748b !important;
+    color: #f8fafc !important;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+#modalTabelaUsuarios tbody td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+#modalTabelaUsuarios thead th:last-child {
+    text-align: center;
+}
+
+/* =====================================================
+   LINHAS
+===================================================== */
+
+#modalTabelaUsuarios tbody tr {
+    background: #1e293b !important;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+
+    cursor: pointer;
+}
+
+#modalTabelaUsuarios tbody tr:hover {
+    background: #273449 !important;
+}
+
+#modalTabelaUsuarios tbody td {
+    padding: 12px 14px !important;
+    background: transparent !important;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.10) !important;
+    color: #e5e7eb !important;
+    font-size: 13px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+#modalTabelaUsuarios tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+
+/* =====================================================
+   AVATAR
+===================================================== */
+
+#modalTabelaUsuarios .avatar-modal {
+    width: 36px !important;
+    height: 36px !important;
+
+    min-width: 36px;
+
+    border-radius: 50% !important;
+
+    background: linear-gradient(
+        135deg,
+        #7c3aed,
+        #4f46e5
+    ) !important;
+
+    color: #ffffff !important;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+#modalTabelaUsuarios .fw-bold {
+    color: #f8fafc !important;
+}
+
+#modalTabelaUsuarios small {
+    color: #64748b !important;
+}
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+#modalTabelaUsuarios .badge {
+    padding: 6px 9px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* =====================================================
+   BOTÕES DE AÇÃO POR USUÁRIO
+===================================================== */
+
+#modalTabelaUsuarios .acoes-usuario-modal {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    min-width: 120px;
+}
+
+/* Botão individual */
+
+#modalTabelaUsuarios .btn-acao-modal {
+    width: 34px !important;
+    height: 34px !important;
+
+    min-width: 34px !important;
+    min-height: 34px !important;
+
+    padding: 0 !important;
+
+    display: inline-flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 1px solid transparent !important;
+
+    border-radius: 7px !important;
+
+    color: #ffffff !important;
+
+    font-size: 13px !important;
+
+    cursor: pointer;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease,
+        background 0.2s ease;
+}
+
+/* Ícone */
+
+#modalTabelaUsuarios .btn-acao-modal i {
+    display: inline-block !important;
+
+    visibility: visible !important;
+
+    color: #ffffff !important;
+
+    font-size: 13px !important;
+}
+
+/* Hover */
+
+#modalTabelaUsuarios .btn-acao-modal:hover {
+    transform: translateY(-2px);
+
+    filter: brightness(1.15);
+}
+
+/* =====================================================
+   CORES DOS BOTÕES
+===================================================== */
+
+/* Visualizar */
+
+#modalTabelaUsuarios .btn-acao-modal.visualizar {
+    background: #0891b2 !important;
+
+    border-color: #06b6d4 !important;
+}
+
+/* Editar */
+
+#modalTabelaUsuarios .btn-acao-modal.editar {
+    background: #2563eb !important;
+
+    border-color: #3b82f6 !important;
+}
+
+/* Excluir */
+
+#modalTabelaUsuarios .btn-acao-modal.excluir {
+    background: #dc2626 !important;
+    border-color: #ef4444 !important;
+}
+
+/* =====================================================
+   LINHA VAZIA
+===================================================== */
+
+#modalTabelaUsuarios tbody tr.linha-vazia,
+#modalTabelaUsuarios tbody tr.linha-vazia:hover,
+#modalTabelaUsuarios tbody tr.linha-vazia td,
+#modalTabelaUsuarios tbody tr.linha-vazia:hover td {
+    cursor: default !important;
+    background-color: transparent !important;
+    background: transparent !important;
+    color: white;
+    --bs-table-hover-bg: transparent !important; /* Zera a variável de hover do Bootstrap */
+    --bs-table-accent-bg: transparent !important;
+}
+#modalTabelaUsuarios .fa-users-slash {
+    color: #64748b;
+}
+
+/* =====================================================
+   RODAPÉ
+===================================================== */
+
+#modalTabelaUsuarios .modal-footer {
+    background: #161e2b !important;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+
+    padding: 14px 24px !important;
+}
+
+#modalTabelaUsuarios .modal-footer small {
+    color: #94a3b8 !important;
+}
+
+#modalTabelaUsuarios .modal-footer strong {
+    color: #ffffff !important;
+}
+/* ===========================================
+   BARRA DE BOTÕES DA TABELA DO MODAL
+=========================================== */
+.acoes-tabela-usuarios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.acoes-tabela-usuarios .btn-cadastrar-usuarios {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    height: 42px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.acoes-tabela-usuarios .btn-cadastrar-usuarios i {
+    font-size: 14px;
+}
+
+.acoes-tabela-usuarios .btn-cadastrar-usuarios:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+/* Cores específicas dos botões */
+.acoes-tabela-usuarios .visualizar { background: #0891b2; }
+.acoes-tabela-usuarios .editar { background: #2563eb; }
+.acoes-tabela-usuarios .atualizar { background: #4f46e5; }
+.acoes-tabela-usuarios .apagar { background: #dc2626; }
+.acoes-tabela-usuarios .filtrar { background: #0f766e; }
+.acoes-tabela-usuarios .ordenar { background: #7c3aed; }
+/* Excel */
+.acoes-tabela-usuarios .gerar-excel { background: #16a34a !important; }
+
+/* =====================================================
+   LINHA VAZIA — NENHUM USUÁRIO
+===================================================== */
+
+#modalTabelaUsuarios tbody tr.linha-vazia {
+    height: 100%;
+    background: transparent !important;
+}
+
+#modalTabelaUsuarios tbody tr.linha-vazia:hover {
+    background: transparent !important;
+}
+
+#modalTabelaUsuarios tbody tr.linha-vazia td {
+    height: 100%;
+    padding: 0 !important;
+    background: transparent !important;
+    border-bottom: none !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    color: #94a3b8 !important;
+}
+
+/* =====================================================
+   MENSAGEM CENTRALIZADA
+===================================================== */
+
+#modalTabelaUsuarios .mensagem-nenhum-usuario {
+    width: 100%;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 30px 20px;
+}
+
+/* Ícone */
+#modalTabelaUsuarios .mensagem-nenhum-usuario i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin-bottom: 6px;
+    border-radius: 50%;
+    background: rgba(100, 116, 139, 0.12);
+    color: #64748b;
+    font-size: 25px;
+}
+
+/* Título */
+#modalTabelaUsuarios .mensagem-nenhum-usuario strong {
+    display: block;
+    color: #e2e8f0 !important;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* Descrição */
+#modalTabelaUsuarios .mensagem-nenhum-usuario span {
+    display: block;
+    max-width: 400px;
+    color: #64748b !important;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* =====================================================
+   IMAGEM DA PRÉ-VISUALIZAÇÃO
+===================================================== */
+
+.preview-box-cadastrar-usuarios #img-preview {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+
+    object-fit: cover;
+    object-position: center;
+
+    border-radius: 10px;
+}
+.campo input.input-erro,
+.campo textarea.input-erro,
+.campo select.input-erro {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.15) !important;
+}
+
+
+/* Container do campo com senha */
+.campo-senha-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Espaçamento para o texto não ficar por cima do olho */
+.campo-senha-container input {
+    padding-right: 40px !important;
+    width: 100%;
+}
+
+  /* Container relativo para que cada olho fique alinhado ao SEU próprio input */
+.campo-senha-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Espaço interno na direita para a senha digitada não ficar em cima do ícone */
+.campo-senha-container input {
+    padding-right: 40px !important;
+    width: 100%;
+}
+
+/* Estilo responsivo do botão de olho */
+.btn-toggle-senha {
+    position: absolute;
+    right: 12px;           /* Fica fixo a 12px da borda direita do input correspondente */
+    top: 50%;              /* Centraliza verticalmente */
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #a0aec0;
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+    z-index: 5;
+}
+
+.btn-toggle-senha:hover {
+    color: #ffffff;
+}
+
+.btn-toggle-senha:focus {
+    outline: none;
+}
+
+
+/* =====================================================
+   MODAL DE CONFIRMAÇÃO — APAGAR USUÁRIO
+===================================================== */
+
+/*
+   Modal da tabela permanece abaixo
+   do modal de confirmação.
+*/
+#modalTabelaUsuarios {
+    z-index: 1050 !important;
+}
+
+
+/*
+   Modal de confirmação fica acima
+   da tabela.
+*/
+#modalApagarUsuario {
+    z-index: 1070 !important;
+}
+
+
+/*
+   Backdrop criado pelo Bootstrap para
+   o modal da tabela.
+*/
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+
+
+/*
+   Quando o modal de confirmação estiver aberto,
+   o segundo backdrop precisa ficar entre
+   a tabela e o modal de confirmação.
+*/
+.modal-backdrop + .modal-backdrop {
+    z-index: 1060 !important;
+}
+
+
+/*
+   Garante que o conteúdo do modal de confirmação
+   fique acima do próprio backdrop.
+*/
+#modalApagarUsuario .modal-dialog {
+    position: relative;
+    z-index: 1071;
+}
+
+
+/*
+   Conteúdo do modal.
+*/
+#modalApagarUsuario .modal-content {
+    position: relative;
+    z-index: 1072;
+}
+
+.backdrop-confirmacao {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 1060;
+    pointer-events: auto;
+}
+#modalFiltrarUsuarios .modal-header h5{
+    color: #fff;
+
+}
+#modalFiltrarUsuarios .modal-content.modal-logout-content {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+/* Garante que o modal de ordenação fique visível acima de outros modais e do backdrop */
+#modalOrdenarUsuarios {
+    z-index: 1080 !important;
+    
+}
+
+#modalOrdenarUsuarios h5 {
+    color: #fff;
+    
+}
+#modalOrdenarUsuarios .modal-content.modal-logout-content{
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#modalOrdenarUsuarios .modal-dialog {
+    position: relative;
+    z-index: 1081;
+}
+#tipoOrdenacaoUsuario {
+    /* 1. Remove a seta nativa do navegador (responsável pelo fundo branco/azul) */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /* 2. Mantém as cores do tema escuro */
+    background-color: #1b2230 !important;
+    color: #f8fafc !important;
+    border: 1px solid #313b4e !important;
+    border-radius: 10px;
+    padding: 10px 40px 10px 12px; /* Garante espaço para a nova seta na direita */
+
+    /* 3. Adiciona uma nova seta personalizada em formato SVG SVG escuro/claro */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 16px !important;
+
+    cursor: pointer;
+    outline: none !important;
+}
+/* Remove a borda azul e o destaque quando clica ou passa o mouse */
+#tipoOrdenacaoUsuario:focus,
+#tipoOrdenacaoUsuario:hover,
+#tipoOrdenacaoUsuario:active {
+    border-color: #7c3aed !important; /* Cor roxa do seu tema ao focar */
+    box-shadow: none !important;
+    outline: none !important;
+    background-color: transparent !important;
+}
+/* Estiliza as opções dentro do dropdown */
+#tipoOrdenacaoUsuario option {
+    background-color: #1b2230;
+    color: #f8fafc;
+}
+
+#tipoFiltro{
+    /* 1. Remove a seta nativa do navegador (responsável pelo fundo branco/azul) */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /* 2. Mantém as cores do tema escuro */
+    background-color: #1b2230 !important;
+    color: #f8fafc !important;
+    border: 1px solid #313b4e !important;
+    border-radius: 10px;
+    padding: 10px 40px 10px 12px; /* Garante espaço para a nova seta na direita */
+
+    /* 3. Adiciona uma nova seta personalizada em formato SVG SVG escuro/claro */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 16px !important;
+
+    cursor: pointer;
+    outline: none !important;
+}
+/* Remove a borda azul e o destaque quando clica ou passa o mouse */
+#tipoFiltro:focus,
+#tipoFiltro:hover,
+#tipoFiltro:active {
+    border-color: #7c3aed !important; /* Cor roxa do seu tema ao focar */
+    box-shadow: none !important;
+    outline: none !important;
+    background-color: transparent !important;
+}
+/* Estiliza as opções dentro do dropdown */
+/* Estiliza as opções dentro do dropdown */
+#tipoFiltro option {
+    background-color: #1b2230;
+    color: #f8fafc;
+}
+/* =====================================================
+   MODAL DE VISUALIZAR IMAGEM DO USUÁRIO
+===================================================== */
+#modalVisualizarImagemUsuario .modal-body {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente */
+    min-height: 300px;
+    padding: 24px;
+}
+#modalVisualizarImagemUsuario h5 {
+    color: #fff;
+}
+/* Define que o modal de imagem fique com z-index superior à tabela (que é 1050) */
+#modalVisualizarImagemUsuario {
+    z-index: 1080 !important;
+}
+
+/* Garante que o diálogo e conteúdo do modal fiquem visíveis à frente do backdrop */
+#modalVisualizarImagemUsuario .modal-dialog {
+    position: relative;
+    z-index: 1082 !important;
+}
+
+#modalVisualizarImagemUsuario .modal-content {
+    position: relative;
+    z-index: 1083 !important;
+}
+#mensagemSemImagemUsuario i {
+    color: #fff; /* Cor do ícone (exemplo em roxo do seu tema) */
+    margin-bottom: 16px !important;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+/* Estilização do texto da mensagem */
+#mensagemSemImagemUsuario p {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+}
+/* Estilo do elemento da imagem */
+#imagemUsuarioModal {
+    max-width: 100%;
+    max-height: 450px;       /* Limita a altura para não quebrar a tela */
+    width: auto;
+    height: auto;
+    object-fit: contain;     /* Mantém as proporções da foto sem distorcer */
+    margin: 0 auto;          /* Garante a centralização */
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Sombra suave para destacar a foto */
+}

@@ -3,6 +3,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/usuarios.css' %}">
+<script src="{% static 'js/usuarios.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -23,7 +24,7 @@
     <div class="dashboard-topbar-verificar-usuarios">
         <div>
             <h1>Usuários</h1>
-             <p>Gerencie usuários, permissões de acesso e acompanhe os usuários ativos e inativos do sistema.</p>
+            <p>Gerencie usuários, permissões de acesso e acompanhe os usuários ativos e inativos do sistema.</p>
         </div>
     </div>
 
@@ -50,15 +51,13 @@
                     </div>
                 </div>
 
-                <!-- TABELA 1 USUÁRIOS ATIVOS -->
+                <!-- TABELA 1: USUÁRIOS ATIVOS -->
                 <div class="verificar-usuarios-table-container">
                     <table class="verificar-usuarios-table">
                         <thead>
                             <tr>
                                 <th>NOME</th>
                                 <th>USUÁRIO</th>
-                                <th>SENHA</th>
-                                <th>CONFIRMAR SENHA</th>
                                 <th>CEP</th>
                                 <th>ENDEREÇO</th>
                                 <th>NÚMERO</th>
@@ -80,58 +79,50 @@
                                 <th>ACESSO</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tbodyUsuariosAtivos">
                             {% if usuarios %}
                                 {% for usuario in usuarios %}
                                 <tr>
-                                    <td>{{ usuario.first_name }}</td>
+                                    <td><strong>{{ usuario.get_full_name|default:usuario.username }}</strong></td>
                                     <td>{{ usuario.username }}</td>
-                                    <td>{{ usuario.perfil.senha_visivel }}</td>
-                                    <td>{{ usuario.perfil.senha_visivel }}</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>{{ usuario.email }}</td>
-                                    <td>-</td>  <!-- Data de Nascimento -->
-                                    <td>-</td> <!-- RG -->
-                                    <td>-</td> <!-- CPF -->
-                                    <td>-</td> <!-- CNPJ -->
-                                    <td> <!-- ÚLTIMA TROCA DE SENHA -->
-                                        {% if usuario.last_login %}
-                                            {{ usuario.last_login|date:"d/m/Y H:i" }}
-                                        {% else %}
-                                            Nunca
-                                        {% endif %}
-                                    </td> 
-                                    <td>{{ usuario.date_joined|date:"d/m/Y H:i" }}</td> <!-- DATA DA SENHA CADASTRADA -->
-                                    <td>-</td>
+                                    <td>{{ usuario.perfil.cep|default:"Não informado" }}</td>
+                                    <td>{{ usuario.perfil.endereco|default:"Não informado" }}</td>
+                                    <td>{{ usuario.perfil.numero|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.cidade|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.bairro|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.estado|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.complemento|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.telefone|default:"—" }}</td>
+                                    <td>{{ usuario.email|default:"Não informado" }}</td>
+                                    <td>{% if usuario.perfil.data_nascimento %}{{ usuario.perfil.data_nascimento|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+                                    <td>{{ usuario.perfil.rg|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.cpf|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.cnpj|default:"—" }}</td>
+                                    <td>{% if usuario.perfil.ultima_troca_senha %}{{ usuario.perfil.ultima_troca_senha|date:"d/m/Y H:i" }}{% else %}Nunca alterada{% endif %}</td>
+                                    <td>{% if usuario.perfil.data_senha_cadastrada %}{{ usuario.perfil.data_senha_cadastrada|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                                    <td>{% if usuario.date_joined %}{{ usuario.date_joined|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                                    <td>{{ usuario.perfil.segredo|default:"—" }}</td>
                                     <td>
-                                        {% if usuario == request.user %}
-                                            Sim
+                                        {% if usuario.id == usuario_atual_id %}
+                                            <span class="status-badge logado">{{ request.user.username }}</span>
                                         {% else %}
-                                            Não
+                                            <span class="texto-sem-dado">{{ request.user.username }}</span>
                                         {% endif %}
                                     </td>
                                     <td>
-                                        {% if usuario.is_superuser %}
+                                        {% if usuario.perfil.acesso %}
+                                            {{ usuario.perfil.acesso }}
+                                        {% elif usuario.is_superuser %}
                                             Administrador
-                                        {% elif usuario.is_staff %}
-                                            Staff
                                         {% else %}
-                                            Usuário
+                                            Usuário Comum
                                         {% endif %}
                                     </td>
-
                                 </tr>
                                 {% endfor %}
                             {% else %}
                                 <tr>
-                                    <td colspan="23" class="sem-registros-verificar-usuarios">
+                                    <td colspan="21" class="sem-registros-verificar-usuarios">
                                         <div class="sem-registros-content">
                                             <i class="fa-solid fa-users-slash"></i>
                                             <p>Nenhum usuário ativo encontrado.</p>
@@ -152,15 +143,13 @@
                     </div>
                 </div>
 
-                <!-- TABELA 2 -->
+                <!-- TABELA 2: USUÁRIOS INATIVOS -->
                 <div class="verificar-usuarios-table-container">
                     <table class="verificar-usuarios-table">
                         <thead>
                             <tr>
                                 <th>NOME</th>
                                 <th>USUÁRIO</th>
-                                <th>SENHA</th>
-                                <th>CONFIRMAR SENHA</th>
                                 <th>CEP</th>
                                 <th>ENDEREÇO</th>
                                 <th>NÚMERO</th>
@@ -177,64 +166,55 @@
                                 <th>ÚLTIMA TROCA DE SENHA</th>
                                 <th>DATA DA SENHA CADASTRADA</th>
                                 <th>DATA DA INCLUSÃO DO USUÁRIO</th>
-                                <th>DATA DA INATIVIDADE DO USUÁRIO</th>
                                 <th>SEGREDO</th>
                                 <th>USUÁRIO LOGADO</th>
                                 <th>ACESSO</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tbodyUsuariosInativos">
                             {% if usuarios_inativos %}
-                                {% for usuario in usuarios_inativos  %}
-                                   <tr>
-                                    <td>{{ usuario.first_name }}</td>
+                                {% for usuario in usuarios_inativos %}
+                                <tr>
+                                    <td><strong>{{ usuario.get_full_name|default:usuario.username }}</strong></td>
                                     <td>{{ usuario.username }}</td>
-                                    <td>********</td>
-                                    <td>********</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>{{ usuario.email }}</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>
-                                        {% if usuario.last_login %}
-                                            {{ usuario.last_login|date:"d/m/Y H:i" }}
-                                        {% else %}
-                                            Nunca
-                                        {% endif %}
-                                    </td>
-                                    <td>{{ usuario.date_joined|date:"d/m/Y H:i" }}</td>
-                                    <td>-</td>
+                                    <td>{{ usuario.perfil.cep|default:"Não informado" }}</td>
+                                    <td>{{ usuario.perfil.endereco|default:"Não informado" }}</td>
+                                    <td>{{ usuario.perfil.numero|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.cidade|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.bairro|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.estado|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.complemento|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.telefone|default:"—" }}</td>
+                                    <td>{{ usuario.email|default:"Não informado" }}</td>
+                                    <td>{% if usuario.perfil.data_nascimento %}{{ usuario.perfil.data_nascimento|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+                                    <td>{{ usuario.perfil.rg|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.cpf|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.cnpj|default:"—" }}</td>
+                                    <td>{% if usuario.perfil.ultima_troca_senha %}{{ usuario.perfil.ultima_troca_senha|date:"d/m/Y H:i" }}{% else %}Nunca alterada{% endif %}</td>
+                                    <td>{% if usuario.perfil.data_senha_cadastrada %}{{ usuario.perfil.data_senha_cadastrada|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                                    <td>{% if usuario.date_joined %}{{ usuario.date_joined|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                                    <td>{{ usuario.perfil.segredo|default:"—" }}</td>
                                     <td>
                                         {% if usuario == request.user %}
-                                            Sim
+                                            <span class="status-badge logado">Sim</span>
                                         {% else %}
-                                            Não
+                                            <span class="texto-sem-dado">Não</span>
                                         {% endif %}
                                     </td>
                                     <td>
-                                        {% if usuario.is_superuser %}
+                                        {% if usuario.perfil.acesso %}
+                                            {{ usuario.perfil.acesso }}
+                                        {% elif usuario.is_superuser %}
                                             Administrador
-                                        {% elif usuario.is_staff %}
-                                            Staff
                                         {% else %}
-                                            Usuário
+                                            Usuário Comum
                                         {% endif %}
                                     </td>
-
                                 </tr>
                                 {% endfor %}
                             {% else %}
                                 <tr>
-                                    <td colspan="23" class="sem-registros-verificar-usuarios">
+                                    <td colspan="21" class="sem-registros-verificar-usuarios">
                                         <div class="sem-registros-content">
                                             <i class="fa-solid fa-users-slash"></i>
                                             <p>Nenhum usuário inativo encontrado.</p>
@@ -251,13 +231,13 @@
 
         <!-- COLUNA DIREITA: BARRA DE AÇÕES LATERAIS -->
         <div class="verificar-usuarios-side-actions">
-            <button class="btn-side-action">
+            <a href="{% url 'cadastrar_usuarios' %}" class="btn-side-action" style="text-decoration: none;">
                 <i class="fa-regular fa-circle-plus"></i> Novo Usuário
-            </button>
-            <button class="btn-side-action">
+            </a>
+            <button type="button" class="btn-side-action" id="btnAtualizarAtivos">
                 <i class="fa-solid fa-rotate"></i> Atualizar Ativos
             </button>
-            <button class="btn-side-action">
+            <button type="button" class="btn-side-action" id="btnAtualizarInativos">
                 <i class="fa-solid fa-rotate"></i> Atualizar Inativos
             </button>
             <button class="btn-side-action">
@@ -269,10 +249,10 @@
             <button class="btn-side-action">
                 <i class="fa-regular fa-trash-can"></i> Limpar Tabelas
             </button>
-            
         </div>
 
     </div>
 </div>
+
 
 {% endblock %}

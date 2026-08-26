@@ -9,31 +9,32 @@ PÁGINA CLIENTES
     /* COMPENSAÇÃO DA SIDEBAR LATERAL DE 70PX */
     margin-left: 70px; 
     width: calc(100% - 70px);
-    min-height: 100vh;
-    padding: 24px;
+    height: 100%;
+    padding: 0px 20px 20px;
     box-sizing: border-box;
+
 }
 
 /*=====================================================
 TOPBAR
 =====================================================*/
-
 .dashboard-topbar-clientes{
     width:100%;
-    padding:20px 24px;
+    padding:10px;
     display:flex;
     align-items:center;
     justify-content:space-between;
     background:rgba(255,255,255,.05);
     border:1px solid rgba(255,255,255,.08);
     border-radius:16px;
+    height: 60px;
 }
 
 .dashboard-topbar-clientes h1{
     margin:0;
     color:#fff;
-    font-size:26px;
-    font-weight:700;
+    font-size:20px;
+    font-weight:600;
 }
 
 .dashboard-topbar-clientes p{
@@ -194,7 +195,6 @@ TABELA
     padding:14px 12px;
     color:#dbe3ef;
     font-size:13px;
-    border-bottom:1px solid rgba(255,255,255,.05);
     white-space:nowrap;
 }
 
@@ -202,9 +202,7 @@ TABELA
     transition:.2s;
 }
 
-.clientes-table tbody tr:hover{
-    background:rgba(124,58,237,.08);
-}
+
 
 .clientes-table td:first-child,
 .clientes-table th:first-child{
@@ -341,27 +339,48 @@ SEM REGISTROS
     padding:0px !important;
 }
 
+.sem-registros-clientes td {
+    vertical-align: middle;
+    /* Faz a td ocupar a altura total disponível no container da tabela */
+    height: 100%; 
+}
+
 .sem-registros-content{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     /* Reduzido de 280px para 120px (ajuste o padding vertical conforme preferir) */
-    min-height: 120px; 
+    min-height: calc(100vh - 390px);
     padding: 20px 0;
     
     color: #9ca3af;
     text-align: center;
+    
 }
 
 .sem-registros-content i{
     font-size: 32px; /* Reduzido de 48px para não ocupar muito espaço vertical */
-    margin-bottom: 8px; /* Espaçamento menor entre o ícone e o texto */
+    margin-bottom: 10px; /* Espaçamento menor entre o ícone e o texto */
     color: #6b7280;
+    
 }
 .sem-registros-content p{
-   margin: 0;
+    margin: 0;
     font-size: 14px;
+}
+/* Desativa hover e fundo da linha sem registros */
+.clientes-table tbody tr.sem-registros-clientes,
+.clientes-table tbody tr.sem-registros-clientes:hover,
+.clientes-table tbody tr.sem-registros-clientes td,
+.clientes-table tbody tr.sem-registros-clientes:hover td {
+    cursor: default !important;
+    background-color: transparent !important;
+    background: transparent !important;
+    border-bottom: none !important;
+    color: white;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-accent-bg: transparent !important;
 }
 
 /*=====================================================
@@ -463,4 +482,898 @@ BOTÃO DA TAB ATIVA
     background:#7c3aed;
     color:#fff;
     box-shadow:0 6px 18px rgba(124,58,237,.30);
+}
+
+/* =====================================================
+   MODAL — EDITAR CADASTRO CLIENTE
+===================================================== */
+#modalEditarCadastroCliente .modal-dialog {
+    max-width: 900px;
+    width: 95%;
+}
+
+#modalEditarCadastroCliente .modal-content {
+    background: #111827;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+
+#modalEditarCadastroCliente .modal-header {
+    background: #161e2b;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 22px;
+}
+
+#modalEditarCadastroCliente .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#modalEditarCadastroCliente .modal-title i {
+    color: #8b5cf6;
+}
+
+
+#modalEditarCadastroCliente .modal-body {
+    background: #111827;
+    padding: 24px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+
+#modalEditarCadastroCliente .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#modalEditarCadastroCliente .campo label {
+    color: #e5e7eb;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+#modalEditarCadastroCliente .campo input,
+#modalEditarCadastroCliente .campo select {
+    width: 100%;
+    height: 40px;
+
+    padding: 8px 11px;
+
+    box-sizing: border-box;
+
+    background: #1b2432;
+    border: 1px solid #334155;
+    border-radius: 8px;
+
+    color: #fff;
+
+    outline: none;
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+#modalEditarCadastroCliente .campo input::placeholder {
+    color: #64748b;
+}
+
+#modalEditarCadastroCliente .campo input:focus,
+#modalEditarCadastroCliente .campo select:focus {
+    border-color: #7c3aed;
+
+    box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+#modalEditarCadastroCliente .campo-grande {
+    grid-column: span 2;
+}
+
+
+
+#modalEditarCadastroCliente .modal-footer {
+    background: #161e2b;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    padding: 14px 22px;
+}
+
+
+/* =====================================================
+   MODAL — CADASTRO DE CLIENTE
+===================================================== */
+#modalCadastrarCliente .modal-dialog {
+    max-width: 900px;
+    width: 95%;
+}
+
+#modalCadastrarCliente .modal-content {
+    background: #111827;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+#modalCadastrarCliente .modal-header {
+    background: #161e2b;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 22px;
+}
+
+#modalCadastrarCliente .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#modalCadastrarCliente .modal-title i {
+    color: #8b5cf6;
+}
+
+
+#modalCadastrarCliente .modal-body {
+    background: #111827;
+    padding: 24px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+
+.secao-modal-cliente {
+    margin-bottom: 25px;
+}
+
+.secao-modal-cliente:last-child {
+    margin-bottom: 0;
+}
+
+.secao-modal-cliente h6 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 0 0 15px;
+
+    color: #8b5cf6;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.secao-modal-cliente h6 i {
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   GRID DOS CAMPOS
+===================================================== */
+
+.campos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+
+/* =====================================================
+   CAMPOS
+===================================================== */
+
+#modalCadastrarCliente .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#modalCadastrarCliente .campo label {
+    color: #e5e7eb;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+#modalCadastrarCliente .campo input,
+#modalCadastrarCliente .campo select {
+    width: 100%;
+    height: 40px;
+    padding: 8px 11px;
+    box-sizing: border-box;
+    background: #1b2432;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: #fff;
+    outline: none;
+    font-size: 13px;
+    transition: 0.2s ease;
+}
+
+#modalCadastrarCliente .campo input::placeholder {
+    color: #64748b;
+}
+
+#modalCadastrarCliente .campo input:focus,
+#modalCadastrarCliente .campo select:focus {
+    border-color: #7c3aed;
+
+    box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+
+#modalCadastrarCliente .campo-grande {
+    grid-column: span 2;
+}
+
+
+
+
+#modalCadastrarCliente .modal-footer {
+    background: #161e2b;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    padding: 14px 22px;
+}
+
+.campo input.input-erro,
+.campo input.input-erro:focus,
+.campo textarea.input-erro,
+.campo textarea.input-erro:focus,
+.campo select.input-erro,
+.campo select.input-erro:focus{
+    border-color:#dc3545 !important;
+    box-shadow:0 0 0 4px rgba(220,53,69,.15) !important;
+}
+/* =====================================================
+   HOVER E SELEÇÃO DAS LINHAS (BEM MAIS CLARO)
+===================================================== */
+
+/* 1. Transição */
+.clientes-table tbody tr.linha-cliente {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* 2. HOVER NA LINHA COMUM (Bem mais visível e claro) */
+.clientes-table tbody tr.linha-cliente:hover td {
+    background-color: #3f4b5d    !important; /* Tom cinza-azulado bem iluminado */
+    color: #ffffff !important;
+}
+
+/* 3. LINHA SELECIONADA */
+.clientes-table tbody tr.linha-cliente.linha-selecionada td {
+    background-color: #3b4758  !important; 
+    color: #ffffff !important;
+}
+
+/* 4. HOVER NA LINHA SELECIONADA */
+.clientes-table tbody tr.linha-cliente.linha-selecionada:hover td {
+    background-color: #344052   !important; /* Azul ainda mais claro ao passar o mouse */
+    color: #ffffff !important;
+}
+
+/* Container que alinha o texto da label e o botão lado a lado */
+.label-categoria {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin-bottom: 6px !important;
+}
+
+.label-categoria label {
+    margin-bottom: 0 !important;
+    cursor: pointer;
+}
+
+/* Botão Redondo com ? (Classe corrigida para .btn-info-ajuda) */
+.btn-info-ajuda {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    max-width: 18px !important;
+    max-height: 18px !important;
+    border-radius: 50% !important;
+    background-color: #0d6efd !important; /* Azul padrão */
+    color: #ffffff !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    font-family: inherit !important;
+    border: none !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+    vertical-align: middle !important;
+    box-shadow: none !important;
+    transition: background-color 0.2s ease, transform 0.1s ease !important;
+}
+
+.btn-info-ajuda:hover {
+    background-color: #0b5ed7 !important;
+    transform: scale(1.1);
+}
+
+.btn-info-ajuda:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.4) !important;
+}
+
+.modal-header-clientes-excluir{
+    color: black;
+}
+
+#modalExcluirCliente .modal-content.modal-cliente-content{
+    background-color: #1f2937 !important;
+}
+.modal-header-clientes-excluir{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #374151;
+    color: white;
+}
+.aviso-excluir-cliente {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    color: #991b1b;
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    line-height: 1.4;
+} 
+
+
+/* Container dos botões no rodapé do modal de exclusão */
+.modal-footer-botoes-clientes-excluir {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 24px 24px;
+    border-top: none;
+}
+
+/* Botão Confirmar Exclusão (Vermelho) */
+.modal-footer-botoes-clientes-excluir .btn-danger {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 10px 20px !important;
+    font-size: 0.92rem !important;
+    font-weight: 500 !important;
+    color: #ffffff !important;
+    background-color: #dc2626 !important;
+    border: 1px solid #dc2626 !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+}
+
+.modal-footer-botoes-clientes-excluir .btn-danger:hover {
+    background-color: #b91c1c !important;
+    border-color: #b91c1c !important;
+    box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.25);
+    transform: translateY(-1px);
+}
+
+.modal-footer-botoes-clientes-excluir .btn-danger:active {
+    background-color: #991b1b !important;
+    border-color: #991b1b !important;
+    transform: translateY(0);
+}
+
+/* Botão Cancelar (Cinza) */
+.modal-footer-botoes-clientes-excluir .btn-secondary {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 10px 20px !important;
+    font-size: 0.92rem !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    background-color: #f3f4f6 !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.modal-footer-botoes-clientes-excluir .btn-secondary:hover {
+    color: #111827 !important;
+    background-color: #e5e7eb !important;
+    border-color: #d1d5db !important;
+    transform: translateY(-1px);
+}
+
+.modal-footer-botoes-clientes-excluir .btn-secondary:active {
+    transform: translateY(0);
+}
+.aviso-confirmacao{
+    color: #fff
+}
+
+/* =====================================================
+   ESTILO DO MODAL DE RELATÓRIO
+===================================================== */
+.modal-relatorio-content {
+    background-color: #1e1e24;
+    color: #e5e5e5;
+    border: 1px solid #3a3a45;
+    border-radius: 8px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+.modal-header-relatorios{
+    background-color: #1f2937 !important;
+}
+
+.modal-footer-botoes-relatorios{
+    border-top: 1px solid #3a3a45;
+    background-color: #1f2937;
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px 24px;
+    border-top: none;
+}
+
+
+.modal-relatorio-content .modal-body {
+    overflow-y: auto;
+    max-height: calc(90vh - 140px);
+    padding: 16px 20px;
+    background-color: #1f2937 !important;
+}
+
+/* Molduras / Fieldsets */
+.grupo-relatorio {
+    border: 1px solid #555562;
+    border-radius: 6px;
+    padding: 14px 18px 18px 18px;
+    position: relative;
+}
+
+.legenda-relatorio {
+    float: none;
+    width: auto;
+    padding: 0 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #d1d1d6;
+    margin-bottom: 0;
+}
+
+/* Filtros Grid */
+.filtros-relatorio-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.campo-relatorio {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    align-items: center;
+    gap: 12px;
+}
+
+.campo-relatorio label {
+    font-size: 13px;
+    color: #c5c5cb;
+    margin-bottom: 0;
+}
+
+.campo-relatorio select,
+.campo-relatorio input {
+    background-color: #121216;
+    border: 1px solid #6b6b78;
+    color: #ffffff;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 13px;
+    outline: none;
+    width: 100%;
+}
+
+.campo-relatorio select:focus,
+.campo-relatorio input:focus {
+    border-color: #0d6efd;
+}
+
+/* Checkboxes */
+.destacar-todos {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #3a3a45;
+    margin-bottom: 12px;
+}
+
+.checkboxes-relatorio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px 14px;
+}
+
+.item-checkbox-relatorio label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #dddddf;
+    cursor: pointer;
+    margin-bottom: 0;
+    user-select: none;
+}
+
+.item-checkbox-relatorio input[type="checkbox"] {
+    accent-color: #0d6efd;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.btn-relatorio-pdf,
+.btn-relatorio-excel,
+.btn-relatorio-cancelar {
+    border: 1px solid #4a4a56 !important;
+    color: #fff !important;
+    font-size: 13px;
+    padding: 7px 16px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+.btn-relatorio-pdf{
+    background-color: #dc3545 !important; /* Substitua pelo código da cor que preferir, ex: red, #e63946, #c0392b */
+    border-color: #dc3545 !important;
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+.btn-relatorio-excel{
+    background-color: #107c41 !important; /* Verde oficial do Excel */
+    border-color: #107c41 !important;
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+.btn-relatorio-pdf:hover {
+    background-color: #bb2d3b !important; /* Cor ligeiramente mais escura no hover */
+    border-color: #b02a37 !important;
+    color: #ffffff !important;
+}
+
+/* Estado de Foco/Clique */
+.btn-relatorio-pdf:focus {
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.4) !important;
+}
+
+.btn-relatorio-excel:hover {
+    background-color: #0c5c30 !important; /* Verde mais escuro no hover */
+    border-color: #0a4f29 !important;
+    color: #ffffff !important;
+}
+/* Efeito de foco/clique */
+.btn-relatorio-excel:focus {
+    box-shadow: 0 0 0 3px rgba(16, 124, 65, 0.4) !important;
+}
+
+.btn-relatorio-cancelar:hover {
+    background-color: #495057 !important;
+    color: #fff !important;
+}
+
+/* =====================================================
+   MODAL DE CONFIRMAÇÃO DE SENHA (DADOS SENSÍVEIS)
+===================================================== */
+
+/* Força a largura na caixa de diálogo do modal */
+#modalConfirmarSenhaDadosSensiveis .modal-dialog {
+    max-width: 440px !important; /* Ajuste para o tamanho desejado (ex: 420px, 460px) */
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+/* Força a altura mínima no conteúdo */
+#modalConfirmarSenhaDadosSensiveis .modal-content {
+    min-height: 340px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+
+.modal-dados-sensiveis-content {
+    background-color: #1f2937 !important;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* =====================================================
+   CABEÇALHO E ÍCONE DO TOPO
+===================================================== */
+.modal-dados-sensiveis-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 15px;
+    border: none;
+    border-bottom: 1px solid #374151;
+}
+
+.modal-dados-sensiveis-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    font-size: 21px;
+}
+
+.btn-fechar-dados-sensiveis {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.btn-fechar-dados-sensiveis:hover {
+    color: #f9fafb;
+}
+
+/* =====================================================
+   CORPO
+===================================================== */
+/* Controla a largura total da janela do modal */
+.modal-dialog-dados-sensiveis {
+    max-width: 800px; /* Ajuste o valor da largura (ex: 400px, 450px, 480px) */
+    width: 100%;
+}
+
+/* Controla a altura mínima e o layout interno */
+.modal-dados-sensiveis-content {
+    min-height: 320px; /* Use min-height para evitar que o conteúdo estoure se faltar espaço */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.modal-dados-sensiveis-body {
+    padding: 24px 24px 20px;
+}
+
+.modal-dados-sensiveis-body h4 {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-dados-sensiveis-body p {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.campo-senha-sensivel label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #e5e7eb;
+    text-align: center;
+}
+
+.input-senha-sensivel {
+    width: 100%;
+    padding: 9px 12px;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    color: #f9fafb;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-senha-sensivel:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+/* =====================================================
+   RODAPÉ
+===================================================== */
+.modal-dados-sensiveis-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 18px 24px;
+    border-top: 1px solid #374151;
+}
+
+/* =====================================================
+   BOTÕES
+===================================================== */
+.btn-cancelar-sensivel,
+.btn-confirmar-sensivel {
+    min-width: 110px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* CANCELAR */
+.btn-cancelar-sensivel {
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #e5e7eb;
+}
+
+.btn-cancelar-sensivel:hover {
+    background: #4b5563;
+}
+
+/* CONFIRMAR (COM ÍCONE) */
+.btn-confirmar-sensivel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #0284c7;
+    border: 1px solid #0284c7;
+    color: #ffffff;
+}
+
+.btn-confirmar-sensivel i {
+    font-size: 14px;
+}
+
+.btn-confirmar-sensivel:hover {
+    background: #0369a1;
+    border-color: #0369a1;
+}
+.btn-fechar-dados-sensiveis {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Reseta estilos do Bootstrap */
+    background: rgba(255, 255, 255, 0.1) !important; 
+    border: none !important;
+    background-image: none !important; /* Remove o X nativo do Bootstrap */
+    opacity: 1 !important;
+    padding: 0 !important;
+    
+    border-radius: 50% !important;
+    color: #ffffff !important;
+    font-size: 18px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* HOVER (Fica vermelho ao passar o mouse) */
+.btn-fechar-dados-sensiveis:hover {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    transform: scale(1.1);
+}
+
+/* FOCO */
+.btn-fechar-dados-sensiveis:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* =====================================================
+   BADGES DE STATUS DO CLIENTE
+===================================================== */
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+}
+
+/* ATIVO: Fundo verde translúcido + texto verde */
+.badge-status.ativo {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* INATIVO: Fundo vermelho translúcido + texto vermelho */
+.badge-status.inativo {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* BLOQUEADO: Fundo laranja translúcido + texto laranja */
+.badge-status.bloqueado {
+    background: rgba(249, 115, 22, 0.15);
+    color: #fb923c !important;
+    border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+/* Cores dinâmicas para o select de status */
+select.status-select-ativo {
+    background-color: rgba(34, 197, 94, 0.15) !important;
+    color: #4ade80 !important;
+    border-color: #22c55e !important;
+}
+
+select.status-select-inativo {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    color: #f87171 !important;
+    border-color: #ef4444 !important;
+}
+
+select.status-select-bloqueado {
+    background-color: rgba(249, 115, 22, 0.15) !important;
+    color: #fb923c !important;
+    border-color: #f97316 !important;
+}
+
+/* MODAL RELATÓRIO CLIENTES */
+#modalRelatorioCliente .modal-title{
+    color: #fff;
+    text-align: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 600;
+}
+#modalRelatorioCliente .modal-title i {
+    color: #8b5cf6;
+}
+
+#modalRelatorioCliente .modal-header-relatorios{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #374151;
 }

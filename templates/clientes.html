@@ -3,6 +3,8 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/clientes.css' %}">
+<script src="{% static 'js/formatadores.js' %}"></script>
+<script src="{% static 'js/clientes.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -28,10 +30,10 @@
         <div class="clientes-header">
             
             <div class="clientes-tabs">
-                <button class="btn-tab-cliente ativo">
+                <button class="btn-tab-cliente ativo" id="btnClientesJuridicos">
                     <i class="fa-solid fa-building"></i> Clientes Jurídicos
                 </button>
-                <button class="btn-tab-cliente">
+                <button class="btn-tab-cliente" id="btnClientesFisicos">
                     <i class="fa-solid fa-user"></i> Clientes Físicos
                 </button>
             </div>
@@ -42,7 +44,7 @@
                     <input type="text" placeholder="Pesquisar cliente...">
                 </div>
 
-                <button class="btn-cliente criar">
+                <button class="btn-cliente criar" id="btnAbrirCadastroCliente">
                     <i class="fa-solid fa-plus"></i> Criar Cliente
                 </button>
                 <button class="btn-cliente editar">
@@ -63,134 +65,874 @@
             </div>
         </div>
 
-        <!-- TABELA -->
+        <!-- TABELA JURÍDICO -->
         <div id="juridicos" class="clientes-pagina ativa">
-        <div class="clientes-table-container">
-            <table class="clientes-table">
-                <thead>
-                    <tr>
-                        <th>Nome do Cliente</th>
-                        <th>Razão Social</th>
-                        <th>Data da Inclusão</th>
-                        <th>CNPJ</th>
-                        <th>RG</th>
-                        <th>CPF</th>
-                        <th>E-mail</th>
-                        <th>CNH</th>
-                        <th>Categoria da CNH</th>
-                        <th>Data da Emissão da CNH</th>
-                        <th>Data de Vencimento da CNH</th>
-                        <th>Telefone</th>
-                        <th>CEP</th>
-                        <th>Endereço</th>
-                        <th>Número</th>
-                        <th>Complemento</th>
-                        <th>Cidade</th>
-                        <th>Bairro</th>
-                        <th>Número</th>
-                        <th>Estado</th>
-                        <th>Status do Cliente</th>
-                        <th>Categoria do Cliente</th>
-                        <th>Última Atualização</th>
-                        <th>Valor Gasto Total</th>
-                        <th>Última Compra</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if clientes %}
-                        {% for cliente in clientes %}
+            <div class="clientes-table-container">
+                <table class="clientes-table">
+                    <thead>
                         <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ cliente.nome }}</td>
-                            <td>{{ cliente.razao_social }}</td>
-                            <td>{{ cliente.data_inclusao }}</td>
-                            <td>{{ cliente.cnpj }}</td>
-                            <td>{{ cliente.rg }}</td>
-                            <td>{{ cliente.cpf }}</td>
-                            <td>{{ cliente.email }}</td>
-                            <td>{{ cliente.cnh }}</td>
-                            <td>{{ cliente.categoria_cnh }}</td>
-                            <td>{{ cliente.emissao_cnh }}</td>
-                            <td>{{ cliente.vencimento_cnh }}</td>
-                            <td>{{ cliente.telefone }}</td>
-                            <td>{{ cliente.cep }}</td>
-                            <td>{{ cliente.cidade }}</td>
-                            <td>{{ cliente.estado }}</td>
-                            <td>{{ cliente.endereco }}</td>
-                            <td>{{ cliente.numero }}</td>
-                            <td>{{ cliente.complemento }}</td>
-                            <td>{{ cliente.bairro }}</td>
-                            <td>{{ cliente.status }}</td>
-                            <td>{{ cliente.categoria }}</td>
-                            <td>{{ cliente.ultima_atualizacao }}</td>
-                            <td>{{ cliente.valor_gasto }}</td>
-                            <td>{{ cliente.ultima_compra }}</td>
-                            <td>
-                                <button class="btn-acao editar"><i class="fa-solid fa-pen"></i></button>
-                                <button class="btn-acao excluir"><i class="fa-solid fa-trash"></i></button>
-                            </td>
+                            <th>Nome do Cliente</th>
+                            <th>Razão Social</th>
+                            <th>Data da Inclusão</th>
+                            <th>CNPJ</th>
+                            <th>RG</th>
+                            <th>CPF</th>
+                            <th>E-mail</th>
+                            <th>CNH</th>
+                            <th>Categoria da CNH</th>
+                            <th>Data da Emissão da CNH</th>
+                            <th>Data de Vencimento da CNH</th>
+                            <th>Telefone</th>
+                            <th>CEP</th>
+                            <th>Endereço</th>
+                            <th>Número</th>
+                            <th>Complemento</th>
+                            <th>Cidade</th>
+                            <th>Bairro</th>
+                            <th>Estado</th>
+                            <th>Status do Cliente</th>
+                            <th>Categoria do Cliente</th>
+                            <th>Última Atualização</th>
+                            <th>Valor Gasto Total</th>
+                            <th>Modo Valor Gasto</th>
+                            <th>Última Compra</th>
                         </tr>
-                        {% endfor %}
-                    {% else %}
+                    </thead>
+                    <tbody>
+                        {% if clientes_juridicos %}
+                            {% for cliente in clientes_juridicos %}
+                            <tr class="linha-cliente"
+                                data-id="{{ cliente.id }}"
+                                data-tipo="{{ cliente.tipo_cliente }}"
+                                data-nome="{{ cliente.nome }}"
+                                data-razao="{{ cliente.razao_social|default:'' }}"
+                                data-cnpj="{{ cliente.cnpj|default:'' }}"
+                                data-rg="{{ cliente.rg|default:'' }}"
+                                data-cpf="{{ cliente.cpf|default:'' }}"
+                                data-email="{{ cliente.email|default:'' }}"
+                                data-telefone="{{ cliente.telefone|default:'' }}"
+                                data-cnh="{{ cliente.cnh|default:'' }}"
+                                data-categoria-cnh="{{ cliente.categoria_cnh|default:'' }}"
+                                data-emissao-cnh="{{ cliente.emissao_cnh|date:'Y-m-d'|default:'' }}"
+                                data-vencimento-cnh="{{ cliente.vencimento_cnh|date:'Y-m-d'|default:'' }}"
+                                data-cep="{{ cliente.cep|default:'' }}"
+                                data-estado="{{ cliente.estado|default:'' }}"
+                                data-endereco="{{ cliente.endereco|default:'' }}"
+                                data-numero="{{ cliente.numero|default:'' }}"
+                                data-complemento="{{ cliente.complemento|default:'' }}"
+                                data-cidade="{{ cliente.cidade|default:'' }}"
+                                data-bairro="{{ cliente.bairro|default:'' }}"
+                                data-status="{{ cliente.status|default:'ativo' }}"
+                                data-categoria="{{ cliente.categoria|default:'' }}"
+                                data-modo-valor-gasto="{{ cliente.modo_valor_gasto|default:'' }}"
+                                data-valor-gasto="{{ cliente.valor_gasto|default:'0.00' }}"
+                                data-ultima-atualizacao="{{ cliente.ultima_atualizacao|date:'d/m/Y H:i'|default:'-' }}"
+                                data-ultima-compra="{{ cliente.ultima_compra|date:'d/m/Y H:i'|default:'-' }}">
+
+                                <td>{{ cliente.nome }}</td>
+                                <td>{{ cliente.razao_social|default:"-" }}</td>
+                                <td>{{ cliente.data_inclusao|date:"d/m/Y H:i" }}</td>
+                                <td>{{ cliente.cnpj|default:"-" }}</td>
+                                <td>{{ cliente.rg|default:"-" }}</td>
+                                <td>{{ cliente.cpf|default:"-" }}</td>
+                                <td>{{ cliente.email|default:"-" }}</td>
+                                <td>{{ cliente.cnh|default:"-" }}</td>
+                                <td>{{ cliente.categoria_cnh|default:"-" }}</td>
+                                <td>{{ cliente.emissao_cnh|date:"d/m/Y"|default:"-" }}</td>
+                                <td>{{ cliente.vencimento_cnh|date:"d/m/Y"|default:"-" }}</td>
+                                <td>{{ cliente.telefone|default:"-" }}</td>
+                                <td>{{ cliente.cep|default:"-" }}</td>
+                                <td>{{ cliente.endereco|default:"-" }}</td>
+                                <td>{{ cliente.numero|default:"-" }}</td>
+                                <td>{{ cliente.complemento|default:"-" }}</td>
+                                <td>{{ cliente.cidade|default:"-" }}</td>
+                                <td>{{ cliente.bairro|default:"-" }}</td>
+                                <td>{{ cliente.estado|default:"-" }}</td>
+                                <td>
+                                    <span class="badge-status {{ cliente.status|lower }}">
+                                        {{ cliente.status|title }}
+                                    </span>
+                                </td>
+                                <td>{{ cliente.categoria|default:"-" }}</td>
+                                <td>{{ cliente.ultima_atualizacao|date:"d/m/Y H:i" }}</td>
+                                <td class="col-valor-gasto">{{ cliente.valor_gasto }}</td>
+                                <td>{{ cliente.modo_valor_gasto }}</td>
+                                <td>{% if cliente.ultima_compra %}{{ cliente.ultima_compra|date:"d/m/Y H:i" }}{% else %}-{% endif %}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="25" class="sem-registros-clientes">
+                                    <div class="sem-registros-content">
+                                        <i class="fa-solid fa-users-slash"></i>
+                                        <p>Nenhum cliente cadastrado.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TABELA FÍSICO -->
+        <div id="fisicos" class="clientes-pagina">
+            <div class="clientes-table-container">
+                <table class="clientes-table">
+                    <thead>
                         <tr>
-                            <td colspan="25" class="sem-registros-clientes">
-                                <div class="sem-registros-content">
-                                    <i class="fa-solid fa-users-slash"></i>
-                                    <p>Nenhum cliente cadastrado.</p>
-                                </div>
-                            </td>
+                            <th>Nome</th>
+                            <th>RG</th>
+                            <th>CPF</th>
+                            <th>E-mail</th>
+                            <th>CNH</th>
+                            <th>Categoria CNH</th>
+                            <th>Data Emissão</th>
+                            <th>Data Vencimento</th>
+                            <th>Telefone</th>
+                            <th>CEP</th>
+                            <th>Endereço</th>
+                            <th>Número</th>
+                            <th>Complemento</th>
+                            <th>Cidade</th>
+                            <th>Bairro</th>
+                            <th>Estado</th>
+                            <th>Status</th>
+                            <th>Categoria</th>
+                            <th>Última Atualização</th>
+                            <th>Valor Gasto Total</th>
+                            <th>Modo Valor Gasto</th>
+                            <th>Última Compra</th>
                         </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% if clientes_fisicos %}
+                            {% for cliente in clientes_fisicos %}
+                            <tr class="linha-cliente"
+                                data-id="{{ cliente.id }}"
+                                data-tipo="{{ cliente.tipo_cliente }}"
+                                data-nome="{{ cliente.nome }}"
+                                data-rg="{{ cliente.rg|default:'' }}"
+                                data-cpf="{{ cliente.cpf|default:'' }}"
+                                data-email="{{ cliente.email|default:'' }}"
+                                data-telefone="{{ cliente.telefone|default:'' }}"
+                                data-cnh="{{ cliente.cnh|default:'' }}"
+                                data-categoria-cnh="{{ cliente.categoria_cnh|default:'' }}"
+                                data-emissao-cnh="{{ cliente.emissao_cnh|date:'Y-m-d'|default:'' }}"
+                                data-vencimento-cnh="{{ cliente.vencimento_cnh|date:'Y-m-d'|default:'' }}"
+                                data-cep="{{ cliente.cep|default:'' }}"
+                                data-estado="{{ cliente.estado|default:'' }}"
+                                data-endereco="{{ cliente.endereco|default:'' }}"
+                                data-numero="{{ cliente.numero|default:'' }}"
+                                data-complemento="{{ cliente.complemento|default:'' }}"
+                                data-cidade="{{ cliente.cidade|default:'' }}"
+                                data-bairro="{{ cliente.bairro|default:'' }}"
+                                data-status="{{ cliente.status|default:'ativo' }}"
+                                data-categoria="{{ cliente.categoria|default:'' }}"
+                                data-modo-valor-gasto="{{ cliente.modo_valor_gasto|default:'' }}"
+                                data-valor-gasto="{{ cliente.valor_gasto|default:'0.00' }}"
+                                data-ultima-atualizacao="{{ cliente.ultima_atualizacao|date:'d/m/Y H:i'|default:'-' }}"
+                                data-ultima-compra="{{ cliente.ultima_compra|date:'d/m/Y H:i'|default:'-' }}">
+
+                                <td>{{ cliente.nome }}</td>
+                                <td>{{ cliente.rg|default:"-" }}</td>
+                                <td>{{ cliente.cpf|default:"-" }}</td>
+                                <td>{{ cliente.email|default:"-" }}</td>
+                                <td>{{ cliente.cnh|default:"-" }}</td>
+                                <td>{{ cliente.categoria_cnh|default:"-" }}</td>
+                                <td>{{ cliente.emissao_cnh|date:"d/m/Y"|default:"-" }}</td>
+                                <td>{{ cliente.vencimento_cnh|date:"d/m/Y"|default:"-" }}</td>
+                                <td>{{ cliente.telefone|default:"-" }}</td>
+                                <td>{{ cliente.cep|default:"-" }}</td>
+                                <td>{{ cliente.endereco|default:"-" }}</td>
+                                <td>{{ cliente.numero|default:"-" }}</td>
+                                <td>{{ cliente.complemento|default:"-" }}</td>
+                                <td>{{ cliente.cidade|default:"-" }}</td>
+                                <td>{{ cliente.bairro|default:"-" }}</td>
+                                <td>{{ cliente.estado|default:"-" }}</td>
+                                <td>{{ cliente.status }}</td>
+                                <td>{{ cliente.categoria|default:"-" }}</td>
+                                <td>{{ cliente.ultima_atualizacao|date:"d/m/Y H:i" }}</td>
+                                <td class="col-valor-gasto">{{ cliente.valor_gasto }}</td>
+                                <td>{{ cliente.modo_valor_gasto }}</td>
+                                <td>{% if cliente.ultima_compra %}{{ cliente.ultima_compra|date:"d/m/Y H:i" }}{% else %}-{% endif %}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="22" class="sem-registros-clientes">
+                                    <div class="sem-registros-content">
+                                        <i class="fa-solid fa-user-slash"></i>
+                                        <p>Nenhum cliente físico cadastrado.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+</div>
 
-    <div id="fisicos" class="clientes-pagina">
-    <div class="clientes-table-container">
-        <table class="clientes-table">
-            <thead>
-                <tr>
+<!-- =====================================================
+     MODAL 1: EDITAR CLIENTE
+===================================================== -->
+<div class="modal fade" id="modalEditarCadastroCliente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content modal-cliente-content">
+            <!-- CABEÇALHO -->
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fa-solid fa-user-pen"></i>
+                    <span id="tituloModalEditarCliente">Editar Cliente</span>
+                </h5>
+                <button type="button" class="btn-modal-fechar" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
-                    <th>Nome</th>
-                    <th>RG</th>
-                    <th>CPF</th>
-                    <th>E-mail</th>
-                    <th>CNH</th>
-                    <th>Categoria CNH</th>
-                    <th>Data Emissão</th>
-                    <th>Data Vencimento</th>
-                    <th>Telefone</th>
-                    <th>CEP</th>
-                    <th>Endereço</th>
-                    <th>Número</th>
-                    <th>Complemento</th>
-                    <th>Cidade</th>
-                    <th>Bairro</th>
-                    <th>Estado</th>
-                    <th>Status</th>
-                    <th>Categoria</th>
-                    <th>Última Atualização</th>
-                    <th>Valor Gasto</th>
-                    <th>Última Compra</th>
+            <!-- CORPO -->
+            <div class="modal-body">
+                <form id="formEditarCliente" novalidate>
+                    <input type="hidden" id="editarClienteId" name="cliente_id" value="">
+                    <input type="hidden" id="editarTipoCliente" name="tipo_cliente" value="juridico">
 
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="21" class="sem-registros-clientes">
-                        <div class="sem-registros-content">
-                            <i class="fa-solid fa-user-slash"></i>
-                            <p>Nenhum cliente físico cadastrado.</p>
+                    <!-- DADOS PRINCIPAIS -->
+                    <div class="secao-modal-cliente">
+                        <h6><i class="fa-solid fa-user"></i> Dados do Cliente</h6>
+                        <div class="campos-grid">
+                            <div class="campo">
+                                <label for="editarClienteNome">Nome</label>
+                                <input type="text" id="editarClienteNome" name="nome" placeholder="Nome do cliente">
+                            </div>
+                            <div class="campo campo-juridico-editar">
+                                <label for="editarClienteRazaoSocial">Razão Social</label>
+                                <input type="text" id="editarClienteRazaoSocial" name="razao_social" placeholder="Razão social">
+                            </div>
+                            <div class="campo campo-juridico-editar">
+                                <label for="editarClienteCnpj">CNPJ</label>
+                                <input type="text" id="editarClienteCnpj" name="cnpj" placeholder="00.000.000/0000-00">
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteRg">RG</label>
+                                <input type="text" id="editarClienteRg" name="rg" placeholder="RG">
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteCpf">CPF</label>
+                                <input type="text" id="editarClienteCpf" name="cpf" placeholder="000.000.000-00">
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteEmail">E-mail</label>
+                                <input type="email" id="editarClienteEmail" name="email" placeholder="cliente@email.com">
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteTelefone">Telefone / WhatsApp</label>
+                                <input type="text" id="editarClienteTelefone" name="telefone" placeholder="(00) 00000-0000">
+                            </div>
                         </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+
+                    <!-- CNH -->
+                    <div class="secao-modal-cliente">
+                        <h6><i class="fa-solid fa-id-card"></i> Dados da CNH</h6>
+                        <div class="campos-grid">
+                            <div class="campo">
+                                <label for="editarClienteCnh">CNH</label>
+                                <input type="text" id="editarClienteCnh" name="cnh" placeholder="Número da CNH">
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteCategoriaCnh">Categoria da CNH</label>
+                                <select id="editarClienteCategoriaCnh" name="categoria_cnh">
+                                    <option value="">Selecione</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="AC">AC</option>
+                                    <option value="AD">AD</option>
+                                    <option value="AE">AE</option>
+                                </select>
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteEmissaoCnh">Data de Emissão</label>
+                                <input type="date" id="editarClienteEmissaoCnh" name="emissao_cnh">
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteVencimentoCnh">Data de Vencimento</label>
+                                <input type="date" id="editarClienteVencimentoCnh" name="vencimento_cnh">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ENDEREÇO -->
+                    <div class="secao-modal-cliente">
+                        <h6><i class="fa-solid fa-location-dot"></i> Endereço</h6>
+                        <div class="campos-grid">
+                            <div class="campo">
+                                <label for="editarClienteCep">CEP</label>
+                                <input type="text" id="editarClienteCep" name="cep" placeholder="00000-000">
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteEstado">Estado *</label>
+                                <select id="editarClienteEstado" name="estado">
+                                    <option value="">Selecione</option>
+                                    <option value="AC">Acre</option>
+                                    <option value="AL">Alagoas</option>
+                                    <option value="AP">Amapá</option>
+                                    <option value="AM">Amazonas</option>
+                                    <option value="BA">Bahia</option>
+                                    <option value="CE">Ceará</option>
+                                    <option value="DF">Distrito Federal</option>
+                                    <option value="ES">Espírito Santo</option>
+                                    <option value="GO">Goiás</option>
+                                    <option value="MA">Maranhão</option>
+                                    <option value="MT">Mato Grosso</option>
+                                    <option value="MS">Mato Grosso do Sul</option>
+                                    <option value="MG">Minas Gerais</option>
+                                    <option value="PA">Pará</option>
+                                    <option value="PB">Paraíba</option>
+                                    <option value="PR">Paraná</option>
+                                    <option value="PE">Pernambuco</option>
+                                    <option value="PI">Piauí</option>
+                                    <option value="RJ">Rio de Janeiro</option>
+                                    <option value="RN">Rio Grande do Norte</option>
+                                    <option value="RS">Rio Grande do Sul</option>
+                                    <option value="RO">Rondônia</option>
+                                    <option value="RR">Roraima</option>
+                                    <option value="SC">Santa Catarina</option>
+                                    <option value="SP">São Paulo</option>
+                                    <option value="SE">Sergipe</option>
+                                    <option value="TO">Tocantins</option>
+                                </select>
+                            </div>
+                            <div class="campo campo-grande">
+                                <label for="editarClienteEndereco">Endereço</label>
+                                <input type="text" id="editarClienteEndereco" name="endereco" placeholder="Rua, Avenida, etc.">
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteNumero">Número</label>
+                                <input type="text" id="editarClienteNumero" name="numero" placeholder="Número">
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteComplemento">Complemento</label>
+                                <input type="text" id="editarClienteComplemento" name="complemento" placeholder="Apartamento, sala, etc.">
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteCidade">Cidade</label>
+                                <input type="text" id="editarClienteCidade" name="cidade" placeholder="Cidade">
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteBairro">Bairro</label>
+                                <input type="text" id="editarClienteBairro" name="bairro" placeholder="Bairro">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INFORMAÇÕES E HISTÓRICO FINANCEIRO (EXCLUSIVO EDIÇÃO) -->
+                    <div class="secao-modal-cliente">
+                        <h6><i class="fa-solid fa-circle-info"></i> Informações e Histórico</h6>
+                        <div class="campos-grid">
+                            <div class="campo">
+                                <label for="editarClienteStatus">Status</label>
+                                <select id="editarClienteStatus" name="status">
+                                    <option value="ativo">Ativo</option>
+                                    <option value="inativo">Inativo</option>
+                                    <option value="bloqueado">Bloqueado</option>
+                                </select>
+                            </div>
+                            <div class="campo">
+                                <label for="editarClienteCategoria">Categoria do Cliente</label>
+                                <select id="editarClienteCategoria" name="categoria">
+                                    <option value="">Selecione</option>
+                                    <option value="Tecnologia">Tecnologia</option>
+                                    <option value="Comércio em Geral">Comércio em Geral</option>
+                                    <option value="Varejo">Varejo</option>
+                                </select>
+                            </div>
+
+                            <!-- MODO VALOR GASTO -->
+                            <div class="campo">
+                                <label for="editarClienteModoValorGasto">Modo Valor Gasto</label>
+                                <select id="editarClienteModoValorGasto" name="modo_valor_gasto">
+                                    <option value="" selected>Selecione</option>
+                                    <option value="Automático (somar produtos)">Automático (somar produtos)</option>
+                                    <option value="Manual (valor fixo)">Manual (valor fixo)</option>
+                                </select>
+                            </div>
+
+                            <!-- VALOR GASTO TOTAL -->
+                            <div class="campo">
+                                <label for="editarClienteValorGasto">Valor Gasto Total</label>
+                                <input type="text" id="editarClienteValorGasto" name="valor_gasto">
+                            </div>
+
+                            <!-- ÚLTIMA ATUALIZAÇÃO -->
+                            <div class="campo">
+                                <label for="editarClienteUltimaAtualizacao">Última Atualização</label>
+                                <input type="text" id="editarClienteUltimaAtualizacao" name="ultima_atualizacao" readonly>
+                            </div>
+
+                            <!-- ÚLTIMA COMPRA -->
+                            <div class="campo">
+                                <label for="editarClienteUltimaCompra">Última Compra</label>
+                                <input type="text" id="editarClienteUltimaCompra" name="ultima_compra" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- RODAPÉ -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnAtualizarCliente" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i> Atualizar Cliente
+                </button>
+            </div>
+        </div>
     </div>
 </div>
-</div> 
-</div> 
+
+<!-- =====================================================
+     MODAL 2: CADASTRAR CLIENTE
+===================================================== -->
+<div class="modal fade" id="modalCadastrarCliente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content modal-cliente-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span id="tituloModalCliente">Cadastrar Cliente Jurídico</span>
+                </h5>
+                <button type="button" class="btn-modal-fechar" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="formCadastrarCliente" novalidate>
+                    <input type="hidden" id="tipoCliente" name="tipo_cliente" value="juridico">
+
+                    <div class="secao-modal-cliente">
+                        <h6><i class="fa-solid fa-user"></i> Dados do Cliente</h6>
+                        <div class="campos-grid">
+                            <div class="campo">
+                                <label for="clienteNome">Nome *</label>
+                                <input type="text" id="clienteNome" name="nome" placeholder="Nome do cliente">
+                            </div>
+                            <div class="campo campo-juridico">
+                                <label for="clienteRazaoSocial">Razão Social *</label>
+                                <input type="text" id="clienteRazaoSocial" name="razao_social" placeholder="Razão social">
+                            </div>
+                            <div class="campo campo-juridico">
+                                <label for="clienteCnpj">CNPJ *</label>
+                                <input type="text" id="clienteCnpj" name="cnpj" placeholder="00.000.000/0000-00">
+                            </div>
+                            <div class="campo">
+                                <label for="clienteRg">RG *</label>
+                                <input type="text" id="clienteRg" name="rg" placeholder="RG">
+                            </div>
+                            <div class="campo">
+                                <label for="clienteCpf">CPF *</label>
+                                <input type="text" id="clienteCpf" name="cpf" placeholder="000.000.000-00">
+                            </div>
+                            <div class="campo">
+                                <label for="clienteEmail">E-mail *</label>
+                                <input type="email" id="clienteEmail" name="email" placeholder="cliente@email.com">
+                            </div>
+                            <div class="campo">
+                                <label for="clienteTelefone">Telefone / WhatsApp *</label>
+                                <input type="text" id="clienteTelefone" name="telefone" placeholder="(00) 00000-0000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="secao-modal-cliente">
+                        <h6><i class="fa-solid fa-id-card"></i> Dados da CNH</h6>
+                        <div class="campos-grid">
+                            <div class="campo">
+                                <label for="clienteCnh">CNH</label>
+                                <input type="text" id="clienteCnh" name="cnh" placeholder="Número da CNH">
+                            </div>
+                            <div class="campo">
+                                <label for="clienteCategoriaCnh">Categoria da CNH</label>
+                                <select id="clienteCategoriaCnh" name="categoria_cnh">
+                                    <option value="">Selecione</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="AC">AC</option>
+                                    <option value="AD">AD</option>
+                                    <option value="AE">AE</option>
+                                </select>
+                            </div>
+                            <div class="campo">
+                                <label for="clienteEmissaoCnh">Data de Emissão</label>
+                                <input type="date" id="clienteEmissaoCnh" name="emissao_cnh">
+                            </div>
+                            <div class="campo">
+                                <label for="clienteVencimentoCnh">Data de Vencimento</label>
+                                <input type="date" id="clienteVencimentoCnh" name="vencimento_cnh">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="secao-modal-cliente">
+                        <h6><i class="fa-solid fa-location-dot"></i> Endereço</h6>
+                        <div class="campos-grid">
+                            <div class="campo">
+                                <label for="clienteCep">CEP *</label>
+                                <input type="text" id="clienteCep" name="cep" placeholder="00000-000">
+                            </div>
+                            <div class="campo">
+                                <label for="clienteEstado">Estado *</label>
+                                <select id="clienteEstado" name="estado">
+                                    <option value="">Selecione</option>
+                                    <option value="AC">Acre</option>
+                                    <option value="AL">Alagoas</option>
+                                    <option value="AP">Amapá</option>
+                                    <option value="AM">Amazonas</option>
+                                    <option value="BA">Bahia</option>
+                                    <option value="CE">Ceará</option>
+                                    <option value="DF">Distrito Federal</option>
+                                    <option value="ES">Espírito Santo</option>
+                                    <option value="GO">Goiás</option>
+                                    <option value="MA">Maranhão</option>
+                                    <option value="MT">Mato Grosso</option>
+                                    <option value="MS">Mato Grosso do Sul</option>
+                                    <option value="MG">Minas Gerais</option>
+                                    <option value="PA">Pará</option>
+                                    <option value="PB">Paraíba</option>
+                                    <option value="PR">Paraná</option>
+                                    <option value="PE">Pernambuco</option>
+                                    <option value="PI">Piauí</option>
+                                    <option value="RJ">Rio de Janeiro</option>
+                                    <option value="RN">Rio Grande do Norte</option>
+                                    <option value="RS">Rio Grande do Sul</option>
+                                    <option value="RO">Rondônia</option>
+                                    <option value="RR">Roraima</option>
+                                    <option value="SC">Santa Catarina</option>
+                                    <option value="SP">São Paulo</option>
+                                    <option value="SE">Sergipe</option>
+                                    <option value="TO">Tocantins</option>
+                                </select>
+                            </div>
+                            <div class="campo campo-grande">
+                                <label for="clienteEndereco">Endereço *</label>
+                                <input type="text" id="clienteEndereco" name="endereco" placeholder="Rua, Avenida, etc.">
+                            </div>
+                            <div class="campo">
+                                <label for="clienteNumero">Número *</label>
+                                <input type="text" id="clienteNumero" name="numero" placeholder="Número">
+                            </div>
+                            <div class="campo">
+                                <label for="clienteComplemento">Complemento</label>
+                                <input type="text" id="clienteComplemento" name="complemento" placeholder="Apartamento, sala, etc.">
+                            </div>
+                            <div class="campo">
+                                <label for="clienteCidade">Cidade *</label>
+                                <input type="text" id="clienteCidade" name="cidade" placeholder="Cidade">
+                            </div>
+                            <div class="campo">
+                                <label for="clienteBairro">Bairro *</label>
+                                <input type="text" id="clienteBairro" name="bairro" placeholder="Bairro">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="secao-modal-cliente">
+                        <h6><i class="fa-solid fa-circle-info"></i> Informações</h6>
+                        <div class="campos-grid">
+                            <div class="campo">
+                                <label for="clienteStatus">Status *</label>
+                                <select id="clienteStatus" name="status">
+                                    <option value="ativo">Ativo</option>
+                                    <option value="inativo">Inativo</option>
+                                    <option value="bloqueado">Bloqueado</option>
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <div class="label-categoria">
+                                    <label for="clienteCategoria">Categoria do Cliente *</label>
+                                    <button type="button" 
+                                            class="btn-info-ajuda" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-placement="top" 
+                                            data-bs-trigger="focus" 
+                                            data-bs-title="Informação"
+                                            data-bs-content="Caso não encontre a categoria desejada, entre em contato com o setor de T.I para solicitar o cadastro.">
+                                        ?
+                                    </button>
+                                </div>
+                                <select id="clienteCategoria" name="categoria">
+                                    <option value="">Selecione</option>
+                                    <option value="Tecnologia">Tecnologia</option>
+                                    <option value="Comércio em Geral">Comércio em Geral</option>
+                                    <option value="Varejo">Varejo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnCadastrarCliente" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i> Cadastrar Cliente
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL — CONFIRMAÇÃO DE EXCLUSÃO DE CLIENTE
+===================================================== -->
+<div class="modal fade" id="modalExcluirCliente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-cliente-content">
+            <div class="modal-header-clientes-excluir">
+                <h5 class="modal-title">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-modal-fechar text-white" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body text-center py-4">
+                <i class="fa-solid fa-trash-can fa-3x text-danger mb-3"></i>
+                <p class="aviso-confirmacao">Deseja realmente excluir o cliente?</p>
+                <p class="fw-bold text-primary fs-5" id="nomeClienteParaExcluir">-</p>
+                <small class="aviso-excluir-cliente">Esta ação é irreversível e removerá todos os dados associados a este cliente.</small>
+            </div>
+
+            <div class="modal-footer-botoes-clientes-excluir">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" id="btnConfirmarExcluirCliente" class="btn btn-danger">
+                    <i class="fa-solid fa-trash"></i> Sim, Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL — GERAR RELATÓRIO DE CLIENTES
+===================================================== -->
+<div class="modal fade" id="modalRelatorioCliente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content modal-relatorio-content">
+            <div class="modal-header-relatorios">
+                <h5 class="modal-title">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span id="tituloModalRelatorio">Relatório de Clientes Jurídicos</span>
+                </h5>
+                <button type="button" class="btn-modal-fechar" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="formRelatorioCliente">
+                    <fieldset class="grupo-relatorio">
+                        <legend class="legenda-relatorio">Filtros do Relatório</legend>
+                        <div class="filtros-relatorio-grid">
+                            <div class="campo-relatorio">
+                                <label for="relatorioStatus">Status do Cliente:</label>
+                                <select id="relatorioStatus" name="status">
+                                    <option value="">Todos</option>
+                                    <option value="ativo">Ativo</option>
+                                    <option value="inativo">Inativo</option>
+                                    <option value="bloqueado">Bloqueado</option>
+                                </select>
+                            </div>
+
+                            <div class="campo-relatorio">
+                                <label for="relatorioCategoria">Categoria do Cliente:</label>
+                                <select id="relatorioCategoria" name="categoria">
+                                    <option value="">Todos</option>
+                                    <option value="cliente">Tecnologia</option>
+                                    <option value="vip">Comércio em Geral</option>
+                                    <option value="corporativo">Varejo</option>
+                                </select>
+                            </div>
+
+                            <div class="campo-relatorio">
+                                <label for="relatorioDataDe">Última Compra - De:</label>
+                                <input type="date" id="relatorioDataDe" name="data_de">
+                            </div>
+
+                            <div class="campo-relatorio">
+                                <label for="relatorioDataAte">Última Compra - Até:</label>
+                                <input type="date" id="relatorioDataAte" name="data_ate">
+                            </div>
+
+                            <div class="campo-relatorio">
+                                <label for="relatorioOrigem">Origem do Cliente:</label>
+                                <select id="relatorioOrigem" name="origem">
+                                    <option value="">Todos</option>
+                                    <option value="sistema">Sistema</option>
+                                    <option value="manual">Manual</option>
+                                    <option value="importacao">Importação</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="grupo-relatorio mt-3">
+                        <legend class="legenda-relatorio">Informações a Incluir no Relatório</legend>
+                        
+                        <div class="item-checkbox-relatorio destacar-todos">
+                            <label>
+                                <input type="checkbox" id="checkSelecionarTodosRelatorio" checked>
+                                <span>Selecionar Todos</span>
+                            </label>
+                        </div>
+
+                        <div class="checkboxes-relatorio-grid" id="containerCheckboxesRelatorio">
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="nome" checked> Nome</label>
+                            </div>
+                            <div class="item-checkbox-relatorio check-col-juridico">
+                                <label><input type="checkbox" name="colunas" value="razao_social" checked> Razão Social</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="data_inclusao" checked> Data da Inclusão</label>
+                            </div>
+                            <div class="item-checkbox-relatorio check-col-juridico">
+                                <label><input type="checkbox" name="colunas" value="cnpj" checked> CNPJ</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="rg" checked> RG</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="cpf" checked> CPF</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="email" checked> E-mail</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="telefone" checked> Contato / WhatsApp</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="cnh" checked> CNH</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="categoria_cnh" checked> Categoria CNH</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="emissao_cnh" checked> Emissão CNH</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="vencimento_cnh" checked> Vencimento CNH</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="cep" checked> CEP</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="endereco" checked> Endereço</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="numero" checked> Número</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="complemento" checked> Complemento</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="cidade" checked> Cidade</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="bairro" checked> Bairro</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="estado" checked> Estado</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="status" checked> Status</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="categoria" checked> Categoria</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="ultima_atualizacao" checked> Última Atualização</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="origem" checked> Origem</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="valor_gasto" checked> Valor Gasto Total</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="modo_valor_gasto" checked> Modo Valor Gasto</label>
+                            </div>
+                            <div class="item-checkbox-relatorio">
+                                <label><input type="checkbox" name="colunas" value="ultima_compra" checked> Última Compra</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="modal-footer-botoes-relatorios">
+                <button type="button" id="btnGerarPdfRelatorio" class="btn btn-relatorio-pdf">
+                    <i class="fa-solid fa-file-pdf"></i> Gerar Relatório em PDF
+                </button>
+                <button type="button" id="btnGerarExcelRelatorio" class="btn btn-relatorio-excel">
+                    <i class="fa-solid fa-file-excel"></i> Gerar Relatório em Excel
+                </button>
+                <button type="button" class="btn btn-relatorio-cancelar" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CONFIRMAÇÃO DE SENHA PARA DADOS SENSÍVEIS -->
+<div class="modal fade" id="modalConfirmarSenhaDadosSensiveis" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content modal-dados-sensiveis-content">
+            <div class="modal-dados-sensiveis-header">
+                <div class="modal-dados-sensiveis-icon">
+                    <i class="fa-solid fa-shield-alt"></i>
+                </div>
+                <button type="button" class="btn-fechar-dados-sensiveis" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-dados-sensiveis-body text-center">
+                <h4>Atenção</h4>
+                <p>
+                    Campos de dados sensíveis foram alterados. Digite sua senha para prosseguir.
+                </p>
+
+                <div class="campo-senha-sensivel mt-3 text-start">
+                    <label for="senhaConfirmacaoSensivel">Senha do usuário logado</label>
+                    <input type="password" id="senhaConfirmacaoSensivel" class="input-senha-sensivel" placeholder="••••••••" autocomplete="new-password">
+                </div>
+            </div>
+
+            <div class="modal-dados-sensiveis-footer">
+                <button type="button" class="btn-cancelar-sensivel" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnConfirmarAlteracaoSensivel" class="btn-confirmar-sensivel">
+                    <i class="fa-solid fa-shield-halved"></i> Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}

@@ -1,54 +1,122 @@
 {% load static %}
 
 <div class="topbar">
-
     <div class="topbar-left">
         <!-- Espaço para título ou breadcrumb futuramente -->
     </div>
-
+    
     <div class="topbar-right">
+        <!-- CONTAINER DE NOTIFICAÇÕES -->
+        <div class="notificacoes-container">
+            <button id="botaoNotificacoes" class="notificacoes-botao" type="button" aria-label="Notificações">
+                <i class="fa-solid fa-bell"></i>
+                <span id="contadorNotificacoes" class="contador-notificacoes"></span>
+            </button>
 
-        <div class="sidebar-user" onclick="abrirMenuUsuario()">
+            <!-- PAINEL DROPDOWN DE NOTIFICAÇÕES -->
+            <div id="painelNotificacoes" class="painel-notificacoes">
+                <div class="notificacoes-header">
+                    <div class="notificacoes-header-titulo">
+                        <i class="fa-solid fa-bell"></i>
+                        <strong>Notificações</strong>
+                    </div>
+                    <button type="button" class="btn-marcar-lidas" id="btnMarcarTodasLidas" title="Marcar todas como lidas">
+                        <i class="fa-solid fa-check-double"></i>
+                    </button>
+                </div>
 
-            <div class="sidebar-user-avatar">
-                <i class="fa-solid fa-user"></i>
-                <span id="statusUsuario" class="status-indicador online"></span>
-                {# <img src="{{ request.user.foto.url }}" alt="Foto"> #}
+                <div id="listaNotificacoes" class="lista-notificacoes">
+                    <!-- Estado vazio -->
+                    <div class="sem-notificacoes">
+                        <div class="sem-notificacoes-icone">
+                            <i class="fa-regular fa-bell-slash"></i>
+                        </div>
+                        <p>Nenhuma notificação por aqui.</p>
+                        <span>Você está em dia com todas as suas tarefas!</span>
+                    </div>
+                </div>
+
+                <div class="notificacoes-footer">
+                    <a href="javascript:void(0);" class="notificacoes-ver-todas">
+                        Ver histórico completo <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                </div>
             </div>
-
         </div>
 
+        <!-- CONTAINER PRINCIPAL DO USUÁRIO NA TOPBAR -->
+        <div class="sidebar-user" 
+             onclick="abrirMenuUsuario()" 
+             id="containerStatusUsuario" 
+             data-status-inicial="{{ request.user.perfil.status_conexao|default:'online' }}">
+            
+            <div class="sidebar-user-avatar {{ request.user.perfil.status_conexao|default:'online' }}" id="topbarUserAvatar">
+                {% if request.user.perfil.imagem %}
+                    <img src="{{ request.user.perfil.imagem.url }}" alt="Foto de perfil" class="avatar-img">
+                {% else %}
+                    <i class="fa-solid fa-user"></i>
+                {% endif %}
+                <span id="statusUsuario" class="status-indicador {{ request.user.perfil.status_conexao|default:'online' }}"></span>
+            </div>
+        </div>
+
+        <!-- MENU DROPDOWN -->
         <div class="menu-usuario-dropdown" id="menuUsuarioDropdown">
-
-            <div class="status-opcao ativo" data-status="online">
-                <i class="fa-solid fa-circle"></i>
-                Online
-            </div>
-
-            <div class="status-opcao" data-status="ausente">
-                <i class="fa-solid fa-clock"></i>
-                Ausente
-            </div>
-
-            <div class="status-opcao" data-status="offline">
-                <span class="icone-status-offline">
-                    <i class="fa-solid fa-xmark"></i>
-                </span>
-                Offline
+            <!-- CABEÇALHO DO USUÁRIO CONECTADO -->
+            <div class="dropdown-user-header">
+                <div class="dropdown-user-avatar {{ request.user.perfil.status_conexao|default:'online' }}" id="dropdownHeaderAvatar">
+                    {% if request.user.perfil.imagem %}
+                        <img src="{{ request.user.perfil.imagem.url }}" alt="Foto">
+                    {% else %}
+                        <i class="fa-solid fa-user"></i>
+                    {% endif %}
+                    <span class="status-indicador-header {{ request.user.perfil.status_conexao|default:'online' }}" id="statusIndicadorHeader"></span>
+                </div>
+                <div class="dropdown-user-info">
+                    <strong class="dropdown-user-name">
+                        {{ request.user.get_full_name|default:request.user.username }}
+                    </strong>
+                    <span class="dropdown-user-status-text" id="statusTextoHeader">
+                        {% if request.user.perfil.status_conexao == 'ausente' %}
+                            Ausente
+                        {% elif request.user.perfil.status_conexao == 'offline' %}
+                            Offline
+                        {% else %}
+                            Online
+                        {% endif %}
+                    </span>
+                </div>
             </div>
 
             <hr>
 
-            <div class="menu-opcao">
-                <i class="fa-solid fa-camera"></i>
-                Alterar foto
+            <!-- OPÇÕES DE STATUS COM CHECKMARK -->
+            <div class="status-opcao {% if not request.user.perfil.status_conexao or request.user.perfil.status_conexao == 'online' %}ativo{% endif %}" data-status="online">
+                <i class="fa-solid fa-check check-icone"></i>
+                <i class="fa-solid fa-circle icone-status-circulo online"></i>
+                <span>Online</span>
             </div>
 
+            <div class="status-opcao {% if request.user.perfil.status_conexao == 'ausente' %}ativo{% endif %}" data-status="ausente">
+                <i class="fa-solid fa-check check-icone"></i>
+                <i class="fa-solid fa-clock icone-status-circulo ausente"></i>
+                <span>Ausente</span>
+            </div>
 
-            <div class="menu-opcao">
-                <i class="fa-solid fa-palette"></i>
-                Aparência
-                <i class="fa-solid fa-chevron-right seta"></i>
+            <div class="status-opcao {% if request.user.perfil.status_conexao == 'offline' %}ativo{% endif %}" data-status="offline">
+                <i class="fa-solid fa-check check-icone"></i>
+                <span class="icone-status-offline">
+                    <i class="fa-solid fa-circle"></i>
+                </span>
+                <span>Offline</span>
+            </div>
+
+            <hr>
+
+            <!-- Redireciona para a página cadastrar_usuarios com o id -->
+            <div class="menu-opcao" onclick="window.location.href='/cadastrar_usuarios/?id={{ request.user.id }}'">
+                <i class="fa-solid fa-user-gear"></i>
+                Gerenciar perfil
             </div>
 
             <hr>
@@ -57,9 +125,38 @@
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Sair
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE HISTÓRICO COMPLETO DE NOTIFICAÇÕES -->
+<div class="modal fade" id="modalHistoricoNotificacoes" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content modal-historico-notif-content">
+            
+            <div class="modal-header">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-info fs-5"></i>
+                    <h5 class="modal-title m-0 text-white">Histórico de Notificações</h5>
+                </div>
+                <button type="button" class="btn-modal-fechar text-white" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body p-0">
+                <div id="listaHistoricoNotificacoes" class="lista-historico-notificacoes">
+                    <!-- Preenchido via JavaScript -->
+                </div>
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" id="btnMarcarTodasLidasHistorico" class="btn btn-outline-info btn-sm">
+                    <i class="fa-solid fa-check-double me-1"></i> Marcar todas como lidas
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fechar</button>
+            </div>
 
         </div>
-
     </div>
-
 </div>

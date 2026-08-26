@@ -4,6 +4,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.urls import reverse
 from .models import PerfilUsuario
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
 def login_view(request):
     active_pane = 'register' if 'register' in request.GET or 'cadastro' in request.GET else 'login'
@@ -78,3 +81,18 @@ def register(request):
         return redirect(f"{reverse('login')}?cadastro")
 
     return redirect('login')
+
+
+@login_required
+@require_POST
+def atualizar_status_usuario(request):
+    status = request.POST.get('status', '').strip()
+    status_validos = ['online', 'ausente', 'offline']
+    
+    if status in status_validos:
+        perfil = request.user.perfil
+        perfil.status_conexao = status
+        perfil.save(update_fields=['status_conexao'])
+        return JsonResponse({'sucesso': True, 'status': status})
+        
+    return JsonResponse({'sucesso': False, 'mensagem': 'Status inválido'}, status=400)

@@ -3,208 +3,879 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cadastrar_usuarios.css' %}">
+<script src="{% static 'js/cadastrar_usuarios.js' %}"></script>
+<script src="{% static 'js/formatadores.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 {% endblock %}
 
 {% block content %}
 
-<!-- BARRA VERTICAL MOBILE -->
+<!-- =========================================
+     BARRA VERTICAL MOBILE
+========================================= -->
+
 <div class="dashboard-sidebar-bar">
-    <button class="btn-menu-mobile"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#menuLateral">
+    <button
+        class="btn-menu-mobile"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#menuLateral">
         <i class="fa-solid fa-bars"></i>
     </button>
 </div>
 
+
 <div class="dashboard-page-cadastrar-usuarios">
-    <!-- TOPO -->
+
+    <!-- =========================================
+         TOPO
+    ========================================== -->
+
     <div class="dashboard-topbar-cadastrar-usuarios">
         <div>
-            <h1>Cadastro de Usuários</h1>
-            <p>Cadastre e gerencie os acessos dos usuários no sistema</p>
+            <h1>
+                Cadastro de Usuários
+            </h1>
+            <p>
+                Cadastre e gerencie os acessos dos usuários no sistema
+            </p>
         </div>
     </div>
 
-    <!-- GRID PRINCIPAL -->
+
+    <!-- =========================================
+         GRID PRINCIPAL
+    ========================================== -->
+
     <div class="cadastrar-usuarios-grid-layout">
 
-        <!-- CARD PRINCIPAL DO FORMULÁRIO -->
+        <!-- =====================================
+             CARD PRINCIPAL
+        ====================================== -->
+
         <div class="dashboard-card-cadastrar-usuarios">
 
+            <!-- =================================
+                 CABEÇALHO
+            ================================== -->
+
             <div class="cadastrar-usuarios-header">
+
                 <h2>
                     <i class="fa-solid fa-user-plus"></i>
                     Dados do Usuário
                 </h2>
 
                 <div class="cadastrar-usuarios-acoes-topo">
-                    <button type="button" class="btn-resumo-ver-usuarios">
-                        <i class="fa-solid fa-users"></i> Ver Lista de Usuários
+
+
+                    <!-- EDITAR -->
+                    <button
+                        type="button"
+                        class="btn-cadastrar-usuarios editar"
+                        id="btnEditarUsuario">
+                        <i class="fa-solid fa-pen"></i>
+                        Editar
                     </button>
-                    <button type="button" class="btn-cadastrar-usuarios adicionar">
-                        <i class="fa-solid fa-plus"></i> Adicionar
+
+                    <!-- ATUALIZAR -->
+                    <button
+                        type="button"
+                        class="btn-cadastrar-usuarios atualizar"
+                        id="btnAtualizarUsuario">
+                        <i class="fa-solid fa-rotate"></i>
+                        Atualizar
                     </button>
-                    <button type="button" class="btn-cadastrar-usuarios editar">
-                        <i class="fa-solid fa-pen"></i> Editar
+
+                    <!-- SAIR -->
+                    <button
+                        type="button"
+                        class="btn-cadastrar-usuarios sair"
+                        id="btnSairEdicao">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Sair da edição
                     </button>
-                    <button type="button" class="btn-cadastrar-usuarios atualizar">
-                        <i class="fa-solid fa-rotate"></i> Atualizar
+
+                    <!-- APAGAR -->
+                    <button
+                        type="button"
+                        class="btn-cadastrar-usuarios apagar"
+                        id="btnApagarUsuario">
+                        <i class="fa-solid fa-trash"></i>
+                        Apagar
                     </button>
-                    <button type="button" class="btn-cadastrar-usuarios sair">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair da edição
-                    </button>
-                    <button type="button" class="btn-cadastrar-usuarios apagar">
-                        <i class="fa-solid fa-trash"></i> Apagar
-                    </button>
+
                 </div>
+
             </div>
+
+
+            <!-- =================================
+                 FORMULÁRIO
+            ================================== -->
 
             <div class="cadastrar-usuarios-formulario">
 
-                <!-- COLUNA ESQUERDA: Dados Pessoais e de Acesso -->
+                <!-- ==============================
+                     COLUNA ESQUERDA
+                =============================== -->
+
                 <div class="coluna-esquerda-formulario-cadastrar-usuarios">
 
+                    <!-- NOME / USUÁRIO -->
                     <div class="campo-grupo-duplo">
                         <div class="campo">
                             <label>Nome Completo</label>
-                            <input type="text" placeholder="Digite o nome completo">
+                            <input
+                                type="text"
+                                id="usuarioNome"
+                                placeholder="Digite o nome completo">
                         </div>
+
                         <div class="campo">
                             <label>Nome de Usuário</label>
-                            <input type="text" placeholder="Ex.: joao.silva">
+                            <input
+                                type="text"
+                                id="usuarioUsername"
+                                placeholder="Ex.: joao.silva"
+                                autocomplete="new-password">
                         </div>
                     </div>
 
-                    <div class="campo-grupo-duplo">
+                    
+
+                    <!-- SENHA / CONFIRMAR SENHA -->
+                    <div id="containerCamposSenha" class="campo-grupo-duplo">
                         <div class="campo">
                             <label>Senha</label>
-                            <input type="password" placeholder="••••••••">
+                            <div class="campo-senha-container">
+                                <input type="password" id="usuarioSenha" placeholder="••••••••" autocomplete="new-password">
+                                <button type="button" class="btn-toggle-senha" id="btnToggleSenha" tabindex="-1">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
+
                         <div class="campo">
                             <label>Confirmar Senha</label>
-                            <input type="password" placeholder="••••••••">
+                            <div class="campo-senha-container">
+                                <input type="password" id="usuarioSenhaConfirmacao" placeholder="••••••••" autocomplete="new-password">
+                                <button type="button" class="btn-toggle-senha" id="btnToggleSenhaConfirmacao" tabindex="-1">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- 2. O AVISO DE BLOQUEIO (EDIÇÃO) -->
+                    <div id="avisoAlteracaoSenhaEdicao" class="aviso-senha-bloqueada" style="display: none;">
+                        <i class="fa-solid fa-lock"></i>
+                        <div>
+                            <strong>Alteração de Senha Bloqueada</strong>
+                            <p>Por motivos de segurança, a senha não pode ser alterada por esta tela. Caso o usuário precise redefini-la, utilize a opção <em>"Esqueci minha senha"</em> na tela de login.</p>
+                        </div>
+                    </div>
+
+
+
+                    <!-- CEP / ENDEREÇO / NÚMERO -->
                     <div class="campo-grupo-triplo">
                         <div class="campo">
                             <label>CEP</label>
-                            <input type="text" placeholder="00000-000">
+                            <input
+                                type="text"
+                                id="usuarioCep"
+                                placeholder="00000-000">
                         </div>
+
                         <div class="campo">
                             <label>Endereço</label>
-                            <input type="text" placeholder="Rua, Avenida...">
+                            <input
+                                type="text"
+                                id="usuarioEndereco"
+                                placeholder="Rua, Avenida...">
                         </div>
+
                         <div class="campo">
                             <label>Número</label>
-                            <input type="number" placeholder="123">
+                            <input
+                                type="number"
+                                id="usuarioNumero"
+                                placeholder="123">
                         </div>
                     </div>
 
+                    <!-- BAIRRO / CIDADE / ESTADO -->
                     <div class="campo-grupo-triplo">
                         <div class="campo">
                             <label>Bairro</label>
-                            <input type="text" placeholder="Bairro">
+                            <input
+                                type="text"
+                                id="usuarioBairro"
+                                placeholder="Bairro">
                         </div>
+
                         <div class="campo">
                             <label>Cidade</label>
-                            <input type="text" placeholder="Cidade">
+                            <input
+                                type="text"
+                                id="usuarioCidade"
+                                placeholder="Cidade">
                         </div>
+
                         <div class="campo">
-                            <label>Estado</label>
-                            <input type="text" placeholder="UF">
+                            <label for="usuarioEstado">Estado</label>
+
+                            <select id="usuarioEstado" name="estado">
+                                <option value="">Selecione o estado</option>
+
+                                <option value="AC">AC</option>
+                                <option value="AL">AL</option>
+                                <option value="AP">AP</option>
+                                <option value="AM">AM</option>
+                                <option value="BA">BA</option>
+                                <option value="CE">CE</option>
+                                <option value="DF">DF</option>
+                                <option value="ES">ES</option>
+                                <option value="GO">GO</option>
+                                <option value="MA">MA</option>
+                                <option value="MT">MT</option>
+                                <option value="MS">MS</option>
+                                <option value="MG">MG</option>
+                                <option value="PA">PA</option>
+                                <option value="PB">PB</option>
+                                <option value="PR">PR</option>
+                                <option value="PE">PE</option>
+                                <option value="PI">PI</option>
+                                <option value="RJ">RJ</option>
+                                <option value="RN">RN</option>
+                                <option value="RS">RS</option>
+                                <option value="RO">RO</option>
+                                <option value="RR">RR</option>
+                                <option value="SC">SC</option>
+                                <option value="SP">SP</option>
+                                <option value="SE">SE</option>
+                                <option value="TO">TO</option>
+                            </select>
                         </div>
                     </div>
 
+                    <!-- COMPLEMENTO / TELEFONE -->
                     <div class="campo-grupo-duplo">
                         <div class="campo">
                             <label>Complemento</label>
-                            <input type="text" placeholder="Apto, Bloco (Opcional)">
+                            <input
+                                type="text"
+                                id="usuarioComplemento"
+                                placeholder="Apto, Bloco (Opcional)">
                         </div>
+
                         <div class="campo">
                             <label>Telefone / WhatsApp</label>
-                            <input type="text" placeholder="(00) 00000-0000">
+                            <input
+                                type="text"
+                                id="usuarioTelefone"
+                                placeholder="(00) 00000-0000">
                         </div>
                     </div>
 
+                    <!-- EMAIL / NASCIMENTO -->
                     <div class="campo-grupo-duplo">
                         <div class="campo">
                             <label>E-mail</label>
-                            <input type="email" placeholder="email@exemplo.com">
+                            <input
+                                type="email"
+                                id="usuarioEmail"
+                                placeholder="email@exemplo.com">
                         </div>
+
                         <div class="campo">
                             <label>Data de Nascimento</label>
-                            <input type="date">
+                            <input
+                                type="date"
+                                id="usuarioNascimento">
                         </div>
                     </div>
 
+                    <!-- DOCUMENTOS -->
                     <div class="campo-grupo-triplo">
                         <div class="campo">
                             <label>RG</label>
-                            <input type="text" placeholder="00.000.000-0">
+                            <input
+                                type="text"
+                                id="usuarioRg"
+                                placeholder="00.000.000-0">
                         </div>
+
                         <div class="campo">
                             <label>CPF</label>
-                            <input type="text" placeholder="000.000.000-00">
+                            <input
+                                type="text"
+                                id="usuarioCpf"
+                                placeholder="000.000.000-00">
                         </div>
+
                         <div class="campo">
                             <label>CNPJ</label>
-                            <input type="text" placeholder="00.000.000/0001-00">
+                            <input
+                                type="text"
+                                id="usuarioCnpj"
+                                placeholder="00.000.000/0001-00">
                         </div>
                     </div>
 
+                    <!-- PERFIL -->
                     <div class="campo">
                         <label>Perfil de Acesso</label>
-                        <select>
+                        <select id="usuarioPerfil">
                             <option value="">Selecione o perfil</option>
-                            <option value="admin">Administrador</option>
-                            <option value="operador">Usuário Comum</option>
-                            <option value="visualizador">Convidado</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Usuário Comum">Usuário Comum</option>
+                            <option value="Convidado">Convidado</option>
                         </select>
                     </div>
 
                 </div>
 
-                <!-- COLUNA DIREITA: Foto do Usuário -->
+                <!-- ==============================
+                     COLUNA DIREITA
+                =============================== -->
+
                 <div class="coluna-direita-formulario-cadastrar-usuarios">
-                    <div class="campo-upload-cadastrar-usuarios">
-                        <label>Foto do Usuário</label>
-                        <div class="upload-box-cadastrar-usuarios">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                            <span>Arraste uma foto ou clique para selecionar</span>
-                        </div>
-                        <div class="upload-botoes-cadastrar-usuarios">
-                            <button type="button" class="btn-upload-remover-cadastrar-usuarios">
-                                <i class="fa-solid fa-trash"></i> Remover
-                            </button>
-                            <button type="button" class="btn-upload-carregar-cadastrar-usuarios">
-                                <i class="fa-solid fa-upload"></i> Carregar
-                            </button>
-                        </div>
+
+           
+                <!-- FOTO -->
+                <div class="campo-upload-cadastrar-usuarios">
+                    <label>Foto do Usuário</label>
+
+                    <div
+                        class="upload-box-cadastrar-usuarios"
+                        id="uploadBoxCadastrarUsuarios">
+
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                        <span>
+                            Arraste uma foto ou clique para selecionar
+                        </span>
+
                     </div>
 
+                <div class="upload-botoes-cadastrar-usuarios">
+
+                    <button
+                        type="button"
+                        class="btn-upload-remover-cadastrar-usuarios"
+                        id="btnUploadRemoverCadastrarUsuarios">
+
+                        <i class="fa-solid fa-trash"></i>
+                        Remover
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn-upload-carregar-cadastrar-usuarios"
+                        id="btnUploadCarregarCadastrarUsuarios">
+
+                        <i class="fa-solid fa-upload"></i>
+                        Carregar Imagem
+
+                    </button>
+
+                </div>
+
+                <!-- Input real de arquivo -->
+                <input
+                    type="file"
+                    id="inputImagemCadastrarUsuarios"
+                    accept="image/*"
+                    hidden
+                >
+
+                </div>
+
+                    <!-- PREVIEW -->
                     <div class="upload-preview-container-cadastrar-usuarios">
                         <label>Pré-visualização</label>
+
                         <div class="preview-box-cadastrar-usuarios">
                             <div class="preview-empty-cadastrar-usuarios">
                                 <i class="fa-regular fa-user"></i>
                                 <span>Nenhuma foto selecionada</span>
                             </div>
-                            <img id="img-preview" src="" alt="Pré-visualização do usuário" style="display: none;">
+
+                            <img
+                                id="img-preview"
+                                src=""
+                                alt="Pré-visualização do usuário"
+                                style="display: none;">
                         </div>
                     </div>
+
                 </div>
 
-            </div> <!-- Fim do formulário -->
+            </div>
 
-            <button type="submit" class="btn-confirmar-cadastrar-usuarios">
+            <!-- =================================
+                 CONFIRMAR
+            ================================== -->
+
+            <button
+                type="button"
+                class="btn-confirmar-cadastrar-usuarios"
+                id="btnSalvarUsuario">
                 <i class="fa-solid fa-circle-check"></i>
                 Confirmar / Salvar Usuário
             </button>
 
-        </div> <!-- Fim do card -->
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL — TABELA DE USUÁRIOS
+====================================================== -->
+<div class="modal fade"
+     id="modalTabelaUsuarios"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <!-- CABEÇALHO DO MODAL -->
+            <div class="modal-header">
+
+                <h4>
+                    <i class="fa-solid fa-users me-2"></i>
+                    Tabela de Usuários
+                </h4>
+
+                <button type="button"
+                        class="btn-modal-fechar"
+                        id="fecharModalUsuarios"
+                        data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+            <!-- CORPO DO MODAL -->
+            <div class="modal-body">
+
+                <!-- BOTÕES DE AÇÕES NO TOPO DA TABELA -->
+                <div class="acoes-tabela-usuarios">
+
+                    <!-- Editar/Atualizar Usuário Selecionado -->
+                    <button type="button" class="btn-cadastrar-usuarios atualizar" id="btnAtualizarUsuarioModal">
+                        <i class="fa-solid fa-pen"></i>
+                        Atualizar Usuário
+                    </button>
+
+                    <!-- Apagar Usuário Selecionado -->
+                    <button type="button" class="btn-cadastrar-usuarios apagar" id="btnApagarUsuarioModal">
+                        <i class="fa-solid fa-trash"></i>
+                        Apagar Usuário
+                    </button>
+
+                    <!-- Recarregar a Tabela -->
+                    <button type="button" class="btn-cadastrar-usuarios atualizar" id="btnAtualizarTabelaModal">
+                        <i class="fa-solid fa-rotate"></i>
+                        Atualizar Tabela
+                    </button>
+
+                    <!-- Abrir Filtro -->
+                    <button type="button" class="btn-cadastrar-usuarios filtrar" id="btnAbrirFiltroUsuariosModal">
+                        <i class="fa-solid fa-filter"></i>
+                        Filtrar Usuários
+                    </button>
+
+                    <!-- Abrir Ordenação -->
+                    <button type="button" class="btn-cadastrar-usuarios ordenar" id="btnAbrirOrdenacaoUsuariosModal">
+                        <i class="fa-solid fa-arrow-down-a-z"></i>
+                        Ordenar Usuários
+                    </button>
+
+                    <!-- Ver Foto/Avatar do Usuário -->
+                    <button type="button" class="btn-cadastrar-usuarios visualizar" id="btnVisualizarFotoModal">
+                        <i class="fa-solid fa-image"></i>
+                        Visualizar Foto
+                    </button>
+
+                    <!-- Exportar para Excel -->
+                    <button type="button" class="btn-cadastrar-usuarios gerar-excel" id="btnGerarExcelTabelaModal">
+                        <i class="fa-regular fa-file-excel"></i>
+                        Gerar Excel
+                    </button>
+
+                </div>
+
+                <!-- CAMPO DE PESQUISA -->
+                <div class="modal-tabela-usuarios-filtros">
+                    <div class="modal-busca-usuarios">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input
+                            type="text"
+                            id="buscaModalUsuarios"
+                            placeholder="Buscar usuário por nome, e-mail ou perfil...">
+                    </div>
+                </div>
+
+                <!-- TABELA -->
+                <div class="table-responsive mt-3">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+                            <tr>
+                                <th class="col-selecao"></th>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Usuário</th>
+                                <th>CEP</th>
+                                <th>Endereço</th>
+                                <th>Número</th>
+                                <th>Cidade</th>
+                                <th>Bairro</th>
+                                <th>Estado</th>
+                                <th>Complemento</th>
+                                <th>Telefone / WhatsApp</th>
+                                <th>E-mail</th>
+                                <th>Data de Nascimento</th>
+                                <th>RG</th>
+                                <th>CPF</th>
+                                <th>CNPJ</th>
+                                <th>Última Troca de Senha</th>
+                                <th>Data da Senha Cadastrada</th>
+                                <th>Data da Inclusão do Usuário</th>
+                                <th>Segredo</th>
+                                <th>Usuário Logado</th>
+                                <th>Acesso</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tabelaModalUsuarios">
+
+                            {% include "cadastrar_usuarios/tabela_usuarios.html" %}
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- =====================================================
+     MODAL APAGAR USUÁRIO
+====================================================== -->
+<div class="modal fade"
+     id="modalApagarUsuario"
+     tabindex="-1"
+     aria-labelledby="modalApagarUsuarioLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content modal-logout-content">
+
+            <div class="modal-header">
+
+                <div class="modal-logout-icon modal-warning-icon">
+                    <i class="fa-solid fa-trash"></i>
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-modal-fechar"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </button>
+
+            </div>
+
+            <div class="modal-body text-center">
+
+                <h4 id="modalApagarUsuarioLabel">
+                    Apagar usuário?
+                </h4>
+
+                <p>
+                    Esta ação removerá o usuário permanentemente.
+                    <br>
+                    Deseja continuar?
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+                <button
+                    type="button"
+                    id="btnConfirmarApagarUsuario"
+                    class="btn btn-danger">
+
+                    <i class="fa-solid fa-trash"></i>
+                    Apagar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     MODAL FILTRAR PRODUTOS
+===================================================== -->
+<div class="modal fade"
+     id="modalFiltrarUsuarios"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+
+        <div class="modal-content modal-logout-content">
+
+            <div class="modal-header">
+
+                <h5>
+                    <i class="fa-solid fa-filter"></i>
+                    Filtrar Usuários
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-modal-fechar"
+                    data-bs-dismiss="modal">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="campo">
+
+                    <label>Escolha o tipo de filtro</label>
+
+                    <select id="tipoFiltro">
+
+                        <option value="nome">
+                            Filtrar por Nome
+                        </option>
+
+                        <option value="usuario">
+                            Filtrar por Usuário
+                        </option>
+
+                        <option value="acesso">
+                            Filtrar por Acesso
+                        </option>
+
+                        <option value="telefone">
+                            Filtrar por Telefone
+                        </option>
+
+                        <option value="email">
+                            Filtrar por E-mail
+                        </option>
+
+                        <option value="rg">
+                            Filtrar por RG
+                        </option>
+
+                        <option value="cpf">
+                            Filtrar por CPF
+                        </option>
+
+                        <option value="cnpj">
+                            Filtrar por CNPJ
+                        </option>
+                    </select>
+                </div>
+
+                <div class="campo mt-3">
+
+                    <label id="labelValorFiltro">
+                        Nome do Usuário
+                    </label>
+
+                    <input
+                        type="text"
+                        id="valorFiltro"
+                        placeholder="Digite o nome do usuário">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button
+                    type="button"
+                    id="btnExecutarFiltro"
+                    class="btn btn-primary">
+                    <i class="fa-solid fa-filter"></i>
+                    Filtrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade"
+     id="modalOrdenarUsuarios"
+     tabindex="-1"
+     aria-hidden="true"
+     data-bs-backdrop="false">
+
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+
+        <div class="modal-content modal-logout-content">
+
+            <div class="modal-header">
+
+                <h5>
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Direção da Ordenação
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-modal-fechar"
+                    data-bs-dismiss="modal">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="campo">
+
+                    <label>Escolha a direção</label>
+
+                    <select id="tipoOrdenacaoUsuario">
+
+                        <option value="asc">
+                            Crescente
+                        </option>
+
+                        <option value="desc">
+                            Decrescente
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+                <button
+                    id="btnExecutarOrdenacao"
+                    class="btn btn-primary">
+
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Ordenar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade"
+     id="modalVisualizarImagemUsuario"
+     tabindex="-1"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content modal-logout-content">
+            <div class="modal-header">
+                <h5>
+                    <i class="fa-solid fa-image"></i>
+                    Imagem do Usuário
+                </h5>
+                <button
+                    type="button"
+                    class="btn-modal-fechar"
+                    data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body text-center">
+                <img
+                    id="imagemUsuarioModal"
+                    src=""
+                    class="img-fluid rounded"
+                    style="max-height:500px; display:none;">
+
+                <div id="mensagemSemImagemUsuario">
+                    <i class="fa-regular fa-image fa-3x mb-3"></i>
+                    <p>
+                        Este usuário não possui imagem cadastrada.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CONTAINER DOS INPUTS DE SENHA (CADASTRO) -->
+<div id="containerCamposSenha" class="campos-grid-senha">
+    <div class="campo">
+        <label for="usuarioSenha">Senha *</label>
+        <div class="input-com-icone">
+            <input type="password" id="usuarioSenha" name="senha" placeholder="Digite a senha">
+            <button type="button" id="btnToggleSenha" class="btn-olho-senha">
+                <i class="fa-solid fa-eye"></i>
+            </button>
+        </div>
+    </div>
+
+    
+
 
 {% endblock %}

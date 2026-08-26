@@ -1,0 +1,1813 @@
+/* =====================================================
+   1. RESET E CONFIGURAÇÕES DO BODY
+===================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background:
+        radial-gradient(circle at top, #4f46e5, transparent 35%),
+        radial-gradient(circle at bottom, #06b6d4, transparent 30%),
+        #111827 !important;
+    height: 100vh;
+    margin: 0;
+    padding: 0 !important;
+    overflow: hidden !important;
+    font-family: Inter, sans-serif;
+}
+html{
+    height: 100%;
+}
+
+::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+::-webkit-scrollbar-thumb{
+    background:#4b5563;
+    border-radius:20px;
+}
+::-webkit-scrollbar-track{
+    background:#141b27;
+}
+/* =====================================================
+   2. ESTRUTURA CONTAINER E CARD 3D (FLIP)
+===================================================== */
+.container-auth {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    perspective: 1500px;
+    position: relative;
+}
+
+.card-auth {
+    position: relative;
+    width: min(1000px, 100%);
+    height: min(700px, calc(100vh - 40px));
+    transform-style: preserve-3d;
+    transition:
+        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* Rotação do Card para mostrar o Verso (Cadastro) */
+.card-auth.cadastro-aberto {
+    transform: rotateY(180deg);
+}
+
+/* Configurações aplicadas igualmente a ambas as faces */
+.face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr; /* Divide as faces em duas colunas perfeitas */
+    overflow: hidden;
+    border-radius: 28px;
+    backface-visibility: hidden; 
+    -webkit-backface-visibility: hidden; /* Suporte para Safari e Chrome */
+    background: #0f1117;
+    border: 1px solid rgba(255, 255, 255, .08);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, .45);
+}
+
+/* Posições iniciais das faces */
+.face-login {
+    transform: rotateY(0deg);
+    z-index: 2;
+}
+
+.face-register {
+    transform: rotateY(180deg);
+}
+
+/* =====================================================
+   3. DESIGN DO LADO DO LOGIN (FRENTE - ESQUERDA)
+===================================================== */
+.lado-login {
+    padding: 60px 55px;
+    width: 100%; /* Ocupa 100% da sua coluna do grid (1.1fr) */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.lado-login h1 {
+    color: #fff;
+    font-size: 38px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.lado-login p {
+    color: #9ca3af;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+/* Inputs do Login */
+.campo-login {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.campo-login label {
+    display: block;
+    color: #9ca3af;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.campo-login input {
+    width: 100%;
+    height: 52px;
+    padding-left: 45px;
+    padding-right: 45px;
+    background: #181a22;
+    border: 1px solid #2c2f3a;
+    border-radius: 12px;
+    color: white;
+    font-size: 14px;
+    transition: .25s;
+    outline: none;
+}
+
+.campo-login input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59,130,246,.15);
+}
+
+.campo-login > .fa-user.login,
+.campo-login > .fa-lock.login {
+    position: absolute;
+    left: 15px;
+    top: 62%;
+    transform: translateY(-50%);
+    color: #64748b;
+    z-index: 5;
+}
+
+.olho-login {
+    position: absolute;
+    right: 15px;
+    top: 65%;
+    transform: translateY(-50%);
+    color: #64748b;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.olho-login:hover {
+    color: #fff;
+}
+
+.lado-login button[type="submit"] {
+    display: block;
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 12px;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.lado-login button[type="submit"]:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+}
+
+.link-senha {
+    display: block;
+    text-align: right;
+    margin-bottom: 20px;
+    color: #9ca3af;
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+}
+
+.link-senha:hover {
+    color: #fff;
+}
+
+.link-cadastro {
+    width: max-content;
+    align-self: center;
+    margin-top: 25px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #9ca3af;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color .25s ease, transform .25s ease;
+}
+
+.link-cadastro:hover {
+    color: white;
+    transform: translateX(4px);
+}
+
+/* =====================================================
+   4. DESIGN DO LADO DO DASHBOARD (FRENTE - DIREITA)
+===================================================== */
+.lado-dashboard {
+    width: 100%; /* Ocupa 100% da sua coluna do grid (0.9fr) */
+    padding: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(160deg, rgba(79,70,229,.18), rgba(6,182,212,.12));
+    border-left: 1px solid rgba(255,255,255,.08);
+}
+
+.badge-sistema {
+    width: max-content;
+    padding: 8px 16px;
+    border-radius: 30px;
+    background: rgba(255,255,255,.08);
+    color: #cbd5e1;
+    font-size: 12px;
+    margin-bottom: 25px;
+}
+
+.lado-dashboard h2 {
+    color: white;
+    font-size: 32px;
+    margin-bottom: 18px;
+    line-height: 1.2;
+    letter-spacing: -1px;
+}
+
+.lado-dashboard p {
+    color: #cbd5e1;
+    line-height: 1.6;
+    margin-bottom: 35px;
+    font-size: 14px;
+}
+
+.cards-preview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Ajustado para 3 colunas para caber perfeitamente */
+    gap: 12px;
+}
+
+.mini-card {
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(12px);
+}
+
+.mini-card span {
+    display: block;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.mini-card strong {
+    display: block;
+    margin-top: 5px;
+    color: white;
+    font-size: 18px;
+}
+
+.grafico-fake {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 80px;
+    margin-top: 35px;
+}
+
+.barra {
+    flex: 1;
+    border-radius: 6px 6px 0 0;
+    background: linear-gradient(#4f46e5, #06b6d4);
+}
+
+.b1 { height: 45%; }
+.b2 { height: 70%; }
+.b3 { height: 90%; }
+.b4 { height: 60%; }
+.b5 { height: 100%; }
+
+
+/* =====================================================
+   LADO ESQUERDO — FORMULÁRIO
+===================================================== */
+.register-form {
+    width: 100%;
+    height: 100%;
+    padding: 30px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #0f1117;
+}
+
+/* LOGO */
+.register-form .logo {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #06b6d4
+        );
+    color: white;
+    font-size: 24px;
+}
+
+/* TÍTULO */
+.register-form h1 {
+    color: white;
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+}
+
+.register-form h1 span {
+    color: #6366f1;
+}
+
+/* SUBTÍTULO */
+.register-form .subtitulo {
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+}
+
+/* =====================================================
+   FORMULÁRIO
+===================================================== */
+.register-form form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* CAMPO */
+.register-form .campo-cadastro {
+    position: relative;
+    width: 100%;
+    height: 48px;
+}
+
+/* INPUT */
+.register-form .campo-cadastro input {
+    width: 100%;
+    height: 100%;
+    padding: 0 45px;
+    background: rgba(255, 255, 255, .045);
+    border: 1px solid rgba(255, 255, 255, .10);
+    border-radius: 12px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition:
+        border .25s ease,
+        background .25s ease,
+        box-shadow .25s ease;
+}
+
+/* PLACEHOLDER */
+.register-form .campo-cadastro input::placeholder {
+    color: #64748b;
+}
+
+/* HOVER */
+.register-form .campo-cadastro input:hover {
+    border-color: rgba(99, 102, 241, .6);
+}
+
+/* FOCUS */
+.register-form .campo-cadastro input:focus {
+    border-color: #6366f1;
+    background:rgba(99, 102, 241, .08);
+    box-shadow:0 0 0 4px rgba(99, 102, 241, .12);
+}
+
+/* ÍCONES */
+.register-form .campo-cadastro > i:first-child {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    pointer-events: none;
+    z-index: 2;
+    transition: color .25s ease;
+}
+
+/* ÍCONE AO FOCAR */
+.register-form .campo-cadastro:focus-within > i:first-child {
+    color: #818cf8;
+}
+
+
+/* OLHO DA SENHA */
+.register-form .olho-cadastro {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    cursor: pointer;
+    z-index: 3;
+    transition: color .25s ease;
+}
+
+.register-form .olho-cadastro:hover {
+    color: white;
+}
+
+
+/* =====================================================
+   BOTÃO
+===================================================== */
+.register-form form button {
+    width: 100%;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 12px;
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #2563eb
+        );
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.register-form form button:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 12px 30px rgba(37, 99, 235, .35);
+}
+
+
+/* =====================================================
+   LINK DE LOGIN
+===================================================== */
+.register-form .link-login {
+    width: 100%;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 12px;
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #2563eb
+        );
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+
+.register-form .link-login strong {
+    color: white;
+}
+
+.register-form .link-login:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 12px 30px rgba(37, 99, 235, .35);
+}
+
+/* =====================================================
+   MENSAGENS
+===================================================== */
+.register-form .alerta {
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    color: #fecaca;
+    background:
+        rgba(127, 29, 29, .35);
+    border: 1px solid rgba(248, 113, 113, .25);
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   LADO DIREITO — PREVIEW
+===================================================== */
+.register-preview {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 35px;
+    overflow: hidden;
+    background:radial-gradient(circle at 80% 10%,rgba(99, 102, 241, .35),transparent 40%),linear-gradient(145deg,#171b35,#101827);
+    border-left: 1px solid rgba(255, 255, 255, .08);
+}
+
+
+/* BADGE */
+.preview-badge {
+    width: max-content;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 13px;
+    margin-bottom: 30px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .1);
+    color: #cbd5e1;
+    font-size: 12px;
+}
+
+
+/* TEXTO */
+.preview-content h2 {
+    max-width: 400px;
+    color: white;
+    font-size: 38px;
+    line-height: 1.15;
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
+}
+
+.preview-content h2 strong {
+    display: block;
+
+    color: #818cf8;
+}
+
+.preview-content p {
+    max-width: 390px;
+
+    color: #94a3b8;
+
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   DASHBOARD PREVIEW
+===================================================== */
+.dashboard-preview {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 18px;
+    border-radius: 20px;
+    background:
+        rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .1);
+    backdrop-filter: blur(20px);
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, .25);
+}
+
+
+/* TOPO */
+.preview-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #cbd5e1;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.preview-top i {
+    color: #64748b;
+}
+
+/* ESTATÍSTICAS */
+.preview-statistics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.preview-statistics div {
+    padding: 15px;
+    border-radius: 13px;
+    background:
+        rgba(255, 255, 255, .05);
+}
+
+.preview-statistics small {
+    display: block;
+
+    color: #64748b;
+
+    font-size: 11px;
+}
+
+.preview-statistics strong {
+    display: block;
+
+    margin-top: 5px;
+
+    color: white;
+
+    font-size: 24px;
+}
+
+
+/* GRÁFICO */
+
+.register-preview .grafico-fake {
+    height: 70px;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.register-preview .barra {
+    flex: 1;
+    border-radius: 12px 12px 0 0;
+    background:
+        linear-gradient(
+            #4f46e5,
+            #06b6d4
+        );
+}
+
+.register-preview .b1 {
+    height: 45%;
+}
+
+.register-preview .b2 {
+    height: 70%;
+}
+
+.register-preview .b3 {
+    height: 90%;
+}
+
+.register-preview .b4 {
+    height: 60%;
+}
+
+.register-preview .b5 {
+    height: 100%;
+}
+
+.toast-sucesso{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+
+    background: #22c55e;
+    color: white;
+
+    padding: 14px 18px;
+    border-radius: 12px;
+
+    box-shadow: 0 12px 30px rgba(0,0,0,.18);
+
+    font-size: 15px;
+    font-weight: 500;
+
+    z-index: 99999;
+
+    min-width: 260px;
+
+    transform: translateX(400px);
+    opacity: 0;
+
+    transition: all .45s ease;
+}
+    /* quando aparecer */
+.toast-sucesso.show{
+    transform: translateX(0);
+    opacity: 1;
+}
+
+@keyframes aparecer{
+    from{
+        opacity:0;
+        transform: scale(.9);
+    }
+    to{
+        opacity:1;
+        transform: scale(1);
+    }
+}
+.toast-alerta {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    min-width: 260px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    z-index: 99999;
+    opacity: 0;
+    transform: translateX(400px);
+    transition: all .45s ease;
+}
+/* entra */
+.toast-alerta.show{
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* sai */
+.toast-alerta.hide{
+    opacity: 0;
+    transform: translateX(120%);
+}
+
+/* sucesso */
+.toast-alerta.sucesso{
+    background: linear-gradient(135deg,#16a34a,#22c55e);
+}
+
+/* erro */
+.toast-alerta.erro{
+    background: linear-gradient(135deg,#dc2626,#ef4444);
+}
+
+.error-messages{
+    color:#ff6b6b;
+    background:#2d1111;
+    border:1px solid #6b1f1f;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+.btn-criar-conta {
+    width: 100%;
+    height: 52px;
+
+    margin-top: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease,
+        background .3s ease;
+}
+
+.btn-criar-conta span {
+    display: block;
+}
+
+.btn-criar-conta i {
+    font-size: 14px;
+
+    transition:
+        transform .3s ease;
+}
+
+.btn-criar-conta:hover {
+    background: #1d4ed8;
+
+    box-shadow:
+        0 10px 25px rgba(37, 99, 235, .25);
+
+    transform: translateY(-2px);
+}
+
+.btn-criar-conta:hover i {
+    transform: translateX(5px);
+}
+
+.btn-criar-conta:active {
+    transform: translateY(0);
+}
+.messages-container {
+    width: 100%;
+    margin: 15px 0; /* Cria um espaçamento perfeito acima e abaixo da mensagem */
+    z-index: 10;
+}
+
+.messages-container p {
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.messages-container .success {
+    background: #28a745;
+    color: white;
+}
+
+.messages-container .error, 
+.messages-container .error-messages { /* Garante compatibilidade caso use a classe antiga */
+    background: #dc3545;
+    color: white;
+}
+/* =====================================================
+RECUPERAÇÃO DE SENHA
+===================================================== */
+
+.container-reset {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(99, 102, 241, 0.20),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(14, 165, 233, 0.15),
+            transparent 35%
+        ),
+        #0f172a;
+}
+
+.card-reset {
+    width: 100%;
+    max-width: 470px;
+    padding: 45px 40px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(18px);
+    text-align: center;
+    animation: aparecer-reset .5s ease;
+}
+.card-reset .logo {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background: linear-gradient(
+        135deg,
+        #6366f1,
+        #8b5cf6
+    );
+
+    color: white;
+    font-size: 28px;
+    box-shadow:
+        0 10px 30px rgba(99, 102, 241, 0.35);
+}
+/* =====================================================
+   TÍTULO
+===================================================== */
+
+.card-reset h1 {
+    margin-bottom: 12px;
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.card-reset h1 span {
+    color: #6366f1;
+}
+
+.card-reset .subtitulo {
+    max-width: 380px;
+    margin: 0 auto 30px;
+    color: #94a3b8;
+    font-size: 14px;
+    line-height: 1.6;
+}
+.campo-reset-senha {
+    position: relative;
+    width: 100%;
+    margin-bottom: 22px;
+}
+
+
+.campo-reset-senha i {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 16px;
+    pointer-events: none;
+    transition: .3s ease;
+}
+
+/* INPUT */
+.campo-reset-senha input {
+    width: 100%;
+    height: 56px;
+    padding: 0 18px 0 50px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    outline: none;
+    background: #181a22;
+    color: #ffffff;
+    font-size: 15px;
+    transition: .3s ease;
+}
+
+/* PLACEHOLDER */
+.campo-reset-senha input::placeholder {
+    color: #64748b;
+}
+.campo-reset-senha:focus-within i {
+    color: #818cf8;
+}
+
+.card-reset button {
+    display: block;
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 12px;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+.card-reset button:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 14px 30px rgba(99, 102, 241, 0.40);
+}
+
+.card-reset button:active {
+    transform: translateY(0);
+}
+
+/* =====================================================
+   LINK VOLTAR
+===================================================== */
+
+.link-voltar {
+    display: inline-block;
+    margin-top: 25px;
+    color: #94a3b8;
+    font-size: 14px;
+    text-decoration: none;
+    transition: .3s ease;
+}
+.link-voltar:hover {
+
+    color: #818cf8;
+}
+
+/* =====================================================
+   ANIMAÇÃO
+===================================================== */
+
+@keyframes aparecer-reset {
+    from {
+        opacity: 0;
+
+        transform: translateY(20px);
+
+    }
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+}
+
+/* =====================================================
+FORMULÁRIO DE RECUPERAÇÃO
+===================================================== */
+
+.reset-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* =====================================================
+LOGO
+===================================================== */
+
+.reset-form .logo {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 25px;
+
+}
+
+/* =====================================================
+TÍTULO
+===================================================== */
+.reset-form h1 {
+    margin-bottom: 12px;
+}
+
+/* =====================================================
+SUBTÍTULO
+===================================================== */
+.reset-form .subtitulo {
+    max-width: 420px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* =====================================================
+CAMPO DE E-MAIL
+===================================================== */
+.reset-form .campo-cadastro {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* =====================================================
+BOTÃO
+===================================================== */
+.reset-form .btn-criar-conta {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* =====================================================
+LINK VOLTAR
+===================================================== */
+
+.link-voltar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+    text-decoration: none;
+    font-size: 14px;
+    transition:
+        color .3s ease,
+        transform .3s ease;
+}
+
+.link-voltar:hover {
+    transform: translateX(-4px);
+}
+
+.link-login-reset{
+    width: max-content;
+    align-self: center;
+    margin-top: 25px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #9ca3af;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color .25s ease, transform .25s ease;
+}
+
+
+/* =====================================================
+   MODAL DE LOGOUT
+===================================================== */
+.modal-logout-content {
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 16px;
+    color: #ffffff;
+    overflow: hidden;
+}
+/* =====================================================
+   CABEÇALHO
+===================================================== */
+.modal-logout-content .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #374151;
+   
+
+}
+
+/* =========================================
+   BOTÃO FECHAR MODAL (SOBRESCREVENDO BOOTSTRAP)
+========================================= */
+.btn-modal-fechar {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Reseta estilos do Bootstrap */
+    background: rgba(255, 255, 255, 0.1) !important; 
+    border: none !important;
+    background-image: none !important; /* Remove o X nativo do Bootstrap */
+    opacity: 1 !important;
+    padding: 0 !important;
+    
+    border-radius: 50% !important;
+    color: #ffffff !important;
+    font-size: 18px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* HOVER (Fica vermelho ao passar o mouse) */
+.btn-modal-fechar:hover {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    transform: scale(1.1);
+}
+
+/* FOCO */
+.btn-modal-fechar:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+/* =====================================================
+   ÍCONE
+===================================================== */
+.modal-logout-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    font-size: 21px;
+
+}
+
+/* =====================================================
+   CORPO
+===================================================== */
+.modal-logout-content{
+   background-color: #1f2937 !important;
+}
+
+.modal-logout-content .modal-body {
+    padding: 28px 24px;
+}
+
+
+.modal-logout-content h4 {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 20px;
+    font-weight: 600;
+
+}
+
+.modal-logout-content p {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 14px;
+    line-height: 1.6;
+
+}
+
+
+/* =====================================================
+   RODAPÉ
+===================================================== */
+.modal-logout-content .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 18px 24px;
+    border-top: 1px solid #374151;
+
+}
+
+
+/* =====================================================
+   BOTÕES
+===================================================== */
+.modal-logout-content .btn {
+    min-width: 110px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+}
+
+/* CANCELAR */
+.modal-logout-content .btn-secondary {
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #e5e7eb;
+
+}
+
+.modal-logout-content .btn-secondary:hover {
+    background: #4b5563;
+
+}
+
+/* SAIR */
+.modal-logout-content .btn-danger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #dc2626;
+    border: 1px solid #dc2626;
+
+}
+
+.modal-logout-content .btn-danger:hover {
+    background: #b91c1c;
+    border-color: #b91c1c;
+
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Mesma borda da barra lateral */
+    margin-bottom: 12px; /* Margem inferior para afastar do conteúdo */
+    position: relative;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Garante alinhamento total à direita */
+    position: relative;
+}
+
+/* =====================================================
+   BACKGROUND DO MODAL
+===================================================== */
+.modal-backdrop.show {
+    background-color: #020617;
+    opacity: 0.85;
+}
+
+.offcanvas {
+    width: 300px !important; /* reduz tamanho */
+    background: #202124 !important; /* fundo escuro elegante */
+    color: white;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    z-index: 2000 !important;
+}
+
+.offcanvas-header{
+    padding: 18px 18px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+/* Garante que o fundo escuro do menu lateral também fique acima dos cards */
+.offcanvas-backdrop {
+    z-index: 1999 !important;
+}
+/* Cria a barra vertical que ocupa toda a altura do canto esquerdo */
+.dashboard-sidebar-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 70px;                  /* Largura da barra lateral */
+    height: 100vh;                /* Cobre a tela de cima a baixo */
+    background: rgba(17, 24, 39, 0.85); /* Cor de fundo escura */
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);  /* Efeito de vidro opcional */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;            /* Espaçamento do botão no topo */
+    z-index: 100;
+}
+/* Botão do Menu Mobile */
+.btn-menu-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-menu-mobile:hover {
+    background: #334155;
+    color: #6366f1;
+}
+
+/* =========================================
+   SIDEBAR
+========================================= */
+.sidebar-sistema {
+    width: 280px;
+    background: #111827;
+    border-right: 1px solid #1f2937;
+    color: #f8fafc;
+}
+.sidebar-header {
+    padding: 22px 20px;
+    border-bottom: 1px solid #1f2937;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar-brand-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #2563eb;
+    color: white;
+    font-size: 18px;
+}
+
+.sidebar-brand h5 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 400;
+    color: #94a3b8;
+}
+
+.sidebar-brand strong {
+    display: block;
+    font-size: 15px;
+    color: white;
+}
+.btn-fechar-menu {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 18px;
+    transition: .2s;
+}
+
+.btn-fechar-menu:hover {
+    background: #1f2937;
+    color: white;
+}
+
+.sidebar-user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+}
+.sidebar-user-avatar {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.sidebar-user-info {
+    min-width: 0;
+}
+
+.sidebar-user-info strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    color: #f8fafc;
+}
+
+.sidebar-user-info span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 4px;
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.sidebar-user-info span i {
+    font-size: 7px;
+    color: #22c55e;
+}
+.sidebar-body {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 14px;
+}
+.sidebar-section {
+    margin-bottom: 24px;
+}
+
+.sidebar-section-title {
+    display: block;
+    margin-bottom: 8px;
+    padding: 0 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: #64748b;
+}
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 11px 12px;
+    margin-bottom: 4px;
+    border-radius: 10px;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 13px;
+    transition: .2s ease;
+}
+
+.sidebar-link i {
+    width: 20px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.sidebar-link:hover {
+    background: #1f2937;
+    color: #f8fafc;
+    transform: translateX(3px);
+}
+
+.sidebar-link.active {
+    background: #2563eb;
+    color: white;
+    box-shadow:
+        0 8px 20px rgba(37, 99, 235, .20);
+}
+
+.sidebar-link.active:hover {
+    background: #1d4ed8;
+    color: white;
+}
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #1f2937;
+}
+
+
+
+.menu-usuario-dropdown{
+    position:absolute;
+    left:-200px;
+    top:75px;
+    width:260px;
+    background:#1f242b;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:8px;
+    padding:8px 0;
+    z-index:9999;
+    display:none;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+
+.menu-usuario-dropdown.ativo{
+    display:block;
+}
+
+
+.status-opcao,
+.menu-opcao{
+    height:42px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 18px;
+    color:#d1d5db;
+    font-size:14px;
+    cursor:pointer;
+}
+
+.status-opcao:hover,
+.menu-opcao:hover{
+    background:#2a3038;
+
+}
+
+.status-opcao i{
+    font-size:12px;
+}
+
+.status-opcao.ativo i{
+    color:#22c55e;
+
+}
+
+
+.status-opcao.selecionado::before{
+    content:"✓";
+    color:#38bdf8;
+    margin-right:5px;
+}
+
+
+
+.menu-opcao .seta{
+    margin-left:auto;
+}
+
+
+.menu-opcao.sair{
+    color:#ef4444;
+}
+
+
+.menu-usuario-dropdown hr{
+    border-color:rgba(255,255,255,.1);
+    margin:8px 0;
+
+}
+
+.layout-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+.main-content {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+
+}
+
+.status-indicador{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    border: 2px solid #1f242b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+}
+/* =====================================================
+   1. Borda e Sombra do AVATAR (Círculo Maior)
+===================================================== */
+.sidebar-user-avatar.online {
+    border: 2px solid #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+}
+
+.sidebar-user-avatar.ausente {
+    border: 2px solid #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+}
+
+.sidebar-user-avatar.offline {
+    border: 1px solid #334155;
+    box-shadow: none;
+}
+/* =====================================================
+   2. Cor de Fundo do INDICADOR (Bolinha Pequena)
+===================================================== */
+.status-indicador.online {
+    background: #22c55e;
+}
+
+.status-indicador.ausente {
+    background: #f59e0b;
+}
+
+.status-indicador.offline {
+    background: #334155;
+}
+
+.status-indicador.offline::before{
+    content: "✕";
+    color: #cbd5e1;
+    font-size: 7px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* Cor genérica do ícone inativo */
+.status-opcao i {
+    color: #94a3b8;
+    transition: color 0.2s ease;
+}
+
+/* --- Estilos quando a opção estiver ATIVA --- */
+
+/* Online -> Verde */
+.status-opcao[data-status="online"].ativo i {
+    color: #22c55e;
+}
+
+/* Ausente -> Laranja */
+.status-opcao[data-status="ausente"].ativo i { 
+    color: #f59e0b;
+}
+
+/* Offline -> Cinza / Vermelho suave */
+.status-opcao[data-status="offline"].ativo i {
+    color: #64748b;
+}
+
+/* (Opcional) Destaque no texto quando ativo */
+.status-opcao.ativo {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Container da bolinha no menu dropdown */
+.icone-status-offline {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid #64748b; /* Borda da bolinha */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px; /* Espaçamento até a palavra Offline */
+    transition: all 0.2s ease;
+}
+
+/* Tamanho e cor do X dentro da bolinha */
+.icone-status-offline i {
+    font-size: 8px;
+    color: #64748b;
+    margin: 0 !important; /* Previne margens herdadas de outros ícones */
+}
+
+/* Quando o status Offline estiver ATIVO no menu */
+.status-opcao[data-status="offline"].ativo .icone-status-offline {
+    border-color: #cbd5e1;
+}
+
+.status-opcao[data-status="offline"].ativo .icone-status-offline i {
+    color: #cbd5e1;
+}
+
+.notificacao-tempo-real {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+
+    width: 350px;
+
+    padding: 16px 20px;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.18);
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    z-index: 99999;
+
+    animation: entrarNotificacao 0.3s ease;
+}
+
+.notificacao-tempo-real strong {
+    font-size: 15px;
+}
+
+.notificacao-tempo-real span {
+    font-size: 14px;
+}
+
+.notificacao-tempo-real.saindo {
+    animation: sairNotificacao 0.3s ease forwards;
+}
+
+@keyframes entrarNotificacao {
+
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+}
+
+@keyframes sairNotificacao {
+
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+
+}

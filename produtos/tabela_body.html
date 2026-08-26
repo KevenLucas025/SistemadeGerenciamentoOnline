@@ -11,7 +11,8 @@
     data-codigo="{{ produto.codigo }}"
     data-data="{{ produto.data_cadastro|date:'Y-m-d' }}"
     data-descricao="{{ produto.descricao }}"
-    data-imagem="{% if produto.imagem %}{{ produto.imagem.url }}{% endif %}">
+    data-imagem="{% if usuario.perfil and usuario.perfil.imagem %}{{ usuario.perfil.imagem.url }}{% endif %}"
+    data-cliente-id="{{ produto.cliente.id }}">
 
     <td>
         <input

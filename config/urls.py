@@ -34,6 +34,8 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('core.urls')),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    
+    path("notificacoes/",include("notificacoes.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

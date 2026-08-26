@@ -1,0 +1,837 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/adm_usuarios.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- BARRA VERTICAL MOBILE -->
+<div class="dashboard-sidebar-bar">
+
+    <button class="btn-menu-mobile"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#menuLateral">
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+</div>
+
+
+<div class="dashboard-page-adm_usuarios">
+
+    <!-- =========================================
+         CABEÇALHO
+    ========================================== -->
+
+    <div class="usuarios-header">
+
+        <div class="usuarios-header-titulo">
+
+            <div>
+
+                <h1>
+                    Usuários
+                </h1>
+
+                <p>
+                    <span>
+                        Edite, altere e gerencie todos os usuários do sistema
+                    </span>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="usuarios-header-acoes">
+
+            <button
+                type="button"
+                class="btn-exportar">
+
+                <i class="fa-solid fa-download"></i>
+
+                Exportar
+
+            </button>
+
+
+            <button
+                type="button"
+                class="btn-novo-usuario">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Novo Usuário
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         CARDS DE RESUMO
+    ========================================== -->
+
+    <div class="usuarios-resumo">
+
+
+        <!-- TOTAL -->
+
+        <div class="usuario-resumo-card">
+
+            <div class="resumo-icone azul">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+
+            <div class="resumo-conteudo">
+
+                <span class="resumo-label">
+                    Total de Usuários
+                </span>
+
+                <strong>
+                    {{ total_usuarios|default:"0" }}
+                </strong>
+
+                <small>
+                    Todos os usuários cadastrados
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- ATIVOS -->
+
+        <div class="usuario-resumo-card">
+
+            <div class="resumo-icone verde">
+
+                <i class="fa-solid fa-user-check"></i>
+
+            </div>
+
+
+            <div class="resumo-conteudo">
+
+                <span class="resumo-label">
+                    Usuários Ativos
+                </span>
+
+                <strong>
+                    {{ usuarios_ativos|default:"0" }}
+                </strong>
+
+                <small>
+                    Usuários com acesso ativo
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- INATIVOS -->
+
+        <div class="usuario-resumo-card">
+
+            <div class="resumo-icone laranja">
+
+                <i class="fa-solid fa-user-slash"></i>
+
+            </div>
+
+
+            <div class="resumo-conteudo">
+
+                <span class="resumo-label">
+                    Usuários Inativos
+                </span>
+
+                <strong>
+                    {{ usuarios_inativos|default:"0" }}
+                </strong>
+
+                <small>
+                    Usuários desativados
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- NOVOS -->
+
+        <div class="usuario-resumo-card">
+
+            <div class="resumo-icone roxo">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+            </div>
+
+
+            <div class="resumo-conteudo">
+
+                <span class="resumo-label">
+                    Novos este mês
+                </span>
+
+                <strong>
+                    {{ usuarios_novos|default:"0" }}
+                </strong>
+
+                <small>
+                    Cadastrados nos últimos 30 dias
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         CONTAINER PRINCIPAL
+    ========================================== -->
+
+    <div class="usuarios-container">
+
+
+        <!-- =====================================
+             FILTROS
+        ====================================== -->
+
+        <div class="usuarios-filtros">
+
+
+            <!-- BUSCA -->
+
+            <form
+                method="GET"
+                class="usuario-busca">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    name="busca"
+                    value="{{ busca }}"
+                    id="buscarUsuario"
+                    placeholder="Buscar por nome, e-mail ou usuário..."
+                >
+
+            </form>
+
+
+            <!-- PERFIL -->
+
+            <select id="filtroPerfil">
+
+                <option value="">
+                    Todos os Perfis
+                </option>
+
+                <option value="administrador">
+                    Administrador
+                </option>
+
+                <option value="gerente">
+                    Gerente
+                </option>
+
+                <option value="analista">
+                    Analista
+                </option>
+
+                <option value="assistente">
+                    Assistente
+                </option>
+
+                <option value="visualizador">
+                    Visualizador
+                </option>
+
+            </select>
+
+
+            <!-- STATUS -->
+
+            <select
+                id="filtroStatus"
+                onchange="aplicarFiltroStatus(this.value)"
+            >
+
+                <option value="">
+                    Status
+                </option>
+
+                <option
+                    value="ativo"
+                    {% if status_selecionado == "ativo" %}
+                        selected
+                    {% endif %}
+                >
+                    Ativo
+                </option>
+
+                <option
+                    value="inativo"
+                    {% if status_selecionado == "inativo" %}
+                        selected
+                    {% endif %}
+                >
+                    Inativo
+                </option>
+
+            </select>
+
+
+            <!-- FILTROS -->
+
+            <button
+                type="button"
+                class="btn-filtro">
+
+                <i class="fa-solid fa-sliders"></i>
+
+                Filtros
+
+            </button>
+
+
+            <!-- ATUALIZAR -->
+
+            <button
+                type="button"
+                class="btn-atualizar"
+                title="Atualizar"
+                onclick="window.location.reload()">
+
+                <i class="fa-solid fa-rotate-right"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- =====================================
+             TABELA
+        ====================================== -->
+
+        <div class="usuarios-tabela-wrapper">
+
+            <table class="usuarios-tabela">
+
+
+                <!-- CABEÇALHO -->
+
+                <thead>
+
+                    <tr>
+
+                        <th class="col-checkbox">
+
+                            <input
+                                type="checkbox"
+                                id="selecionarTodos"
+                            >
+
+                        </th>
+
+
+                        <th>
+                            USUÁRIO
+                        </th>
+
+
+                        <th>
+                            E-MAIL
+                        </th>
+
+
+                        <th>
+                            PERFIL
+                        </th>
+
+
+                        <th>
+                            STATUS
+                        </th>
+
+
+                        <th>
+                            ÚLTIMO ACESSO
+                        </th>
+
+
+                        <th class="col-acoes">
+                            AÇÕES
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <!-- =====================================
+                     USUÁRIOS REAIS
+                ====================================== -->
+
+                <tbody id="tabelaUsuarios">
+
+
+                    {% for usuario in usuarios %}
+
+                    <tr>
+
+
+                        <!-- CHECKBOX -->
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox-usuario"
+                                value="{{ usuario.id }}"
+                            >
+
+                        </td>
+
+
+                        <!-- =================================
+                             USUÁRIO
+                        ================================== -->
+
+                        <td>
+
+                            <div class="usuario-info">
+
+
+                                <!-- AVATAR -->
+
+                                <div class="usuario-avatar azul">
+
+                                    {% if usuario.first_name %}
+
+                                        {{ usuario.first_name|first|upper }}
+
+                                    {% else %}
+
+                                        {{ usuario.username|first|upper }}
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <!-- INFORMAÇÕES -->
+
+                                <div>
+
+                                    <strong>
+
+                                        {% if usuario.get_full_name %}
+
+                                            {{ usuario.get_full_name }}
+
+                                        {% else %}
+
+                                            {{ usuario.username }}
+
+                                        {% endif %}
+
+                                    </strong>
+
+
+                                    <span>
+                                        @{{ usuario.username }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- =================================
+                             E-MAIL
+                        ================================== -->
+
+                        <td>
+
+                            {% if usuario.email %}
+
+                                {{ usuario.email }}
+
+                            {% else %}
+
+                                <span class="texto-sem-dado">
+                                    Não informado
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- =================================
+                             PERFIL
+                        ================================== -->
+
+                        <td>
+
+
+                            {% if usuario.is_superuser %}
+
+                                <span class="perfil-badge administrador">
+
+                                    Administrador
+
+                                </span>
+
+
+                            {% elif usuario.is_staff %}
+
+                                <span class="perfil-badge gerente">
+
+                                    Gerente
+
+                                </span>
+
+
+                            {% else %}
+
+                                <span class="perfil-badge visualizador">
+
+                                    Usuário
+
+                                </span>
+
+                            {% endif %}
+
+
+                        </td>
+
+
+                        <!-- =================================
+                             STATUS
+                        ================================== -->
+
+                        <td>
+
+
+                            {% if usuario.is_active %}
+
+                                <span class="status-badge ativo">
+
+                                    <i class="fa-solid fa-circle"></i>
+
+                                    Ativo
+
+                                </span>
+
+
+                            {% else %}
+
+                                <span class="status-badge inativo">
+
+                                    <i class="fa-solid fa-circle"></i>
+
+                                    Inativo
+
+                                </span>
+
+                            {% endif %}
+
+
+                        </td>
+
+
+                        <!-- =================================
+                             ÚLTIMO ACESSO
+                        ================================== -->
+
+                        <td>
+
+                            {% if usuario.last_login %}
+
+                                {{ usuario.last_login|date:"d/m/Y H:i" }}
+
+                            {% else %}
+
+                                <span class="texto-sem-dado">
+
+                                    Nunca acessou
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- =================================
+                             AÇÕES
+                        ================================== -->
+
+                        <td>
+
+                            <div class="acoes-usuario">
+
+
+                                <!-- VISUALIZAR -->
+                                <button
+                                    type="button"
+                                    title="Visualizar"
+                                    class="btn-visualizar"
+                                    data-id="{{ usuario.id }}"
+                                    onclick="visualizarUsuario(this.dataset.id)"
+                                >
+                                    <i class="fa-regular fa-eye"></i>
+                                </button>
+
+
+                                <!-- EDITAR -->
+                                <button
+                                    type="button"
+                                    title="Editar"
+                                    class="btn-editar"
+                                    data-id="{{ usuario.id }}"
+                                    onclick="editarUsuario(this.dataset.id)"
+                                >
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+
+                                <!-- EXCLUIR -->
+                                <button
+                                    type="button"
+                                    class="excluir"
+                                    title="Excluir"
+                                    data-id="{{ usuario.id }}"
+                                    onclick="excluirUsuario(this.dataset.id)"
+                                >
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    {% empty %}
+
+
+                    <!-- =================================
+                         NENHUM USUÁRIO
+                    ================================== -->
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            class="tabela-vazia"
+                        >
+
+                            <div>
+
+                                <i class="fa-solid fa-users-slash"></i>
+
+                                <strong>
+                                    Nenhum usuário encontrado
+                                </strong>
+
+                                <span>
+                                    Não existem usuários cadastrados com os filtros selecionados.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =====================================
+             RODAPÉ DA TABELA
+        ====================================== -->
+
+        <div class="usuarios-tabela-footer">
+
+
+            <span>
+
+                Mostrando
+
+                <strong>
+                    {{ usuarios|length }}
+                </strong>
+
+                de
+
+                <strong>
+                    {{ total_usuarios|default:"0" }}
+                </strong>
+
+                usuários
+
+            </span>
+
+
+
+            <!-- PAGINAÇÃO -->
+            <div class="paginacao">
+                {% if usuarios.has_previous %}
+                    <a href="?page={{ usuarios.previous_page_number }}{% if busca %}&busca={{ busca }}{% endif %}{% if status_selecionado %}&status={{ status_selecionado }}{% endif %}">
+                        <button type="button">
+                            Anterior
+                        </button>
+                    </a>
+                {% else %}
+
+                    <button
+                        type="button"
+                        disabled>
+                        Anterior
+                    </button>
+
+                {% endif %}
+
+
+                {% for num in usuarios.paginator.page_range %}
+
+                    {% if usuarios.number == num %}
+
+                        <button
+                            type="button"
+                            class="pagina-ativa">
+                            {{ num }}
+                        </button>
+
+                    {% else %}
+
+                        <a href="?page={{ num }}{% if busca %}&busca={{ busca }}{% endif %}{% if status_selecionado %}&status={{ status_selecionado }}{% endif %}">
+                            <button type="button">
+                                {{ num }}
+                            </button>
+                        </a>
+
+                    {% endif %}
+
+                {% endfor %}
+
+
+                {% if usuarios.has_next %}
+
+                    <a href="?page={{ usuarios.next_page_number }}{% if busca %}&busca={{ busca }}{% endif %}{% if status_selecionado %}&status={{ status_selecionado }}{% endif %}">
+                        <button type="button">
+                            Próximo
+                        </button>
+                    </a>
+
+                {% else %}
+
+                    <button
+                        type="button"
+                        disabled>
+                        Próximo
+                    </button>
+
+                {% endif %}
+
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script>
+
+function aplicarFiltroStatus(status) {
+
+    const url = new URL(window.location.href);
+
+    if (status) {
+
+        url.searchParams.set("status", status);
+
+    } else {
+
+        url.searchParams.delete("status");
+
+    }
+
+    window.location.href = url.toString();
+
+}
+
+
+/* =========================================
+   SELECIONAR TODOS
+========================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const selecionarTodos =
+        document.getElementById("selecionarTodos");
+
+    if (!selecionarTodos) {
+        return;
+    }
+
+
+    selecionarTodos.addEventListener("change", function () {
+
+        const checkboxes =
+            document.querySelectorAll(".checkbox-usuario");
+
+        checkboxes.forEach(function (checkbox) {
+
+            checkbox.checked = selecionarTodos.checked;
+
+        });
+
+    });
+
+});
+
+</script>
+
+
+{% endblock %}

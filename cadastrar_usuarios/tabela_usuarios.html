@@ -1,0 +1,75 @@
+{% for usuario in usuarios %}
+
+
+<tr data-usuario-id="{{ usuario.id }}"
+    data-nome="{{ usuario.get_full_name|default:usuario.username|escape }}"
+    data-username="{{ usuario.username|escape }}"
+    data-cep="{{ usuario.perfil.cep|default:''|escape }}"
+    data-endereco="{{ usuario.perfil.endereco|default:''|escape }}"
+    data-numero="{{ usuario.perfil.numero|default:''|escape }}"
+    data-cidade="{{ usuario.perfil.cidade|default:''|escape }}"
+    data-bairro="{{ usuario.perfil.bairro|default:''|escape }}"
+    data-estado="{{ usuario.perfil.estado|default:''|escape }}"
+    data-complemento="{{ usuario.perfil.complemento|default:''|escape }}"
+    data-telefone="{{ usuario.perfil.telefone|default:''|escape }}"
+    data-email="{{ usuario.email|default:''|escape }}"
+    data-nascimento="{% if usuario.perfil and usuario.perfil.data_nascimento %}{{ usuario.perfil.data_nascimento|date:'Y-m-d' }}{% endif %}"
+    data-rg="{{ usuario.perfil.rg|default:''|escape }}"
+    data-cpf="{{ usuario.perfil.cpf|default:''|escape }}"
+    data-cnpj="{{ usuario.perfil.cnpj|default:''|escape }}"
+    data-acesso="{% if usuario.perfil and usuario.perfil.acesso %}{{ usuario.perfil.acesso|escape }}{% elif usuario.is_superuser %}Administrador{% else %}Usuário Comum{% endif %}"
+    data-imagem="{% if usuario.perfil and usuario.perfil.imagem %}{{ usuario.perfil.imagem.url }}{% endif %}">
+
+
+
+
+
+    <td class="col-selecao"><input type="checkbox" name="usuario_selecionado" value="{{ usuario.id }}"></td>
+    <td>{{ usuario.id }}</td>
+    <td><strong>{{ usuario.get_full_name|default:usuario.username }}</strong></td>
+    <td>{{ usuario.username }}</td>
+    <td>{{ usuario.perfil.cep|default:'<span class="texto-sem-dado">Não informado</span>'|safe }}</td>
+    <td>{{ usuario.perfil.endereco|default:'<span class="texto-sem-dado">Não informado</span>'|safe }}</td>
+    <td>{{ usuario.perfil.numero|default:'<span class="texto-sem-dado">—</span>'|safe }}</td>
+    <td>{{ usuario.perfil.cidade|default:'<span class="texto-sem-dado">—</span>'|safe }}</td>
+    <td>{{ usuario.perfil.bairro|default:'<span class="texto-sem-dado">—</span>'|safe }}</td>
+    <td>{{ usuario.perfil.estado|default:'<span class="texto-sem-dado">—</span>'|safe }}</td>
+    <td>{{ usuario.perfil.complemento|default:'<span class="texto-sem-dado">—</span>'|safe }}</td>
+    <td>{{ usuario.perfil.telefone|default:'<span class="texto-sem-dado">—</span>'|safe }}</td>
+    <td>{{ usuario.email|default:'<span class="texto-sem-dado">Não informado</span>'|safe }}</td>
+    <td>{% if usuario.perfil.data_nascimento %}{{ usuario.perfil.data_nascimento|date:"d/m/Y" }}{% else %}<span class="texto-sem-dado">—</span>{% endif %}</td>
+    <td>{{ usuario.perfil.rg|default:'<span class="texto-sem-dado">—</span>'|safe }}</td>
+    <td>{{ usuario.perfil.cpf|default:'<span class="texto-sem-dado">—</span>'|safe }}</td>
+    <td>{{ usuario.perfil.cnpj|default:'<span class="texto-sem-dado">—</span>'|safe }}</td>
+    <td>{% if usuario.perfil.ultima_troca_senha %}{{ usuario.perfil.ultima_troca_senha|date:"d/m/Y H:i" }}{% else %}<span class="texto-sem-dado">Nunca alterada</span>{% endif %}</td>
+    <td>{% if usuario.perfil.data_senha_cadastrada %}{{ usuario.perfil.data_senha_cadastrada|date:"d/m/Y H:i" }}{% else %}<span class="texto-sem-dado">—</span>{% endif %}</td>
+    <td>{% if usuario.date_joined %}{{ usuario.date_joined|date:"d/m/Y H:i" }}{% else %}<span class="texto-sem-dado">—</span>{% endif %}</td>
+    <td>{{ usuario.perfil.segredo|default:'<span class="texto-sem-dado">—</span>'|safe }}</td>
+    <td>
+        {% if usuario.id == usuario_atual_id %}
+            <span class="status-badge logado">{{ request.user.username }}</span>
+        {% else %}
+            <span class="texto-sem-dado">{{ request.user.username }}</span>
+        {% endif %}
+    </td>
+    <td>
+        {% if usuario.perfil.acesso %}
+            {{ usuario.perfil.acesso }}
+        {% elif usuario.is_superuser %}
+            Administrador
+        {% else %}
+            Usuário Comum
+        {% endif %}
+    </td>
+</tr>
+{% empty %}
+<tr class="linha-vazia">
+    <td colspan="23">
+        <div class="mensagem-nenhum-usuario">
+            <i class="fa-solid fa-users-slash"></i>
+            <strong>Nenhum usuário cadastrado</strong>
+            <span>Cadastre um usuário para que ele apareça nesta lista.</span>
+        </div>
+    </td>
+</tr>
+{% endfor %}

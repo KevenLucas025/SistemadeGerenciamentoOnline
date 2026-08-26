@@ -107,9 +107,14 @@
                     </div>
 
                     <div class="campo">
-                        <label>Cliente</label>
+                        <label for="cliente">Cliente *</label>
                         <select id="cliente" name="cliente">
-                            <option value="">Selecione um cliente</option>
+                            <option value="" selected>Selecione um cliente</option>
+                            {% for c in clientes %}
+                                <option value="{{ c.id }}">
+                                    {{ c.nome }}{% if c.tipo_cliente == "juridico" and c.cnpj %} (CNPJ: {{ c.cnpj }}){% elif c.cpf %} (CPF: {{ c.cpf }}){% endif %}
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
 
@@ -548,7 +553,6 @@
 <!-- =====================================================
      MODAL FILTRAR PRODUTOS
 ===================================================== -->
-
 <div class="modal fade"
      id="modalFiltrarProdutos"
      tabindex="-1"

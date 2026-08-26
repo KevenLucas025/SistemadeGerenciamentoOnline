@@ -1,0 +1,50 @@
+{% if usuarios %}
+    {% for usuario in usuarios %}
+    <tr>
+        <td><strong>{{ usuario.get_full_name|default:usuario.username }}</strong></td>
+        <td>{{ usuario.username }}</td>
+        <td>{{ usuario.perfil.cep|default:"Não informado" }}</td>
+        <td>{{ usuario.perfil.endereco|default:"Não informado" }}</td>
+        <td>{{ usuario.perfil.numero|default:"—" }}</td>
+        <td>{{ usuario.perfil.cidade|default:"—" }}</td>
+        <td>{{ usuario.perfil.bairro|default:"—" }}</td>
+        <td>{{ usuario.perfil.estado|default:"—" }}</td>
+        <td>{{ usuario.perfil.complemento|default:"—" }}</td>
+        <td>{{ usuario.perfil.telefone|default:"—" }}</td>
+        <td>{{ usuario.email|default:"Não informado" }}</td>
+        <td>{% if usuario.perfil.data_nascimento %}{{ usuario.perfil.data_nascimento|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+        <td>{{ usuario.perfil.rg|default:"—" }}</td>
+        <td>{{ usuario.perfil.cpf|default:"—" }}</td>
+        <td>{{ usuario.perfil.cnpj|default:"—" }}</td>
+        <td>{% if usuario.perfil.ultima_troca_senha %}{{ usuario.perfil.ultima_troca_senha|date:"d/m/Y H:i" }}{% else %}Nunca alterada{% endif %}</td>
+        <td>{% if usuario.perfil.data_senha_cadastrada %}{{ usuario.perfil.data_senha_cadastrada|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+        <td>{% if usuario.date_joined %}{{ usuario.date_joined|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+        <td>{{ usuario.perfil.segredo|default:"—" }}</td>
+        <td>
+            {% if usuario.id == usuario_atual_id %}
+                <span class="status-badge logado">{{ request.user.username }}</span>
+            {% else %}
+                <span class="texto-sem-dado">{{ request.user.username }}</span>
+            {% endif %}
+        </td>
+        <td>
+            {% if usuario.perfil.acesso %}
+                {{ usuario.perfil.acesso }}
+            {% elif usuario.is_superuser %}
+                Administrador
+            {% else %}
+                Usuário Comum
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+{% else %}
+    <tr>
+        <td colspan="21" class="sem-registros-verificar-usuarios">
+            <div class="sem-registros-content">
+                <i class="fa-solid fa-users-slash"></i>
+                <p>Nenhum usuário ativo encontrado.</p>
+            </div>
+        </td>
+    </tr>
+{% endif %}

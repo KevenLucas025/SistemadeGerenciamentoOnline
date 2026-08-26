@@ -1,59 +1,121 @@
-
-function abrirMenuUsuario(){
-
+function abrirMenuUsuario() {
     const menu = document.getElementById("menuUsuarioDropdown");
-
-    menu.classList.toggle("ativo");
-
+    if (menu) {
+        menu.classList.toggle("ativo");
+    }
 }
 
-document.addEventListener("click", function(event){
-
+// Fecha o menu ao clicar fora
+document.addEventListener("click", function(event) {
     const usuario = document.querySelector(".sidebar-user");
     const menu = document.getElementById("menuUsuarioDropdown");
 
-
-    if(
-        !usuario.contains(event.target) &&
-        !menu.contains(event.target)
-    ){
-
+    if (usuario && menu && !usuario.contains(event.target) && !menu.contains(event.target)) {
         menu.classList.remove("ativo");
-
     }
-
 });
 
-const indicador = document.getElementById("statusUsuario");
-const avatar = document.querySelector(".sidebar-user-avatar");
+// Helper para capturar o CSRF Token
+function getCSRFToken() {
+    const cookies = document.cookie.split(";");
+    for (const cookie of cookies) {
+        const [nome, valor] = cookie.trim().split("=");
+        if (nome === "csrftoken") return decodeURIComponent(valor);
+    }
+    return "";
+}
 
-document.querySelectorAll(".status-opcao").forEach(opcao => {
+// Controle de Troca de Status com Persistência
+document.addEventListener("DOMContentLoaded", () => {
+    const containerStatus = document.getElementById("containerStatusUsuario");
+    const indicador = document.getElementById("statusUsuario");
+    const avatarTopbar = document.getElementById("topbarUserAvatar");
+    const avatarHeader = document.getElementById("dropdownHeaderAvatar");
+    const indicadorHeader = document.getElementById("statusIndicadorHeader");
+    const textoHeader = document.getElementById("statusTextoHeader");
 
-    opcao.addEventListener("click", function() {
+    const textosStatus = {
+        online: "Online",
+        ausente: "Ausente",
+        transferencias: "Apenas transferências",
+        offline: "Offline"
+    };
 
-        document.querySelectorAll(".status-opcao").forEach(item => {
-            item.classList.remove("ativo");
-        });
+    const coresBorda = {
+        online: "#22c55e",
+        ausente: "#f59e0b",
+        transferencias: "#38bdf8",
+        offline: "#6b7280"
+    };
 
-        this.classList.add("ativo");
+    function aplicarStatus(status) {
+        const cor = coresBorda[status] || "#22c55e";
 
-        const status = this.dataset.status;
-
-        // Limpa classes anteriores
-        indicador.classList.remove("online", "ausente", "offline");
-        avatar.classList.remove("online", "ausente", "offline");
-
-        // Adiciona novas classes
-        indicador.classList.add(status);
-        avatar.classList.add(status);
-
-        // Altera o ícone interno da bolinha de status
-        if (status === "offline") {
-            indicador.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-        } else {
-            indicador.innerHTML = ''; // Limpa o ícone para os outros status
+        // 1. Atualiza elementos da Topbar
+        if (avatarTopbar) {
+            avatarTopbar.className = `sidebar-user-avatar ${status}`;
+            avatarTopbar.style.borderColor = cor;
+        }
+        if (indicador) {
+            indicador.className = `status-indicador ${status}`;
+            indicador.style.backgroundColor = cor;
         }
 
-    });
+        // 2. Atualiza cabeçalho do Dropdown
+        if (avatarHeader) {
+            avatarHeader.className = `dropdown-user-avatar ${status}`;
+            avatarHeader.style.borderColor = cor;
+        }
+        if (indicadorHeader) {
+            indicadorHeader.className = `status-indicador-header ${status}`;
+            indicadorHeader.style.backgroundColor = cor;
+        }
 
+        // 3. Atualiza o texto descritivo
+        if (textoHeader) {
+            textoHeader.textContent = textosStatus[status] || "Online";
+        }
+
+        // 4. Marca o item ativo
+        document.querySelectorAll(".status-opcao").forEach(item => {
+            if (item.dataset.status === status) {
+                item.classList.add("ativo");
+            } else {
+                item.classList.remove("ativo");
+            }
+        });
+    }
+
+    // Inicializa com o status que está salvo no banco
+    const statusSalvo = containerStatus ? containerStatus.dataset.statusInicial : "online";
+    aplicarStatus(statusSalvo || "online");
+
+    // Salva a alteração no banco via AJAX ao clicar
+    document.querySelectorAll(".status-opcao").forEach(opcao => {
+        opcao.addEventListener("click", function() {
+            const status = this.dataset.status;
+            
+            // Aplica visualmente na hora
+            aplicarStatus(status);
+
+            // Envia para o banco de dados
+            const formData = new FormData();
+            formData.append("status", status);
+
+            fetch("/atualizar-status/", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCSRFToken()
+                },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (!data.sucesso) {
+                    console.error("Erro ao salvar status:", data.mensagem);
+                }
+            })
+            .catch(err => console.error("Erro na requisição:", err));
+        });
+    });
 });
