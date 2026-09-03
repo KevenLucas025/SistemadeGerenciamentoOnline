@@ -8,6 +8,7 @@ from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from accounts.models import PerfilUsuario  
+from .models import HistoricoUsuario
 
 
 @login_required
@@ -68,6 +69,15 @@ def gerar_saida_usuario(request, usuario_id):
         perfil, _ = PerfilUsuario.objects.get_or_create(usuario=usuario)
         perfil.data_inatividade = timezone.now()
         perfil.save(update_fields=["data_inatividade"])
+        
+        # 2. Grava no Histórico
+        HistoricoUsuario.objects.create(
+            acao='saida',
+            descricao=f"O usuário {usuario.get_full_name() or usuario.username} teve a saída gerada e foi inativado.",
+            usuario_afetado=usuario,
+            nome_usuario_afetado=usuario.get_full_name() or usuario.username,
+            usuario_responsavel=request.user
+        )
 
         return JsonResponse({
             "sucesso": True,
@@ -79,3 +89,21 @@ def gerar_saida_usuario(request, usuario_id):
             "sucesso": False,
             "mensagem": f"Erro interno ao gerar saída: {str(e)}"
         }, status=500)
+        
+        
+@login_required
+def listar_historico(request):
+    registros = HistoricoUsuario.objects.all().select_related('usuario_responsavel')
+    
+    dados = []
+    for r in registros:
+        dados.append({
+            "id": r.id,
+            "data_hora": r.data_hora.strftime("%d/%m/%Y %H:%M:%S"),
+            "usuario_logado": r.usuario_responsavel.username if r.usuario_responsavel else "Sistema",
+            "acao": r.get_acao_display(),
+            "descricao": r.descricao,
+            
+        })
+
+    return JsonResponse({"sucesso": True, "historico": dados})

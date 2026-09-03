@@ -247,7 +247,7 @@
             <button type="button" class="btn-side-action" id="btnGerarSaida">
                 <i class="fa-regular fa-trash-can"></i> Gerar Saída
             </button>
-            <button type="button" class="btn-side-action">
+            <button type="button" class="btn-side-action" id="btnAbrirHistorico">
                 <i class="fa-regular fa-calendar-days"></i> Histórico
             </button>
             <button type="button" class="btn-side-action">
@@ -287,6 +287,103 @@
                     Confirmar Saída
                 </button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE HISTÓRICO DE AÇÕES DE USUÁRIOS
+====================================================== -->
+<div class="modal fade" id="modalHistoricoUsuarios" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content modal-historico-content">
+            
+            <!-- HEADER -->
+            <div class="modal-historico-header">
+                <div class="modal-historico-titulo-box">
+                    <div class="modal-historico-icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <div>
+                        <h3 class="modal-historico-titulo">Histórico de Atividades</h3>
+                        <p class="modal-historico-subtitulo">Registro detalhado de ações, saídas e alterações de usuários no sistema</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-modal-fechar-historico" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- TOOLBAR DE AÇÕES (8 BOTÕES) -->
+            <div class="modal-historico-toolbar">
+                <div class="modal-historico-toolbar-acoes">
+                    <button type="button" class="btn-historico-acao" id="btnAtualizarHistorico">
+                        <i class="fa-solid fa-rotate"></i> Atualizar histórico
+                    </button>
+                    <button type="button" class="btn-historico-acao btn-historico-perigo" id="btnApagarHistorico">
+                        <i class="fa-regular fa-trash-can"></i> Apagar histórico
+                    </button>
+                    <button type="button" class="btn-historico-acao" id="btnExportarCsvHistorico">
+                        <i class="fa-solid fa-file-csv"></i> Exportar CSV
+                    </button>
+                    <button type="button" class="btn-historico-acao" id="btnExportarExcelHistorico">
+                        <i class="fa-regular fa-file-excel"></i> Exportar Excel
+                    </button>
+                    <button type="button" class="btn-historico-acao" id="btnExportarPdfHistorico">
+                        <i class="fa-regular fa-file-pdf"></i> Exportar PDF
+                    </button>
+                    <button type="button" class="btn-historico-acao" id="btnPausarHistorico">
+                        <i class="fa-solid fa-pause"></i> <span id="textoStatusPausaHistorico">Pausar histórico</span>
+                    </button>
+                    <button type="button" class="btn-historico-acao" id="btnOrdenarHistorico">
+                        <i class="fa-solid fa-arrow-down-a-z"></i> Ordenar histórico
+                    </button>
+                    <button type="button" class="btn-historico-acao" id="btnFiltrarHistorico">
+                        <i class="fa-solid fa-filter"></i> Filtrar histórico
+                    </button>
+                </div>
+            </div>
+
+            <!-- BODY COM TABELA E CHECKBOXES -->
+            <div class="modal-body modal-historico-body">
+                <div class="modal-historico-table-container">
+                    <table class="verificar-usuarios-table modal-historico-table">
+                        <thead>
+                            <tr>
+                                <th class="col-checkbox">
+                                    <input type="checkbox" id="checkAllHistorico" class="checkbox-custom-historico">
+                                </th>
+                                <th>DATA / HORA</th>
+                                <th>USUÁRIO</th>
+                                <th>AÇÃO</th>
+                                <th>DESCRIÇÃO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyHistoricoUsuarios">
+                            <!-- Linha vazia padrão para quando não houver dados -->
+                            <tr class="linha-vazia-historico">
+                                <td colspan="5">
+                                    <div class="sem-registros-content-historico">
+                                        <i class="fa-solid fa-clock-rotate-left"></i>
+                                        <p>Nenhum registro de histórico encontrado.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-historico-footer">
+                <span class="contador-selecionados-historico" id="contadorSelecionadosHistorico">
+                    0 itens selecionados
+                </span>
+                <button type="button" class="btn-cancelar-irreversivel" data-bs-dismiss="modal">
+                    Fechar
+                </button>
+            </div>
+
         </div>
     </div>
 </div>

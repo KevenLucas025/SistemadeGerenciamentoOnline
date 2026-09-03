@@ -102,12 +102,11 @@
 }
 
 /* =====================================================
-   BOTÕES E AÇÕES LATERAIS (CORREÇÃO DO CORTE)
+   BOTÕES E AÇÕES LATERAIS
 ===================================================== */
 .verificar-usuarios-side-actions {
     display: flex;
     flex-direction: column;
-    /* Substituído gap: 80px por distribuição fluida */
     justify-content: space-evenly; 
     gap: 12px;
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -118,10 +117,10 @@
     width: 100%;
     padding: 20px 16px;
     background: #121824;
-    overflow-y: auto; /* Se a tela for extremamente pequena, adiciona scroll sem cortar */
+    overflow-y: auto;
 }
 
-/* Scrollbar estilizada para a coluna lateral */
+/* Scrollbar para a coluna lateral */
 .verificar-usuarios-side-actions::-webkit-scrollbar {
     width: 6px;
 }
@@ -218,33 +217,130 @@
     font-size: 13px;
 }
 
-.verificar-usuarios-table tbody tr:hover td {
-    background-color: #262f3d !important;
-    color: #f9fafb !important;
-}
-/* 1. Transição e cursor em todas as linhas */
+/* 1. Transição e cursor em linhas normais */
 .verificar-usuarios-table tbody tr {
     cursor: pointer;
     transition: background-color 0.15s ease;
 }
 
-/* 3. Linha Selecionada (Destaque evidente com tom azulado/indigo) */
+.verificar-usuarios-table tbody tr:hover td {
+    background-color: #262f3d !important;
+    color: #f9fafb !important;
+}
+
+/* 2. Linha Selecionada (Destaque evidente com tom azulado) */
 .verificar-usuarios-table tbody tr.linha-selecionada td {
     background-color: #1e3a5f !important;
     color: #ffffff !important;
     border-bottom-color: #2b4c7e !important;
 }
 
-/* 4. Indicador visual na primeira coluna da linha selecionada */
 .verificar-usuarios-table tbody tr.linha-selecionada td:first-child {
     border-left: 3px solid #38bdf8 !important;
 }
 
-/* 5. Hover na linha que já está selecionada */
-.verificar-usuarios-table tbody tr.linha-selecionada:hover td {
-    background-color: #254673 !important;
+.verificar-usuarios-table-container tbody tr.linha-selecionada:hover td {
+    cursor: default !important;
+    background-color: #1e3a5f !important;
+    color: #ffffff !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-accent-bg: transparent !important;
 }
 
+/* =====================================================
+   CENTRALIZAÇÃO VERTICAL DA MENSAGEM (IGUAL PRODUTOS.CSS)
+===================================================== */
+.verificar-usuarios-table tbody tr.linha-vazia td,
+.verificar-usuarios-table tbody td:has(.sem-registros-content) {
+    height: calc(30vh - 50px);
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* =====================================================
+   RESET TOTAL DE HOVER DO BOOTSTRAP PARA LINHA VAZIA
+===================================================== */
+.verificar-usuarios-table tbody tr.linha-vazia,
+.verificar-usuarios-table tbody tr.linha-vazia:hover,
+.verificar-usuarios-table tbody tr:has(.sem-registros-content),
+.verificar-usuarios-table tbody tr:has(.sem-registros-content):hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-hover-color: inherit !important;
+    --bs-table-accent-bg: transparent !important;
+    --bs-table-bg-state: transparent !important;
+    box-shadow: none !important;
+}
+
+.verificar-usuarios-table tbody tr.linha-vazia td,
+.verificar-usuarios-table tbody tr.linha-vazia:hover td,
+.verificar-usuarios-table tbody tr:has(.sem-registros-content) td,
+.verificar-usuarios-table tbody tr:has(.sem-registros-content):hover td {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: inherit !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-accent-bg: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+.sem-registros-content {
+    pointer-events: none; /* Impede eventos de cursor e hover nos elementos internos */
+}
+
+/* =====================================================
+   LINHA VAZIA / SEM REGISTROS (NOVA ESTILIZAÇÃO)
+===================================================== */
+.verificar-usuarios-table tbody tr.linha-vazia {
+    cursor: default !important;
+    background: transparent !important;
+}
+
+.verificar-usuarios-table tbody tr.linha-vazia td {
+    padding: 40px 20px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    border-bottom: none !important;
+    background: transparent !important;
+}
+
+.verificar-usuarios-table tbody tr.linha-vazia:hover td {
+    background-color: transparent !important;
+    color: inherit !important;
+    cursor: default !important;
+}
+
+.sem-registros-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px;
+    padding: 20px 0;
+    color: #9ca3af;
+    text-align: center;
+    user-select: none;
+}
+
+.sem-registros-content i {
+    font-size: 36px;
+    margin-bottom: 12px;
+    color: #6b7280;
+    display: inline-block;
+}
+
+.sem-registros-content p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #9ca3af;
+}
+
+/* Scrollbars da tabela */
 .verificar-usuarios-table-container::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -259,28 +355,9 @@
     background: #141b27;
 }
 
-.sem-registros-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 120px;
-    padding: 20px 0;
-    color: #9ca3af;
-    text-align: center;
-}
-
-.sem-registros-content i {
-    font-size: 32px;
-    margin-bottom: 8px;
-    color: #6b7280;
-}
-
-.sem-registros-content p {
-    margin: 0;
-    font-size: 14px;
-}
-
+/* =====================================================
+   BOTÕES ADICIONAIS
+===================================================== */
 .btn-verificar-usuarios-outline {
     display: flex;
     align-items: center;
@@ -299,20 +376,25 @@
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.3);
 }
-#modalConfirmarSaida  .modal-content{
+
+/* =====================================================
+   MODAL CONFIRMAR SAÍDA
+===================================================== */
+#modalConfirmarSaida .modal-content {
     background: #1f2937;
     border: 1px solid #374151;
     border-radius: 16px;
     color: #ffffff;
     overflow: hidden;
 }
-/* Força a largura na caixa de diálogo do modal */
+
 #modalConfirmarSaida .modal-dialog {
-    max-width: 440px !important; /* Ajuste para o tamanho desejado (ex: 420px, 460px) */
+    max-width: 440px !important;
     width: 90% !important;
     margin: 1.75rem auto !important;
 }
-.modal-aviso-irreversivel-header{
+
+.modal-aviso-irreversivel-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -332,6 +414,7 @@
     color: #38bdf8;
     font-size: 21px;
 }
+
 .modal-aviso-irreversivel-body {
     padding: 24px 24px 20px;
 }
@@ -350,22 +433,16 @@
     line-height: 1.6;
 }
 
-
-
-/* =====================================================
-   BOTÕES
-===================================================== */
-.modal-aviso-irreversivel-footer{
+.modal-aviso-irreversivel-footer {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     padding: 18px 24px;
     border-top: 1px solid #374151;
-
 }
 
 .btn-cancelar-irreversivel,
-.btn-confirmar-irreversivel-sensivel{
+.btn-confirmar-irreversivel-sensivel {
     min-width: 110px;
     padding: 9px 16px;
     border-radius: 8px;
@@ -375,7 +452,7 @@
     transition: all 0.2s ease;
 }
 
-/* CANCELAR */
+/* Cancelar */
 .btn-cancelar-irreversivel {
     background: #374151;
     border: 1px solid #4b5563;
@@ -386,7 +463,7 @@
     background: #4b5563;
 }
 
-/* CONFIRMAR (COM ÍCONE) */
+/* Confirmar */
 .btn-confirmar-irreversivel {
     display: flex;
     align-items: center;
@@ -406,20 +483,18 @@
     background: #0369a1;
     border-color: #0369a1;
 }
+
 .btn-modal-fechar-aviso-irreversivel {
     width: 36px !important;
     height: 36px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    
-    /* Reseta estilos do Bootstrap */
     background: rgba(255, 255, 255, 0.1) !important; 
     border: none !important;
-    background-image: none !important; /* Remove o X nativo do Bootstrap */
+    background-image: none !important;
     opacity: 1 !important;
     padding: 0 !important;
-    
     border-radius: 50% !important;
     color: #ffffff !important;
     font-size: 18px !important;
@@ -427,15 +502,261 @@
     transition: all 0.2s ease;
 }
 
-/* HOVER (Fica vermelho ao passar o mouse) */
 .btn-modal-fechar-aviso-irreversivel:hover {
     background-color: #dc2626 !important;
     color: #ffffff !important;
     transform: scale(1.1);
 }
 
-/* FOCO */
 .btn-modal-fechar-aviso-irreversivel:focus {
     outline: none !important;
     box-shadow: none !important;
+}
+
+/* =====================================================
+   ESTRUTURA DO MODAL DE HISTÓRICO
+===================================================== */
+#modalHistoricoUsuarios .modal-dialog {
+    max-width: 1100px !important;
+    width: 95% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-historico-content {
+    background: #1f2937;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    color: #ffffff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* HEADER */
+.modal-historico-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid #374151;
+    background: #111827;
+}
+
+.modal-historico-titulo-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.modal-historico-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.modal-historico-titulo {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #f9fafb;
+}
+
+.modal-historico-subtitulo {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+.btn-modal-fechar-historico {
+    width: 34px !important;
+    height: 34px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    color: #ffffff !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-historico:hover {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    transform: scale(1.05);
+}
+
+/* TOOLBAR COM OS 8 BOTÕES */
+.modal-historico-toolbar {
+    padding: 12px 24px;
+    background: #111827;
+    border-bottom: 1px solid #2d3748;
+}
+
+.modal-historico-toolbar-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.btn-historico-acao {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    color: #e5e7eb;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-historico-acao:hover {
+    background: #374151;
+    border-color: #4b5563;
+    color: #ffffff;
+}
+
+.btn-historico-acao.btn-historico-perigo:hover {
+    background: rgba(220, 38, 38, 0.2);
+    border-color: #dc2626;
+    color: #f87171;
+}
+
+/* BODY E TABELA DO HISTÓRICO */
+.modal-historico-body {
+    padding: 20px 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 280px;
+    background: #111827;
+}
+
+.modal-historico-table-container {
+    width: 100%;
+    height: 100%;
+    max-height: 48vh;
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid #374151;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.modal-historico-table th.col-checkbox,
+.modal-historico-table td.col-checkbox {
+    width: 44px;
+    text-align: center;
+    padding: 10px 8px;
+}
+
+.checkbox-custom-historico {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #0284c7;
+}
+
+/* FOOTER */
+.modal-historico-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: #111827;
+    border-top: 1px solid #374151;
+}
+
+.contador-selecionados-historico {
+    font-size: 13px;
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+/* =====================================================
+   RESET TOTAL DE BG E HOVER DO BOOTSTRAP (HISTÓRICO)
+===================================================== */
+.modal-historico-table {
+    width: 100% !important;
+    min-width: 100% !important;
+    height: 100%;
+}
+
+.modal-historico-table tbody tr.linha-vazia-historico,
+.modal-historico-table tbody tr.linha-vazia-historico:hover,
+.modal-historico-table tbody tr:has(.sem-registros-content-historico),
+.modal-historico-table tbody tr:has(.sem-registros-content-historico):hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-hover-color: inherit !important;
+    --bs-table-accent-bg: transparent !important;
+    --bs-table-bg-state: transparent !important;
+    box-shadow: none !important;
+}
+
+.modal-historico-table tbody tr.linha-vazia-historico td,
+.modal-historico-table tbody tr.linha-vazia-historico:hover td,
+.modal-historico-table tbody tr:has(.sem-registros-content-historico) td,
+.modal-historico-table tbody tr:has(.sem-registros-content-historico):hover td {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: inherit !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-accent-bg: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    height: calc(48vh - 50px) !important; /* Altura exata da área interna */
+    padding: 0 !important;
+}
+
+/* =====================================================
+   ESTRUTURA DO CONTEÚDO VAZIO (HISTÓRICO)
+===================================================== */
+.sem-registros-content-historico {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    color: #9ca3af;
+    text-align: center;
+    pointer-events: none;
+    user-select: none;
+    margin: 0 auto;
+}
+
+.sem-registros-content-historico i {
+    font-size: 36px;
+    margin-bottom: 12px;
+    color: #6b7280;
+    display: block;
+}
+
+.sem-registros-content-historico p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #9ca3af;
 }
