@@ -186,7 +186,6 @@
     overflow-y: auto;
     border: 1px solid #374151;
     border-radius: 10px;
-    background: #1f2937;
     box-sizing: border-box;
 }
 
@@ -219,8 +218,31 @@
     font-size: 13px;
 }
 
-.verificar-usuarios-table tbody tr:hover {
-    background: rgba(99, 102, 241, 0.08);
+.verificar-usuarios-table tbody tr:hover td {
+    background-color: #262f3d !important;
+    color: #f9fafb !important;
+}
+/* 1. Transição e cursor em todas as linhas */
+.verificar-usuarios-table tbody tr {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+/* 3. Linha Selecionada (Destaque evidente com tom azulado/indigo) */
+.verificar-usuarios-table tbody tr.linha-selecionada td {
+    background-color: #1e3a5f !important;
+    color: #ffffff !important;
+    border-bottom-color: #2b4c7e !important;
+}
+
+/* 4. Indicador visual na primeira coluna da linha selecionada */
+.verificar-usuarios-table tbody tr.linha-selecionada td:first-child {
+    border-left: 3px solid #38bdf8 !important;
+}
+
+/* 5. Hover na linha que já está selecionada */
+.verificar-usuarios-table tbody tr.linha-selecionada:hover td {
+    background-color: #254673 !important;
 }
 
 .verificar-usuarios-table-container::-webkit-scrollbar {
@@ -276,4 +298,144 @@
 .btn-verificar-usuarios-outline:hover {
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.3);
+}
+#modalConfirmarSaida  .modal-content{
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 16px;
+    color: #ffffff;
+    overflow: hidden;
+}
+/* Força a largura na caixa de diálogo do modal */
+#modalConfirmarSaida .modal-dialog {
+    max-width: 440px !important; /* Ajuste para o tamanho desejado (ex: 420px, 460px) */
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+.modal-aviso-irreversivel-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 15px;
+    border: none;
+    border-bottom: 1px solid #374151;
+}
+
+.modal-aviso-irreversivel-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    font-size: 21px;
+}
+.modal-aviso-irreversivel-body {
+    padding: 24px 24px 20px;
+}
+
+.modal-aviso-irreversivel-body h4 {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-aviso-irreversivel-body p {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+
+/* =====================================================
+   BOTÕES
+===================================================== */
+.modal-aviso-irreversivel-footer{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 18px 24px;
+    border-top: 1px solid #374151;
+
+}
+
+.btn-cancelar-irreversivel,
+.btn-confirmar-irreversivel-sensivel{
+    min-width: 110px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* CANCELAR */
+.btn-cancelar-irreversivel {
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #e5e7eb;
+}
+
+.btn-cancelar-irreversivel:hover {
+    background: #4b5563;
+}
+
+/* CONFIRMAR (COM ÍCONE) */
+.btn-confirmar-irreversivel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #0284c7;
+    border: 1px solid #0284c7;
+    color: #ffffff;
+    border-radius: 8px;
+}
+
+.btn-confirmar-irreversivel i {
+    font-size: 14px;
+}
+
+.btn-confirmar-irreversivel:hover {
+    background: #0369a1;
+    border-color: #0369a1;
+}
+.btn-modal-fechar-aviso-irreversivel {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Reseta estilos do Bootstrap */
+    background: rgba(255, 255, 255, 0.1) !important; 
+    border: none !important;
+    background-image: none !important; /* Remove o X nativo do Bootstrap */
+    opacity: 1 !important;
+    padding: 0 !important;
+    
+    border-radius: 50% !important;
+    color: #ffffff !important;
+    font-size: 18px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* HOVER (Fica vermelho ao passar o mouse) */
+.btn-modal-fechar-aviso-irreversivel:hover {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    transform: scale(1.1);
+}
+
+/* FOCO */
+.btn-modal-fechar-aviso-irreversivel:focus {
+    outline: none !important;
+    box-shadow: none !important;
 }

@@ -27,6 +27,9 @@ urlpatterns = [
     path("usuarios/<int:usuario_id>/", views.obter_usuario, name="obter_usuario"),
     path("usuarios/", views.usuarios, name="usuarios"),
     
+    # USUÁRIOS (OBRIGATÓRIO PARA ENCONTRAR O GERAR SAIDA)
+    path('usuarios/', include('usuarios.urls')),
+    
     # ADM USUÁRIOS
     path('adm_usuarios/', include('adm_usuarios.urls')),
     

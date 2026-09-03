@@ -43,6 +43,7 @@ class PerfilUsuario(models.Model):
     segredo = models.CharField(max_length=255, blank=True)
     ultima_troca_senha = models.DateTimeField(null=True, blank=True)
     data_senha_cadastrada = models.DateTimeField(auto_now_add=True)
+    data_inatividade = models.DateTimeField(null=True, blank=True)
 
     acesso = models.CharField(
         max_length=30,

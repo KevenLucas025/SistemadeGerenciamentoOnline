@@ -1,6 +1,6 @@
 {% if usuarios_inativos %}
     {% for usuario in usuarios_inativos %}
-    <tr>
+    <tr data-usuario-id="{{ usuario.id }}">
         <td><strong>{{ usuario.get_full_name|default:usuario.username }}</strong></td>
         <td>{{ usuario.username }}</td>
         <td>{{ usuario.perfil.cep|default:"Não informado" }}</td>
@@ -19,6 +19,7 @@
         <td>{% if usuario.perfil.ultima_troca_senha %}{{ usuario.perfil.ultima_troca_senha|date:"d/m/Y H:i" }}{% else %}Nunca alterada{% endif %}</td>
         <td>{% if usuario.perfil.data_senha_cadastrada %}{{ usuario.perfil.data_senha_cadastrada|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
         <td>{% if usuario.date_joined %}{{ usuario.date_joined|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+        <td>{% if usuario.perfil.data_inatividade %}{{ usuario.perfil.data_inatividade|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
         <td>{{ usuario.perfil.segredo|default:"—" }}</td>
         <td>
             {% if usuario == request.user %}
@@ -40,7 +41,7 @@
     {% endfor %}
 {% else %}
     <tr>
-        <td colspan="21" class="sem-registros-verificar-usuarios">
+        <td colspan="22" class="sem-registros-verificar-usuarios">
             <div class="sem-registros-content">
                 <i class="fa-solid fa-users-slash"></i>
                 <p>Nenhum usuário inativo encontrado.</p>
