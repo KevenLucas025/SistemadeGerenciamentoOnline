@@ -53,6 +53,22 @@
                     </div>
                 </div>
 
+                <!-- BARRA DE PESQUISA: USUÁRIOS ATIVOS -->
+                <div class="verificar-usuarios-search-bar">
+                    <div class="input-search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input 
+                            type="text" 
+                            id="inputPesquisaAtivos" 
+                            class="input-pesquisa-tabela" 
+                            placeholder="Pesquisar por nome, usuário, e-mail ou CPF..."
+                            autocomplete="off">
+                    </div>
+                    <button type="button" class="btn-pesquisar-tabela" id="btnPesquisarAtivos">
+                        <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
+                    </button>
+                </div>
+
                 <!-- TABELA 1: USUÁRIOS ATIVOS -->
                 <div class="verificar-usuarios-table-container">
                     <table class="verificar-usuarios-table">
@@ -143,6 +159,22 @@
                     <div>
                         <h2>Usuários Inativos</h2>
                     </div>
+                </div>
+
+            <!-- BARRA DE PESQUISA: USUÁRIOS INATIVOS -->
+                <div class="verificar-usuarios-search-bar">
+                    <div class="input-search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input 
+                            type="text" 
+                            id="inputPesquisaInativos" 
+                            class="input-pesquisa-tabela" 
+                            placeholder="Pesquisar por nome, usuário, e-mail ou CPF..."
+                            autocomplete="off">
+                    </div>
+                    <button type="button" class="btn-pesquisar-tabela" id="btnPesquisarInativos">
+                        <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
+                    </button>
                 </div>
 
                 <!-- TABELA 2: USUÁRIOS INATIVOS -->
@@ -250,7 +282,7 @@
             <button type="button" class="btn-side-action" id="btnAbrirHistorico">
                 <i class="fa-regular fa-calendar-days"></i> Histórico
             </button>
-            <button type="button" class="btn-side-action">
+            <button type="button" id="btnLimparTabelas" class="btn-side-action">
                 <i class="fa-regular fa-trash-can"></i> Limpar Tabelas
             </button>
         </div>
@@ -317,28 +349,28 @@
             <!-- TOOLBAR DE AÇÕES (8 BOTÕES) -->
             <div class="modal-historico-toolbar">
                 <div class="modal-historico-toolbar-acoes">
-                    <button type="button" class="btn-historico-acao" id="btnAtualizarHistorico">
+                    <button type="button" class="btn-historico-acao btn-historico-atualizar" id="btnAtualizarHistorico">
                         <i class="fa-solid fa-rotate"></i> Atualizar histórico
                     </button>
                     <button type="button" class="btn-historico-acao btn-historico-perigo" id="btnApagarHistorico">
                         <i class="fa-regular fa-trash-can"></i> Apagar histórico
                     </button>
-                    <button type="button" class="btn-historico-acao" id="btnExportarCsvHistorico">
+                    <button type="button" class="btn-historico-acao btn-historico-exportar-csv" id="btnExportarCsvHistorico">
                         <i class="fa-solid fa-file-csv"></i> Exportar CSV
                     </button>
-                    <button type="button" class="btn-historico-acao" id="btnExportarExcelHistorico">
+                    <button type="button" class="btn-historico-acao btn-historico-exportar-excel" id="btnExportarExcelHistorico">
                         <i class="fa-regular fa-file-excel"></i> Exportar Excel
                     </button>
-                    <button type="button" class="btn-historico-acao" id="btnExportarPdfHistorico">
+                    <button type="button" class="btn-historico-acao btn-historico-exportar-pdf" id="btnExportarPdfHistorico">
                         <i class="fa-regular fa-file-pdf"></i> Exportar PDF
                     </button>
-                    <button type="button" class="btn-historico-acao" id="btnPausarHistorico">
+                    <button type="button" class="btn-historico-acao btn-historico-pausar" id="btnPausarHistorico">
                         <i class="fa-solid fa-pause"></i> <span id="textoStatusPausaHistorico">Pausar histórico</span>
                     </button>
-                    <button type="button" class="btn-historico-acao" id="btnOrdenarHistorico">
+                    <button type="button" class="btn-historico-acao btn-historico-ordenar" id="btnOrdenarHistorico">
                         <i class="fa-solid fa-arrow-down-a-z"></i> Ordenar histórico
                     </button>
-                    <button type="button" class="btn-historico-acao" id="btnFiltrarHistorico">
+                    <button type="button" class="btn-historico-acao btn-historico-filtrar" id="btnFiltrarHistorico">
                         <i class="fa-solid fa-filter"></i> Filtrar histórico
                     </button>
                 </div>
@@ -382,6 +414,214 @@
                 <button type="button" class="btn-cancelar-irreversivel" data-bs-dismiss="modal">
                     Fechar
                 </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE CONFIRMAÇÃO — APAGAR HISTÓRICO
+====================================================== -->
+<div class="modal fade" id="modalConfirmarApagarHistorico" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-confirmar-apagar-historico-dialog">
+        <div class="modal-content modal-confirmar-apagar-historico-content">
+            
+            <!-- HEADER -->
+            <div class="modal-confirmar-apagar-historico-header">
+                <div class="modal-confirmar-apagar-historico-icon">
+                    <i class="fa-regular fa-trash-can"></i>
+                </div>
+                <button type="button" class="btn-modal-fechar-apagar-historico" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body modal-confirmar-apagar-historico-body text-center">
+                <h4 class="modal-confirmar-apagar-historico-titulo">Apagar Registro(s) do Histórico?</h4>
+                <p class="modal-confirmar-apagar-historico-descricao">
+                    Esta ação é <strong>irreversível</strong>. Os registros selecionados serão excluídos permanentemente da base de dados do sistema.
+                </p>
+                <div class="modal-confirmar-apagar-historico-alerta">
+                    <span class="modal-confirmar-apagar-historico-alerta-label">Quantidade selecionada:</span> 
+                    <strong id="qtdHistoricoApagarModal" class="modal-confirmar-apagar-historico-alerta-valor">0 itens</strong>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-confirmar-apagar-historico-footer">
+                <button type="button" class="btn-cancelar-apagar-historico" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" id="btnConfirmarApagarHistoricoDefinitivo" class="btn-confirmar-apagar-historico">
+                    <i class="fa-regular fa-trash-can"></i> Confirmar Exclusão
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE CONFIRMAÇÃO — PAUSAR / ATIVAR HISTÓRICO
+====================================================== -->
+<div class="modal fade" id="modalStatusPausaHistorico" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-status-pausa-historico-dialog">
+        <div class="modal-content modal-status-pausa-historico-content">
+            
+            <!-- HEADER -->
+            <div class="modal-status-pausa-historico-header">
+                <div class="modal-status-pausa-historico-icon">
+                    <i class="fa-solid fa-circle-pause"></i>
+                </div>
+                <button type="button" class="btn-modal-fechar-pausa-historico" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body modal-status-pausa-historico-body text-center">
+                <h4 class="modal-status-pausa-historico-titulo">Gravação do Histórico</h4>
+                <p class="modal-status-pausa-historico-descricao">
+                    Deseja manter o registro de atividades do sistema <strong>ativo</strong>?
+                </p>
+
+                <!-- CARD DE STATUS ATUAL -->
+                <div class="modal-status-pausa-historico-card-info">
+                    <span class="modal-status-pausa-historico-card-label">Status atual no sistema:</span>
+                    <span id="badgeStatusPausaAtual" class="modal-status-pausa-badge ativo">
+                        <i class="fa-solid fa-circle-check"></i> Gravando normalmente
+                    </span>
+                </div>
+
+                <small class="modal-status-pausa-historico-legenda">
+                    Clique em <strong>Sim</strong> para ativar ou em <strong>Não</strong> para pausar a gravação.
+                </small>
+            </div>
+
+            <!-- FOOTER COM AS OPÇÕES SIM E NÃO -->
+            <div class="modal-status-pausa-historico-footer">
+                <button type="button" id="btnNaoPausarHistorico" class="btn-status-pausa-acao btn-status-pausa-nao">
+                    <i class="fa-solid fa-pause"></i> Não (Pausar)
+                </button>
+                <button type="button" id="btnSimAtivarHistorico" class="btn-status-pausa-acao btn-status-pausa-sim">
+                    <i class="fa-solid fa-play"></i> Sim (Ativar)
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE ORDENAÇÃO — HISTÓRICO DE USUÁRIOS
+====================================================== -->
+<div class="modal fade" id="modalOrdenarHistoricoUsuarios" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-ordenar-historico-dialog">
+        <div class="modal-content modal-ordenar-historico-content">
+            <div class="modal-header modal-ordenar-historico-header">
+                <h5>
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Direção da Ordenação
+                </h5>
+                <button
+                    type="button"
+                    class="btn-modal-fechar-ordenar-historico"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-ordenar-historico-body">
+                <div class="campo campo-ordenar-historico">
+                    <label for="tipoOrdenacaoHistorico">Escolha a direção</label>
+                    <select id="tipoOrdenacaoHistorico">
+                        <option value="desc" selected>Decrescente (Mais recentes primeiro)</option>
+                        <option value="asc">Crescente (Mais antigos primeiro)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-ordenar-historico-footer">
+                <button
+                    type="button"
+                    class="btn-cancelar-ordenar-historico"
+                    data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button
+                    type="button"
+                    id="btnExecutarOrdenacaoHistorico"
+                    class="btn-confirmar-ordenar-historico">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Ordenar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE FILTRAGEM — HISTÓRICO DE ATIVIDADES
+====================================================== -->
+<div class="modal fade" id="modalFiltrarHistoricoUsuarios" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-filtrar-historico-dialog">
+        <div class="modal-content modal-filtrar-historico-content">
+            
+            <!-- HEADER -->
+            <div class="modal-filtrar-historico-header">
+                <div class="modal-filtrar-historico-titulo">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>Filtrar Histórico</span>
+                </div>
+                <button type="button" class="btn-modal-fechar-filtrar-historico" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-filtrar-historico-body">
+                
+                <!-- SEÇÃO 1: FILTROS DISPONÍVEIS (DATA) -->
+                <fieldset class="modal-filtrar-fieldset">
+                    <legend class="modal-filtrar-legend">Filtros Disponíveis</legend>
+                    <div class="modal-filtrar-campo">
+                        <input 
+                            type="text" 
+                            id="filtroDataHistorico" 
+                            class="modal-filtrar-input-data" 
+                            placeholder="formato DD/MM/AAAA..." 
+                            maxlength="10"
+                            autocomplete="off">
+                    </div>
+                </fieldset>
+
+                <!-- SEÇÃO 2: FILTRAR POR HORA (ORDENAÇÃO) -->
+                <fieldset class="modal-filtrar-fieldset">
+                    <legend class="modal-filtrar-legend">Filtrar por Hora</legend>
+                    
+                    <div class="modal-filtrar-radio-group">
+                        <label class="modal-filtrar-radio-label">
+                            <input type="radio" name="filtroOrdemHora" value="desc" checked class="modal-filtrar-radio">
+                            <span class="modal-filtrar-radio-custom"></span>
+                            <span>Mais Recente</span>
+                        </label>
+
+                        <label class="modal-filtrar-radio-label">
+                            <input type="radio" name="filtroOrdemHora" value="asc" class="modal-filtrar-radio">
+                            <span class="modal-filtrar-radio-custom"></span>
+                            <span>Mais Antigo</span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <!-- BOTÃO APLICAR FILTRO -->
+                <button type="button" id="btnAplicarFiltroHistorico" class="btn-filtrar-historico-submit">
+                    Aplicar Filtro
+                </button>
+
             </div>
 
         </div>

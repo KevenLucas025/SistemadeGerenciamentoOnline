@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnSalvar = document.getElementById("btnSalvarProduto");
     const inputValor = document.getElementById("valor_unitario");
     const inputDesconto = document.getElementById("desconto");
-    const btnEditar = document.querySelector(".btn-cadastrar-produtos.editar");
+    const btnEditar = document.querySelector(".btn-side-actions.editar");
     const inputImagem = document.getElementById("imagem");
     const imgPreview = document.getElementById("img-preview");
     const previewEmpty = document.querySelector(".preview-empty");

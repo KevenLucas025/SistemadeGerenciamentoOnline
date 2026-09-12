@@ -41,27 +41,27 @@
 
                 <div class="cadastrar-produtos-acoes-topo">
 
-                    <button id="btnAdicionarProduto" type="button" class="btn-cadastrar-produtos adicionar">
+                    <button id="btnAdicionarProduto" type="button" class="btn-side-actions adicionar">
                         <i class="fa-solid fa-plus"></i>
                         Adicionar
                     </button>
 
-                    <button class="btn-cadastrar-produtos editar">
+                    <button class="btn-side-actions editar">
                         <i class="fa-solid fa-pen"></i>
                         Editar
                     </button>
 
-                    <button class="btn-cadastrar-produtos atualizar">
+                    <button class="btn-side-actions atualizar">
                         <i class="fa-solid fa-rotate"></i>
                         Atualizar
                     </button>
 
-                    <button id="btnSairModoEdicao" class="btn-cadastrar-produtos sair">
+                    <button id="btnSairModoEdicao" class="btn-side-actions sair">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         Sair do modo edição
                     </button>
 
-                    <button id="btnApagarFormulario" type="button" class="btn-cadastrar-produtos apagar">
+                    <button id="btnApagarFormulario" type="button" class="btn-side-actions apagar">
                         <i class="fa-solid fa-trash"></i>
                         Apagar
                     </button>
@@ -448,79 +448,61 @@
         <div class="modal-content">
 
             <div class="modal-header">
-
                 <h4>
                     <i class="fa-solid fa-boxes-stacked"></i>
                     Tabela de Produtos
                 </h4>
-
                 <button type="button"
                         class="btn-modal-fechar"
                         data-bs-dismiss="modal">
-
                     <i class="fa-solid fa-xmark"></i>
-
                 </button>
-
             </div>
 
             <div class="modal-body">
 
-                <!-- Botões -->
+                <!-- Botões com btn-side-action -->
                 <div class="acoes-tabela-produtos">
 
-                    <button class="btn-cadastrar-produtos atualizar" id="btnAtualizarProduto">
-                        <i class="fa-solid fa-pen"></i>
-                        Atualizar Produto
+                    <button class="btn-side-action atualizar" id="btnAtualizarProduto">
+                        <i class="fa-solid fa-pen"></i> Atualizar Produto
                     </button>
 
-                    <button class="btn-cadastrar-produtos apagar" id="btnApagarProduto">
-                        <i class="fa-solid fa-trash"></i>
-                        Apagar Produto
+                    <button class="btn-side-action apagar" id="btnApagarProduto">
+                        <i class="fa-solid fa-trash"></i> Apagar Produto
                     </button>
 
-                    <button id="btnAtualizarTabela" class="btn-cadastrar-produtos atualizar-tabela">
-                        <i class="fa-solid fa-rotate"></i>
-                        Atualizar Tabela
+                    <button class="btn-side-action atualizar-tabela" id="btnAtualizarTabela">
+                        <i class="fa-solid fa-rotate"></i> Atualizar Tabela
                     </button>
 
-                    <button id="btnAbrirFiltro" class="btn-cadastrar-produtos filtrar">
-                        <i class="fa-solid fa-filter"></i>
-                        Filtrar Produtos
+                    <button class="btn-side-action filtrar" id="btnAbrirFiltro">
+                        <i class="fa-solid fa-filter"></i> Filtrar Produtos
                     </button>
 
-                    <button id="btnAbrirOrdenacao" class="btn-cadastrar-produtos ordenar">
-                        <i class="fa-solid fa-arrow-down-a-z"></i>
-                        Ordenar Produtos
+                    <button class="btn-side-action ordenar" id="btnAbrirOrdenacao">
+                        <i class="fa-solid fa-arrow-down-a-z"></i> Ordenar Produtos
                     </button>
 
-                    <button id="btnVisualizarImagem" class="btn-cadastrar-produtos visualizar-imagem">
-                        <i class="fa-solid fa-image"></i>
-                        Visualizar Imagem
+                    <button class="btn-side-action visualizar-imagem" id="btnVisualizarImagem">
+                        <i class="fa-solid fa-image"></i> Visualizar Imagem
                     </button>
 
-                    <button id="btnGerarExcel" class="btn-cadastrar-produtos gerar-arquivo-excel">
-                        <i class="fa-regular fa-file-excel"></i>
-                        Gerar Excel
+                    <button class="btn-side-action gerar-arquivo-excel" id="btnGerarExcel">
+                        <i class="fa-regular fa-file-excel"></i> Gerar Excel
                     </button>
 
-                    <button  id="btnDuplicarProduto" class="btn-cadastrar-produtos duplicar-produto">
-                        <i class="fa-regular fa-copy"></i>
-                        Duplicar Produto
+                    <button class="btn-side-action duplicar-produto" id="btnDuplicarProduto">
+                        <i class="fa-regular fa-copy"></i> Duplicar Produto
                     </button>
 
                 </div>
 
-
-                <!-- Tabela -->
+                <!-- Tabela (agora corretamente dentro de modal-body) -->
                 <div class="table-responsive mt-3">
-
                     <table class="table table-hover align-middle">
-
                         <thead>
-
                             <tr>
-
                                 <th width="50"></th>
                                 <th>ID</th>
                                 <th>Produto</th>
@@ -533,19 +515,16 @@
                                 <th>Código</th>
                                 <th>Data Cadastro</th>
                                 <th>Usuário</th>
-
                             </tr>
-
                         </thead>
-
                         <tbody id="tabelaProdutosBody">
                             {% include "tabela_body.html" %}
                         </tbody>
-
                     </table>
-
                 </div>
-            </div>
+
+            </div> <!-- Fim de modal-body -->
+
         </div>
     </div>
 </div>
@@ -642,80 +621,51 @@
     </div>
 </div>
 
-<div class="modal fade"
-     id="modalOrdenarProdutos"
-     tabindex="-1"
-     aria-hidden="true">
+<div class="modal fade" id="modalOrdenarProdutos" tabindex="-1" aria-hidden="true">
 
     <div class="modal-dialog modal-dialog-centered modal-sm">
-
         <div class="modal-content modal-logout-content">
-
             <div class="modal-header">
-
                 <h5>
                     <i class="fa-solid fa-arrow-down-a-z"></i>
                     Direção da Ordenação
                 </h5>
-
                 <button
                     type="button"
                     class="btn-modal-fechar"
                     data-bs-dismiss="modal">
-
                     <i class="fa-solid fa-xmark"></i>
-
                 </button>
-
             </div>
 
             <div class="modal-body">
-
                 <div class="campo">
-
                     <label>Escolha a direção</label>
-
                     <select id="tipoOrdenacao">
-
                         <option value="asc">
                             Crescente
                         </option>
-
                         <option value="desc">
                             Decrescente
                         </option>
-
                     </select>
-
                 </div>
-
             </div>
-
             <div class="modal-footer">
-
                 <button
                     class="btn btn-secondary"
                     data-bs-dismiss="modal">
-
                     Cancelar
-
                 </button>
-
                 <button
                     id="btnExecutarOrdenacao"
                     class="btn btn-primary">
-
                     <i class="fa-solid fa-arrow-down-a-z"></i>
                     Ordenar
-
                 </button>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 <div class="modal fade"

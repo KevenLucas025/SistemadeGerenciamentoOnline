@@ -49,7 +49,7 @@
     grid-template-columns: minmax(0, 1fr) 280px;
     gap: 16px;
     flex: 1;
-    min-height: 0; /* Essencial para flex/grid não estourarem a tela */
+    min-height: 0;
     height: 100%;
     align-items: stretch;
 }
@@ -120,7 +120,6 @@
     overflow-y: auto;
 }
 
-/* Scrollbar para a coluna lateral */
 .verificar-usuarios-side-actions::-webkit-scrollbar {
     width: 6px;
 }
@@ -134,7 +133,7 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    background: transparent;
+    background: #1f2937;
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: #e2e8f0;
     padding: 11px 14px;
@@ -149,6 +148,7 @@
 .btn-side-action:hover {
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
 }
 
 .verificar-usuarios-acoes-topo {
@@ -175,7 +175,7 @@
 }
 
 /* =====================================================
-   TABELA E CONTAINER
+   TABELA E CONTAINER PRINCIPAL
 ===================================================== */
 .verificar-usuarios-table-container {
     width: 100%;
@@ -217,7 +217,6 @@
     font-size: 13px;
 }
 
-/* 1. Transição e cursor em linhas normais */
 .verificar-usuarios-table tbody tr {
     cursor: pointer;
     transition: background-color 0.15s ease;
@@ -228,7 +227,6 @@
     color: #f9fafb !important;
 }
 
-/* 2. Linha Selecionada (Destaque evidente com tom azulado) */
 .verificar-usuarios-table tbody tr.linha-selecionada td {
     background-color: #1e3a5f !important;
     color: #ffffff !important;
@@ -247,9 +245,6 @@
     --bs-table-accent-bg: transparent !important;
 }
 
-/* =====================================================
-   CENTRALIZAÇÃO VERTICAL DA MENSAGEM (IGUAL PRODUTOS.CSS)
-===================================================== */
 .verificar-usuarios-table tbody tr.linha-vazia td,
 .verificar-usuarios-table tbody td:has(.sem-registros-content) {
     height: calc(30vh - 50px);
@@ -257,9 +252,6 @@
     text-align: center;
 }
 
-/* =====================================================
-   RESET TOTAL DE HOVER DO BOOTSTRAP PARA LINHA VAZIA
-===================================================== */
 .verificar-usuarios-table tbody tr.linha-vazia,
 .verificar-usuarios-table tbody tr.linha-vazia:hover,
 .verificar-usuarios-table tbody tr:has(.sem-registros-content),
@@ -289,32 +281,6 @@
 }
 
 .sem-registros-content {
-    pointer-events: none; /* Impede eventos de cursor e hover nos elementos internos */
-}
-
-/* =====================================================
-   LINHA VAZIA / SEM REGISTROS (NOVA ESTILIZAÇÃO)
-===================================================== */
-.verificar-usuarios-table tbody tr.linha-vazia {
-    cursor: default !important;
-    background: transparent !important;
-}
-
-.verificar-usuarios-table tbody tr.linha-vazia td {
-    padding: 40px 20px !important;
-    text-align: center !important;
-    vertical-align: middle !important;
-    border-bottom: none !important;
-    background: transparent !important;
-}
-
-.verificar-usuarios-table tbody tr.linha-vazia:hover td {
-    background-color: transparent !important;
-    color: inherit !important;
-    cursor: default !important;
-}
-
-.sem-registros-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -324,6 +290,7 @@
     color: #9ca3af;
     text-align: center;
     user-select: none;
+    pointer-events: none;
 }
 
 .sem-registros-content i {
@@ -340,7 +307,6 @@
     color: #9ca3af;
 }
 
-/* Scrollbars da tabela */
 .verificar-usuarios-table-container::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -355,9 +321,6 @@
     background: #141b27;
 }
 
-/* =====================================================
-   BOTÕES ADICIONAIS
-===================================================== */
 .btn-verificar-usuarios-outline {
     display: flex;
     align-items: center;
@@ -452,7 +415,6 @@
     transition: all 0.2s ease;
 }
 
-/* Cancelar */
 .btn-cancelar-irreversivel {
     background: #374151;
     border: 1px solid #4b5563;
@@ -463,7 +425,6 @@
     background: #4b5563;
 }
 
-/* Confirmar */
 .btn-confirmar-irreversivel {
     display: flex;
     align-items: center;
@@ -523,17 +484,18 @@
 }
 
 .modal-historico-content {
-    background: #1f2937;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
+    background: #111827 !important;
+    border: 1px solid #374151 !important;
+    border-radius: 16px !important;
     color: #ffffff;
-    overflow: hidden;
+    overflow: hidden !important;
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
+    isolation: isolate;
 }
 
-/* HEADER */
 .modal-historico-header {
     display: flex;
     align-items: center;
@@ -596,7 +558,6 @@
     transform: scale(1.05);
 }
 
-/* TOOLBAR COM OS 8 BOTÕES */
 .modal-historico-toolbar {
     padding: 12px 24px;
     background: #111827;
@@ -631,32 +592,79 @@
     color: #ffffff;
 }
 
-.btn-historico-acao.btn-historico-perigo:hover {
-    background: rgba(220, 38, 38, 0.2);
-    border-color: #dc2626;
-    color: #f87171;
-}
 
-/* BODY E TABELA DO HISTÓRICO */
+
 .modal-historico-body {
     padding: 20px 24px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-height: 280px;
+    min-height: 380px;
     background: #111827;
 }
 
+/* =====================================================
+   CORREÇÃO DEFINITIVA DA BORDA DO HISTÓRICO
+===================================================== */
 .modal-historico-table-container {
     width: 100%;
-    height: 100%;
-    max-height: 48vh;
-    overflow-y: auto;
+    flex: 1 1 0% !important;
+    height: 100% !important;
+    min-height: 0 !important;
     overflow-x: auto;
-    border: 1px solid #374151;
-    border-radius: 10px;
+    overflow-y: auto;
+    border: 1px solid #374151 !important;
+    border-radius: 12px !important;
+    background: #111827 !important;
     box-sizing: border-box;
+}
+
+
+.modal-historico-table {
+    width: 100% !important;
+    min-width: 100% !important;
+    margin: 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    table-layout: auto;
+    background: #111827 !important;
+    color: #ffffff !important;
+}
+
+/* Anula o position:sticky herdado de .verificar-usuarios-table para não vazar a borda */
+.modal-historico-table thead th {
+    position: static !important; 
+    height: 46px;
+    padding: 10px 14px !important;
+    background: #111827 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid #374151 !important;
+    color: #9ca3af !important;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Cantos arredondados na primeira e última célula do header */
+.modal-historico-table thead th:first-child {
+    border-top-left-radius: 11px !important;
+}
+
+.modal-historico-table thead th:last-child {
+    border-top-right-radius: 11px !important;
+}
+
+.modal-historico-table tbody td {
+    padding: 12px 14px !important;
+    background: transparent !important;
+    border-bottom: 1px solid #1f2937 !important;
+    color: #e5e7eb !important;
+    font-size: 13px;
+    vertical-align: middle;
 }
 
 .modal-historico-table th.col-checkbox,
@@ -673,7 +681,6 @@
     accent-color: #0284c7;
 }
 
-/* FOOTER */
 .modal-historico-footer {
     display: flex;
     align-items: center;
@@ -687,15 +694,6 @@
     font-size: 13px;
     color: #9ca3af;
     font-weight: 500;
-}
-
-/* =====================================================
-   RESET TOTAL DE BG E HOVER DO BOOTSTRAP (HISTÓRICO)
-===================================================== */
-.modal-historico-table {
-    width: 100% !important;
-    min-width: 100% !important;
-    height: 100%;
 }
 
 .modal-historico-table tbody tr.linha-vazia-historico,
@@ -726,13 +724,10 @@
     box-shadow: none !important;
     text-align: center !important;
     vertical-align: middle !important;
-    height: calc(48vh - 50px) !important; /* Altura exata da área interna */
+    height: calc(48vh - 50px) !important;
     padding: 0 !important;
 }
 
-/* =====================================================
-   ESTRUTURA DO CONTEÚDO VAZIO (HISTÓRICO)
-===================================================== */
 .sem-registros-content-historico {
     display: flex;
     flex-direction: column;
@@ -759,4 +754,802 @@
     font-size: 14px;
     font-weight: 500;
     color: #9ca3af;
+}
+
+/* =====================================================
+   MODAL CONFIRMAR APAGAR HISTÓRICO 
+===================================================== */
+#modalConfirmarApagarHistorico {
+    z-index: 1065 !important;
+}
+
+.modal-confirmar-apagar-historico-dialog {
+    max-width: 440px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-confirmar-apagar-historico-content {
+    background: #111827 !important;
+    border: 1px solid #374151 !important;
+    border-radius: 16px !important;
+    color: #ffffff;
+    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    isolation: isolate;
+}
+/* HEADER */
+.modal-confirmar-apagar-historico-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 15px;
+    border-bottom: 1px solid #374151;
+    background: #1f2937;
+}
+
+.modal-confirmar-apagar-historico-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    font-size: 21px;
+    flex-shrink: 0;
+}
+.btn-historico-acao.btn-historico-perigo:hover {
+    background: rgba(220, 38, 38, 0.2);
+    border-color: #dc2626;
+    color: #fff;
+    transform: scale(1.05);
+}
+.btn-modal-fechar-apagar-historico {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    color: #ffffff !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-apagar-historico:hover {
+    background-color: #dc2626;
+    color: #fff;
+    transform: scale(1.05);
+}
+.btn-historico-exportar-csv:hover{
+    background-color: #059669;
+    color: white;
+    transform: scale(1.05);
+    
+}
+.btn-historico-exportar-pdf:hover{
+    background-color: #dc2626;
+    transform: scale(1.05);
+    color: white;
+}
+.btn-historico-pausar:hover{
+    background-color: #d97706;
+    transform: scale(1.05);
+    color: white;
+}
+.btn-historico-ordenar:hover{
+    background-color: #7c3aed;
+    transform: scale(1.05);
+    color: white;
+}
+.btn-historico-filtrar:hover{
+    background-color: #0284c7;
+    transform: scale(1.05);
+    color: white;
+}
+.btn-historico-atualizar:hover{
+    background-color: #2563eb;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.btn-historico-exportar-excel:hover{
+    background-color: #107c41; 
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+/* BODY */
+.modal-confirmar-apagar-historico-body {
+    padding: 24px 24px 20px;
+    background: #1f2937;
+}
+
+.modal-confirmar-apagar-historico-titulo {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.modal-confirmar-apagar-historico-descricao {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+.modal-confirmar-apagar-historico-alerta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 16px;
+    font-size: 13px;
+    text-align: left;
+}
+
+.modal-confirmar-apagar-historico-alerta-label {
+    color: #9ca3af;
+}
+
+.modal-confirmar-apagar-historico-alerta-valor {
+    color: #f87171;
+    font-weight: 600;
+}
+
+/* FOOTER */
+.modal-confirmar-apagar-historico-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid #374151;
+    background: #1f2937;
+}
+
+.btn-cancelar-apagar-historico {
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 500;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #e5e7eb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancelar-apagar-historico:hover {
+    background: #4b5563;
+    color: #ffffff;
+}
+
+.btn-confirmar-apagar-historico {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    background: #dc2626;
+    border: 1px solid #dc2626;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-confirmar-apagar-historico:hover {
+    background: #b91c1c;
+    border-color: #b91c1c;
+    transform: translateY(-1px);
+}
+
+.btn-confirmar-apagar-historico:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* =====================================================
+   MODAL PAUSAR / ATIVAR HISTÓRICO 
+===================================================== */
+#modalStatusPausaHistorico {
+    z-index: 1065 !important;
+}
+
+.modal-status-pausa-historico-content {
+    background: #111827 !important;
+    border: 1px solid #374151 !important;
+    border-radius: 16px;
+    color: #CECFD2;
+    overflow: hidden;
+
+}
+
+/* HEADER */
+.modal-status-pausa-historico-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 15px;
+    border-bottom: 1px solid #374151;
+    background: #111827;
+}
+.modal-status-pausa-historico-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(217, 119, 6, 0.15);
+    color: #f59e0b;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+.btn-modal-fechar-pausa-historico {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none;
+    border-radius: 50% !important;
+    color: #CECFD2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-pausa-historico:hover {
+    background-color: #dc2626 !important;
+    color: #CECFD2 !important;
+    transform: scale(1.05);
+}
+
+/* BODY */
+.modal-status-pausa-historico-body {
+    padding: 24px 24px 20px;
+}
+
+.modal-status-pausa-historico-titulo {
+    margin: 0 0 10px;
+    color: #CECFD2;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.modal-status-pausa-historico-descricao {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+.modal-status-pausa-historico-card-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 16px 0 10px;
+    font-size: 13px;
+}
+
+.modal-status-pausa-historico-card-label {
+    color: #CECFD2;
+}
+
+.modal-status-pausa-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.modal-status-pausa-badge.ativo {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.modal-status-pausa-badge.pausado {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.modal-status-pausa-historico-legenda {
+    display: block;
+    color: #CECFD2;
+    font-size: 11.5px;
+    margin-top: 4px;
+}
+
+/* FOOTER */
+.modal-status-pausa-historico-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid #374151;
+    background: #111827;
+}
+
+.btn-status-pausa-acao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+/* Botão Não (Pausar) - Tom Âmbar / Vermelho */
+.btn-status-pausa-nao {
+    background: #374151;
+    border-color: #4b5563;
+    color: #fca5a5;
+}
+
+.btn-status-pausa-nao:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+}
+
+/* Botão Sim (Ativar) - Tom Verde / Sucesso */
+.btn-status-pausa-sim {
+    background: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+}
+
+.btn-status-pausa-sim:hover {
+    background: #15803d;
+    border-color: #15803d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+}
+
+.btn-status-pausa-acao:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* =====================================================
+   MODAL DE ORDENAÇÃO DO HISTÓRICO (CLASSES EXCLUSIVAS)
+===================================================== */
+#modalOrdenarHistoricoUsuarios {
+    z-index: 1065 !important;
+}
+
+.modal-ordenar-historico-dialog {
+    max-width: 380px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-ordenar-historico-content {
+    background: #161e2b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: #CECFD2;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+}
+
+.modal-ordenar-historico-header {
+    background: #161e2b;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-ordenar-historico-header h5 {
+    color: #CECFD2;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-ordenar-historico-header h5 i {
+    color: #CECFD2;
+}
+
+.btn-modal-fechar-ordenar-historico {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: #CECFD2;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-ordenar-historico:hover {
+    background-color: #dc2626;
+    color: #CECFD2;
+    transform: scale(1.05);
+}
+
+.modal-ordenar-historico-body {
+    padding: 20px;
+    background: #161e2b;
+}
+
+.campo-ordenar-historico label {
+    font-size: 13px;
+    color: #CECFD2;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+#tipoOrdenacaoHistorico:focus,
+#tipoOrdenacaoHistorico:hover {
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+}
+
+#tipoOrdenacaoHistorico option {
+    background-color: #1b2230;
+    color: #f8fafc;
+    
+}
+#tipoOrdenacaoHistorico {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    padding: 10px;
+    background: #1b2230;
+    border: 1px solid #313b4e;
+    border-radius: 10px;
+    color: #f8fafc;
+    outline: none;
+    font-size: 14px;
+    transition: .25s;
+    box-sizing: border-box;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+}
+
+.modal-ordenar-historico-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: #161e2b !important;
+}
+
+.btn-cancelar-ordenar-historico {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #CECFD2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-cancelar-ordenar-historico:hover {
+    background: #4b5563;
+    color: #CECFD2;
+}
+
+.btn-confirmar-ordenar-historico {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #7c3aed;
+    border: 1px solid #8b5cf6;
+    color: #CECFD2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-confirmar-ordenar-historico:hover {
+    background: #6d28d9;
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+/* =====================================================
+   MODAL DE FILTRAGEM DO HISTÓRICO (CLASSES EXCLUSIVAS)
+===================================================== */
+#modalFiltrarHistoricoUsuarios {
+    z-index: 1065 !important;
+}
+
+.modal-filtrar-historico-dialog {
+    max-width: 320px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-filtrar-historico-content {
+    background: #161e2b !important;
+    border: 1px solid #383a3e !important;
+    border-radius: 12px !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+/* HEADER */
+.modal-filtrar-historico-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid #333538;
+    background: #161e2b;
+}
+
+.modal-filtrar-historico-titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.modal-filtrar-historico-titulo i {
+    color: #38bdf8;
+    font-size: 15px;
+}
+
+.btn-modal-fechar-filtrar-historico {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: 0.2s ease;
+}
+
+.btn-modal-fechar-filtrar-historico:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* BODY */
+.modal-filtrar-historico-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* FIELDSET & LEGEND IDÊNTICOS À IMAGEM */
+.modal-filtrar-fieldset {
+    border: 1px solid #44474c !important;
+    border-radius: 8px !important;
+    padding: 10px 12px 12px !important;
+    margin: 0 !important;
+}
+
+.modal-filtrar-legend {
+    width: auto !important;
+    float: none !important;
+    margin: 0 0 0 6px !important;
+    padding: 0 6px !important;
+    font-size: 12.5px !important;
+    font-weight: 600;
+    color: #e2e8f0 !important;
+}
+
+/* INPUT DE DATA */
+.modal-filtrar-input-data {
+    width: 100% !important;
+    background: #1c1d1f !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 20px !important;
+    padding: 7px 14px !important;
+    font-size: 13px !important;
+    color: #ffffff !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    transition: 0.2s ease;
+}
+
+.modal-filtrar-input-data::placeholder {
+    color: #64748b;
+}
+
+.modal-filtrar-input-data:focus {
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2) !important;
+}
+
+/* RADIO BUTTONS */
+.modal-filtrar-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.modal-filtrar-radio-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #f1f5f9;
+    cursor: pointer;
+    user-select: none;
+}
+
+.modal-filtrar-radio {
+    display: none;
+}
+
+.modal-filtrar-radio-custom {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid #94a3b8;
+    background: #1c1d1f;
+    display: inline-block;
+    position: relative;
+    transition: 0.2s ease;
+}
+
+.modal-filtrar-radio:checked + .modal-filtrar-radio-custom {
+    border-color: #ffffff;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 3px #1c1d1f;
+}
+
+/* BOTÃO DE APLICAR */
+.btn-filtrar-historico-submit {
+    width: 100%;
+    padding: 9px;
+    background: #37393d;
+    border: 1px solid #484b50;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+    margin-top: 2px;
+}
+
+.btn-filtrar-historico-submit:hover {
+    background: #0284c7;
+    border-color: #38bdf8;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+}
+
+/* =====================================================
+   BARRA DE PESQUISA DAS TABELAS (ATIVOS E INATIVOS)
+===================================================== */
+.verificar-usuarios-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    width: 100%;
+}
+
+.input-search-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.input-search-wrapper i {
+    position: absolute;
+    left: 14px;
+    color: #64748b;
+    font-size: 13px;
+    pointer-events: none;
+}
+
+.input-pesquisa-tabela {
+    width: 100%;
+    background-color: #161e2b;
+    border: 1px solid #313b4e;
+    border-radius: 8px;
+    padding: 8px 14px 8px 36px;
+    font-size: 13px;
+    color: #f8fafc;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.input-pesquisa-tabela::placeholder {
+    color: #64748b;
+}
+
+.input-pesquisa-tabela:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    background-color: #1a2332;
+}
+
+.btn-pesquisar-tabela {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    color: #e5e7eb;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-pesquisar-tabela:hover {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-pesquisar-tabela i {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.btn-pesquisar-tabela:hover i {
+    color: #ffffff;
 }
