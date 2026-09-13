@@ -400,6 +400,7 @@ BOTÕES DE AÇÕES
     cursor:pointer;
     transition:.25s;
     white-space:nowrap;
+    background: #1f2937;
 }
 
 .btn-cliente i{
@@ -413,37 +414,37 @@ BOTÕES DE AÇÕES
 
 /* Criar */
 
-.btn-cliente.criar{
+.btn-cliente.criar:hover{
     background:#22c55e;
 }
 
 /* Editar */
 
-.btn-cliente.editar{
+.btn-cliente.editar:hover{
     background:#3b82f6;
 }
 
 /* Excluir */
 
-.btn-cliente.excluir{
+.btn-cliente.excluir:hover{
     background:#ef4444;
 }
 
 /* Relatório */
 
-.btn-cliente.relatorio{
+.btn-cliente.relatorio:hover{
     background:#8b5cf6;
 }
 
 /* Marcar */
 
-.btn-cliente.marcar{
+.btn-cliente.marcar:hover{
     background:#f59e0b;
 }
 
 /* Histórico */
 
-.btn-cliente.historico{
+.btn-cliente.historico:hover{
     background:#06b6d4;
 }
 

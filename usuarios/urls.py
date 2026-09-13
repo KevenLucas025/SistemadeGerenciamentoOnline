@@ -10,5 +10,7 @@ urlpatterns = [
     path("historico/exportar-excel/", views.exportar_historico_excel, name="exportar_historico_excel"),
     path("historico/exportar-pdf/", views.exportar_historico_pdf, name="exportar_historico_pdf"),
     path("historico/status-pausa/", views.status_pausa_historico, name="status_pausa_historico"),
+    path('exportar-excel/', views.exportar_usuarios_tabela_excel, name='exportar_usuarios_tabela_excel'),
+    path('exportar-pdf/', views.exportar_usuarios_tabela_pdf, name='exportar_usuarios_tabela_pdf'),
     
 ]

@@ -4,71 +4,84 @@
 <html lang="pt-br">
 
 <head>
-
     <meta charset="UTF-8">
-
     <title>Sistema de Gerenciamento</title>
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
     {% block extra_css %}{% endblock %}
 
-    <link rel="icon"
-          type="image/png"
-          href="{% static 'img/SIstema_de_Gerenciamento.png' %}">
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-
+    <link rel="icon" type="image/png" href="{% static 'img/SIstema_de_Gerenciamento.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-
-    <!-- Toast -->
-    <div id="toastAlerta" class="toast-alerta"></div>
-
 
     <!-- Menu lateral (Apenas se o usuário estiver logado) -->
     {% if not esconder_menu %}
         {% include "menu_lateral.html" %}
     {% endif %}
 
-
     <!-- Área principal do sistema -->
     <div class="{% if not esconder_menu %}layout-container{% else %}auth-container-wrapper{% endif %}">
-
 
         <!-- Topbar (Apenas se o usuário estiver logado) -->
         {% if not esconder_menu %}
             {% include "topbar.html" %}
         {% endif %}
 
-
         <!-- Conteúdo das páginas -->
         <main class="main-content">
-
             {% block content %}
             {% endblock %}
-
         </main>
-
 
     </div>
 
+    <!-- =====================================================
+         MODAL DE ALERTA GLOBAL (ESTILO QMessageBox)
+    ====================================================== -->
+    <div class="modal fade" id="modalAlertaGlobal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm modal-alerta-dialog">
+            <div class="modal-content modal-alerta-content">
+                
+                <!-- HEADER -->
+                <div class="modal-header modal-alerta-header">
+                    <h5 class="modal-alerta-titulo" id="modalAlertaTitulo">
+                        <i class="fa-solid fa-circle-info" id="modalAlertaIcone"></i>
+                        <span id="modalAlertaTituloTexto">Aviso</span>
+                    </h5>
+                    <button type="button" class="btn-modal-fechar-alerta" data-bs-dismiss="modal" aria-label="Fechar">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
 
-    <!-- Bootstrap -->
+                <!-- BODY -->
+                <div class="modal-body modal-alerta-body text-center">
+                    <p id="modalAlertaMensagem"></p>
+                </div>
+
+                <!-- FOOTER -->
+                <div class="modal-footer modal-alerta-footer">
+                    <button type="button" class="btn-alerta-ok" id="btnAlertaOk" data-bs-dismiss="modal">
+                        OK
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Scripts Globais do Sistema -->
     <script src="{% static 'js/notificacoes.js' %}"></script>
-    <!-- Scripts -->
     <script src="{% static 'js/funcoes.js' %}"></script>
+
     {% if user.is_authenticated %}
         <script src="{% static 'js/menu_lateral.js' %}"></script>
     {% endif %}
 
 </body>
-
 </html>

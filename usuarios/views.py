@@ -347,3 +347,125 @@ def status_pausa_historico(request):
     except Exception as e:
         return JsonResponse({"sucesso": False, "mensagem": f"Erro interno: {str(e)}"}, status=500)
     
+@login_required
+@require_GET
+def exportar_usuarios_tabela_excel(request):
+    tipo = request.GET.get('tipo', 'todos').lower()  # 'ativos', 'inativos' ou 'todos'
+    wb = Workbook()
+    wb.remove(wb.active)  # Remove aba padrão em branco
+
+    headers_ativos = [
+        'NOME', 'USUÁRIO', 'CEP', 'ENDEREÇO', 'NÚMERO', 'CIDADE', 'BAIRRO',
+        'ESTADO', 'COMPLEMENTO', 'TELEFONE', 'E-MAIL', 'DATA DE NASCIMENTO',
+        'RG', 'CPF', 'CNPJ', 'ÚLTIMA TROCA DE SENHA', 'DATA DA SENHA CADASTRADA',
+        'DATA DA INCLUSÃO DO USUÁRIO', 'SEGREDO', 'ACESSO'
+    ]
+
+    headers_inativos = headers_ativos[:18] + ['DATA DA INATIVIDADE DO USUÁRIO'] + headers_ativos[18:]
+
+    def extrair_linha(u, e_inativo=False):
+        p = getattr(u, 'perfil', None)
+        acesso = p.acesso if (p and p.acesso) else ('Administrador' if u.is_superuser else 'Usuário Comum')
+        
+        linha = [
+            u.get_full_name() or u.username,
+            u.username,
+            getattr(p, 'cep', 'Não informado') or 'Não informado',
+            getattr(p, 'endereco', 'Não informado') or 'Não informado',
+            getattr(p, 'numero', '—') or '—',
+            getattr(p, 'cidade', '—') or '—',
+            getattr(p, 'bairro', '—') or '—',
+            getattr(p, 'estado', '—') or '—',
+            getattr(p, 'complemento', '—') or '—',
+            getattr(p, 'telefone', '—') or '—',
+            u.email or 'Não informado',
+            p.data_nascimento.strftime("%d/%m/%Y") if (p and p.data_nascimento) else '—',
+            getattr(p, 'rg', '—') or '—',
+            getattr(p, 'cpf', '—') or '—',
+            getattr(p, 'cnpj', '—') or '—',
+            p.ultima_troca_senha.strftime("%d/%m/%Y %H:%M") if (p and p.ultima_troca_senha) else 'Nunca alterada',
+            p.data_senha_cadastrada.strftime("%d/%m/%Y %H:%M") if (p and p.data_senha_cadastrada) else '—',
+            u.date_joined.strftime("%d/%m/%Y %H:%M") if u.date_joined else '—',
+        ]
+
+        if e_inativo:
+            linha.append(p.data_inatividade.strftime("%d/%m/%Y %H:%M") if (p and p.data_inatividade) else '—')
+
+        linha.extend([
+            getattr(p, 'segredo', '—') or '—',
+            acesso
+        ])
+        return linha
+
+    def preencher_aba(ws, cabecalhos, usuarios_qs, e_inativo=False):
+        ws.append(cabecalhos)
+        for u in usuarios_qs:
+            ws.append(extrair_linha(u, e_inativo))
+        
+        for col in ws.columns:
+            max_len = max(len(str(cell.value or '')) for cell in col)
+            col_letter = get_column_letter(col[0].column)
+            ws.column_dimensions[col_letter].width = max(max_len + 3, 12)
+
+    # 1. Exporta Ativos
+    if tipo in ['ativos', 'todos']:
+        ws_ativos = wb.create_sheet(title="Usuários Ativos")
+        qs_ativos = User.objects.filter(is_active=True).select_related('perfil').order_by('-date_joined')
+        preencher_aba(ws_ativos, headers_ativos, qs_ativos, e_inativo=False)
+
+    # 2. Exporta Inativos
+    if tipo in ['inativos', 'todos']:
+        ws_inativos = wb.create_sheet(title="Usuários Inativos")
+        qs_inativos = User.objects.filter(is_active=False).select_related('perfil').order_by('-date_joined')
+        preencher_aba(ws_inativos, headers_inativos, qs_inativos, e_inativo=True)
+
+    buffer = BytesIO()
+    wb.save(buffer)
+    buffer.seek(0)
+
+    filename = f"usuarios_{tipo}.xlsx" if tipo != 'todos' else "relatorio_geral_usuarios.xlsx"
+    response = HttpResponse(buffer.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    return response
+
+@login_required
+@require_GET
+def exportar_usuarios_tabela_pdf(request):
+    tipo = request.GET.get('tipo', 'todos').lower()
+
+    usuarios_ativos = None
+    usuarios_inativos = None
+
+    if tipo in ['ativos', 'todos']:
+        usuarios_ativos = User.objects.filter(is_active=True).select_related('perfil').order_by('-date_joined')
+
+    if tipo in ['inativos', 'todos']:
+        usuarios_inativos = User.objects.filter(is_active=False).select_related('perfil').order_by('-date_joined')
+
+    rotulos = {
+        'ativos': 'Apenas Usuários Ativos',
+        'inativos': 'Apenas Usuários Inativos',
+        'todos': 'Usuários Ativos e Inativos'
+    }
+
+    contexto = {
+        'usuarios_ativos': usuarios_ativos,
+        'usuarios_inativos': usuarios_inativos,
+        'tipo_relatorio': rotulos.get(tipo, 'Geral'),
+        'data_emissao': timezone.now().strftime("%d/%m/%Y às %H:%M:%S"),
+        'usuario_emissor': request.user.username,
+    }
+
+    html_string = render_to_string('usuarios/relatorio_usuarios_pdf.html', contexto)
+
+    buffer = BytesIO()
+    pisa_status = pisa.CreatePDF(html_string, dest=buffer, encoding='utf-8')
+
+    if pisa_status.err:
+        return HttpResponse("Erro ao gerar o relatório em PDF.", status=500)
+
+    buffer.seek(0)
+    filename = f"relatorio_usuarios_{tipo}.pdf"
+    response = HttpResponse(buffer.getvalue(), content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    return response

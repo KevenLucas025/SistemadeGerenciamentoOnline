@@ -1,0 +1,33 @@
+{% if produtos %}
+    {% for produto in produtos %}
+        <tr class="linha-produto-estoque" data-produto-id="{{ produto.id }}" data-codigo="{{ produto.codigo }}">
+            <td><strong>{{ produto.nome }}</strong></td>
+            <td>{{ produto.quantidade }}</td>
+            <td>R$ {{ produto.valor_unitario }}</td>
+            <td>{{ produto.desconto }}%</td>
+            <td>R$ {{ produto.total_sem_desconto }}</td>
+            <td>R$ {{ produto.total_com_desconto }}</td>
+            <td>{{ produto.data_cadastro|date:"d/m/Y"|default:produto.data_cadastro }}</td>
+            <td>{{ produto.codigo }}</td>
+            <td>{{ produto.cliente|default:"—" }}</td>
+            <td>{{ produto.descricao|default:"—" }}</td>
+            <td>{{ produto.criado_por.username|default:"Sistema" }}</td>
+            <td>
+                {% if produto.status_saida == 0 %}
+                    <span class="badge bg-secondary">0 - Em estoque</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">1 - Gerado Saída</span>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+{% else %}
+    <tr class="linha-vazia">
+        <td colspan="12" class="sem-registros">
+            <div class="sem-registros-content-estoque">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                <p>Nenhum produto cadastrado encontrado.</p>
+            </div>
+        </td>
+    </tr>
+{% endif %}

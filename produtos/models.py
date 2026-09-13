@@ -77,6 +77,11 @@ class Produto(models.Model):
     status_saida = models.PositiveBigIntegerField(
         default=0
     )
+    
+    data_saida = models.DateTimeField(
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return self.nome

@@ -51,63 +51,48 @@ document.addEventListener("DOMContentLoaded", function () {
 // FUNÇÃO DOS ALERTAS
 // =========================
 
-// =========================
-// FUNÇÃO DOS ALERTAS
-// =========================
-
 function mostrarAlerta(msg, tipo = "error") {
-
-    const toast = document.getElementById("toastAlerta");
-
-    if (!toast) {
-        console.error("Elemento #toastAlerta não encontrado.");
+    const modalEl = document.getElementById("modalAlertaGlobal");
+    if (!modalEl) {
+        // Fallback para caso o modal ainda não esteja no HTML
+        alert(msg);
         return;
     }
 
-    // Força o z-index a ficar acima do modal (que é 99999)
-    toast.style.zIndex = "100000";
+    const modalContent = modalEl.querySelector(".modal-alerta-content");
+    const tituloTexto = document.getElementById("modalAlertaTituloTexto");
+    const icone = document.getElementById("modalAlertaIcone");
+    const corpoMsg = document.getElementById("modalAlertaMensagem");
 
-    toast.innerText = msg;
+    // Reseta classes de estado
+    modalContent.classList.remove("sucesso", "erro", "alerta");
 
-    toast.classList.remove(
-        "show",
-        "hide",
-        "sucesso",
-        "erro"
-    );
+    // Configura ícone, título e estilo estilo QMessageBox
+    const tipoNormalizado = (tipo || "").toLowerCase();
 
-    if (tipo === "success" || tipo === "sucesso") {
-        toast.classList.add("sucesso");
+    if (tipoNormalizado === "success" || tipoNormalizado === "sucesso") {
+        modalContent.classList.add("sucesso");
+        tituloTexto.textContent = "Sucesso";
+        icone.className = "fa-solid fa-circle-check";
+    } else if (tipoNormalizado === "alerta" || tipoNormalizado === "warning") {
+        modalContent.classList.add("alerta");
+        tituloTexto.textContent = "Atenção";
+        icone.className = "fa-solid fa-triangle-exclamation";
     } else {
-        toast.classList.add("erro");
+        modalContent.classList.add("erro");
+        tituloTexto.textContent = "Erro";
+        icone.className = "fa-solid fa-circle-xmark";
     }
 
-    // Aparece
+    corpoMsg.textContent = msg;
+
+    const modalInstancia = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modalInstancia.show();
+
+    // Foca automaticamente no botão OK para fechar ao apertar Enter/Espaço
     setTimeout(() => {
-        toast.classList.add("show");
-    }, 50);
-
-    // Desaparece depois de 3,5 segundos
-    setTimeout(() => {
-
-        toast.classList.remove("show");
-        toast.classList.add("hide");
-
-        setTimeout(() => {
-
-            toast.classList.remove(
-                "show",
-                "hide",
-                "sucesso",
-                "erro"
-            );
-
-            toast.innerText = "";
-
-        }, 450);
-
-    }, 3500);
-
+        document.getElementById("btnAlertaOk")?.focus();
+    }, 150);
 }
 
 function abrirModalLogout(event) {

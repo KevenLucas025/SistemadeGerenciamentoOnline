@@ -44,10 +44,10 @@
                     </div>
 
                     <div class="verificar-usuarios-acoes-topo">
-                        <button class="btn-verificar-usuarios-outline">
+                        <button type="button" class="btn-verificar-usuarios-outline" id="btnAbrirModalExportarExcel">
                             <i class="fa-regular fa-file-excel"></i> Exportar Excel
                         </button>
-                        <button class="btn-verificar-usuarios-outline">
+                        <button class="btn-verificar-usuarios-outline" id="btnAbrirModalExportarPdf">
                             <i class="fa-regular fa-file-pdf"></i> Exportar PDF
                         </button>
                     </div>
@@ -267,7 +267,7 @@
 
         <!-- COLUNA DIREITA: BARRA DE AÇÕES LATERAIS -->
         <div class="verificar-usuarios-side-actions">
-            <a href="{% url 'cadastrar_usuarios' %}" class="btn-side-action" style="text-decoration: none;">
+            <a href="{% url 'cadastrar_usuarios' %}" class="btn-side-action">
                 <i class="fa-regular fa-circle-plus"></i> Novo Usuário
             </a>
             <button type="button" class="btn-side-action" id="btnAtualizarAtivos">
@@ -624,6 +624,86 @@
 
             </div>
 
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE EXPORTAÇÃO EXCEL (ESCOLHA DE TABELA)
+====================================================== -->
+<div class="modal fade" id="modalEscolhaExportarExcel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-exportar-excel-dialog">
+        <div class="modal-content modal-exportar-excel-content">
+            <div class="modal-header modal-exportar-excel-header">
+                <h5>
+                    <i class="fa-regular fa-file-excel"></i>
+                    Exportar para Excel
+                </h5>
+                <button type="button" class="btn-modal-fechar-exportar-excel" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-exportar-excel-body">
+                <div class="campo campo-exportar-excel">
+                    <label for="tipoExportacaoExcel">Selecione o que deseja exportar:</label>
+                    <select id="tipoExportacaoExcel">
+                        <option value="todos" selected>Ambas as Tabelas (Abas separadas)</option>
+                        <option value="ativos">Apenas Usuários Ativos</option>
+                        <option value="inativos">Apenas Usuários Inativos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-exportar-excel-footer">
+                <button type="button" class="btn-cancelar-exportar-excel" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" id="btnConfirmarExportarExcelUsuarios" class="btn-confirmar-exportar-excel">
+                    <i class="fa-solid fa-download"></i>
+                    Exportar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE EXPORTAÇÃO PDF (ESCOLHA DE TABELA)
+====================================================== -->
+<div class="modal fade" id="modalEscolhaExportarPdf" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-exportar-pdf-dialog">
+        <div class="modal-content modal-exportar-pdf-content">
+            <div class="modal-header modal-exportar-pdf-header">
+                <h5>
+                    <i class="fa-regular fa-file-pdf"></i>
+                    Exportar para PDF
+                </h5>
+                <button type="button" class="btn-modal-fechar-exportar-pdf" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-exportar-pdf-body">
+                <div class="campo campo-exportar-pdf">
+                    <label for="tipoExportacaoPdf">Selecione o que deseja exportar:</label>
+                    <select id="tipoExportacaoPdf">
+                        <option value="todos" selected>Ambas as Tabelas (Relatório Completo)</option>
+                        <option value="ativos">Apenas Usuários Ativos</option>
+                        <option value="inativos">Apenas Usuários Inativos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-exportar-pdf-footer">
+                <button type="button" class="btn-cancelar-exportar-pdf" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" id="btnConfirmarExportarPdfUsuarios" class="btn-confirmar-exportar-pdf">
+                    <i class="fa-solid fa-download"></i>
+                    Exportar
+                </button>
+            </div>
         </div>
     </div>
 </div>

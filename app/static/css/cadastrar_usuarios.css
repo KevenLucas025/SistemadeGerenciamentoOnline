@@ -32,7 +32,7 @@
 .dashboard-topbar-cadastrar-usuarios h1 {
     font-size: 20px;
     font-weight: 600;
-    color: #ffffff;
+    color: #CECFD2;
     margin: 0;
 }
 
@@ -77,7 +77,7 @@
 
 .cadastrar-usuarios-header h2 {
     margin: 0;
-    color: #8b5cf6;
+    color: #CECFD2;
     font-size: 18px;
     display: flex;
     align-items: center;
@@ -98,23 +98,21 @@
     padding: 9px 14px;
     border: none;
     border-radius: 8px;
-    color: #fff;
+    color: #CECFD2;
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
     transition: 0.2s ease;
+    background: #1f2937;
 }
 
-.btn-cadastrar-usuarios.adicionar { background: #22c55e; }
-.btn-cadastrar-usuarios.editar { background: #3b82f6; }
-.btn-cadastrar-usuarios.atualizar { background: #8b5cf6; }
-.btn-cadastrar-usuarios.sair { background: #f59e0b; }
-.btn-cadastrar-usuarios.apagar { background: #ef4444; }
+.btn-cadastrar-usuarios.adicionar:hover { background: #22c55e; transform: scale(1.05); }
+.btn-cadastrar-usuarios.editar:hover { background: #3b82f6; transform: scale(1.05); }
+.btn-cadastrar-usuarios.atualizar:hover { background: #8b5cf6; transform: scale(1.05);}
+.btn-cadastrar-usuarios.sair:hover { background: #f59e0b; transform: scale(1.05);}
+.btn-cadastrar-usuarios.apagar:hover { background: #ef4444; transform: scale(1.05);}
 
-.btn-cadastrar-usuarios:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
-}
+
 
 /* =====================================================
    FORMULÁRIO E CAMPOS
@@ -152,7 +150,7 @@
 
 .campo label {
     font-size: 13px;
-    color: #e5e7eb;
+    color: #cecfd2;
     font-weight: 500;
 }
 
@@ -163,7 +161,7 @@
     background: #1b2230;
     border: 1px solid #313b4e;
     border-radius: 10px;
-    color: #f8fafc;
+    color: #cecfd2;
     outline: none;
     font-size: 13px;
     box-sizing: border-box;
@@ -188,7 +186,7 @@
 .campo-upload-cadastrar-usuarios label,
 .upload-preview-container-cadastrar-usuarios label {
     font-size: 13px;
-    color: #e5e7eb;
+    color: #cecfd2;
     font-weight: 500;
     display: block;
     margin-bottom: 6px;
@@ -283,7 +281,7 @@
     border: none;
     border-radius: 12px;
     background: linear-gradient(135deg, #7c3aed, #6366f1);
-    color: #fff;
+    color: #cecfd2;
     padding: 14px;
     font-size: 15px;
     font-weight: 700;
@@ -305,7 +303,7 @@
 .dashboard-card-resumo-cadastrar-usuarios h2 {
     margin: 0 0 16px 0;
     font-size: 18px;
-    color: #fff;
+    color: #cecfd2;
 }
 
 
@@ -331,7 +329,7 @@
     border: 1px solid rgba(255, 255, 255, 0.10);
     border-radius: 16px;
     overflow: hidden;
-    color: #ffffff;
+    color: #CECFD2;
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.55);
     height: 100%;
 }
@@ -341,15 +339,15 @@
 ===================================================== */
 
 #modalTabelaUsuarios .modal-header {
-    background: #161e2b !important;
+    background: #111827 !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     padding: 20px 24px !important;
-    color: #ffffff !important;
+    color: #CECFD2 !important;
 }
 
 #modalTabelaUsuarios .modal-header h4,
 #modalTabelaUsuarios .modal-header .modal-title {
-    color: #ffffff !important;
+    color: #CECFD2 !important;
     margin: 0;
     font-size: 19px;
     font-weight: 600;
@@ -359,12 +357,12 @@
 
 #modalTabelaUsuarios .modal-header h4 i,
 #modalTabelaUsuarios .modal-header .modal-title i {
-    color: #8b5cf6;
+    color: #CECFD2;
 }
 
 #modalTabelaUsuarios .modal-header p {
     margin-top: 4px !important;
-    color: #94a3b8 !important;
+    color: #CECFD2 !important;
 }
 
 /* Botão fechar */
@@ -425,7 +423,7 @@
     background: #1b2432 !important;
     border: 1px solid #334155 !important;
     border-radius: 9px !important;
-    color: #ffffff !important;
+    color: #CECFD2 !important;
     font-size: 13px;
 }
 
@@ -490,9 +488,9 @@
     border-spacing: 0;
     table-layout: auto;
     background: #1e293b !important;
-    color: #ffffff !important;
+    color: #CECFD2 !important;
     --bs-table-bg: #1e293b;
-    --bs-table-color: #ffffff;
+    --bs-table-color: #CECFD2;
     --bs-table-hover-bg: #273449;
 }
 
@@ -512,7 +510,7 @@
     padding: 12px 16px !important;
     background: #202b3b !important;
     border-bottom: 1px solid #64748b !important;
-    color: #f8fafc !important;
+    color: #cecfd2 !important;
     font-size: 12px;
     font-weight: 600;
     text-align: center;
@@ -552,7 +550,7 @@
     padding: 12px 14px !important;
     background: transparent !important;
     border-bottom: 1px solid rgba(148, 163, 184, 0.10) !important;
-    color: #e5e7eb !important;
+    color: #cecfd2 !important;
     font-size: 13px;
     vertical-align: middle;
     white-space: nowrap;
@@ -577,13 +575,13 @@
         #7c3aed,
         #4f46e5
     ) !important;
-    color: #ffffff !important;
+    color: #CECFD2 !important;
     font-size: 13px;
     font-weight: 700;
 }
 
 #modalTabelaUsuarios .fw-bold {
-    color: #f8fafc !important;
+    color: #cecfd2 !important;
 }
 
 #modalTabelaUsuarios small {
@@ -626,7 +624,7 @@
     justify-content: center !important;
     border: 1px solid transparent !important;
     border-radius: 7px !important;
-    color: #ffffff !important;
+    color: #CECFD2 !important;
     font-size: 13px !important;
     cursor: pointer;
     opacity: 1 !important;
@@ -642,7 +640,7 @@
 #modalTabelaUsuarios .btn-acao-modal i {
     display: inline-block !important;
     visibility: visible !important;
-    color: #ffffff !important;
+    color: #CECFD2 !important;
     font-size: 13px !important;
 }
 
@@ -691,12 +689,12 @@
     cursor: default !important;
     background-color: transparent !important;
     background: transparent !important;
-    color: white;
+    color: #CECFD2;
     --bs-table-hover-bg: transparent !important; /* Zera a variável de hover do Bootstrap */
     --bs-table-accent-bg: transparent !important;
 }
 #modalTabelaUsuarios .fa-users-slash {
-    color: #64748b;
+    color: #CECFD2;
 }
 
 /* =====================================================
@@ -716,7 +714,7 @@
 }
 
 #modalTabelaUsuarios .modal-footer strong {
-    color: #ffffff !important;
+    color: #CECFD2 !important;
 }
 /* ===========================================
    BARRA DE BOTÕES DA TABELA DO MODAL
@@ -739,9 +737,10 @@
     border-radius: 8px;
     font-size: 13px;
     font-weight: 600;
-    color: #fff;
+    color: #CECFD2;
     cursor: pointer;
     transition: all 0.2s ease;
+    background: #1f2937;
 }
 
 .acoes-tabela-usuarios .btn-cadastrar-usuarios i {
@@ -754,14 +753,13 @@
 }
 
 /* Cores específicas dos botões */
-.acoes-tabela-usuarios .visualizar { background: #0891b2; }
-.acoes-tabela-usuarios .editar { background: #2563eb; }
-.acoes-tabela-usuarios .atualizar { background: #4f46e5; }
-.acoes-tabela-usuarios .apagar { background: #dc2626; }
-.acoes-tabela-usuarios .filtrar { background: #0f766e; }
-.acoes-tabela-usuarios .ordenar { background: #7c3aed; }
-/* Excel */
-.acoes-tabela-usuarios .gerar-excel { background: #16a34a !important; }
+.acoes-tabela-usuarios .visualizar:hover { background: #0891b2; transform: scale(1.05); }
+.acoes-tabela-usuarios .editar:hover { background: #2563eb; transform: scale(1.05); }
+.acoes-tabela-usuarios .atualizar:hover { background: #4f46e5;transform: scale(1.05); }
+.acoes-tabela-usuarios .apagar:hover { background: #dc2626;transform: scale(1.05); }
+.acoes-tabela-usuarios .filtrar:hover { background: #0f766e; transform: scale(1.05);}
+.acoes-tabela-usuarios .ordenar:hover { background: #7c3aed; transform: scale(1.05);}
+.acoes-tabela-usuarios .gerar-excel:hover { background: #16a34a !important;transform: scale(1.05); }
 
 /* =====================================================
    LINHA VAZIA — NENHUM USUÁRIO
@@ -894,7 +892,7 @@
     transform: translateY(-50%);
     background: transparent;
     border: none;
-    color: #a0aec0;
+    color: #CECFD2;
     cursor: pointer;
     font-size: 0.95rem;
     padding: 0;
@@ -906,7 +904,7 @@
 }
 
 .btn-toggle-senha:hover {
-    color: #ffffff;
+    color: #CECFD2;
 }
 
 .btn-toggle-senha:focus {
@@ -983,7 +981,7 @@
     pointer-events: auto;
 }
 #modalFiltrarUsuarios .modal-header h5{
-    color: #fff;
+    color: #cecfd2;
 
 }
 #modalFiltrarUsuarios .modal-content.modal-logout-content {
@@ -996,7 +994,7 @@
 }
 
 #modalOrdenarUsuarios h5 {
-    color: #fff;
+    color: #cecfd2;
     
 }
 #modalOrdenarUsuarios .modal-content.modal-logout-content{
@@ -1015,7 +1013,7 @@
 
     /* 2. Mantém as cores do tema escuro */
     background-color: #1b2230 !important;
-    color: #f8fafc !important;
+    color: #cecfd2 !important;
     border: 1px solid #313b4e !important;
     border-radius: 10px;
     padding: 10px 40px 10px 12px; /* Garante espaço para a nova seta na direita */
@@ -1041,7 +1039,7 @@
 /* Estiliza as opções dentro do dropdown */
 #tipoOrdenacaoUsuario option {
     background-color: #1b2230;
-    color: #f8fafc;
+    color: #cecfd2;
 }
 
 #tipoFiltro{
@@ -1052,7 +1050,7 @@
 
     /* 2. Mantém as cores do tema escuro */
     background-color: #1b2230 !important;
-    color: #f8fafc !important;
+    color: #cecfd2 !important;
     border: 1px solid #313b4e !important;
     border-radius: 10px;
     padding: 10px 40px 10px 12px; /* Garante espaço para a nova seta na direita */
@@ -1079,7 +1077,7 @@
 /* Estiliza as opções dentro do dropdown */
 #tipoFiltro option {
     background-color: #1b2230;
-    color: #f8fafc;
+    color: #cecfd2;
 }
 /* =====================================================
    MODAL DE VISUALIZAR IMAGEM DO USUÁRIO
@@ -1092,7 +1090,7 @@
     padding: 24px;
 }
 #modalVisualizarImagemUsuario h5 {
-    color: #fff;
+    color: #cecfd2;
 }
 /* Define que o modal de imagem fique com z-index superior à tabela (que é 1050) */
 #modalVisualizarImagemUsuario {
@@ -1110,7 +1108,7 @@
     z-index: 1083 !important;
 }
 #mensagemSemImagemUsuario i {
-    color: #fff; /* Cor do ícone (exemplo em roxo do seu tema) */
+    color: #cecfd2; /* Cor do ícone (exemplo em roxo do seu tema) */
     margin-bottom: 16px !important;
     transition: transform 0.2s ease, color 0.2s ease;
 }
@@ -1155,7 +1153,7 @@
 .aviso-senha-bloqueada strong {
     display: block;
     font-size: 13.5px;
-    color: #f8fafc;
+    color: #cecfd2;
     margin-bottom: 2px;
 }
 

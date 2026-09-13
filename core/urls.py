@@ -4,7 +4,7 @@ from usuarios.views import atualizar_tabela_usuarios_status
 
 urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('estoque/', views.estoque, name='estoque'),
+    #path('estoque/', views.estoque, name='estoque'),
     path('produtos/', views.cadastrar_produtos, name='produtos'),
     path('cadastrar_usuarios/', views.cadastrar_usuarios, name='cadastrar_usuarios'),
     path('clientes/', views.clientes, name='clientes'),
@@ -15,6 +15,9 @@ urlpatterns = [
     path('produtos/atualizar/<int:id>/', views.atualizar_produto, name="atualizar_produto"),
     path("produtos/atualizar-tabela/", views.atualizar_tabela_produtos, name="atualizar_tabela_produtos"),
     path("produtos/duplicar/<int:id>/", views.duplicar_produto, name="duplicar_produto"),
+    
+    # ESTOQUE 
+    path('estoque/',include('estoque.urls')),
     
    
     # USUÁRIOS (Rotas específicas primeiro)

@@ -67,15 +67,17 @@
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.03);
-    color: #e2e8f0;
+    color: #CECFD2;
     font-size: 13px;
     cursor: pointer;
     transition: 0.2s ease;
+    background: #1f2937;
 }
 
 .btn-estoque-outline:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
 }
 
 
@@ -90,8 +92,8 @@
     overflow-y: auto;
     border: 1px solid #374151;
     border-radius: 10px;
-    background: #1f2937;
     box-sizing: border-box;
+
 }
 
 /* =====================================================
@@ -192,11 +194,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* Reduzido de 280px para 120px (ajuste o padding vertical conforme preferir) */
-    min-height: 120px; 
+    min-height: calc(100vh - 500px);
     padding: 20px 0;
-    
-    color: #9ca3af;
+    color: #CECFD2;
     text-align: center;
 }
 
@@ -204,12 +204,38 @@
 .sem-registros-content-estoque i {
     font-size: 32px; /* Reduzido de 48px para não ocupar muito espaço vertical */
     margin-bottom: 8px; /* Espaçamento menor entre o ícone e o texto */
-    color: #6b7280;
+    color: #CECFD2;
 }
 
 .sem-registros-content-estoque p {
     margin: 0;
     font-size: 14px;
+}
+/* =====================================================
+   RESET COMPLETO: LINHA VAZIA / SEM REGISTROS ESTOQUE
+===================================================== */
+.estoque-table tbody tr.linha-vazia,
+.estoque-table tbody tr.linha-vazia:hover,
+.estoque-table tbody tr:has(.sem-registros-content-estoque),
+.estoque-table tbody tr:has(.sem-registros-content-estoque):hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    cursor: default !important;
+    pointer-events: none; /* Desativa qualquer efeito de hover ou clique na linha vazia */
+}
+
+.estoque-table tbody tr.linha-vazia td,
+.estoque-table tbody tr.linha-vazia:hover td,
+.estoque-table tbody tr:has(.sem-registros-content-estoque) td,
+.estoque-table tbody tr:has(.sem-registros-content-estoque):hover td {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #cecfd2 !important;
+    cursor: default !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-accent-bg: transparent !important;
 }
 
 .estoque-grid-layout {
@@ -236,39 +262,41 @@
 .estoque-side-actions {
     display: flex;
     flex-direction: column;
-    gap: 30px; /* Espaço menor entre botões */
+    justify-content: space-evenly;
+    gap: 12px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
+    flex: 1;
+    min-height: 0;
     box-sizing: border-box;
     width: 100%;
-    padding: 14px;
+    padding: 20px 16px;
     background: #121824;
-    height: 100%;
-    min-height: 0;
-    overflow-y: auto; /* Adiciona rolagem APENAS na barra de botões se a tela for pequena */
+    overflow-y: auto;
 }
 
 .btn-side-action {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
-    background: transparent;
+    background: #1f2937;
     border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #e2e8f0;
-    padding: 9px 12px; /* Altura do botão levemente reduzida */
+    color: #CECFD2;
+    padding: 11px 14px;
     border-radius: 8px;
     font-size: 13px;
     cursor: pointer;
     transition: all 0.2s ease;
-    justify-content: center;
     width: 100%;
+    flex-shrink: 0;
     text-decoration: none;
-    flex-shrink: 0; /* Impede que os botões fiquem achatados */
 }
 
 .btn-side-action:hover {
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
 }
 
 /* Botões do Rodapé da Tabela */
@@ -285,17 +313,19 @@
     gap: 8px;
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #e2e8f0;
+    color: #CECFD2;
     padding: 9px 20px;
     border-radius: 8px;
     font-size: 13px;
     cursor: pointer;
     transition: all 0.2s ease;
+    
 }
 
 .btn-estoque-acao:hover {
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
 }
 /* IMPORTANTE: Evita que a coluna da tabela empurre os botões */
 .estoque-main-content {
@@ -350,12 +380,175 @@
 .dashboard-topbar-estoque h1 {
     font-size: 20px;
     font-weight: 700;
-    color: #ffffff;
+    color: #cecfd2;
     margin: 0;
 }
 .dashboard-topbar-estoque p {
     margin: 4px 0 0 0;
     font-size:14px;
     font-weight:600;
-    color:#94a3b8;
+    color:#cecfd2;
+}
+/* =====================================================
+   ESTILO DA LINHA SELECIONADA (ESTOQUE)
+===================================================== */
+.estoque-table tbody tr.linha-produto-estoque {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Fundo destacado para todas as células da linha ativa */
+.estoque-table tbody tr.linha-selecionada td {
+    background-color: #2a374a !important;
+    color: #cecfd2 !important;
+}
+
+/* Indicador visual com border-left na primeira coluna */
+.estoque-table tbody tr.linha-selecionada td:first-child {
+    border-left: 4px solid #3b82f6 !important;
+}
+
+/* =====================================================
+   SELEÇÃO DE LINHA NA TABELA DE ESTOQUE
+===================================================== */
+.estoque-table tbody tr.linha-selecionada td {
+    background-color: #334155 !important;
+    color: #cecfd2 !important;
+}
+
+/* =====================================================
+   MODAL CONFIRMAR SAÍDA (ESTOQUE)
+===================================================== */
+#modalConfirmarSaidaEstoque {
+    z-index: 1065 !important;
+}
+
+.modal-saida-estoque-dialog {
+    max-width: 380px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-saida-estoque-content {
+    background: #161e2b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 14px !important;
+    color: #cecfd2;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+}
+
+.modal-saida-estoque-header {
+    background: #161e2b;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-saida-estoque-header h5 {
+    color: #cecfd2;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-saida-estoque-header h5 i {
+    color: #CECFD2;
+}
+
+.btn-modal-fechar-saida-estoque {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 50%;
+    color: #cecfd2;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-modal-fechar-saida-estoque:hover {
+    background-color: #dc2626;
+    color: #cecfd2;
+}
+
+.modal-saida-estoque-body {
+    padding: 20px;
+    background: #161e2b;
+}
+
+.modal-saida-texto-principal {
+    margin: 0 0 14px 0;
+    font-size: 14px;
+    color: #cecfd2;
+}
+
+.card-info-saida-produto {
+    background: #1b2230;
+    border: 1px solid #313b4e;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #cecfd2;
+}
+
+.label-info-saida {
+    color: #cecfd2;
+    font-size: 12px;
+}
+
+.modal-saida-estoque-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: #161e2b;
+}
+
+.btn-cancelar-saida-estoque {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-cancelar-saida-estoque:hover {
+    background: #4b5563;
+    color: #cecfd2;
+}
+
+.btn-confirmar-saida-estoque {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #0284c7;
+    border: 1px solid #0284c7;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-confirmar-saida-estoque:hover {
+    background: #0369a1;
+    border-color: #0369a1;
 }

@@ -74,6 +74,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const inputPesquisaInativos = document.getElementById("inputPesquisaInativos");
     const btnPesquisarInativos = document.getElementById("btnPesquisarInativos");
 
+    /* =========================================
+       EXPORTAÇÃO DE USUÁRIOS (EXCEL - MODAL)
+    ========================================= */
+    const btnAbrirModalExportarExcel = document.getElementById("btnAbrirModalExportarExcel");
+    const modalEscolhaExportarExcelEl = document.getElementById("modalEscolhaExportarExcel");
+    const modalEscolhaExportarExcel = modalEscolhaExportarExcelEl ? bootstrap.Modal.getOrCreateInstance(modalEscolhaExportarExcelEl) : null;
+    const btnConfirmarExportarExcelUsuarios = document.getElementById("btnConfirmarExportarExcelUsuarios");
+    const tipoExportacaoExcel = document.getElementById("tipoExportacaoExcel");
+
+    /* =========================================
+       EXPORTAÇÃO DE USUÁRIOS (PDF - MODAL)
+    ========================================= */
+    const btnAbrirModalExportarPdf = document.getElementById("btnAbrirModalExportarPdf");
+    const modalEscolhaExportarPdfEl = document.getElementById("modalEscolhaExportarPdf");
+    const modalEscolhaExportarPdf = modalEscolhaExportarPdfEl ? bootstrap.Modal.getOrCreateInstance(modalEscolhaExportarPdfEl) : null;
+    const btnConfirmarExportarPdfUsuarios = document.getElementById("btnConfirmarExportarPdfUsuarios");
+    const tipoExportacaoPdf = document.getElementById("tipoExportacaoPdf");
+
     // Variáveis de Controle de Estado
     let linhaAtivaSelecionada = null;
     let ordemHistoricoAtual = "desc";
@@ -936,6 +954,60 @@ document.addEventListener("DOMContentLoaded", function () {
     if (btnPesquisarInativos) {
         btnPesquisarInativos.addEventListener("click", () => {
             filtrarTabela(tbodyInativos, inputPesquisaInativos?.value || "", 22, "inativo");
+        });
+    }
+
+    if (btnAbrirModalExportarExcel && modalEscolhaExportarExcel) {
+        btnAbrirModalExportarExcel.addEventListener("click", function () {
+            modalEscolhaExportarExcel.show();
+        });
+    }
+
+    if (btnConfirmarExportarExcelUsuarios) {
+        btnConfirmarExportarExcelUsuarios.addEventListener("click", function () {
+            const tipo = tipoExportacaoExcel ? tipoExportacaoExcel.value : "todos";
+
+            if (modalEscolhaExportarExcel) {
+                modalEscolhaExportarExcel.hide();
+            }
+
+            const link = document.createElement("a");
+            link.href = `/usuarios/exportar-excel/?tipo=${tipo}`;
+            link.setAttribute("download", "");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta("Exportação de usuários iniciada com sucesso!", "sucesso");
+            }
+        });
+    }
+
+    if (btnAbrirModalExportarPdf && modalEscolhaExportarPdf) {
+        btnAbrirModalExportarPdf.addEventListener("click", function () {
+            modalEscolhaExportarPdf.show();
+        });
+    }
+
+    if (btnConfirmarExportarPdfUsuarios) {
+        btnConfirmarExportarPdfUsuarios.addEventListener("click", function () {
+            const tipo = tipoExportacaoPdf ? tipoExportacaoPdf.value : "todos";
+
+            if (modalEscolhaExportarPdf) {
+                modalEscolhaExportarPdf.hide();
+            }
+
+            const link = document.createElement("a");
+            link.href = `/usuarios/exportar-pdf/?tipo=${tipo}`;
+            link.setAttribute("download", "");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta("Exportação de PDF iniciada com sucesso!", "sucesso");
+            }
         });
     }
     
