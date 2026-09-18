@@ -115,6 +115,58 @@ class Produto(models.Model):
             return f"{int(valor_limpo)}%"
         return f"{str(valor_limpo).replace('.', ',')}%"
     
+class HistoricoProduto(models.Model):
+    ACOES_CHOICES = [
+        ('SAIDA', 'Saída de Produto'),
+        ('ESTORNO', 'Estorno de Produto'),
+        ('CRIACAO', 'Criação'),
+        ('EDICAO', 'Edição'),
+        ('EXCLUSAO', 'Exclusão'),
+    ]
+
+    produto = models.ForeignKey(
+        Produto, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='historicos'
+    )
+    nome_produto = models.CharField(max_length=150)
+    acao = models.CharField(max_length=20, choices=ACOES_CHOICES)
+    descricao = models.TextField()
+    usuario = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True
+    )
+    data_hora = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-data_hora']
+        verbose_name = 'Histórico de Produto'
+        verbose_name_plural = 'Históricos de Produtos'
+
+    def __str__(self):
+        return f"{self.nome_produto} - {self.get_acao_display()} ({self.data_hora.strftime('%d/%m/%Y %H:%M')})"
+    
+class SaidaProduto(models.Model):
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE, related_name='saidas_registradas')
+    quantidade = models.PositiveIntegerField(default=1)
+    valor_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+    desconto = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    total_sem_desconto = models.DecimalField(max_digits=12, decimal_places=2)
+    total_com_desconto = models.DecimalField(max_digits=12, decimal_places=2)
+    data_saida = models.DateTimeField(auto_now_add=True)
+    criado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+        ordering = ['-data_saida']
+
+    def __str__(self):
+        return f"Saída {self.quantidade}x {self.produto.nome} ({self.produto.codigo})"
+    
+    
 @receiver(post_save, sender=Produto)
 def atualizar_gasto_cliente_ao_salvar(sender, instance, **kwargs):
     if instance.cliente:

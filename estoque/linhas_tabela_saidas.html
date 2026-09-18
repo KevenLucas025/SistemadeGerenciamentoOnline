@@ -1,25 +1,19 @@
 {% if saidas %}
     {% for saida in saidas %}
-        <tr class="linha-produto-saida" data-saida-id="{{ saida.id }}">
-            <td><strong>{{ saida.nome }}</strong></td>
+        <tr class="linha-produto-saida" data-produto-id="{{ saida.id }}" data-saida-id="{{ saida.id }}" data-codigo="{{ saida.produto.codigo }}">
+            <td><strong>{{ saida.id }}</strong></td>
+            <td>{{ saida.produto.nome }}</td>
             <td>{{ saida.quantidade }}</td>
             <td>R$ {{ saida.valor_unitario }}</td>
             <td>{{ saida.desconto }}%</td>
             <td>R$ {{ saida.total_sem_desconto }}</td>
             <td>R$ {{ saida.total_com_desconto }}</td>
-            <td>{{ saida.data_saida|date:"d/m/Y H:i"|default:"—" }}</td>
-            <td>{{ saida.data_cadastro|date:"d/m/Y"|default:saida.data_cadastro }}</td>
-            <td>{{ saida.codigo }}</td>
-            <td>{{ saida.cliente|default:"—" }}</td>
-            <td>{{ saida.descricao|default:"—" }}</td>
+            <td>{{ saida.data_saida|date:"d/m/Y H:i" }}</td>
+            <td>{{ saida.produto.data_cadastro|date:"d/m/Y"|default:saida.produto.data_cadastro }}</td>
+            <td>{{ saida.produto.codigo }}</td>
+            <td>{{ saida.produto.cliente|default:"—" }}</td>
+            <td>{{ saida.produto.descricao|default:"—" }}</td>
             <td>{{ saida.criado_por.username|default:"Sistema" }}</td>
-            <td>
-                {% if saida.status_saida == 0 %}
-                    <span class="badge bg-secondary">0 - Em estoque</span>
-                {% else %}
-                    <span class="badge bg-warning text-dark">1 - Gerado Saída</span>
-                {% endif %}
-            </td>
         </tr>
     {% endfor %}
 {% else %}
@@ -27,7 +21,7 @@
         <td colspan="13" class="sem-registros">
             <div class="sem-registros-content-estoque">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                <p>Nenhum registro de saída encontrado.</p>
+                <p>Nenhum produto em saída no momento.</p>
             </div>
         </td>
     </tr>

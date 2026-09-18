@@ -3,7 +3,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/usuarios.css' %}">
-<script src="{% static 'js/usuarios.js' %}"></script>
+<script src="{% static 'js/usuarios.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -61,7 +61,7 @@
                             type="text" 
                             id="inputPesquisaAtivos" 
                             class="input-pesquisa-tabela" 
-                            placeholder="Pesquisar por nome, usuário, e-mail ou CPF..."
+                            placeholder="Pesquisar por nome, usuário, e-mail ou CPF..." 
                             autocomplete="off">
                     </div>
                     <button type="button" class="btn-pesquisar-tabela" id="btnPesquisarAtivos">
@@ -161,7 +161,7 @@
                     </div>
                 </div>
 
-            <!-- BARRA DE PESQUISA: USUÁRIOS INATIVOS -->
+                <!-- BARRA DE PESQUISA: USUÁRIOS INATIVOS -->
                 <div class="verificar-usuarios-search-bar">
                     <div class="input-search-wrapper">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -169,7 +169,7 @@
                             type="text" 
                             id="inputPesquisaInativos" 
                             class="input-pesquisa-tabela" 
-                            placeholder="Pesquisar por nome, usuário, e-mail ou CPF..."
+                            placeholder="Pesquisar por nome, usuário, e-mail ou CPF..." 
                             autocomplete="off">
                     </div>
                     <button type="button" class="btn-pesquisar-tabela" id="btnPesquisarInativos">
@@ -392,7 +392,6 @@
                             </tr>
                         </thead>
                         <tbody id="tbodyHistoricoUsuarios">
-                            <!-- Linha vazia padrão para quando não houver dados -->
                             <tr class="linha-vazia-historico">
                                 <td colspan="5">
                                     <div class="sem-registros-content-historico">
@@ -411,7 +410,7 @@
                 <span class="contador-selecionados-historico" id="contadorSelecionadosHistorico">
                     0 itens selecionados
                 </span>
-                <button type="button" class="btn-cancelar-irreversivel" data-bs-dismiss="modal">
+                <button type="button" class="btn-fechar-modal-historico-usuarios" data-bs-dismiss="modal">
                     Fechar
                 </button>
             </div>
@@ -426,8 +425,6 @@
 <div class="modal fade" id="modalConfirmarApagarHistorico" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-confirmar-apagar-historico-dialog">
         <div class="modal-content modal-confirmar-apagar-historico-content">
-            
-            <!-- HEADER -->
             <div class="modal-confirmar-apagar-historico-header">
                 <div class="modal-confirmar-apagar-historico-icon">
                     <i class="fa-regular fa-trash-can"></i>
@@ -437,7 +434,6 @@
                 </button>
             </div>
 
-            <!-- BODY -->
             <div class="modal-body modal-confirmar-apagar-historico-body text-center">
                 <h4 class="modal-confirmar-apagar-historico-titulo">Apagar Registro(s) do Histórico?</h4>
                 <p class="modal-confirmar-apagar-historico-descricao">
@@ -449,7 +445,6 @@
                 </div>
             </div>
 
-            <!-- FOOTER -->
             <div class="modal-confirmar-apagar-historico-footer">
                 <button type="button" class="btn-cancelar-apagar-historico" data-bs-dismiss="modal">
                     Cancelar
@@ -458,7 +453,6 @@
                     <i class="fa-regular fa-trash-can"></i> Confirmar Exclusão
                 </button>
             </div>
-
         </div>
     </div>
 </div>
@@ -469,8 +463,6 @@
 <div class="modal fade" id="modalStatusPausaHistorico" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-status-pausa-historico-dialog">
         <div class="modal-content modal-status-pausa-historico-content">
-            
-            <!-- HEADER -->
             <div class="modal-status-pausa-historico-header">
                 <div class="modal-status-pausa-historico-icon">
                     <i class="fa-solid fa-circle-pause"></i>
@@ -480,14 +472,12 @@
                 </button>
             </div>
 
-            <!-- BODY -->
             <div class="modal-body modal-status-pausa-historico-body text-center">
                 <h4 class="modal-status-pausa-historico-titulo">Gravação do Histórico</h4>
                 <p class="modal-status-pausa-historico-descricao">
                     Deseja manter o registro de atividades do sistema <strong>ativo</strong>?
                 </p>
 
-                <!-- CARD DE STATUS ATUAL -->
                 <div class="modal-status-pausa-historico-card-info">
                     <span class="modal-status-pausa-historico-card-label">Status atual no sistema:</span>
                     <span id="badgeStatusPausaAtual" class="modal-status-pausa-badge ativo">
@@ -500,7 +490,6 @@
                 </small>
             </div>
 
-            <!-- FOOTER COM AS OPÇÕES SIM E NÃO -->
             <div class="modal-status-pausa-historico-footer">
                 <button type="button" id="btnNaoPausarHistorico" class="btn-status-pausa-acao btn-status-pausa-nao">
                     <i class="fa-solid fa-pause"></i> Não (Pausar)
@@ -509,7 +498,6 @@
                     <i class="fa-solid fa-play"></i> Sim (Ativar)
                 </button>
             </div>
-
         </div>
     </div>
 </div>
@@ -569,8 +557,6 @@
 <div class="modal fade" id="modalFiltrarHistoricoUsuarios" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-filtrar-historico-dialog">
         <div class="modal-content modal-filtrar-historico-content">
-            
-            <!-- HEADER -->
             <div class="modal-filtrar-historico-header">
                 <div class="modal-filtrar-historico-titulo">
                     <i class="fa-solid fa-user-gear"></i>
@@ -581,10 +567,7 @@
                 </button>
             </div>
 
-            <!-- BODY -->
             <div class="modal-filtrar-historico-body">
-                
-                <!-- SEÇÃO 1: FILTROS DISPONÍVEIS (DATA) -->
                 <fieldset class="modal-filtrar-fieldset">
                     <legend class="modal-filtrar-legend">Filtros Disponíveis</legend>
                     <div class="modal-filtrar-campo">
@@ -598,10 +581,8 @@
                     </div>
                 </fieldset>
 
-                <!-- SEÇÃO 2: FILTRAR POR HORA (ORDENAÇÃO) -->
                 <fieldset class="modal-filtrar-fieldset">
                     <legend class="modal-filtrar-legend">Filtrar por Hora</legend>
-                    
                     <div class="modal-filtrar-radio-group">
                         <label class="modal-filtrar-radio-label">
                             <input type="radio" name="filtroOrdemHora" value="desc" checked class="modal-filtrar-radio">
@@ -617,13 +598,10 @@
                     </div>
                 </fieldset>
 
-                <!-- BOTÃO APLICAR FILTRO -->
                 <button type="button" id="btnAplicarFiltroHistorico" class="btn-filtrar-historico-submit">
                     Aplicar Filtro
                 </button>
-
             </div>
-
         </div>
     </div>
 </div>

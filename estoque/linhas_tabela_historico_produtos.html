@@ -1,0 +1,33 @@
+{% if historicos %}
+    {% for item in historicos %}
+        <tr class="linha-historico-produto" data-historico-id="{{ item.id }}">
+            <td class="col-checkbox-produtos">
+                <input type="checkbox" class="checkbox-custom-historico-produtos checkbox-item-historico-produtos" value="{{ item.id }}">
+            </td>
+            <td>{{ item.data_hora|date:"d/m/Y H:i" }}</td>
+            <td><strong>{{ item.nome_produto }}</strong></td>
+            <td>
+                {% if item.acao == 'SAIDA' %}
+                    <span class="badge-historico-produto badge-historico-saida"> Gerar Saída</span>
+                {% elif item.acao == 'ESTORNO' %}
+                    <span class="badge-historico-produto badge-historico-estorno">Gerar Estorno</span>
+                {% else %}
+            <span class="badge-historico-produto badge-historico-padrao">
+            <i class="fa-solid fa-circle-info"></i> {{ item.get_acao_display }}
+        </span>
+    {% endif %}
+</td>
+            <td>{{ item.descricao }}</td>
+            <td>{{ item.usuario.username|default:"Sistema" }}</td>
+        </tr>
+    {% endfor %}
+{% else %}
+    <tr class="linha-vazia-historico-produtos">
+        <td colspan="6">
+            <div class="sem-registros-content-historico-produtos">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <p>Nenhum registro de histórico de produtos encontrado.</p>
+            </div>
+        </td>
+    </tr>
+{% endif %}

@@ -157,7 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     aplicarFormatacoesTabela();
 
-    // Máscara automática DD/MM/AAAA para o campo de data do modal de filtro
     if (inputFiltroData) {
         inputFiltroData.addEventListener("input", function (e) {
             let v = e.target.value.replace(/\D/g, "");
@@ -364,6 +363,43 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =========================================
        7. CARREGAMENTO E ATUALIZAÇÃO DO HISTÓRICO
     ========================================= */
+    function gerarBadgeAcaoUsuario(acao) {
+        const acaoNormalizada = (acao || "").toUpperCase();
+
+        if (acaoNormalizada.includes("SAÍDA") || acaoNormalizada.includes("SAIDA") || acaoNormalizada.includes("INATIV")) {
+            return `
+                <span class="badge-historico-usuario badge-historico-usuario-saida">${acao}
+                </span>
+            `;
+        }
+
+        if (acaoNormalizada.includes("ESTORNO") || acaoNormalizada.includes("ATIV") || acaoNormalizada.includes("REATIV")) {
+            return `
+                <span class="badge-historico-usuario badge-historico-usuario-estorno">${acao}
+                </span>
+            `;
+        }
+
+        if (acaoNormalizada.includes("CADASTRO") || acaoNormalizada.includes("CRIA")) {
+            return `
+                <span class="badge-historico-usuario badge-historico-usuario-cadastro">${acao}
+                </span>
+            `;
+        }
+
+        if (acaoNormalizada.includes("EDIÇÃO") || acaoNormalizada.includes("EDICAO") || acaoNormalizada.includes("ALTERA")) {
+            return `
+                <span class="badge-historico-usuario badge-historico-usuario-edicao">${acao}
+                </span>
+            `;
+        }
+
+        return `
+            <span class="badge-historico-usuario badge-historico-usuario-padrao">${acao}
+            </span>
+        `;
+    }
+
     async function carregarHistoricoUsuarios(silencioso = false, ordem = ordemHistoricoAtual, data = filtroDataAtual) {
         if (!tbodyHistorico) return;
 
@@ -425,7 +461,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </td>
                     <td>${item.data_hora}</td>
                     <td><strong>${item.usuario_logado}</strong></td>
-                    <td><span class="badge bg-danger">${item.acao}</span></td>
+                    <td>${gerarBadgeAcaoUsuario(item.acao)}</td>
                     <td>${item.descricao}</td>
                 `;
                 tbodyHistorico.appendChild(tr);
@@ -497,7 +533,6 @@ document.addEventListener("DOMContentLoaded", function () {
         atualizarContadorHistorico();
     }
 
-    // Selecionar / Desmarcar Todos via Checkbox Master
     if (checkAllHistorico && tbodyHistorico) {
         checkAllHistorico.addEventListener("change", function () {
             const linhas = tbodyHistorico.querySelectorAll("tr.linha-item-historico");
@@ -514,7 +549,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Clique na Tabela do Histórico
     if (tbodyHistorico) {
         tbodyHistorico.addEventListener("click", function (e) {
             const linha = e.target.closest("tr.linha-item-historico");
@@ -813,7 +847,6 @@ document.addEventListener("DOMContentLoaded", function () {
        14. CLIQUE FORA PARA DESELECIONAR
     ========================================= */
     document.addEventListener("click", function (e) {
-        // Tabela de Usuários Ativos
         const clicouNaTabelaAtivos = e.target.closest("#tbodyUsuariosAtivos");
         const clicouNoBotaoSaida = e.target.closest("#btnGerarSaida");
         const clicouNoModalSaida = e.target.closest("#modalConfirmarSaida");
@@ -822,7 +855,6 @@ document.addEventListener("DOMContentLoaded", function () {
             desmarcarLinhaAtiva();
         }
 
-        // Tabela de Histórico
         if (modalHistoricoEl?.classList.contains("show")) {
             const clicouNaLinhaHistorico = e.target.closest("#tbodyHistoricoUsuarios tr.linha-item-historico");
             const clicouNoToolbar = e.target.closest(".modal-historico-toolbar");
@@ -844,10 +876,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    function limparVisualizacaoTabelas(){
+    function limparVisualizacaoTabelas() {
         desmarcarLinhaAtiva();
 
-        // Template de placeholder para tabela vazia de usuários ativos
         if (tbodyAtivos) {
             tbodyAtivos.innerHTML = `
                 <tr class="linha-vazia">
@@ -858,7 +889,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 </tr>
             `;
         }
-        // Template de placeholder para tabela vazia de usuários inativos
         if (tbodyInativos) {
             tbodyInativos.innerHTML = `
                 <tr class="linha-vazia">
@@ -870,7 +900,6 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
         }
 
-        // Alerta de confirmação da ação na interface
         if (typeof mostrarAlerta === "function") {
             mostrarAlerta("Tabelas limpas com sucesso!", "sucesso");
         }
@@ -897,7 +926,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const linhas = tbody.querySelectorAll("tr:not(.linha-vazia):not(.linha-sem-busca)");
         let encontrados = 0;
 
-        // Se a tabela já estiver no estado de "Limpar Tabelas" ou vazia originalmente
         if (tbody.querySelectorAll(".linha-vazia, .sem-registros-verificar-usuarios").length > 0) {
             return;
         }
@@ -915,7 +943,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Trata feedback de nenhum resultado encontrado na busca
         const linhaExistenteAviso = tbody.querySelector(".linha-sem-busca");
         if (encontrados === 0 && termo !== "") {
             if (!linhaExistenteAviso) {
@@ -944,7 +971,6 @@ document.addEventListener("DOMContentLoaded", function () {
             filtrarTabela(tbodyAtivos, inputPesquisaAtivos?.value || "", 21, "ativo");
         });
     }
-
 
     if (inputPesquisaInativos) {
         inputPesquisaInativos.addEventListener("input", () => {
@@ -1010,5 +1036,4 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-    
 });

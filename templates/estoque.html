@@ -45,6 +45,7 @@
                     <table class="estoque-table">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>PRODUTO</th>
                                 <th>QUANTIDADE</th>
                                 <th>VALOR UNITÁRIO</th>
@@ -78,6 +79,7 @@
                     <table class="estoque-table">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>PRODUTO</th>
                                 <th>QUANTIDADE</th>
                                 <th>VALOR UNITÁRIO</th>
@@ -129,46 +131,210 @@
     </div>
 </div>
 
-<!-- =====================================================
-     MODAL DE CONFIRMAÇÃO — GERAR SAÍDA DE PRODUTO
-====================================================== -->
+<!-- MODAL GERAR SAÍDA POR QUANTIDADE -->
 <div class="modal fade" id="modalConfirmarSaidaEstoque" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm modal-saida-estoque-dialog">
         <div class="modal-content modal-saida-estoque-content">
             <div class="modal-header modal-saida-estoque-header">
-                <h5>
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                    Confirmar Saída
-                </h5>
-                <button type="button" class="btn-modal-fechar-saida-estoque" data-bs-dismiss="modal" aria-label="Fechar">
+                <h5><i class="fa-solid fa-arrow-right-from-bracket"></i> Gerar Saída</h5>
+                <button type="button" class="btn-modal-fechar-saida-estoque" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body modal-saida-estoque-body">
+                <div class="card-info-saida-produto mb-3">
+                    <span class="label-info-saida">Produto:</span> <strong id="nomeProdutoSaidaModal">—</strong><br>
+                    <span class="label-info-saida">Qtd Atual no Estoque:</span> <strong id="qtdDisponivelSaidaModal" class="text-info">0</strong>
+                </div>
+                <div class="mb-3 text-start">
+                    <label class="form-label text-light small">Quantidade para dar saída:</label>
+                    <input type="number" id="inputQtdSaida" class="form-control form-control-sm bg-dark text-light border-secondary" min="1" value="1">
+                    <small id="erroQtdSaida" class="text-danger d-none">Quantidade inválida.</small>
+                </div>
+            </div>
+            <div class="modal-footer modal-saida-estoque-footer">
+                <button type="button" class="btn-cancelar-saida-estoque" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnConfirmarSaidaEstoqueDefinitiva" class="btn-confirmar-saida-estoque">Confirmar Saída</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- =====================================================
+     MODAL DE HISTÓRICO DE AÇÕES DE PRODUTOS / ESTOQUE
+====================================================== -->
+<div class="modal fade" id="modalHistoricoProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content modal-historico-produtos-content">
+            
+            <!-- HEADER -->
+            <div class="modal-header modal-historico-produtos-header">
+                <div class="modal-historico-produtos-titulo-box">
+                    <div class="modal-historico-produtos-icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <div>
+                        <h3 class="modal-historico-produtos-titulo">Histórico de Atividades</h3>
+                        <p class="modal-historico-produtos-subtitulo">Registro detalhado de ações, saídas, estornos e alterações de produtos no sistema</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-modal-fechar-historico-produtos" data-bs-dismiss="modal" aria-label="Fechar">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <div class="modal-body modal-saida-estoque-body text-center">
-                <p class="modal-saida-texto-principal">
-                    Deseja registrar a saída do seguinte produto?
-                </p>
-
-                <div class="card-info-saida-produto">
-                    <span class="label-info-saida">Produto:</span>
-                    <strong id="nomeProdutoSaidaModal">—</strong>
-                    <br>
-                    <span class="label-info-saida">Código:</span>
-                    <span id="codigoProdutoSaidaModal">—</span>
+            <!-- TOOLBAR DE AÇÕES (8 BOTÕES) -->
+            <div class="modal-historico-produtos-toolbar">
+                <div class="modal-historico-produtos-toolbar-acoes">
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-atualizar" id="btnAtualizarHistoricoProdutos">
+                        <i class="fa-solid fa-rotate"></i> Atualizar histórico
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-perigo" id="btnApagarHistoricoProdutos">
+                        <i class="fa-regular fa-trash-can"></i> Apagar histórico
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-exportar-csv" id="btnExportarCsvHistoricoProdutos">
+                        <i class="fa-solid fa-file-csv"></i> Exportar CSV
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-exportar-excel" id="btnExportarExcelHistoricoProdutos">
+                        <i class="fa-regular fa-file-excel"></i> Exportar Excel
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-exportar-pdf" id="btnExportarPdfHistoricoProdutos">
+                        <i class="fa-regular fa-file-pdf"></i> Exportar PDF
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-pausar" id="btnPausarHistoricoProdutos">
+                        <i class="fa-solid fa-pause"></i> <span id="textoStatusPausaHistoricoProdutos">Pausar histórico</span>
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-ordenar" id="btnOrdenarHistoricoProdutos">
+                        <i class="fa-solid fa-arrow-down-a-z"></i> Ordenar histórico
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-filtrar" id="btnFiltrarHistoricoProdutos">
+                        <i class="fa-solid fa-filter"></i> Filtrar histórico
+                    </button>
                 </div>
             </div>
 
-            <div class="modal-footer modal-saida-estoque-footer">
-                <button type="button" class="btn-cancelar-saida-estoque" data-bs-dismiss="modal">
+            <!-- BODY COM TABELA E CHECKBOXES -->
+            <div class="modal-body modal-historico-produtos-body">
+                <div class="modal-historico-produtos-table-container">
+                    <table class="estoque-table modal-historico-produtos-table">
+                        <thead>
+                            <tr>
+                                <th class="col-checkbox-produtos">
+                                    <input type="checkbox" id="checkAllHistoricoProdutos" class="checkbox-custom-historico-produtos">
+                                </th>
+                                <th>DATA / HORA</th>
+                                <th>PRODUTO</th>
+                                <th>AÇÃO</th>
+                                <th>DESCRIÇÃO</th>
+                                <th>USUÁRIO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyHistoricoProdutos">
+                            <!-- Linha vazia padrão para quando não houver dados -->
+                            <tr class="linha-vazia-historico-produtos">
+                                <td colspan="6">
+                                    <div class="sem-registros-content-historico-produtos">
+                                        <i class="fa-solid fa-clock-rotate-left"></i>
+                                        <p>Nenhum registro de histórico de produtos encontrado.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-historico-produtos-footer">
+                <span class="contador-selecionados-historico-produtos" id="contadorSelecionadosHistoricoProdutos">
+                    0 itens selecionados
+                </span>
+                <button type="button" class="btn-cancelar-historico-produtos" data-bs-dismiss="modal">
+                    Fechar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- =====================================================
+     MODAL DE ORDENAÇÃO — HISTÓRICO DE PRODUTOS
+====================================================== -->
+<div class="modal fade" id="modalOrdenarHistoricoProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-ordenar-historico-produtos-dialog">
+        <div class="modal-content modal-ordenar-historico-produtos-content">
+            <div class="modal-header modal-ordenar-historico-produtos-header">
+                <h5>
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Direção da Ordenação
+                </h5>
+                <button
+                    type="button"
+                    class="btn-modal-fechar-ordenar-historico-produtos"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-ordenar-historico-produtos-body">
+                <div class="campo campo-ordenar-historico-produtos">
+                    <label for="tipoOrdenacaoHistoricoProdutos">Escolha a direção</label>
+                    <select id="tipoOrdenacaoHistoricoProdutos">
+                        <option value="desc" selected>Decrescente (Mais recentes primeiro)</option>
+                        <option value="asc">Crescente (Mais antigos primeiro)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-ordenar-historico-produtos-footer">
+                <button
+                    type="button"
+                    class="btn-cancelar-ordenar-historico-produtos"
+                    data-bs-dismiss="modal">
                     Cancelar
                 </button>
-                <button type="button" id="btnConfirmarSaidaEstoqueDefinitiva" class="btn-confirmar-saida-estoque">
-                    <i class="fa-solid fa-check"></i>
-                    Confirmar Saída
+                <button
+                    type="button"
+                    id="btnExecutarOrdenacaoHistoricoProdutos"
+                    class="btn-confirmar-ordenar-historico-produto">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Ordenar
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- MODAL GERAR ESTORNO POR QUANTIDADE -->
+<div class="modal fade" id="modalConfirmarEstornoEstoque" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-saida-estoque-dialog">
+        <div class="modal-content modal-saida-estoque-content">
+            <div class="modal-header modal-saida-estoque-header">
+                <h5><i class="fa-solid fa-rotate-left" style="color: #38bdf8;"></i> Gerar Estorno</h5>
+                <button type="button" class="btn-modal-fechar-saida-estoque" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body modal-saida-estoque-body">
+                <div class="card-info-saida-produto mb-3">
+                    <span class="label-info-saida">Produto:</span> <strong id="nomeProdutoEstornoModal">—</strong><br>
+                    <span class="label-info-saida">Qtd na Saída:</span> <strong id="qtdDisponivelEstornoModal" class="text-info">0</strong>
+                </div>
+                <div class="mb-3 text-start">
+                    <label class="form-label text-light small">Quantidade para estornar:</label>
+                    <input type="number" id="inputQtdEstorno" class="form-control form-control-sm bg-dark text-light border-secondary" min="1" value="1">
+                    <small id="erroQtdEstorno" class="text-danger d-none">Quantidade inválida.</small>
+                </div>
+            </div>
+            <div class="modal-footer modal-saida-estoque-footer">
+                <button type="button" class="btn-cancelar-saida-estoque" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnConfirmarEstornoEstoqueDefinitiva" class="btn-confirmar-saida-estoque" style="background: #0284c7; border-color: #38bdf8;">Confirmar Estorno</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

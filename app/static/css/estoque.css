@@ -13,7 +13,7 @@
 
 .estoque-header h2 {
     margin: 0;
-    color: #f9fafb;
+    color: #cecfd2;
     font-size: 18px;
     font-weight: 600;
 }
@@ -21,7 +21,7 @@
 
 .estoque-header p {
     margin: 6px 0 0;
-    color: #9ca3af;
+    color: #cecfd2;
     font-size: 14px;
 
 }
@@ -48,7 +48,7 @@
     border: 1px solid #374151;
     border-radius: 8px;
     background: #1f2937;
-    color: #e5e7eb;
+    color: #cecfd2;
     cursor: pointer;
     transition: 0.2s ease;
 
@@ -93,6 +93,7 @@
     border: 1px solid #374151;
     border-radius: 10px;
     box-sizing: border-box;
+    
 
 }
 
@@ -111,7 +112,7 @@
     top: 0;
     z-index: 5;
     background: #111827;
-    color: #9ca3af;
+    color: #cecfd2;
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
@@ -124,7 +125,7 @@
 .estoque-table th {
     padding: 14px 16px;
     text-align: left;
-    color: #9ca3af;
+    color: #cecfd2;
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
@@ -132,12 +133,11 @@
 
 }
 
-
 .estoque-table td {
     white-space: nowrap;
     padding: 12px 16px;
     border-bottom: 1px solid #374151;
-    color: #d1d5db;
+    color: #cecfd2;
     font-size: 13px;
 }
 
@@ -147,6 +147,8 @@
 
 .estoque-table tbody tr:hover {
     background: rgba(99, 102, 241, 0.08);
+    
+    
 }
 
 .estoque-table tbody tr:last-child td {
@@ -390,30 +392,38 @@
     color:#cecfd2;
 }
 /* =====================================================
-   ESTILO DA LINHA SELECIONADA (ESTOQUE)
+   LINHAS E HOVER DAS TABELAS DE ESTOQUE E SAÍDA
 ===================================================== */
-.estoque-table tbody tr.linha-produto-estoque {
-    cursor: pointer;
+/* Cursor pointer e transição para todas as linhas com dados nas 2 tabelas */
+.estoque-table tbody tr:not(.linha-vazia) {
+    cursor: pointer !important;
     transition: background-color 0.2s ease;
 }
 
-/* Fundo destacado para todas as células da linha ativa */
-.estoque-table tbody tr.linha-selecionada td {
-    background-color: #2a374a !important;
-    color: #cecfd2 !important;
+/* Garante o cursor pointer em todas as células da linha ao passar o mouse */
+.estoque-table tbody tr:not(.linha-vazia) td {
+    cursor: pointer !important;
 }
 
-/* Indicador visual com border-left na primeira coluna */
-.estoque-table tbody tr.linha-selecionada td:first-child {
-    border-left: 4px solid #3b82f6 !important;
+/* Efeito visual ao passar o mouse (Hover) nas 2 tabelas */
+.estoque-table tbody tr:not(.linha-vazia):not(.linha-selecionada):hover td {
+    background-color: rgba(99, 102, 241, 0.12) !important;
+    color: #cecfd2 !important;
 }
 
 /* =====================================================
-   SELEÇÃO DE LINHA NA TABELA DE ESTOQUE
+   LINHA SELECIONADA (ESTOQUE E SAÍDA) COM BORDER-LEFT
 ===================================================== */
+/* Fundo destacado fixo quando a linha está selecionada */
 .estoque-table tbody tr.linha-selecionada td {
-    background-color: #334155 !important;
+    background-color: #2a374a !important;
     color: #cecfd2 !important;
+    cursor: pointer !important;
+}
+
+/* Borda azul na lateral esquerda da primeira coluna da linha selecionada */
+.estoque-table tbody tr.linha-selecionada td:first-child {
+    border-left: 4px solid #3b82f6 !important;
 }
 
 /* =====================================================
@@ -551,4 +561,381 @@
 .btn-confirmar-saida-estoque:hover {
     background: #0369a1;
     border-color: #0369a1;
+}
+
+/* =====================================================
+   ESTRUTURA DO MODAL DE PRODUTOS   
+===================================================== */
+#modalHistoricoProdutos .modal-dialog {
+    max-width: 1100px !important;
+    width: 95% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-historico-produtos-content {
+    background: #111827 !important;
+    border: 1px solid #374151 !important;
+    border-radius: 16px !important;
+    color: #cecfd2;
+    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    isolation: isolate;
+}
+
+.modal-historico-produtos-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid #374151;
+    background: #111827;
+}
+
+.modal-historico-produtos-titulo-box{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.modal-historico-produtos-icon{
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.modal-historico-produtos-titulo {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #cecfd2;
+}
+
+.modal-historico-produtos-subtitulo {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: #cecfd2;
+}
+
+.btn-modal-fechar-historico-produtos {
+    width: 34px !important;
+    height: 34px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    color: #cecfd2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-historico-produtos:hover {
+    background-color: #dc2626 !important;
+    color: #cecfd2 !important;
+    transform: scale(1.05);
+}
+
+.modal-historico-produtos-toolbar {
+    padding: 12px 24px;
+    background: #111827;
+    border-bottom: 1px solid #2d3748;
+}
+
+.modal-historico-produtos-toolbar-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.btn-historico-produtos-acao{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    color: #cecfd2;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-historico-produtos-acao:hover {
+    background: #374151;
+    border-color: #4b5563;
+    color: #cecfd2;
+}
+
+
+
+.modal-historico-produtos-body {
+    padding: 20px 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 380px;
+    background: #111827;
+}
+
+/* =====================================================
+   CORREÇÃO DEFINITIVA DA BORDA DO HISTÓRICO
+===================================================== */
+.modal-historico-produtos-table-container {
+    width: 100%;
+    flex: 1 1 0% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow-x: auto;
+    overflow-y: auto;
+    border: 1px solid #374151 !important;
+    border-radius: 12px !important;
+    background: #111827 !important;
+    box-sizing: border-box;
+}
+
+
+.modal-historico-produtos-table {
+    width: 100% !important;
+    min-width: 100% !important;
+    margin: 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    table-layout: auto;
+    background: #111827 !important;
+    color: #cecfd2 !important;
+}
+
+/* Anula o position:sticky herdado de .verificar-usuarios-table para não vazar a borda */
+.modal-historico-produtos-table thead th {
+    position: static !important; 
+    height: 46px;
+    padding: 10px 14px !important;
+    background: #111827 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid #374151 !important;
+    color: #cecfd2 !important;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Cantos arredondados na primeira e última célula do header */
+.modal-historico-produtos-table thead th:first-child {
+    border-top-left-radius: 11px !important;
+}
+
+.modal-historico-produtos-table thead th:last-child {
+    border-top-right-radius: 11px !important;
+}
+
+.modal-historico-produtos-table tbody td {
+    padding: 12px 14px !important;
+    background: transparent !important;
+    border-bottom: 1px solid #1f2937 !important;
+    color: #cecfd2 !important;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.modal-historico-produtos-table th.col-checkbox,
+.modal-historico-produtos-table td.col-checkbox {
+    width: 44px;
+    text-align: center;
+    padding: 10px 8px;
+}
+
+.col-checkbox-produtos {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #0284c7;
+}
+
+.modal-historico-produtos-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: #111827;
+    border-top: 1px solid #374151;
+}
+
+.contador-selecionados-historico-produtos {
+    font-size: 13px;
+    color: #cecfd2;
+    font-weight: 500;
+}
+
+.modal-historico-produtos-table tbody tr.linha-vazia-historico,
+.modal-historico-produtos-table tbody tr.linha-vazia-historico:hover,
+.modal-historico-produtos-table tbody tr:has(.sem-registros-content-historico-produtos),
+.modal-historico-produtos-table tbody tr:has(.sem-registros-content-historico-produtos):hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-hover-color: inherit !important;
+    --bs-table-accent-bg: transparent !important;
+    --bs-table-bg-state: transparent !important;
+    box-shadow: none !important;
+}
+
+.modal-historico-produtos-table tbody tr.linha-vazia-historico td,
+.modal-historico-produtos-table tbody tr.linha-vazia-historico:hover td,
+.modal-historico-produtos-table tbody tr:has(.sem-registros-content-historico-produtos) td,
+.modal-historico-produtos-table tbody tr:has(.sem-registros-content-historico-produtos):hover td {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: inherit !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-accent-bg: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    height: calc(48vh - 50px) !important;
+    padding: 0 !important;
+}
+
+.sem-registros-content-historico-produtos {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    color: #cecfd2;
+    text-align: center;
+    pointer-events: none;
+    user-select: none;
+    margin: 0 auto;
+}
+
+.sem-registros-content-historico-produtos i {
+    font-size: 36px;
+    margin-bottom: 12px;
+    color: #cecfd2;
+    display: block;
+}
+
+.sem-registros-content-historico-produtos p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #cecfd2;
+}
+
+.btn-historico-produtos-perigo:hover {
+    background-color: #dc2626;
+    color: #cecfd2;
+    transform: scale(1.05);
+}
+
+.btn-historico-produtos-exportar-csv:hover{
+    background-color: #059669;
+    color: #cecfd2;
+    transform: scale(1.05);
+    
+}
+.btn-historico-produtos-exportar-pdf:hover{
+    background-color: #dc2626;
+    transform: scale(1.05);
+    color: #cecfd2;
+}
+.btn-historico-produtos-pausar:hover{
+    background-color: #d97706;
+    transform: scale(1.05);
+    color: #cecfd2;
+}
+.btn-historico-produtos-ordenar:hover{
+    background-color: #7c3aed;
+    transform: scale(1.05);
+    color: #cecfd2;
+}
+.btn-historico-produtos-filtrar:hover{
+    background-color: #0284c7;
+    transform: scale(1.05);
+    color: #cecfd2;
+}
+.btn-historico-produtos-atualizar:hover{
+    background-color: #2563eb;
+    color: #cecfd2;
+    transform: scale(1.05);
+}
+
+.btn-historico-produtos-exportar-excel:hover{
+    background-color: #107c41; 
+    color: #cecfd2;
+    transform: scale(1.05);
+}
+
+.btn-cancelar-historico-produtos{
+    min-width: 110px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #cecfd2;
+}
+
+.btn-cancelar-historico-produtos:hover {
+    background: #4b5563;
+}
+/* =====================================================
+   BADGES DE AÇÃO DO HISTÓRICO DE PRODUTOS
+===================================================== */
+.badge-historico-produto {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.35em 0.65em;
+    border-radius: 0.375rem;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+}
+
+/* Badge: Gerar Saída (Tom Laranja / Âmbar) */
+.badge-historico-saida {
+    background: rgb(220,53,69);
+    color: #cecfd2;
+}
+
+/* Badge: Gerar Estorno (Tom Azul / Ciano) */
+.badge-historico-estorno {
+    background: rgba(56, 189, 248, 0.15);
+    color: #cecfd2;
+}
+
+/* Badge Padrão / Outras ações (Cinza Neutro) */
+.badge-historico-padrao {
+    background: rgba(148, 163, 184, 0.15);
+    color: #cecfd2;
 }

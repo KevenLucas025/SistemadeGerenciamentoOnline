@@ -4,7 +4,6 @@ from usuarios.views import atualizar_tabela_usuarios_status
 
 urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
-    #path('estoque/', views.estoque, name='estoque'),
     path('produtos/', views.cadastrar_produtos, name='produtos'),
     path('cadastrar_usuarios/', views.cadastrar_usuarios, name='cadastrar_usuarios'),
     path('clientes/', views.clientes, name='clientes'),
@@ -18,7 +17,6 @@ urlpatterns = [
     
     # ESTOQUE 
     path('estoque/',include('estoque.urls')),
-    
    
     # USUÁRIOS (Rotas específicas primeiro)
     path("usuarios/cadastrar/", views.cadastrar_usuario, name="cadastrar_usuario"),
