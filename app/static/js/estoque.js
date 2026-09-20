@@ -30,8 +30,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalHistoricoProdutos = modalHistoricoProdutosEl 
         ? bootstrap.Modal.getOrCreateInstance(modalHistoricoProdutosEl) 
         : null;
-    const tbodyHistorico = document.getElementById("tbodyHistoricoProdutos");
+    const tbodyyHistoricoProdutos = document.getElementById("tbodyHistoricoProdutos");
     const btnAtualizarHistorico = document.getElementById("btnAtualizarHistoricoProdutos");
+
+    /* =====================================================
+       HISTÓRICO DE PRODUTOS — SELEÇÃO E EXCLUSÃO
+    ===================================================== */
+    const checkboxMasterHistorico = document.getElementById("checkboxMasterHistoricoProdutos");
+    const btnApagarHistorico = document.querySelector(".btn-historico-produtos-perigo");
+    const modalExclusaoHistoricoEl = document.getElementById("modalConfirmarExclusaoHistorico");
+    const modalExclusaoHistorico = modalExclusaoHistoricoEl 
+        ? bootstrap.Modal.getOrCreateInstance(modalExclusaoHistoricoEl) 
+        : null;
+    const textoConfirmacaoExclusao = document.getElementById("textoConfirmacaoExclusaoHistorico");
+    const btnConfirmarExclusaoHistoricoDefinitiva = document.getElementById("btnConfirmarExclusaoHistoricoDefinitiva");
+    const contadorSelecionadosEl = document.querySelector(".contador-selecionados-historico-produtos");
+
+    // Gerar Excel, CSV e PDF
+    const btnExportarHistóricoCSVProdutos = document.getElementById("btnExportarCsvHistoricoProdutos");
+    const btnExportarHistoricoExcelProdutos = document.getElementById("btnExportarExcelHistoricoProdutos");
+    const btnExportarHistoricoPDFProdutos = document.getElementById("btnExportarPdfHistoricoProdutos");
+
 
     // Variáveis de seleção em memória
     let itemEstoqueSelecionado = null; // { id, nome, codigo, quantidade }
@@ -239,6 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 desmarcarEstoque();
                 await atualizarTabela("estoque", null, tbodyEstoque, true);
                 await atualizarTabela("saida", null, tbodySaidas, true);
+                carregarHistoricoProdutos(true); // <--- Mantém o modal sincronizado
 
             } catch (erro) {
                 console.error("Erro ao gerar saída:", erro);
@@ -339,6 +359,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 desmarcarSaida();
                 await atualizarTabela("estoque", null, tbodyEstoque, true);
                 await atualizarTabela("saida", null, tbodySaidas, true);
+                carregarHistoricoProdutos(true); // <--- Mantém o modal sincronizado
 
             } catch (erro) {
                 console.error("Erro no estorno:", erro);
@@ -404,14 +425,14 @@ document.addEventListener("DOMContentLoaded", function () {
        HISTÓRICO DE PRODUTOS
     ========================================= */
     async function carregarHistoricoProdutos() {
-        if (!tbodyHistorico) return;
+        if (!tbodyyHistoricoProdutos) return;
 
         try {
             const resposta = await fetch('/estoque/historico/listar/');
             const dados = await resposta.json();
 
             if (dados.sucesso) {
-                tbodyHistorico.innerHTML = dados.html;
+                tbodyyHistoricoProdutos.innerHTML = dados.html;
             }
         } catch (erro) {
             console.error("Erro ao carregar histórico:", erro);
@@ -429,6 +450,300 @@ document.addEventListener("DOMContentLoaded", function () {
     if (btnAtualizarHistorico) {
         btnAtualizarHistorico.addEventListener("click", function () {
             carregarHistoricoProdutos();
+        });
+    }
+    /* =========================================
+       HISTÓRICO DE PRODUTOS (CARREGAR E ATUALIZAR)
+    ========================================= */
+    async function carregarHistoricoProdutos(silencioso = true) {
+        if (!tbodyyHistoricoProdutos) return;
+
+        const icone = btnAtualizarHistorico ? btnAtualizarHistorico.querySelector("i") : null;
+        const contadorHistorico = document.getElementById("contadorTotalHistoricoProdutos") || 
+                                 document.querySelector(".contador-selecionados-historico-produtos");
+
+        try {
+            // Animação de carregamento no botão
+            if (btnAtualizarHistorico) btnAtualizarHistorico.disabled = true;
+            if (icone) icone.classList.add("fa-spin");
+
+            const resposta = await fetch('/estoque/historico/listar/');
+            const texto = await resposta.text();
+
+            let dados;
+            try {
+                dados = JSON.parse(texto);
+            } catch (e) {
+                console.error("Resposta inválida do servidor ao listar histórico:", texto);
+                throw new Error("Erro de comunicação ao carregar o histórico.");
+            }
+
+            if (!resposta.ok || !dados.sucesso) {
+                throw new Error(dados.mensagem || "Não foi possível carregar os registros do histórico.");
+            }
+
+            // Injeta as linhas atualizadas no modal
+            tbodyyHistoricoProdutos.innerHTML = dados.html;
+
+            // Atualiza o contador se o elemento existir
+            if (contadorHistorico && dados.total !== undefined) {
+                contadorHistorico.textContent = `${dados.total} registro(s) encontrado(s)`;
+            }
+
+            // Notificação visual caso o usuário tenha clicado no botão manualmente
+            if (!silencioso && typeof mostrarAlerta === "function") {
+                mostrarAlerta("Histórico de movimentações atualizado com sucesso!", "sucesso");
+            }
+
+        } catch (erro) {
+            console.error("Erro ao carregar histórico:", erro);
+            if (!silencioso && typeof mostrarAlerta === "function") {
+                mostrarAlerta(erro.message || "Erro ao atualizar histórico.", "erro");
+            }
+        } finally {
+            if (btnAtualizarHistorico) btnAtualizarHistorico.disabled = false;
+            if (icone) icone.classList.remove("fa-spin");
+        }
+    }
+
+    // 1. Abre o modal e já carrega os dados atualizados
+    if (btnHistoricoEstoque && modalHistoricoProdutos) {
+        btnHistoricoEstoque.addEventListener("click", function (e) {
+            e.stopPropagation();
+            modalHistoricoProdutos.show();
+            carregarHistoricoProdutos(true); // Carregamento silencioso na abertura
+        });
+    }
+
+    // 2. Clique manual no botão de atualizar dentro da toolbar do modal
+    if (btnAtualizarHistorico) {
+        btnAtualizarHistorico.addEventListener("click", function (e) {
+            e.preventDefault();
+            carregarHistoricoProdutos(false); // Exibe alerta de sucesso ao clicar
+        });
+    }
+
+    // Retorna lista com os IDs selecionados
+    function getIdsHistoricoSelecionados() {
+        if (!tbodyyHistoricoProdutos) return [];
+        const checkboxes = tbodyyHistoricoProdutos.querySelectorAll(".checkbox-item-historico-produtos:checked");
+        return Array.from(checkboxes).map(cb => cb.value);
+    }
+
+    // Atualiza o contador de selecionados no rodapé do modal
+    function atualizarContadorHistorico() {
+        const totalSelecionados = getIdsHistoricoSelecionados().length;
+        if (contadorSelecionadosEl) {
+            if (totalSelecionados === 0) {
+                const totalLinhas = tbodyyHistoricoProdutos.querySelectorAll("tr.linha-item-historico-produto").length;
+                contadorSelecionadosEl.textContent = `${totalLinhas} registro(s) no total`;
+            } else if (totalSelecionados === 1) {
+                contadorSelecionadosEl.textContent = "1 item selecionado";
+            } else {
+                contadorSelecionadosEl.textContent = `${totalSelecionados} itens selecionados`;
+            }
+        }
+    }
+    // 1. Marcar/Desmarcar Todos ao clicar diretamente no Checkbox Master
+    if (checkboxMasterHistorico) {
+        checkboxMasterHistorico.indeterminate = false; // Garante que nunca fique quadrado/ponto
+
+        checkboxMasterHistorico.addEventListener("click", function () {
+            // Se já havia itens marcados e clicou, desmarca tudo; senão, marca tudo
+            const marcadosAntes = tbodyyHistoricoProdutos.querySelectorAll(".checkbox-item-historico-produtos:checked").length;
+            const marcar = (marcadosAntes === 0);
+
+            this.checked = marcar;
+
+            tbodyyHistoricoProdutos.querySelectorAll("tr.linha-item-historico-produto").forEach(tr => {
+                const cb = tr.querySelector(".checkbox-item-historico-produtos");
+                if (cb) {
+                    cb.checked = marcar;
+                    if (marcar) {
+                        tr.classList.add("linha-selecionada-historico");
+                    } else {
+                        tr.classList.remove("linha-selecionada-historico");
+                    }
+                }
+            });
+
+            atualizarContadorHistorico();
+        });
+    }
+
+    // 2. Clique nas Linhas ou Checkboxes Individuais da Tabela de Histórico
+    if (tbodyyHistoricoProdutos) {
+        tbodyyHistoricoProdutos.addEventListener("click", function (e) {
+            const tr = e.target.closest("tr.linha-item-historico-produto");
+            if (!tr) return;
+
+            const checkbox = tr.querySelector(".checkbox-item-historico-produtos");
+            if (!checkbox) return;
+
+            // Alterna o checkbox individual caso tenha clicado no corpo da linha
+            if (!e.target.classList.contains("checkbox-item-historico-produtos")) {
+                checkbox.checked = !checkbox.checked;
+            }
+
+            // Destaca ou desmarca a linha visualmente
+            if (checkbox.checked) {
+                tr.classList.add("linha-selecionada-historico");
+            } else {
+                tr.classList.remove("linha-selecionada-historico");
+            }
+
+            // SINCRONIZAÇÃO DO CHECKBOX MASTER COM A SETINHA (CHECK):
+            const marcados = tbodyyHistoricoProdutos.querySelectorAll(".checkbox-item-historico-produtos:checked").length;
+            
+            if (checkboxMasterHistorico) {
+                checkboxMasterHistorico.indeterminate = false; // NUNCA exibe o quadrado
+                // Se tiver pelo menos 1 marcado, ativa a setinha de verificado
+                checkboxMasterHistorico.checked = (marcados > 0);
+            }
+
+            atualizarContadorHistorico();
+        });
+    }
+
+    // 3. Clique no Botão "Apagar" da Barra de Ferramentas
+    if (btnApagarHistorico) {
+        btnApagarHistorico.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const selecionados = getIdsHistoricoSelecionados();
+
+            // Verificação de seleção
+            if (selecionados.length === 0) {
+                if (typeof mostrarAlerta === "function") {
+                    mostrarAlerta("Selecione pelo menos um histórico para apagar.", "alerta");
+                } else {
+                    alert("Selecione pelo menos um histórico clicando na linha ou marcando a caixa de seleção.");
+                }
+                return;
+            }
+
+            // Duas verificações de texto dinâmico:
+            if (selecionados.length === 1) {
+                textoConfirmacaoExclusao.innerHTML = "Deseja realmente apagar somente este histórico?";
+            } else {
+                textoConfirmacaoExclusao.innerHTML = `Deseja realmente apagar os ${selecionados.length} históricos selecionados?`;
+            }
+
+            if (modalExclusaoHistorico) {
+                modalExclusaoHistorico.show();
+            }
+        });
+    }
+
+    // 4. Confirmação Definitiva da Exclusão
+    if (btnConfirmarExclusaoHistoricoDefinitiva) {
+        btnConfirmarExclusaoHistoricoDefinitiva.addEventListener("click", async function () {
+            const ids = getIdsHistoricoSelecionados();
+            if (ids.length === 0) return;
+
+            const csrfToken = getCSRFToken();
+
+            try {
+                btnConfirmarExclusaoHistoricoDefinitiva.disabled = true;
+
+                const resposta = await fetch('/estoque/historico/apagar/', {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ ids: ids })
+                });
+
+                const texto = await resposta.text();
+                let dados;
+                try {
+                    dados = JSON.parse(texto);
+                } catch (err) {
+                    console.error("Resposta inválida ao apagar:", texto);
+                    throw new Error("Erro no servidor ao processar exclusão.");
+                }
+
+                if (!resposta.ok || !dados.sucesso) {
+                    throw new Error(dados.mensagem || "Não foi possível apagar os registros.");
+                }
+
+                if (modalExclusaoHistorico) {
+                    modalExclusaoHistorico.hide();
+                }
+
+                if (typeof mostrarAlerta === "function") {
+                    mostrarAlerta(dados.mensagem, "sucesso");
+                }
+
+                // Reseta o checkbox master
+                if (checkboxMasterHistorico) {
+                    checkboxMasterHistorico.checked = false;
+                    checkboxMasterHistorico.indeterminate = false;
+                }
+
+                // Recarrega o histórico atualizado
+                await carregarHistoricoProdutos(true);
+
+            } catch (erro) {
+                console.error("Erro ao apagar histórico:", erro);
+                if (typeof mostrarAlerta === "function") {
+                    mostrarAlerta(erro.message, "erro");
+                } else {
+                    alert(erro.message);
+                }
+            } finally {
+                btnConfirmarExclusaoHistoricoDefinitiva.disabled = false;
+            }
+        });
+    }
+
+    function obterIdsHistoricoProdutosSelecionados() {
+        if (!tbodyyHistoricoProdutos) return [];
+        const selecionados = tbodyyHistoricoProdutos.querySelectorAll(".check-item-historico:checked");
+        return Array.from(selecionados).map(cb => cb.value);
+    }
+
+    function executarDownloadHistoricoProdutos(urlBase) {
+        const ids = obterIdsHistoricoProdutosSelecionados();
+        let urlFinal = urlBase;
+
+        if (ids.length > 0) {
+            urlFinal += `?ids=${ids.join(",")}`;
+        }
+
+        const link = document.createElement("a");
+        link.href = urlFinal;
+        link.setAttribute("download", "");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    if (btnExportarHistóricoCSVProdutos) {
+        btnExportarHistóricoCSVProdutos.addEventListener("click", function () {
+            executarDownloadHistoricoProdutos("/estoque/historico/exportar-csv-produtos/");
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta("Exportação CSV iniciada!", "sucesso");
+            }
+        });
+    }
+    if (btnExportarHistoricoExcelProdutos) {
+        btnExportarHistoricoExcelProdutos.addEventListener("click", function () {
+            executarDownloadHistoricoProdutos("/estoque/historico/exportar-excel-produtos/");
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta("Exportação Excel iniciada!", "sucesso");
+            }
+        });
+    }
+
+    if (btnExportarHistoricoPDFProdutos) {
+        btnExportarHistoricoPDFProdutos.addEventListener("click", function () {
+            executarDownloadHistoricoProdutos("/estoque/historico/exportar-pdf-produtos/");
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta("Exportação PDF iniciada!", "sucesso");
+            }
         });
     }
 });

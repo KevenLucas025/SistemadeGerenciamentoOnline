@@ -7,6 +7,44 @@ from django.views.decorators.http import require_GET, require_POST
 from django.template.loader import render_to_string
 from django.utils import timezone
 from produtos.models import Produto, SaidaProduto, HistoricoProduto
+from openpyxl import Workbook
+from openpyxl.utils import get_column_letter
+from django.http import HttpResponse
+from produtos.models import HistoricoProduto
+import csv
+from io import BytesIO
+from xhtml2pdf import pisa
+from reportlab.pdfgen import canvas
+
+
+class NumberedCanvas(canvas.Canvas):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._saved_page_states = []
+
+    def showPage(self):
+        self._saved_page_states.append(dict(self.__dict__))
+        self._startPage()
+
+    def save(self):
+        total_pages = len(self._saved_page_states)
+
+        for state in self._saved_page_states:
+            self.__dict__.update(state)
+            self.saveState()
+            
+            self.setFont("Helvetica", 7.5)
+            
+            largura = self._pagesize[0]
+            
+            self.drawRightString(
+                largura - 42,
+                10,
+                f"Página {self._pageNumber} de {total_pages}"
+            )
+            self.restoreState()
+            canvas.Canvas.showPage(self)
+        canvas.Canvas.save(self)
 
 
 def calcular_totais(quantidade, valor_unitario, desconto):
@@ -86,6 +124,7 @@ def gerar_saida_produto(request, produto_id):
     """
     Subtrai a quantidade do Produto original, recalcula seus totais,
     cria a fatia correspondente em SaidaProduto e grava no Histórico.
+    A DATA DE SAÍDA É IMUTÁVEL: uma vez definida a primeira vez, nunca mais é alterada.
     """
     try:
         dados = json.loads(request.body)
@@ -99,7 +138,12 @@ def gerar_saida_produto(request, produto_id):
                 'mensagem': f'Quantidade inválida. Disponível: {produto.quantidade}.'
             }, status=400)
 
-        # 1. Subtrai a quantidade do produto no estoque e recalcula os totais
+        # 1. Regra da Data de Saída Imutável:
+        # Se o produto já teve saída em algum momento da vida dele, preserva a data original;
+        # se for a primeira saída, define o momento atual.
+        data_saida_definitiva = produto.data_saida or timezone.now()
+
+        # 2. Subtrai a quantidade do produto no estoque e recalcula os totais
         nova_qtd_estoque = produto.quantidade - qtd_solicitada
         tot_sem_estoque, tot_com_estoque = calcular_totais(
             nova_qtd_estoque, produto.valor_unitario, produto.desconto
@@ -107,7 +151,8 @@ def gerar_saida_produto(request, produto_id):
 
         dados_up = {
             'quantidade': nova_qtd_estoque,
-            'status_saida': 1  # Mantém eternamente 1 - Gerado Saída
+            'status_saida': 1,  # Mantém permanentemente 1 - Gerado Saída
+            'data_saida': data_saida_definitiva,  # Não altera se já existia
         }
         if hasattr(produto, 'valor_total'):
             dados_up['valor_total'] = tot_com_estoque
@@ -118,7 +163,7 @@ def gerar_saida_produto(request, produto_id):
 
         Produto.objects.filter(id=produto.id).update(**dados_up)
 
-        # 2. Cria o registro na tabela de saídas
+        # 3. Cria o registro na tabela de saídas usando a data_saida definitiva
         tot_sem_saida, tot_com_saida = calcular_totais(
             qtd_solicitada, produto.valor_unitario, produto.desconto
         )
@@ -130,10 +175,11 @@ def gerar_saida_produto(request, produto_id):
             desconto=produto.desconto,
             total_sem_desconto=tot_sem_saida,
             total_com_desconto=tot_com_saida,
+            data_saida=data_saida_definitiva,  # Salva com a data original congelada
             criado_por=request.user
         )
 
-        # 3. Registra auditoria no histórico
+        # 4. Registra auditoria no histórico
         HistoricoProduto.objects.create(
             produto=produto,
             nome_produto=produto.nome,
@@ -255,3 +301,201 @@ def carregar_historico_produtos(request):
             'sucesso': False, 
             'mensagem': f'Erro ao carregar histórico: {str(e)}'
         }, status=500)
+        
+@login_required
+@require_POST
+def apagar_historico_produtos(request):
+    try:
+        dados = json.loads(request.body)
+        ids_para_apagar = dados.get('ids',[])
+        
+        if not ids_para_apagar or not isinstance(ids_para_apagar, list):
+            return JsonResponse({
+                'sucesso': False,
+                'mensagem': 'Nenhum histórico selecionado para exclusão.'
+            }, status=400)
+        deletados, _ = HistoricoProduto.objects.filter(id__in=ids_para_apagar).delete()
+        
+        if deletados == 0:
+            return JsonResponse({
+                'sucesso': False,
+                'mensagem': 'Nenhum registro correspondente foi encontrado.'
+            })
+        msg = (
+            "Histórico apagado com sucesso!"
+            if deletados == 1
+                else f"{deletados} histórico apagados com sucesso!"
+        )
+        
+        return JsonResponse({
+            'sucesso': True,
+            'mensagem': msg,
+            'total_deletados': deletados
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'sucesso': False,
+            'mensagem': f'Erro ao apagados o históricos: {str(e)}'
+        }, status=500)
+        
+def _obter_queryset_historico_produtos(request):
+    """
+    Filtra os IDs caso venham na query string (?ids=1,2,3),
+    senão retorna todo o histórico.
+    """
+    ids_param = request.GET.get('ids', '').strip()
+    qs = HistoricoProduto.objects.all().select_related('usuario').order_by('-data_hora')
+    
+    if ids_param:
+        ids = [int(i) for i in ids_param.split(',') if i.isdigit()]
+        if ids:
+            qs = qs.filter(id__in=ids)
+    return qs
+    
+@login_required
+@require_GET
+def exportar_historico_csv_produtos(request):
+    queryset = _obter_queryset_historico_produtos(request)
+
+    # utf-8-sig garante que acentos fiquem certos tanto no Excel quanto no Bloco de Notas/VSCode
+    response = HttpResponse(content_type='text/csv; charset=utf-8-sig')
+    response['Content-Disposition'] = 'attachment; filename="historico_produtos.csv"'
+
+    # delimiter=',' -> Delimitador padrão clássico CSV
+    # quoting=csv.QUOTE_ALL -> Coloca " " em todas as colunas de texto/valores, garantindo o visual legítimo de CSV
+    writer = csv.writer(
+        response, 
+        delimiter=',', 
+        quotechar='"', 
+        quoting=csv.QUOTE_NONNUMERIC
+    )
+
+    # Cabeçalho
+    writer.writerow(['ID', 'DATA / HORA', 'USUARIO RESPONSÁVEL', 'AÇÃO', 'DESCRIÇÃO'])
+
+    for reg in queryset:
+        usuario = reg.usuario.username if reg.usuario else "Sistema"
+        acao = reg.get_acao_display() if hasattr(reg, 'get_acao_display') else reg.acao
+        
+        # Limpa eventuais quebras de linha dentro da descrição para não quebrar a linha do CSV
+        descricao_limpa = (reg.descricao or '').replace('\r', '').replace('\n', ' ')
+
+        writer.writerow([
+            int(reg.id),
+            reg.data_hora.strftime("%d/%m/%Y %H:%M:%S"),
+            usuario,
+            acao,
+            descricao_limpa
+        ])
+
+    return response
+
+
+@login_required
+@require_GET
+def exportar_historico_excel_produtos(request):
+    queryset = _obter_queryset_historico_produtos(request)
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Histórico de Atividades"
+
+    # Cabeçalho simples
+    headers = ['ID', 'DATA / HORA', 'USUÁRIO RESPONSÁVEL', 'AÇÃO', 'DESCRIÇÃO']
+    ws.append(headers)
+
+    # Inserção direta das linhas sem estilos
+    for reg in queryset:
+        usuario = reg.usuario.username if reg.usuario else "Sistema"
+        acao = reg.get_acao_display() if hasattr(reg, 'get_acao_display') else reg.acao
+
+        ws.append([
+            reg.id,
+            reg.data_hora.strftime("%d/%m/%Y %H:%M:%S"),
+            usuario,
+            acao,
+            reg.descricao
+        ])
+
+    # Apenas autoajuste de largura para os textos não ficarem cortados
+    for col in ws.columns:
+        max_len = 0
+        col_letter = get_column_letter(col[0].column)
+        for cell in col:
+            val_str = str(cell.value or '')
+            if len(val_str) > max_len:
+                max_len = len(val_str)
+        ws.column_dimensions[col_letter].width = max(max_len + 3, 10)
+
+    buffer = BytesIO()
+    wb.save(buffer)
+    buffer.seek(0)
+
+    response = HttpResponse(
+        buffer.getvalue(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename="historico_produtos.xlsx"'
+    return response
+
+@login_required
+@require_GET
+def exportar_historico_pdf_produtos(request):
+    queryset = _obter_queryset_historico_produtos(request)
+
+    dados_historico = []
+    for reg in queryset:
+        usuario = reg.usuario.username if reg.usuario else "Sistema"
+        acao = reg.get_acao_display() if hasattr(reg, 'get_acao_display') else reg.acao
+
+        dados_historico.append({
+            'id': reg.id,
+            'data_hora': reg.data_hora.strftime("%d/%m/%Y %H:%M:%S"),
+            'usuario': usuario,
+            'acao': acao,
+            'descricao': reg.descricao
+        })
+
+    contexto = {
+        'historico': dados_historico,
+        'data_emissao': timezone.now().strftime("%d/%m/%Y às %H:%M:%S"),
+        'usuario_emissor': request.user.username,
+        'total_registros': len(dados_historico),
+    }
+
+    # Renderiza o HTML com os dados
+    html_string = render_to_string(
+        'estoque/relatorio_historico_produtos_pdf.html',
+        contexto
+    )
+
+    # Gera o PDF em memória
+    buffer = BytesIO()
+
+    pisa_status = pisa.CreatePDF(
+        html_string,
+        dest=buffer,
+        encoding='utf-8',
+        canvasmaker=NumberedCanvas
+    )
+
+    if pisa_status.err:
+        return HttpResponse(
+            "Erro ao processar e gerar o PDF.",
+            status=500
+        )
+
+    buffer.seek(0)
+
+    response = HttpResponse(
+        buffer.getvalue(),
+        content_type='application/pdf'
+    )
+
+    response['Content-Disposition'] = (
+        'attachment; filename="historico_usuarios.pdf"'
+    )
+
+    return response
+

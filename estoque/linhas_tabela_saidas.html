@@ -14,6 +14,13 @@
             <td>{{ saida.produto.cliente|default:"—" }}</td>
             <td>{{ saida.produto.descricao|default:"—" }}</td>
             <td>{{ saida.criado_por.username|default:"Sistema" }}</td>
+            <td>
+                {% if saida.status_saida == 0 %}
+                    <span class="badge bg-secondary">0 - Em estoque</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">1 - Gerado Saída</span>
+                {% endif %}
+            </td>
         </tr>
     {% endfor %}
 {% else %}

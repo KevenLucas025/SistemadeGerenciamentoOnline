@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from clientes.models import Cliente
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
+from django.utils import timezone
 
 
 
@@ -132,8 +133,11 @@ class HistoricoProduto(models.Model):
         related_name='historicos'
     )
     nome_produto = models.CharField(max_length=150)
+    
     acao = models.CharField(max_length=20, choices=ACOES_CHOICES)
+    
     descricao = models.TextField()
+    
     usuario = models.ForeignKey(
         User, 
         on_delete=models.SET_NULL, 
@@ -157,7 +161,8 @@ class SaidaProduto(models.Model):
     desconto = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     total_sem_desconto = models.DecimalField(max_digits=12, decimal_places=2)
     total_com_desconto = models.DecimalField(max_digits=12, decimal_places=2)
-    data_saida = models.DateTimeField(auto_now_add=True)
+    # Permite receber a data_saida original e manter fixa:
+    data_saida = models.DateTimeField(default=timezone.now)
     criado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:

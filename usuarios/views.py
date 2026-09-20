@@ -9,7 +9,6 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from accounts.models import PerfilUsuario  
 from .models import HistoricoUsuario
-from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 from io import BytesIO

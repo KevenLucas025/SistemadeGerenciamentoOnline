@@ -15,9 +15,11 @@ class HistoricoUsuario(models.Model):
         User, on_delete=models.SET_NULL, null=True, blank=True, related_name='historicos_afetados'
     )
     nome_usuario_afetado = models.CharField(max_length=150, blank=True) # Backup se o user for deletado
+    
     usuario_responsavel = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True, related_name='historicos_gerados'
     )
+    
     data_hora = models.DateTimeField(auto_now_add=True)
 
     class Meta:

@@ -93,13 +93,14 @@ html{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background: #121824;
 }
 
 .lado-login h1 {
-    color: #fff;
+    color: #cecfd2;
     font-size: 38px;
     margin-bottom: 10px;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: -1px;
 }
 
@@ -131,7 +132,7 @@ html{
     background: #181a22;
     border: 1px solid #2c2f3a;
     border-radius: 12px;
-    color: white;
+    color: #cecfd2;
     font-size: 14px;
     transition: .25s;
     outline: none;
@@ -148,7 +149,7 @@ html{
     left: 15px;
     top: 62%;
     transform: translateY(-50%);
-    color: #64748b;
+    color: #cecfd2;
     z-index: 5;
 }
 
@@ -157,13 +158,13 @@ html{
     right: 15px;
     top: 65%;
     transform: translateY(-50%);
-    color: #64748b;
+    color: #cecfd2;
     cursor: pointer;
     z-index: 10;
 }
 
 .olho-login:hover {
-    color: #fff;
+    color: #cecfd2;
 }
 
 .lado-login button[type="submit"] {
@@ -173,7 +174,7 @@ html{
     border: none;
     border-radius: 12px;
     background: #2563eb;
-    color: white;
+    color: #cecfd2;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -198,7 +199,7 @@ html{
 }
 
 .link-senha:hover {
-    color: #fff;
+    color: #cecfd2;
 }
 
 .link-cadastro {
@@ -215,7 +216,7 @@ html{
 }
 
 .link-cadastro:hover {
-    color: white;
+    color: #cecfd2;
     transform: translateX(4px);
 }
 
@@ -243,7 +244,7 @@ html{
 }
 
 .lado-dashboard h2 {
-    color: white;
+    color: #cecfd2;
     font-size: 32px;
     margin-bottom: 18px;
     line-height: 1.2;
@@ -280,7 +281,7 @@ html{
 .mini-card strong {
     display: block;
     margin-top: 5px;
-    color: white;
+    color: #cecfd2;
     font-size: 18px;
 }
 
@@ -333,13 +334,13 @@ html{
             #4f46e5,
             #06b6d4
         );
-    color: white;
+    color: #cecfd2;
     font-size: 24px;
 }
 
 /* TÍTULO */
 .register-form h1 {
-    color: white;
+    color: #cecfd2;
     font-size: 34px;
     font-weight: 600;
     letter-spacing: -1px;
@@ -383,7 +384,7 @@ html{
     background: rgba(255, 255, 255, .045);
     border: 1px solid rgba(255, 255, 255, .10);
     border-radius: 12px;
-    color: white;
+    color: #cecfd2;
     font-size: 14px;
     outline: none;
     transition:
@@ -394,7 +395,7 @@ html{
 
 /* PLACEHOLDER */
 .register-form .campo-cadastro input::placeholder {
-    color: #64748b;
+    color: #cecfd2;
 }
 
 /* HOVER */
@@ -415,7 +416,7 @@ html{
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: #64748b;
+    color: #cecfd2;
     pointer-events: none;
     z-index: 2;
     transition: color .25s ease;
@@ -433,14 +434,14 @@ html{
     right: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: #64748b;
+    color: #cecfd2;
     cursor: pointer;
     z-index: 3;
     transition: color .25s ease;
 }
 
 .register-form .olho-cadastro:hover {
-    color: white;
+    color: #cecfd2;
 }
 
 
@@ -463,7 +464,7 @@ html{
             #4f46e5,
             #2563eb
         );
-    color: white;
+    color: #cecfd2;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -498,7 +499,7 @@ html{
             #4f46e5,
             #2563eb
         );
-    color: white;
+    color: #cecfd2;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -509,7 +510,7 @@ html{
 
 
 .register-form .link-login strong {
-    color: white;
+    color: #cecfd2;
 }
 
 .register-form .link-login:hover {
@@ -567,7 +568,7 @@ html{
 /* TEXTO */
 .preview-content h2 {
     max-width: 400px;
-    color: white;
+    color: #cecfd2;
     font-size: 38px;
     line-height: 1.15;
     letter-spacing: -1.5px;
@@ -619,7 +620,7 @@ html{
 }
 
 .preview-top i {
-    color: #64748b;
+    color: #cecfd2;
 }
 
 /* ESTATÍSTICAS */
@@ -639,7 +640,7 @@ html{
 .preview-statistics small {
     display: block;
 
-    color: #64748b;
+    color: #cecfd2;
 
     font-size: 11px;
 }
@@ -649,7 +650,7 @@ html{
 
     margin-top: 5px;
 
-    color: white;
+    color: #cecfd2;
 
     font-size: 24px;
 }
@@ -701,7 +702,7 @@ html{
     bottom: 20px;
 
     background: #22c55e;
-    color: white;
+    color: #cecfd2;
 
     padding: 14px 18px;
     border-radius: 12px;
@@ -743,7 +744,7 @@ html{
     min-width: 260px;
     padding: 14px 18px;
     border-radius: 12px;
-    color: white;
+    color: #cecfd2;
     font-size: 15px;
     font-weight: 600;
     z-index: 99999;
@@ -852,13 +853,13 @@ html{
 
 .messages-container .success {
     background: #28a745;
-    color: white;
+    color: #cecfd2;
 }
 
 .messages-container .error, 
 .messages-container .error-messages { /* Garante compatibilidade caso use a classe antiga */
     background: #dc3545;
-    color: white;
+    color: #cecfd2;
 }
 /* =====================================================
 RECUPERAÇÃO DE SENHA
@@ -911,7 +912,7 @@ RECUPERAÇÃO DE SENHA
         #8b5cf6
     );
 
-    color: white;
+    color: #cecfd2;
     font-size: 28px;
     box-shadow:
         0 10px 30px rgba(99, 102, 241, 0.35);
@@ -972,7 +973,7 @@ RECUPERAÇÃO DE SENHA
 
 /* PLACEHOLDER */
 .campo-reset-senha input::placeholder {
-    color: #64748b;
+    color: #cecfd2;
 }
 .campo-reset-senha:focus-within i {
     color: #818cf8;
@@ -985,7 +986,7 @@ RECUPERAÇÃO DE SENHA
     border: none;
     border-radius: 12px;
     background: #2563eb;
-    color: white;
+    color: #cecfd2;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -1318,7 +1319,7 @@ LINK VOLTAR
 .offcanvas {
     width: 300px !important; /* reduz tamanho */
     background: #202124 !important; /* fundo escuro elegante */
-    color: white;
+    color: #cecfd2;
     border-right: 1px solid rgba(255,255,255,0.1);
     z-index: 2000 !important;
 }
@@ -1375,7 +1376,7 @@ LINK VOLTAR
     width: 280px;
     background: #111827;
     border-right: 1px solid #1f2937;
-    color: #f8fafc;
+    color: #cecfd2;
 }
 .sidebar-header {
     padding: 22px 20px;
@@ -1396,7 +1397,7 @@ LINK VOLTAR
     justify-content: center;
     border-radius: 12px;
     background: #2563eb;
-    color: white;
+    color: #cecfd2;
     font-size: 18px;
 }
 
@@ -1410,7 +1411,7 @@ LINK VOLTAR
 .sidebar-brand strong {
     display: block;
     font-size: 15px;
-    color: white;
+    color: #cecfd2;
 }
 .btn-fechar-menu {
     width: 34px;
@@ -1428,7 +1429,7 @@ LINK VOLTAR
 
 .btn-fechar-menu:hover {
     background: #1f2937;
-    color: white;
+    color: #cecfd2;
 }
 
 .sidebar-user {
@@ -1525,7 +1526,7 @@ LINK VOLTAR
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 13px;
-    color: #f8fafc;
+    color: #cecfd2;
 }
 
 .sidebar-user-info span {
@@ -1557,7 +1558,7 @@ LINK VOLTAR
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.2px;
-    color: #64748b;
+    color: #cecfd2;
 }
 .sidebar-link {
     display: flex;
@@ -1581,20 +1582,20 @@ LINK VOLTAR
 
 .sidebar-link:hover {
     background: #1f2937;
-    color: #f8fafc;
+    color: #cecfd2;
     transform: translateX(3px);
 }
 
 .sidebar-link.active {
     background: #2563eb;
-    color: white;
+    color: #cecfd2;
     box-shadow:
         0 8px 20px rgba(37, 99, 235, .20);
 }
 
 .sidebar-link.active:hover {
     background: #1d4ed8;
-    color: white;
+    color: #cecfd2;
 }
 .sidebar-footer {
     margin-top: auto;
@@ -1781,7 +1782,7 @@ LINK VOLTAR
 
 /* Offline -> Cinza / Vermelho suave */
 .status-opcao[data-status="offline"].ativo i {
-    color: #64748b;
+    color: #cecfd2;
 }
 
 /* (Opcional) Destaque no texto quando ativo */
@@ -1795,7 +1796,7 @@ LINK VOLTAR
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    border: 1.5px solid #64748b; /* Borda da bolinha */
+    border: 1.5px solid #cecfd2; /* Borda da bolinha */
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1806,7 +1807,7 @@ LINK VOLTAR
 /* Tamanho e cor do X dentro da bolinha */
 .icone-status-offline i {
     font-size: 8px;
-    color: #64748b;
+    color: #cecfd2;
     margin: 0 !important; /* Previne margens herdadas de outros ícones */
 }
 

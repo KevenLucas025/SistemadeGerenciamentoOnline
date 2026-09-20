@@ -569,6 +569,8 @@
 #modalHistoricoProdutos .modal-dialog {
     max-width: 1100px !important;
     width: 95% !important;
+    height: 90vh !important;
+    max-height: 90vh !important;
     margin: 1.75rem auto !important;
 }
 
@@ -580,7 +582,8 @@
     overflow: hidden !important;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 100% !important;
+    max-height: 100% !important;
     position: relative;
     isolation: isolate;
 }
@@ -938,4 +941,157 @@
 .badge-historico-padrao {
     background: rgba(148, 163, 184, 0.15);
     color: #cecfd2;
+}
+
+/* =====================================================
+   SELEÇÃO DE LINHAS NO HISTÓRICO
+===================================================== */
+.modal-historico-produtos-table tbody tr.linha-item-historico-produto {
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.modal-historico-produtos-table tbody tr.linha-item-historico-produto:hover {
+    background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.modal-historico-produtos-table tbody tr.linha-selecionada-historico td {
+    background-color: #1e293b !important;
+    color: #cecfd2 !important;
+}
+
+.modal-historico-produtos-table tbody tr.linha-selecionada-historico td:first-child {
+    border-left: 3px solid #38bdf8 !important;
+}
+
+/* =====================================================
+   MODAL ESPECÍFICO DE EXCLUSÃO DO HISTÓRICO
+===================================================== */
+#modalConfirmarExclusaoHistorico {
+    z-index: 1075 !important; /* Fica acima do modal de histórico que usa 1055/1065 */
+}
+
+.modal-exclusao-historico-dialog {
+    max-width: 400px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-exclusao-historico-content {
+    background: #111827 !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+    border-radius: 14px !important;
+    color: #cecfd2;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65);
+}
+
+.modal-exclusao-historico-header {
+    background: #111827;
+    border-bottom: 1px solid #1f2937;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-exclusao-historico-header h5 {
+    color: #cecfd2;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-modal-fechar-exclusao-historico {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 50%;
+    color: #cecfd2;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-modal-fechar-exclusao-historico:hover {
+    background-color: #dc2626;
+    color: #cecfd2;
+}
+
+.modal-exclusao-historico-body {
+    padding: 22px 20px;
+    background: #111827;
+}
+
+.modal-exclusao-historico-texto {
+    margin: 0 0 16px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #e5e7eb;
+}
+
+.alerta-aviso-exclusao-historico {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #fca5a5;
+    font-size: 12px;
+    text-align: left;
+}
+
+.modal-exclusao-historico-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid #1f2937;
+    background: #111827;
+}
+
+.btn-cancelar-exclusao-historico {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-cancelar-exclusao-historico:hover {
+    background: #4b5563;
+    color: #cecfd2;
+}
+
+.btn-confirmar-exclusao-historico {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #dc2626;
+    border: 1px solid #b91c1c;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-confirmar-exclusao-historico:hover {
+    background: #b91c1c;
+    border-color: #991b1b;
 }
