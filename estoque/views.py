@@ -14,37 +14,10 @@ from produtos.models import HistoricoProduto
 import csv
 from io import BytesIO
 from xhtml2pdf import pisa
-from reportlab.pdfgen import canvas
+from django.views.decorators.http import require_http_methods
+from django.core.cache import cache
 
-
-class NumberedCanvas(canvas.Canvas):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._saved_page_states = []
-
-    def showPage(self):
-        self._saved_page_states.append(dict(self.__dict__))
-        self._startPage()
-
-    def save(self):
-        total_pages = len(self._saved_page_states)
-
-        for state in self._saved_page_states:
-            self.__dict__.update(state)
-            self.saveState()
-            
-            self.setFont("Helvetica", 7.5)
-            
-            largura = self._pagesize[0]
-            
-            self.drawRightString(
-                largura - 42,
-                10,
-                f"Página {self._pageNumber} de {total_pages}"
-            )
-            self.restoreState()
-            canvas.Canvas.showPage(self)
-        canvas.Canvas.save(self)
+CACHE_KEY_HISTORICO_PAUSADO = "historico_atividades_produtos_pausado"
 
 
 def calcular_totais(quantidade, valor_unitario, desconto):
@@ -442,6 +415,7 @@ def exportar_historico_excel_produtos(request):
 @login_required
 @require_GET
 def exportar_historico_pdf_produtos(request):
+    print(">>> ENTROU NA EXPORTAÇÃO PDF")
     queryset = _obter_queryset_historico_produtos(request)
 
     dados_historico = []
@@ -476,8 +450,7 @@ def exportar_historico_pdf_produtos(request):
     pisa_status = pisa.CreatePDF(
         html_string,
         dest=buffer,
-        encoding='utf-8',
-        canvasmaker=NumberedCanvas
+        encoding='utf-8'
     )
 
     if pisa_status.err:
@@ -499,3 +472,58 @@ def exportar_historico_pdf_produtos(request):
 
     return response
 
+@login_required
+@require_http_methods(["GET", "POST"])
+def status_pausa_historico_produtos(request):
+    """
+    GET: Retorna se o histórico está pausado ou ativo.
+    POST: Altera o estado (ativo ou pausado) e retorna avisos se já estiver no estado solicitado.
+    """
+    esta_pausado = cache.get(CACHE_KEY_HISTORICO_PAUSADO, False)
+
+    if request.method == "GET":
+        return JsonResponse({
+            "sucesso": True,
+            "pausado": esta_pausado
+        })
+
+    try:
+        dados = json.loads(request.body)
+        acao = dados.get("acao")  # "ativar" ou "pausar"
+
+        if acao == "ativar":
+            if not esta_pausado:
+                return JsonResponse({
+                    "sucesso": False,
+                    "ja_estava": True,
+                    "pausado": False,
+                    "mensagem": "O histórico de atividades já está ativo."
+                })
+            cache.set(CACHE_KEY_HISTORICO_PAUSADO, False, timeout=None)
+            return JsonResponse({
+                "sucesso": True,
+                "ja_estava": False,
+                "pausado": False,
+                "mensagem": "Histórico de atividades ativado com sucesso!"
+            })
+
+        elif acao == "pausar":
+            if esta_pausado:
+                return JsonResponse({
+                    "sucesso": False,
+                    "ja_estava": True,
+                    "pausado": True,
+                    "mensagem": "O histórico de atividades já está pausado."
+                })
+            cache.set(CACHE_KEY_HISTORICO_PAUSADO, True, timeout=None)
+            return JsonResponse({
+                "sucesso": True,
+                "ja_estava": False,
+                "pausado": True,
+                "mensagem": "Histórico de atividades pausado com sucesso!"
+            })
+
+        return JsonResponse({"sucesso": False, "mensagem": "Ação inválida."}, status=400)
+
+    except Exception as e:
+        return JsonResponse({"sucesso": False, "mensagem": f"Erro interno: {str(e)}"}, status=500)

@@ -379,4 +379,51 @@
     </div>
 </div>
 
+
+
+<!-- =====================================================
+     MODAL DE CONFIRMAÇÃO — PAUSAR / ATIVAR HISTÓRICO DE PRODUTOS
+====================================================== -->
+<div class="modal fade" id="modalStatusPausaHistoricoProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-status-pausa-historico-produtos-dialog">
+        <div class="modal-content modal-status-pausa-historico-produtos-content">
+            <div class="modal-status-pausa-historico-produtos-header">
+                <div class="modal-status-pausa-historico-produtos-icon">
+                    <i class="fa-solid fa-circle-pause"></i>
+                </div>
+                <button type="button" class="btn-modal-fechar-pausa-historico-produtos" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-status-pausa-historico-produtos-body text-center">
+                <h4 class="modal-status-pausa-historico-produtos-titulo">Gravação do Histórico de Produtos</h4>
+                <p class="modal-status-pausa-historico-produtos-descricao">
+                    Deseja manter o registro de auditoria dos produtos <strong>ativo</strong>?
+                </p>
+
+                <div class="modal-status-pausa-historico-produtos-card-info">
+                    <span class="modal-status-pausa-historico-produtos-card-label">Status atual no sistema:</span>
+                    <span id="badgeStatusPausaAtualProdutos" class="modal-status-pausa-produtos-badge ativo">
+                        <i class="fa-solid fa-circle-check"></i> Gravando normalmente
+                    </span>
+                </div>
+
+                <small class="modal-status-pausa-historico-produtos-legenda">
+                    Clique em <strong>Sim</strong> para ativar ou em <strong>Não</strong> para pausar a gravação.
+                </small>
+            </div>
+
+            <div class="modal-status-pausa-historico-produtos-footer">
+                <button type="button" id="btnNaoPausarHistoricoProdutos" class="btn-status-pausa-produtos-acao btn-status-pausa-produtos-nao">
+                    <i class="fa-solid fa-pause"></i> Não (Pausar)
+                </button>
+                <button type="button" id="btnSimAtivarHistoricoProdutos" class="btn-status-pausa-produtos-acao btn-status-pausa-produtos-sim">
+                    <i class="fa-solid fa-play"></i> Sim (Ativar)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

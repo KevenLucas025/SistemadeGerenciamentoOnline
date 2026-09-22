@@ -11,4 +11,5 @@ urlpatterns = [
     path("historico/exportar-csv-produtos/", views.exportar_historico_csv_produtos, name="exportar_historico_csv_produtos"),
     path("historico/exportar-excel-produtos/", views.exportar_historico_excel_produtos, name="exportar_historico_excel_produtos"),
     path("historico/exportar-pdf-produtos/", views.exportar_historico_pdf_produtos, name="exportar_historico_pdf_produtos"),
+    path("historico/status-pausa-produtos/", views.status_pausa_historico_produtos, name="status_pausa_historico_produtos"),
 ]
