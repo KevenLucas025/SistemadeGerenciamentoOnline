@@ -52,9 +52,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnExportarHistoricoPDFProdutos = document.getElementById("btnExportarPdfHistoricoProdutos");
 
 
+    // Controle de Pausa/Ativação da Gravação do Histórico de Produtos
+    const btnPausarHistoricoProdutos = document.getElementById("btnPausarHistoricoProdutos");
+    const modalPausaProdutosEl = document.getElementById("modalStatusPausaHistoricoProdutos");
+    const modalPausaProdutos = modalPausaProdutosEl ? bootstrap.Modal.getOrCreateInstance(modalPausaProdutosEl) : null;
+    const badgeStatusPausaAtualProdutos = document.getElementById("badgeStatusPausaAtualProdutos");
+    const btnNaoPausarHistoricoProdutos = document.getElementById("btnNaoPausarHistoricoProdutos");
+    const btnSimAtivarHistoricoProdutos = document.getElementById("btnSimAtivarHistoricoProdutos");
+
     // Variáveis de seleção em memória
     let itemEstoqueSelecionado = null; // { id, nome, codigo, quantidade }
     let itemSaidaSelecionado = null;   // { id, nome, codigo, quantidade }
+    let historicoProdutosPausado = false; // Estado inicial
 
     function getCSRFToken() {
         const cookies = document.cookie.split(";");
@@ -746,4 +755,133 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    /* =====================================================
+       CONTROLE DE PAUSA/ATIVAÇÃO DO HISTÓRICO DE PRODUTOS
+    ===================================================== */
+    const URL_STATUS_PAUSA_PRODUTOS = "/estoque/historico/status-pausa-produtos/";
+
+    function atualizarBadgeStatusProdutos(pausado) {
+        if (!badgeStatusPausaAtualProdutos) return;
+
+        if (pausado) {
+            badgeStatusPausaAtualProdutos.className = "modal-status-pausa-produtos-badge pausado";
+            badgeStatusPausaAtualProdutos.innerHTML = '<i class="fa-solid fa-circle-pause"></i> Gravação pausada';
+        } else {
+            badgeStatusPausaAtualProdutos.className = "modal-status-pausa-produtos-badge ativo";
+            badgeStatusPausaAtualProdutos.innerHTML = '<i class="fa-solid fa-circle-check"></i> Gravando normalmente';
+        }
+
+        // Sincroniza o botão na barra de ferramentas do modal principal
+        const textoStatusBtn = document.getElementById("textoStatusPausaHistoricoProdutos");
+        const iconeBtn = btnPausarHistoricoProdutos ? btnPausarHistoricoProdutos.querySelector("i") : null;
+        if (textoStatusBtn && iconeBtn) {
+            if (pausado) {
+                textoStatusBtn.textContent = "Ativar histórico";
+                iconeBtn.className = "fa-solid fa-play";
+            } else {
+                textoStatusBtn.textContent = "Pausar histórico";
+                iconeBtn.className = "fa-solid fa-pause";
+            }
+        }
+    }
+
+    // Busca o status atual no cache do Django via GET
+    async function verificarStatusPausaInicial() {
+        try {
+            const resposta = await fetch(URL_STATUS_PAUSA_PRODUTOS);
+            if (!resposta.ok) return;
+            const dados = await resposta.json();
+            if (dados.sucesso) {
+                historicoProdutosPausado = dados.pausado;
+                atualizarBadgeStatusProdutos(historicoProdutosPausado);
+            }
+        } catch (erro) {
+            console.error("Erro ao verificar status do histórico:", erro);
+        }
+    }
+
+    // Abertura do Modal de Confirmação de Pausa
+    if (btnPausarHistoricoProdutos && modalPausaProdutos) {
+        btnPausarHistoricoProdutos.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            atualizarBadgeStatusProdutos(historicoProdutosPausado);
+            modalPausaProdutos.show();
+        });
+    }
+
+    // Alternar o status (envia 'pausar' ou 'ativar' correspondendo à view)
+    async function alternarPausaHistoricoProdutos(pausar) {
+        const acaoDesejada = pausar ? "pausar" : "ativar";
+        const csrfToken = getCSRFToken();
+
+        try {
+            const resposta = await fetch(URL_STATUS_PAUSA_PRODUTOS, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify({ acao: acaoDesejada })
+            });
+
+            const texto = await resposta.text();
+            let dados;
+            try {
+                dados = JSON.parse(texto);
+            } catch (e) {
+                console.error("Resposta inválida do servidor:", texto);
+                throw new Error("Erro de comunicação com o servidor.");
+            }
+
+            if (modalPausaProdutos) {
+                modalPausaProdutos.hide();
+            }
+
+            if (dados.sucesso) {
+                historicoProdutosPausado = dados.pausado;
+                atualizarBadgeStatusProdutos(historicoProdutosPausado);
+
+                if (typeof mostrarAlerta === "function") {
+                    mostrarAlerta(dados.mensagem, "sucesso");
+                }
+            } else if (dados.ja_estava) {
+                // Caso já estivesse no estado solicitado
+                historicoProdutosPausado = dados.pausado;
+                atualizarBadgeStatusProdutos(historicoProdutosPausado);
+
+                if (typeof mostrarAlerta === "function") {
+                    mostrarAlerta(dados.mensagem, "alerta");
+                }
+            } else {
+                if (typeof mostrarAlerta === "function") {
+                    mostrarAlerta(dados.mensagem || "Não foi possível alterar o status.", "erro");
+                } else {
+                    alert(dados.mensagem);
+                }
+            }
+        } catch (err) {
+            console.error("Erro na requisição:", err);
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta(err.message || "Erro de comunicação.", "erro");
+            } else {
+                alert("Erro de comunicação com o servidor.");
+            }
+        }
+    }
+
+    // Botão "Não (Pausar)"
+    if (btnNaoPausarHistoricoProdutos) {
+        btnNaoPausarHistoricoProdutos.addEventListener("click", () => alternarPausaHistoricoProdutos(true));
+    }
+
+    // Botão "Sim (Ativar)"
+    if (btnSimAtivarHistoricoProdutos) {
+        btnSimAtivarHistoricoProdutos.addEventListener("click", () => alternarPausaHistoricoProdutos(false));
+    }
+
+    // Consulta inicial do status ao carregar o DOM
+    verificarStatusPausaInicial();
+
 });

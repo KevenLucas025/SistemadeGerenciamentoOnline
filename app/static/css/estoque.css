@@ -1095,3 +1095,174 @@
     background: #b91c1c;
     border-color: #991b1b;
 }
+
+/* =====================================================
+   ESTILOS — MODAL PAUSAR HISTÓRICO DE PRODUTOS
+===================================================== */
+.modal-status-pausa-historico-produtos-dialog {
+    max-width: 420px;
+}
+
+.modal-status-pausa-historico-produtos-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    background: #111827;
+}
+
+.modal-status-pausa-historico-produtos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px 0 20px;
+    background: #111827;
+}
+
+.modal-status-pausa-historico-produtos-icon i {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(217, 119, 6, 0.15);
+    color: #f59e0b;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.btn-modal-fechar-pausa-historico-produtos {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none;
+    border-radius: 50% !important;
+    color: #CECFD2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-pausa-historico-produtos:hover {
+    background-color: #dc2626 !important;
+    color: #CECFD2 !important;
+    transform: scale(1.05);
+}
+
+.modal-status-pausa-historico-produtos-body {
+    padding: 20px 24px 20px;
+    background: #111827;
+}
+
+.modal-status-pausa-historico-produtos-titulo {
+    margin: 0 0 10px;
+    color: #CECFD2;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.modal-status-pausa-historico-produtos-descricao {
+    font-size: 13.5px;
+    color: #475569;
+    margin-bottom: 16px;
+}
+
+.modal-status-pausa-historico-produtos-card-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 16px 0 10px;
+    font-size: 13px;
+}
+
+.modal-status-pausa-historico-produtos-card-label {
+    font-size: 12.5px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.modal-status-pausa-produtos-badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    
+}
+
+.modal-status-pausa-produtos-badge.ativo {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.modal-status-pausa-produtos-badge.pausado {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.modal-status-pausa-historico-produtos-legenda {
+    font-size: 11.5px;
+    color: #94a3b8;
+    display: block;
+}
+
+.modal-status-pausa-historico-produtos-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid #374151;
+    background: #111827;
+}
+
+.btn-status-pausa-produtos-acao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.btn-status-pausa-produtos-nao {
+    background: #374151;
+    border-color: #4b5563;
+    color: #fca5a5;
+}
+
+.btn-status-pausa-produtos-nao:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+}
+
+.btn-status-pausa-produtos-sim {
+    background: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+}
+
+.btn-status-pausa-produtos-sim:hover {
+    background: #15803d;
+    border-color: #15803d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+}
