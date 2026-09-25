@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+
+    const btnLimparTabelasEstoque = document.getElementById("btnLimparTabelasEstoque");
     const btnAtualizarEstoque = document.getElementById("btnAtualizarEstoque");
     const btnAtualizarSaida = document.getElementById("btnAtualizarSaida");
     const tbodyEstoque = document.getElementById("tbodyEstoqueProdutos");
@@ -51,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnExportarHistoricoExcelProdutos = document.getElementById("btnExportarExcelHistoricoProdutos");
     const btnExportarHistoricoPDFProdutos = document.getElementById("btnExportarPdfHistoricoProdutos");
 
-
     // Controle de Pausa/Ativação da Gravação do Histórico de Produtos
     const btnPausarHistoricoProdutos = document.getElementById("btnPausarHistoricoProdutos");
     const modalPausaProdutosEl = document.getElementById("modalStatusPausaHistoricoProdutos");
@@ -60,10 +62,32 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnNaoPausarHistoricoProdutos = document.getElementById("btnNaoPausarHistoricoProdutos");
     const btnSimAtivarHistoricoProdutos = document.getElementById("btnSimAtivarHistoricoProdutos");
 
-    // Variáveis de seleção em memória
+    /* =========================================
+       FILTRAGEM DO HISTÓRICO (DATA E HORA)
+    ========================================= */
+    const btnAbrirModalFiltroProdutos = document.getElementById("btnFiltrarHistoricoProdutos");
+    const modalFiltroProdutosEl = document.getElementById("modalFiltrarHistoricoProdutos");
+    const modalFiltroProdutos = modalFiltroProdutosEl ? bootstrap.Modal.getOrCreateInstance(modalFiltroProdutosEl) : null;
+    const inputFiltroDataProdutos = document.getElementById("filtroDataHistoricoProdutos");
+    const btnAplicarFiltroprodutos = document.getElementById("btnAplicarFiltroHistoricoProdutos");
+
+    /* =========================================
+       ORDENAÇÃO DO HISTÓRICO
+    ========================================= */
+    const btnAbrirModalOrdenarProdutos = document.getElementById("btnOrdenarHistoricoProdutos");
+    const modalOrdenarProdutosEl = document.getElementById("modalOrdenarHistoricoProdutos");
+    const modalOrdenarProdutos = modalOrdenarProdutosEl ? bootstrap.Modal.getOrCreateInstance(modalOrdenarProdutosEl) : null;
+    const btnExecutarOrdenacaoProdutosHistoricos = document.getElementById("btnExecutarOrdenacaoHistoricoProdutos");
+    const tipoOrdenacaoHistoricoProdutos = document.getElementById("tipoOrdenacaoHistoricoProdutos");
+
+    const btnProdutoExportarExcel = document.getElementById('btnExportarProdutosExcel');
+
+    // Variáveis de seleção e controle em memória
     let itemEstoqueSelecionado = null; // { id, nome, codigo, quantidade }
     let itemSaidaSelecionado = null;   // { id, nome, codigo, quantidade }
     let historicoProdutosPausado = false; // Estado inicial
+    let filtroDataAtualProdutos = "";
+    let ordemHistoricoAtualProdutos = "desc";
 
     function getCSRFToken() {
         const cookies = document.cookie.split(";");
@@ -267,7 +291,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 desmarcarEstoque();
                 await atualizarTabela("estoque", null, tbodyEstoque, true);
                 await atualizarTabela("saida", null, tbodySaidas, true);
-                carregarHistoricoProdutos(true); // <--- Mantém o modal sincronizado
+                carregarHistoricoProdutos(true);
 
             } catch (erro) {
                 console.error("Erro ao gerar saída:", erro);
@@ -368,7 +392,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 desmarcarSaida();
                 await atualizarTabela("estoque", null, tbodyEstoque, true);
                 await atualizarTabela("saida", null, tbodySaidas, true);
-                carregarHistoricoProdutos(true); // <--- Mantém o modal sincronizado
+                carregarHistoricoProdutos(true);
 
             } catch (erro) {
                 console.error("Erro no estorno:", erro);
@@ -431,79 +455,53 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =========================================
-       HISTÓRICO DE PRODUTOS
-    ========================================= */
-    async function carregarHistoricoProdutos() {
-        if (!tbodyyHistoricoProdutos) return;
-
-        try {
-            const resposta = await fetch('/estoque/historico/listar/');
-            const dados = await resposta.json();
-
-            if (dados.sucesso) {
-                tbodyyHistoricoProdutos.innerHTML = dados.html;
-            }
-        } catch (erro) {
-            console.error("Erro ao carregar histórico:", erro);
-        }
-    }
-
-    if (btnHistoricoEstoque && modalHistoricoProdutos) {
-        btnHistoricoEstoque.addEventListener("click", function (e) {
-            e.stopPropagation();
-            modalHistoricoProdutos.show();
-            carregarHistoricoProdutos();
-        });
-    }
-
-    if (btnAtualizarHistorico) {
-        btnAtualizarHistorico.addEventListener("click", function () {
-            carregarHistoricoProdutos();
-        });
-    }
-    /* =========================================
        HISTÓRICO DE PRODUTOS (CARREGAR E ATUALIZAR)
     ========================================= */
-    async function carregarHistoricoProdutos(silencioso = true) {
+    async function carregarHistoricoProdutos(silencioso = true, ordem = null, data = null) {
         if (!tbodyyHistoricoProdutos) return;
+
+        // Atualiza as variáveis de escopo se vierem informadas
+        if (ordem !== null) {
+            ordemHistoricoAtualProdutos = ordem;
+        }
+        if (data !== null) {
+            filtroDataAtualProdutos = data;
+        }
 
         const icone = btnAtualizarHistorico ? btnAtualizarHistorico.querySelector("i") : null;
         const contadorHistorico = document.getElementById("contadorTotalHistoricoProdutos") || 
                                  document.querySelector(".contador-selecionados-historico-produtos");
 
         try {
-            // Animação de carregamento no botão
             if (btnAtualizarHistorico) btnAtualizarHistorico.disabled = true;
             if (icone) icone.classList.add("fa-spin");
 
-            const resposta = await fetch('/estoque/historico/listar/');
-            const texto = await resposta.text();
-
-            let dados;
-            try {
-                dados = JSON.parse(texto);
-            } catch (e) {
-                console.error("Resposta inválida do servidor ao listar histórico:", texto);
-                throw new Error("Erro de comunicação ao carregar o histórico.");
+            let url = `/estoque/historico/listar/?ordem=${ordemHistoricoAtualProdutos || "desc"}`;
+            if (filtroDataAtualProdutos) {
+                url += `&data=${encodeURIComponent(filtroDataAtualProdutos)}`;
             }
 
-            if (!resposta.ok || !dados.sucesso) {
+            const resposta = await fetch(url);
+            const dados = await resposta.json();
+
+            if (dados.sucesso) {
+                tbodyyHistoricoProdutos.innerHTML = dados.html;
+
+                if (contadorHistorico && dados.total !== undefined) {
+                    contadorHistorico.textContent = `${dados.total} registro(s) encontrado(s)`;
+                }
+
+                if (checkboxMasterHistorico) {
+                    checkboxMasterHistorico.checked = false;
+                    checkboxMasterHistorico.indeterminate = false;
+                }
+
+                if (!silencioso && typeof mostrarAlerta === "function") {
+                    mostrarAlerta("Histórico de movimentações atualizado com sucesso!", "sucesso");
+                }
+            } else {
                 throw new Error(dados.mensagem || "Não foi possível carregar os registros do histórico.");
             }
-
-            // Injeta as linhas atualizadas no modal
-            tbodyyHistoricoProdutos.innerHTML = dados.html;
-
-            // Atualiza o contador se o elemento existir
-            if (contadorHistorico && dados.total !== undefined) {
-                contadorHistorico.textContent = `${dados.total} registro(s) encontrado(s)`;
-            }
-
-            // Notificação visual caso o usuário tenha clicado no botão manualmente
-            if (!silencioso && typeof mostrarAlerta === "function") {
-                mostrarAlerta("Histórico de movimentações atualizado com sucesso!", "sucesso");
-            }
-
         } catch (erro) {
             console.error("Erro ao carregar histórico:", erro);
             if (!silencioso && typeof mostrarAlerta === "function") {
@@ -515,20 +513,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // 1. Abre o modal e já carrega os dados atualizados
+    // 1. Abre o modal e carrega os dados
     if (btnHistoricoEstoque && modalHistoricoProdutos) {
         btnHistoricoEstoque.addEventListener("click", function (e) {
             e.stopPropagation();
             modalHistoricoProdutos.show();
-            carregarHistoricoProdutos(true); // Carregamento silencioso na abertura
+            carregarHistoricoProdutos(true);
         });
     }
 
-    // 2. Clique manual no botão de atualizar dentro da toolbar do modal
+    // 2. Clique manual no botão de atualizar na toolbar
     if (btnAtualizarHistorico) {
         btnAtualizarHistorico.addEventListener("click", function (e) {
             e.preventDefault();
-            carregarHistoricoProdutos(false); // Exibe alerta de sucesso ao clicar
+            carregarHistoricoProdutos(false);
         });
     }
 
@@ -553,12 +551,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     }
-    // 1. Marcar/Desmarcar Todos ao clicar diretamente no Checkbox Master
+
+    // 1. Marcar/Desmarcar Todos ao clicar no Checkbox Master
     if (checkboxMasterHistorico) {
-        checkboxMasterHistorico.indeterminate = false; // Garante que nunca fique quadrado/ponto
+        checkboxMasterHistorico.indeterminate = false;
 
         checkboxMasterHistorico.addEventListener("click", function () {
-            // Se já havia itens marcados e clicou, desmarca tudo; senão, marca tudo
             const marcadosAntes = tbodyyHistoricoProdutos.querySelectorAll(".checkbox-item-historico-produtos:checked").length;
             const marcar = (marcadosAntes === 0);
 
@@ -589,24 +587,20 @@ document.addEventListener("DOMContentLoaded", function () {
             const checkbox = tr.querySelector(".checkbox-item-historico-produtos");
             if (!checkbox) return;
 
-            // Alterna o checkbox individual caso tenha clicado no corpo da linha
             if (!e.target.classList.contains("checkbox-item-historico-produtos")) {
                 checkbox.checked = !checkbox.checked;
             }
 
-            // Destaca ou desmarca a linha visualmente
             if (checkbox.checked) {
                 tr.classList.add("linha-selecionada-historico");
             } else {
                 tr.classList.remove("linha-selecionada-historico");
             }
 
-            // SINCRONIZAÇÃO DO CHECKBOX MASTER COM A SETINHA (CHECK):
             const marcados = tbodyyHistoricoProdutos.querySelectorAll(".checkbox-item-historico-produtos:checked").length;
             
             if (checkboxMasterHistorico) {
-                checkboxMasterHistorico.indeterminate = false; // NUNCA exibe o quadrado
-                // Se tiver pelo menos 1 marcado, ativa a setinha de verificado
+                checkboxMasterHistorico.indeterminate = false;
                 checkboxMasterHistorico.checked = (marcados > 0);
             }
 
@@ -622,7 +616,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const selecionados = getIdsHistoricoSelecionados();
 
-            // Verificação de seleção
             if (selecionados.length === 0) {
                 if (typeof mostrarAlerta === "function") {
                     mostrarAlerta("Selecione pelo menos um histórico para apagar.", "alerta");
@@ -632,7 +625,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Duas verificações de texto dinâmico:
             if (selecionados.length === 1) {
                 textoConfirmacaoExclusao.innerHTML = "Deseja realmente apagar somente este histórico?";
             } else {
@@ -686,13 +678,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     mostrarAlerta(dados.mensagem, "sucesso");
                 }
 
-                // Reseta o checkbox master
                 if (checkboxMasterHistorico) {
                     checkboxMasterHistorico.checked = false;
                     checkboxMasterHistorico.indeterminate = false;
                 }
 
-                // Recarrega o histórico atualizado
                 await carregarHistoricoProdutos(true);
 
             } catch (erro) {
@@ -710,7 +700,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function obterIdsHistoricoProdutosSelecionados() {
         if (!tbodyyHistoricoProdutos) return [];
-        const selecionados = tbodyyHistoricoProdutos.querySelectorAll(".check-item-historico:checked");
+        const selecionados = tbodyyHistoricoProdutos.querySelectorAll(".checkbox-item-historico-produtos:checked");
         return Array.from(selecionados).map(cb => cb.value);
     }
 
@@ -738,6 +728,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
     if (btnExportarHistoricoExcelProdutos) {
         btnExportarHistoricoExcelProdutos.addEventListener("click", function () {
             executarDownloadHistoricoProdutos("/estoque/historico/exportar-excel-produtos/");
@@ -772,7 +763,6 @@ document.addEventListener("DOMContentLoaded", function () {
             badgeStatusPausaAtualProdutos.innerHTML = '<i class="fa-solid fa-circle-check"></i> Gravando normalmente';
         }
 
-        // Sincroniza o botão na barra de ferramentas do modal principal
         const textoStatusBtn = document.getElementById("textoStatusPausaHistoricoProdutos");
         const iconeBtn = btnPausarHistoricoProdutos ? btnPausarHistoricoProdutos.querySelector("i") : null;
         if (textoStatusBtn && iconeBtn) {
@@ -786,7 +776,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Busca o status atual no cache do Django via GET
     async function verificarStatusPausaInicial() {
         try {
             const resposta = await fetch(URL_STATUS_PAUSA_PRODUTOS);
@@ -801,7 +790,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Abertura do Modal de Confirmação de Pausa
     if (btnPausarHistoricoProdutos && modalPausaProdutos) {
         btnPausarHistoricoProdutos.addEventListener("click", function (e) {
             e.preventDefault();
@@ -811,7 +799,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Alternar o status (envia 'pausar' ou 'ativar' correspondendo à view)
     async function alternarPausaHistoricoProdutos(pausar) {
         const acaoDesejada = pausar ? "pausar" : "ativar";
         const csrfToken = getCSRFToken();
@@ -847,7 +834,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     mostrarAlerta(dados.mensagem, "sucesso");
                 }
             } else if (dados.ja_estava) {
-                // Caso já estivesse no estado solicitado
                 historicoProdutosPausado = dados.pausado;
                 atualizarBadgeStatusProdutos(historicoProdutosPausado);
 
@@ -871,17 +857,180 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Botão "Não (Pausar)"
     if (btnNaoPausarHistoricoProdutos) {
         btnNaoPausarHistoricoProdutos.addEventListener("click", () => alternarPausaHistoricoProdutos(true));
     }
 
-    // Botão "Sim (Ativar)"
     if (btnSimAtivarHistoricoProdutos) {
         btnSimAtivarHistoricoProdutos.addEventListener("click", () => alternarPausaHistoricoProdutos(false));
     }
 
-    // Consulta inicial do status ao carregar o DOM
     verificarStatusPausaInicial();
+
+    /* =========================================
+       MODAL DE FILTRAGEM (DATA E HORA)
+    ========================================= */
+    if (btnAbrirModalFiltroProdutos && modalFiltroProdutos) {
+        btnAbrirModalFiltroProdutos.addEventListener("click", function () {
+            if (inputFiltroDataProdutos) inputFiltroDataProdutos.value = filtroDataAtualProdutos;
+
+            const radio = document.querySelector(`input[name="filtroOrdemHoraProdutos"][value="${ordemHistoricoAtualProdutos}"]`);
+            if (radio) radio.checked = true;
+
+            modalFiltroProdutos.show();
+        });
+    }
+
+    if (btnAplicarFiltroprodutos) {
+        btnAplicarFiltroprodutos.addEventListener("click", async function () {
+            const dataVal = inputFiltroDataProdutos ? inputFiltroDataProdutos.value.trim() : "";
+            const radioChecked = document.querySelector('input[name="filtroOrdemHoraProdutos"]:checked');
+            const ordemVal = radioChecked ? radioChecked.value : "desc";
+
+            if (dataVal.length > 0 && dataVal.length < 10) {
+                if (typeof mostrarAlerta === "function") {
+                    mostrarAlerta("Preencha a data completa (DD/MM/AAAA) ou deixe em branco.", "alerta");
+                } else {
+                    alert("Preencha a data completa (DD/MM/AAAA) ou deixe em branco.");
+                }
+                return;
+            }
+
+            if (modalFiltroProdutos) modalFiltroProdutos.hide();
+
+            await carregarHistoricoProdutos(false, ordemVal, dataVal);
+        });
+    }
+
+    if (inputFiltroDataProdutos) {
+        inputFiltroDataProdutos.addEventListener("input", function (e) {
+            let v = e.target.value.replace(/\D/g, "");
+            if (v.length > 8) v = v.substring(0, 8);
+            if (v.length > 4) {
+                v = v.replace(/^(\d{2})(\d{2})(\d{0,4})/, "$1/$2/$3");
+            } else if (v.length > 2) {
+                v = v.replace(/^(\d{2})(\d{0,2})/, "$1/$2");
+            }
+            e.target.value = v;
+        });
+    }
+
+    /* =========================================
+       12. ORDENAÇÃO DO HISTÓRICO
+    ========================================= */
+    if (btnAbrirModalOrdenarProdutos && modalOrdenarProdutos) {
+        btnAbrirModalOrdenarProdutos.addEventListener("click", function () {
+            if (tipoOrdenacaoHistoricoProdutos) {
+                tipoOrdenacaoHistoricoProdutos.value = ordemHistoricoAtualProdutos;
+            }
+            modalOrdenarProdutos.show();
+        });
+    }
+
+    if (btnExecutarOrdenacaoProdutosHistoricos) {
+        btnExecutarOrdenacaoProdutosHistoricos.addEventListener("click", async function () {
+            const direcao = tipoOrdenacaoHistoricoProdutos ? tipoOrdenacaoHistoricoProdutos.value : "desc";
+
+            if (modalOrdenarProdutos) modalOrdenarProdutos.hide();
+
+            await carregarHistoricoProdutos(true, direcao, filtroDataAtualProdutos);
+
+            if (typeof mostrarAlerta === "function") {
+                const textoDirecao = direcao === "asc" ? "crescente (antigos primeiro)" : "decrescente (recentes primeiro)";
+                mostrarAlerta(`Histórico ordenado em ordem ${textoDirecao}!`, "sucesso");
+            }
+        });
+    }
+
+    /* =========================================
+       LIMPAR VISUALIZAÇÃO DAS TABELAS
+    ========================================= */
+    function limparVisualizacaoTabelasEstoque() {
+        // Desmarca quaisquer seleções ativas na memória e no ecrã
+        desmarcarEstoque();
+        desmarcarSaida();
+
+        // 1. Limpa Tabela de Produtos em Estoque (12 colunas)
+        if (tbodyEstoque) {
+            tbodyEstoque.innerHTML = `
+                <tr class="linha-vazia">
+                    <td colspan="13" class="text-center py-4" style="color: #cbd5e1 !important;">
+                        <i class="fa-solid fa-box-open fa-2x mb-2 d-block" style="color: #cbd5e1 !important;"></i>
+                        <span style="color: #cbd5e1 !important;">Nenhum produto em estoque exibido no momento.</span>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // 2. Limpa Tabela de Saídas (13 colunas)
+        if (tbodySaidas) {
+            tbodySaidas.innerHTML = `
+                <tr class="linha-vazia">
+                    <td colspan="14" class="text-center py-4" style="color: #cbd5e1 !important;">
+                        <i class="fa-solid fa-arrow-right-from-bracket fa-2x mb-2 d-block" style="color: #cbd5e1 !important;"></i>
+                        <span style="color: #cbd5e1 !important;">Nenhum registro de saída exibido no momento.</span>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // 3. Emite alerta de confirmação
+        if (typeof mostrarAlerta === "function") {
+            mostrarAlerta("Tabelas de estoque limpas com sucesso!", "sucesso");
+        }
+    }
+
+    if (btnLimparTabelasEstoque) {
+        btnLimparTabelasEstoque.addEventListener("click", limparVisualizacaoTabelasEstoque);
+    }
+
+  
+    // Ação disparada ao clicar no botão "Exportar" dentro do modal
+    document.getElementById('btnConfirmarExportarExcelProdutos')?.addEventListener('click', function () {
+        const selectTipo = document.getElementById('tipoExportacaoExcelProdutos');
+        const tipo = selectTipo ? selectTipo.value : 'todos';
+
+        // 1. Dispara o download gerado pela view Django (com openpyxl no backend)
+        window.location.href = `/produtos/exportar/excel/?tipo=${tipo}`;
+
+        // 2. Fecha o modal
+        const modalEl = document.getElementById('modalExportarExcelProdutos');
+        if (modalEl) {
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+        }
+    });
+
+    // 1. Abre o modal ao clicar no botão da barra superior
+    document.getElementById('btnExportarProdutosExcel')?.addEventListener('click', function () {
+        const modalEl = document.getElementById('modalExportarExcelProdutos');
+        if (modalEl) {
+            const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modalInstance.show();
+        }
+    });
+
+    // 2. Dispara o download pelo Django ao clicar em "Exportar" dentro do modal
+    document.getElementById('btnConfirmarExportarExcelProdutos')?.addEventListener('click', function () {
+        const selectTipo = document.getElementById('tipoExportacaoExcelProdutos');
+        const tipo = selectTipo ? selectTipo.value : 'todos';
+
+        // Obtém a URL exata configurada no Django através do atributo data-url
+        const baseUrl = this.dataset.url || '/exportar/excel/';
+
+        // Redireciona com o parâmetro
+        window.location.href = `${baseUrl}?tipo=${tipo}`;
+
+        // Fecha o modal
+        const modalEl = document.getElementById('modalExportarExcelProdutos');
+        if (modalEl) {
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+        }
+    });
 
 });

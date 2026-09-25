@@ -9,6 +9,7 @@ from django.utils import timezone
 from produtos.models import Produto, SaidaProduto, HistoricoProduto
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from django.http import HttpResponse
 from produtos.models import HistoricoProduto
 import csv
@@ -16,6 +17,7 @@ from io import BytesIO
 from xhtml2pdf import pisa
 from django.views.decorators.http import require_http_methods
 from django.core.cache import cache
+from datetime import datetime
 
 CACHE_KEY_HISTORICO_PAUSADO = "historico_atividades_produtos_pausado"
 
@@ -151,15 +153,19 @@ def gerar_saida_produto(request, produto_id):
             data_saida=data_saida_definitiva,  # Salva com a data original congelada
             criado_por=request.user
         )
+        
+        
 
-        # 4. Registra auditoria no histórico
-        HistoricoProduto.objects.create(
-            produto=produto,
-            nome_produto=produto.nome,
-            acao='SAIDA',
-            descricao=f'Saída registrada de {qtd_solicitada} unidade(s). Código: {produto.codigo}',
-            usuario=request.user
-        )
+        # 4. Registra auditoria no histórico apenas se a gravação NÃO estiver pausada
+        esta_pausado = cache.get(CACHE_KEY_HISTORICO_PAUSADO, False)
+        if not esta_pausado:
+            HistoricoProduto.objects.create(
+                produto=produto,
+                nome_produto=produto.nome,
+                acao='SAIDA',
+                descricao=f'Saída registrada de {qtd_solicitada} unidade(s). Código: {produto.codigo}',
+                usuario=request.user
+            )
 
         return JsonResponse({
             'sucesso': True, 
@@ -230,14 +236,16 @@ def gerar_estorno_produto(request, produto_id):
         else:
             saida_item.delete()
 
-        # 3. Registra auditoria no histórico
-        HistoricoProduto.objects.create(
-            produto=produto_original,
-            nome_produto=produto_original.nome,
-            acao='ESTORNO',
-            descricao=f'Estorno efetuado de {qtd_estorno} unidade(s). Código: {produto_original.codigo}',
-            usuario=request.user
-        )
+        # 3. Registra auditoria no histórico (apenas se não estiver pausado)
+        esta_pausado = cache.get(CACHE_KEY_HISTORICO_PAUSADO, False)
+        if not esta_pausado:
+            HistoricoProduto.objects.create(
+                produto=produto_original,
+                nome_produto=produto_original.nome,
+                acao='ESTORNO',
+                descricao=f'Estorno efetuado de {qtd_estorno} unidade(s). Código: {produto_original.codigo}',
+                usuario=request.user
+            )
 
         return JsonResponse({
             'sucesso': True, 
@@ -527,3 +535,186 @@ def status_pausa_historico_produtos(request):
 
     except Exception as e:
         return JsonResponse({"sucesso": False, "mensagem": f"Erro interno: {str(e)}"}, status=500)
+    
+@login_required
+def listar_historico_produtos(request):
+    ordem = request.GET.get("ordem", "desc").lower()
+    data_filtro = request.GET.get("data", "").strip()
+
+    campo_ordem = "data_hora" if ordem == "asc" else "-data_hora"
+    queryset = HistoricoProduto.objects.all().select_related('usuario')
+
+    # Filtra por data específica se fornecida no padrão DD/MM/AAAA
+    if data_filtro:
+        try:
+            data_obj = datetime.strptime(data_filtro, "%d/%m/%Y").date()
+            queryset = queryset.filter(data_hora__date=data_obj)
+        except ValueError:
+            pass  # Se a data estiver incompleta ou inválida, ignora o filtro
+
+    historicos = queryset.order_by(campo_ordem)[:100]
+
+    # Renderiza diretamente o template de linhas para o modal
+    html = render_to_string(
+        'estoque/linhas_tabela_historico_produtos.html',
+        {'historicos': historicos},
+        request=request
+    )
+
+    return JsonResponse({
+        "sucesso": True,
+        "html": html,
+        "total": historicos.count(),
+        "ordem": ordem
+    })
+    
+@login_required
+@require_GET
+def exportar_produtos_tabela_excel(request):
+    tipo = request.GET.get('tipo', 'todos').lower()  # 'estoque', 'saida' ou 'todos'
+    wb = Workbook()
+    wb.remove(wb.active)  # Remove a aba padrão em branco
+
+    # 1. Cabeçalho de ESTOQUE (SEM 'DATA DA SAÍDA')
+    headers_estoque = [
+        'ID', 'PRODUTO', 'QUANTIDADE', 'VALOR UNITÁRIO', 'DESCONTO', 
+        'TOTAL SEM DESCONTO', 'TOTAL COM DESCONTO', 'DATA DO CADASTRO', 
+        'CÓDIGO DO PRODUTO', 'CLIENTE', 'DESCRIÇÃO DO PRODUTO', 'USUÁRIO', 'STATUS DA SAÍDA'
+    ]
+
+    # 2. Cabeçalho de SAÍDA (COM 'DATA DA SAÍDA')
+    headers_saida = [
+        'ID', 'PRODUTO', 'QUANTIDADE', 'VALOR UNITÁRIO', 'DESCONTO', 
+        'TOTAL SEM DESCONTO', 'TOTAL COM DESCONTO', 'DATA DA SAÍDA', 'DATA DO CADASTRO', 
+        'CÓDIGO DO PRODUTO', 'CLIENTE', 'DESCRIÇÃO DO PRODUTO', 'USUÁRIO RESPONSÁVEL'
+    ]
+
+    # Estilos Visuais
+    fonte_cabecalho = Font(name='Calibri', size=11, bold=True, color='FFFFFF')
+    fill_cabecalho = PatternFill(start_color='2C3E50', end_color='2C3E50', fill_type='solid') # Azul escuro profissional
+    alinhamento_cabecalho = Alignment(horizontal='center', vertical='center', wrap_text=True)
+
+    # Formatos de número do Excel (Padrão monetário brasileiro e porcentagem)
+    FORMATO_MOEDA = 'R$ #,##0.00'
+    FORMATO_PERCENT = '0.00%'
+
+    def extrair_linha_estoque(p):
+        cliente_nome = p.cliente.nome if getattr(p, 'cliente', None) else 'Não informado'
+        usuario_nome = p.criado_por.username if getattr(p, 'criado_por', None) else 'Sistema'
+        data_cad = p.data_cadastro.strftime("%d/%m/%Y") if p.data_cadastro else '—'
+        status_saida_desc = 'Gerado Saída' if p.status_saida == 1 else 'Em Estoque'
+
+        # No Excel, porcentagem 12% deve ser enviada como número 0.12 para aplicar o formato %
+        desconto_decimal = float(p.desconto or 0) / 100.0
+
+        return [
+            p.id,
+            p.nome,
+            p.quantidade,
+            float(p.valor_unitario or 0),
+            desconto_decimal,
+            float(p.total_sem_desconto or 0),
+            float(p.total_com_desconto or 0),
+            data_cad,
+            p.codigo,
+            cliente_nome,
+            p.descricao or '—',
+            usuario_nome,
+            status_saida_desc
+        ]
+
+    def extrair_linha_saida(s):
+        prod = s.produto
+        cliente_nome = prod.cliente.nome if getattr(prod, 'cliente', None) else 'Não informado'
+        usuario_nome = s.criado_por.username if getattr(s, 'criado_por', None) else 'Sistema'
+        data_saida_str = s.data_saida.strftime("%d/%m/%Y %H:%M") if s.data_saida else '—'
+        data_cad = prod.data_cadastro.strftime("%d/%m/%Y") if getattr(prod, 'data_cadastro', None) else '—'
+        desconto_decimal = float(s.desconto or 0) / 100.0
+
+        return [
+            s.id,
+            prod.nome,
+            s.quantidade,
+            float(s.valor_unitario or 0),
+            desconto_decimal,
+            float(s.total_sem_desconto or 0),
+            float(s.total_com_desconto or 0),
+            data_saida_str,
+            data_cad,
+            prod.codigo,
+            cliente_nome,
+            prod.descricao or '—',
+            usuario_nome
+        ]
+
+    def formatar_planilha(ws):
+        # 1. Estiliza Cabeçalho (Linha 1)
+        ws.row_dimensions[1].height = 28
+        for cell in ws[1]:
+            cell.font = fonte_cabecalho
+            cell.fill = fill_cabecalho
+            cell.alignment = alinhamento_cabecalho
+
+        # 2. Formata Dados das Linhas
+        # Colunas com valores numéricos / monetários / datas:
+        # Coluna D (4): Valor Unitário (R$)
+        # Coluna E (5): Desconto (%)
+        # Coluna F (6): Total Sem Desconto (R$)
+        # Coluna G (7): Total Com Desconto (R$)
+        for row in ws.iter_rows(min_row=2):
+            for cell in row:
+                col_num = cell.column
+
+                # ID, Quantidade, Datas centralizados
+                if col_num in [1, 3, 8]:
+                    cell.alignment = Alignment(horizontal='center')
+
+                # Valor Unitário, Totais -> Formata como R$
+                elif col_num in [4, 6, 7]:
+                    cell.number_format = FORMATO_MOEDA
+                    cell.alignment = Alignment(horizontal='right')
+
+                # Desconto -> Formata como %
+                elif col_num == 5:
+                    cell.number_format = FORMATO_PERCENT
+                    cell.alignment = Alignment(horizontal='right')
+
+        # 3. Autoajuste de Largura das Colunas
+        for col in ws.columns:
+            max_len = max(len(str(cell.value or '')) for cell in col)
+            col_letter = get_column_letter(col[0].column)
+            ws.column_dimensions[col_letter].width = max(max_len + 4, 13)
+
+    # 1. Exporta Estoque
+    if tipo in ['estoque', 'todos']:
+        ws_estoque = wb.create_sheet(title="Produtos em Estoque")
+        ws_estoque.append(headers_estoque)
+
+        qs_estoque = Produto.objects.filter(quantidade__gt=0).select_related('criado_por', 'cliente').order_by('-id')
+        for prod in qs_estoque:
+            ws_estoque.append(extrair_linha_estoque(prod))
+
+        formatar_planilha(ws_estoque)
+
+    # 2. Exporta Saídas
+    if tipo in ['saida', 'todos']:
+        ws_saida = wb.create_sheet(title="Saída dos Produtos")
+        ws_saida.append(headers_saida)
+
+        qs_saidas = SaidaProduto.objects.select_related('produto', 'criado_por', 'produto__cliente').order_by('-data_saida')
+        for saida in qs_saidas:
+            ws_saida.append(extrair_linha_saida(saida))
+
+        formatar_planilha(ws_saida)
+
+    buffer = BytesIO()
+    wb.save(buffer)
+    buffer.seek(0)
+
+    filename = f"Produtos_{tipo}.xlsx" if tipo != 'todos' else "relatorio_geral_produtos.xlsx"
+    response = HttpResponse(
+        buffer.getvalue(), 
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    return response

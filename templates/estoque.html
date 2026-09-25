@@ -31,18 +31,18 @@
                     <div>
                         <h2>Produtos em estoque</h2>
                     </div>
-                    <div class="estoque-acoes-topo">
+                    <div class="estoque-acoes-topo" id="btnExportarProdutosExcel">
                         <button class="btn-estoque-outline">
                             <i class="fa-regular fa-file-excel"></i> Exportar Excel
                         </button>
-                        <button class="btn-estoque-outline">
+                        <button class="btn-estoque-outline" id="btnExportarProdutosPDF">
                             <i class="fa-regular fa-file-pdf"></i> Exportar PDF
                         </button>
                     </div>
                 </div>
 
                 <div class="estoque-table-container">
-                    <table class="estoque-table">
+                    <table class="estoque-table" id="tabelaEstoqueProdutos">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -69,7 +69,7 @@
 
             <!-- CARD 2: SAÍDA -->
             <div class="dashboard-card mt-4">
-                <div class="estoque-header">
+                <div class="estoque-header" id="tabelaSaidaProdutos">
                     <div>
                         <h2>Saída</h2>
                     </div>
@@ -420,6 +420,152 @@
                 </button>
                 <button type="button" id="btnSimAtivarHistoricoProdutos" class="btn-status-pausa-produtos-acao btn-status-pausa-produtos-sim">
                     <i class="fa-solid fa-play"></i> Sim (Ativar)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE ORDENAÇÃO — HISTÓRICO DE PRODUTOS
+====================================================== -->
+<div class="modal fade" id="modalOrdenarHistoricoProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-ordenar-historico-produtos-dialog">
+        <div class="modal-content modal-ordenar-historico-produtos-content">
+            <div class="modal-header modal-ordenar-historico-produtos-header">
+                <h5>
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Direção da Ordenação
+                </h5>
+                <button
+                    type="button"
+                    class="btn-modal-fechar-ordenar-historico-produtos"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-ordenar-historico-produtos-body">
+                <div class="campo-ordenar-historico-produtos">
+                    <label for="tipoOrdenacaoHistoricoProdutos">Escolha a direção</label>
+                    <select id="tipoOrdenacaoHistoricoProdutos" class="form-select-ordenar-historico-produtos">
+                        <option value="desc" selected>Decrescente (Mais recentes primeiro)</option>
+                        <option value="asc">Crescente (Mais antigos primeiro)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-ordenar-historico-produtos-footer">
+                <button
+                    type="button"
+                    class="btn-cancelar-ordenar-historico-produtos"
+                    data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button
+                    type="button"
+                    id="btnExecutarOrdenacaoHistoricoProdutos"
+                    class="btn-confirmar-ordenar-historico-produtos">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Ordenar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE FILTRAGEM — HISTÓRICO DE PRODUTOS
+====================================================== -->
+<div class="modal fade" id="modalFiltrarHistoricoProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-filtrar-historico-produtos-dialog">
+        <div class="modal-content modal-filtrar-historico-produtos-content">
+            <div class="modal-filtrar-historico-produtos-header">
+                <div class="modal-filtrar-historico-produtos-titulo">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <span>Filtrar Histórico de Produtos</span>
+                </div>
+                <button type="button" class="btn-modal-fechar-filtrar-historico-produtos" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-filtrar-historico-produtos-body">
+                <fieldset class="modal-filtrar-produtos-fieldset">
+                    <legend class="modal-filtrar-produtos-legend">Filtro por Data</legend>
+                    <div class="modal-filtrar-produtos-campo">
+                        <input 
+                            type="text" 
+                            id="filtroDataHistoricoProdutos" 
+                            class="modal-filtrar-produtos-input-data" 
+                            placeholder="DD/MM/AAAA..." 
+                            maxlength="10"
+                            autocomplete="off">
+                    </div>
+                </fieldset>
+
+                <fieldset class="modal-filtrar-produtos-fieldset">
+                    <legend class="modal-filtrar-produtos-legend">Filtrar por Horário</legend>
+                    <div class="modal-filtrar-produtos-radio-group">
+                        <label class="modal-filtrar-produtos-radio-label">
+                            <input type="radio" name="filtroOrdemHoraProdutos" value="desc" checked class="modal-filtrar-produtos-radio">
+                            <span class="modal-filtrar-produtos-radio-custom"></span>
+                            <span>Mais Recentes Primeiro</span>
+                        </label>
+
+                        <label class="modal-filtrar-produtos-radio-label">
+                            <input type="radio" name="filtroOrdemHoraProdutos" value="asc" class="modal-filtrar-produtos-radio">
+                            <span class="modal-filtrar-produtos-radio-custom"></span>
+                            <span>Mais Antigos Primeiro</span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div class="modal-filtrar-produtos-acoes">
+                    <button type="button" id="btnAplicarFiltroHistoricoProdutos" class="btn-filtrar-produtos-submit">
+                        <i class="fa-solid fa-filter"></i> Aplicar Filtro
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE EXPORTAÇÃO EXCEL - PRODUTOS
+====================================================== -->
+<div class="modal fade" id="modalExportarExcelProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-exportar-produtos-dialog">
+        <div class="modal-content modal-exportar-produtos-content">
+            <div class="modal-header modal-exportar-produtos-header">
+                <h5>
+                    <i class="fa-regular fa-file-excel"></i>
+                    Exportar Produtos para Excel
+                </h5>
+                <button type="button" class="btn-modal-fechar-exportar-produtos" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-exportar-produtos-body">
+                <div class="campo campo-exportar-produtos">
+                    <label for="tipoExportacaoExcelProdutos">Selecione o que deseja exportar:</label>
+                    <select id="tipoExportacaoExcelProdutos" class="select-exportar-produtos">
+                        <option value="todos" selected>Ambas as Tabelas (Abas separadas)</option>
+                        <option value="estoque">Apenas Produtos Estoque</option>
+                        <option value="saida">Apenas Produtos Saída</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-exportar-produtos-footer">
+                <button type="button" class="btn-cancelar-exportar-produtos" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" id="btnConfirmarExportarExcelProdutos" class="btn-confirmar-exportar-produtos" data-url="{% url 'exportar_produtos_excel' %}">
+                    <i class="fa-solid fa-download"></i>
+                    Exportar
                 </button>
             </div>
         </div>

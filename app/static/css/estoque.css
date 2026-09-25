@@ -1213,7 +1213,7 @@
 
 .modal-status-pausa-historico-produtos-legenda {
     font-size: 11.5px;
-    color: #94a3b8;
+    color: #CECFD2;
     display: block;
 }
 
@@ -1263,6 +1263,489 @@
 .btn-status-pausa-produtos-sim:hover {
     background: #15803d;
     border-color: #15803d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+}
+
+/* =====================================================
+   MODAL DE FILTRAGEM — HISTÓRICO DE PRODUTOS
+===================================================== */
+.modal-filtrar-historico-produtos-dialog {
+    max-width: 400px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-filtrar-historico-produtos-content {
+    background: #161e2b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color: #CECFD2;
+}
+
+.modal-filtrar-historico-produtos-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid #333538;
+    background: #0f172a;
+}
+.modal-filtrar-historico-produtos-titulo {
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #CECFD2;
+}
+
+.btn-modal-fechar-filtrar-historico-produtos {
+    background: transparent;
+    border: none;
+    color: #CECFD2;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-modal-fechar-filtrar-historico-produtos:hover {
+    color: #CECFD2;
+}
+
+.modal-filtrar-historico-produtos-body {
+    background: #0f172a;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.modal-filtrar-produtos-fieldset {
+    border: 1px solid #44474c !important;
+    border-radius: 8px !important;
+    padding: 10px 12px 12px !important;
+    margin: 0 !important;
+}
+
+.modal-filtrar-produtos-legend {
+    font-size: 12px;
+    font-weight: 600;
+    color: #CECFD2;
+    float: none;
+    width: auto;
+    padding: 0 6px;
+    margin: 0;
+}
+
+.modal-filtrar-produtos-input-data {
+    width: 100%;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #CECFD2;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.modal-filtrar-produtos-input-data:focus {
+    border-color: #38bdf8;
+}
+
+.modal-filtrar-produtos-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.modal-filtrar-produtos-radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #cbd5e1;
+    cursor: pointer;
+}
+
+.modal-filtrar-produtos-radio {
+    accent-color: #0284c7;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.modal-filtrar-produtos-acoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-filtrar-produtos-limpar {
+    flex: 1;
+    background: transparent;
+    border: 1px solid #475569;
+    color: #cbd5e1;
+    padding: 9px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-filtrar-produtos-limpar:hover {
+    background: #1e293b;
+    color: #CECFD2;
+}
+
+.btn-filtrar-produtos-submit {
+    width: 100%;
+    padding: 9px;
+    background: #37393d;
+    border: 1px solid #484b50;
+    border-radius: 8px;
+    color: #cecfd2;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+    margin-top: 2px;
+}
+.btn-filtrar-produtos-submit:hover {
+    background: #0284c7;
+    border-color: #38bdf8;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+
+}
+
+/* =====================================================
+   MODAL DE ORDENAÇÃO DO HISTÓRICO — PRODUTOS
+===================================================== */
+#modalOrdenarHistoricoProdutos {
+    z-index: 1065 !important;
+}
+
+.modal-ordenar-historico-produtos-dialog {
+    max-width: 380px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-ordenar-historico-produtos-content {
+    background: #161e2b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 14px !important;
+    color: #CECFD2 !important;
+    overflow: hidden !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55) !important;
+}
+
+.modal-ordenar-historico-produtos-header {
+    background: #161e2b !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 16px 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.modal-ordenar-historico-produtos-header h5 {
+    color: #CECFD2 !important;
+    margin: 0 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.modal-ordenar-historico-produtos-header h5 i {
+    color: #CECFD2 !important;
+}
+
+.btn-modal-fechar-ordenar-historico-produtos {
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    color: #CECFD2 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-modal-fechar-ordenar-historico-produtos:hover {
+    background-color: #dc2626 !important;
+    color: #CECFD2 !important;
+    transform: scale(1.05) !important;
+}
+
+.modal-ordenar-historico-produtos-body {
+    padding: 20px !important;
+    background: #161e2b !important;
+    border: none !important;
+}
+
+.campo-ordenar-historico-produtos label {
+    font-size: 13px !important;
+    color: #CECFD2 !important;
+    font-weight: 600 !important;
+    margin-bottom: 8px !important;
+    display: block !important;
+}
+
+#tipoOrdenacaoHistoricoProdutos {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    padding: 10px;
+    background: #1b2230;
+    border: 1px solid #313b4e;
+    border-radius: 10px;
+    color: #f8fafc;
+    outline: none;
+    font-size: 14px;
+    transition: .25s;
+    box-sizing: border-box;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+}
+
+#tipoOrdenacaoHistoricoProdutos:focus,
+#tipoOrdenacaoHistoricoProdutos:hover {
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+}
+
+#tipoOrdenacaoHistoricoProdutos option {
+    background-color: #1b2230;
+    color: #f8fafc;
+}
+
+.modal-ordenar-historico-produtos-footer {
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    padding: 14px 20px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: #161e2b !important;
+}
+
+.btn-cancelar-ordenar-historico-produtos {
+    padding: 8px 14px !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    background: #374151 !important;
+    border: 1px solid #4b5563 !important;
+    color: #CECFD2 !important;
+    cursor: pointer !important;
+    transition: 0.2s ease !important;
+}
+
+.btn-cancelar-ordenar-historico-produtos:hover {
+    background: #4b5563 !important;
+    color: #CECFD2 !important;
+}
+
+#btnExecutarOrdenacaoHistoricoProdutos,
+.btn-confirmar-ordenar-historico-produto,
+.btn-confirmar-ordenar-historico-produtos {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    background: #7c3aed !important;
+    border: 1px solid #8b5cf6 !important;
+    color: #CECFD2 !important;
+    cursor: pointer !important;
+    transition: 0.2s ease !important;
+}
+
+#btnExecutarOrdenacaoHistoricoProdutos:hover,
+.btn-confirmar-ordenar-historico-produto:hover,
+.btn-confirmar-ordenar-historico-produtos:hover {
+    background: #6d28d9 !important;
+    border-color: #7c3aed !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35) !important;
+}
+
+.estoque-table-container tbody tr.linha-vazia td,
+.estoque-table-container tbody td:has(.sem-registros-content-historico-produtos) {
+    height: calc(30vh - 50px);
+    vertical-align: middle;
+    text-align: center;
+}
+
+
+/* =====================================================
+   MODAL DE ESCOLHA EXPORTAÇÃO EXCEL
+===================================================== */
+#modalExportarExcelProdutos {
+    z-index: 1065 !important;
+}
+
+.modal-exportar-produtos-dialog{
+    max-width: 380px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-exportar-produtos-content {
+    background: #161e2b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: #cecfd2;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+}
+
+.modal-exportar-produtos-header {
+    background: #161e2b;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-exportar-produtos-header h5 {
+    color: #cecfd2;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-exportar-produtos-header h5 i {
+    color: #22c55e;
+}
+
+.btn-modal-fechar-exportar-produtos {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 50%;
+    color: #cecfd2;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-modal-fechar-exportar-produtos:hover {
+    background-color: #dc2626;
+    color: #cecfd2;
+}
+
+.modal-exportar-produtos-body {
+    padding: 20px;
+    background: #161e2b;
+}
+
+.campo-exportar-produtos label {
+    font-size: 13px;
+    color: #cecfd2;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+#tipoExportacaoExcelProdutos {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100% !important;
+    padding: 10px 38px 10px 14px !important;
+    background: #1b2230 !important;
+    border: 1px solid #313b4e !important;
+    border-radius: 10px !important;
+    color: #f8fafc !important;
+    outline: none !important;
+    font-size: 13.5px !important;
+    transition: all 0.25s ease !important;
+    box-sizing: border-box !important;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+}
+
+#tipoExportacaoExcelProdutos:focus,
+#tipoExportacaoExcelProdutos:hover {
+    border-color: #22c55e !important;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2) !important;
+}
+
+#tipoExportacaoExcelProdutos option {
+    background-color: #1b2230 !important;
+    color: #f8fafc !important;
+}
+
+.modal-exportar-produtos-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: #161e2b !important;
+}
+
+.btn-cancelar-exportar-produtos {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-cancelar-exportar-produtos:hover {
+    background: #4b5563;
+    color: #cecfd2;
+}
+
+.btn-confirmar-exportar-produtos {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #16a34a;
+    border: 1px solid #22c55e;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-confirmar-exportar-produtos:hover {
+    background: #15803d;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
 }
