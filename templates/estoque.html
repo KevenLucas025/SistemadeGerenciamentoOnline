@@ -31,14 +31,30 @@
                     <div>
                         <h2>Produtos em estoque</h2>
                     </div>
-                    <div class="estoque-acoes-topo" id="btnExportarProdutosExcel">
-                        <button class="btn-estoque-outline">
+                    <div class="estoque-acoes-topo">
+                        <button class="btn-estoque-outline" id="btnExportarProdutosExcel">
                             <i class="fa-regular fa-file-excel"></i> Exportar Excel
                         </button>
                         <button class="btn-estoque-outline" id="btnExportarProdutosPDF">
                             <i class="fa-regular fa-file-pdf"></i> Exportar PDF
                         </button>
                     </div>
+                </div>
+
+                 <!-- BARRA DE PESQUISA: PRODUTOS EM ESTOQUE -->
+                <div class="verificar-produtos-search-bar">
+                    <div class="input-search-wrapper-produtos">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input 
+                            type="text" 
+                            id="inputPesquisaEstoque" 
+                            class="input-pesquisa-tabela-estoque" 
+                            placeholder="Pesquisar por nome, ID, Código do Produto..." 
+                            autocomplete="off">
+                    </div>
+                    <button type="button" class="btn-pesquisar-tabela-estoque" id="btnPesquisarEstoque">
+                        <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
+                    </button>
                 </div>
 
                 <div class="estoque-table-container">
@@ -75,6 +91,22 @@
                     </div>
                 </div>
 
+                <!-- BARRA DE PESQUISA: PRODUTOS SAÍDA -->
+                <div class="verificar-produtos-search-bar">
+                    <div class="input-search-wrapper-produtos">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input 
+                            type="text" 
+                            id="inputPesquisaSaida" 
+                            class="input-pesquisa-tabela-saida" 
+                            placeholder="Pesquisar por nome, ID, Código do Produto..." 
+                            autocomplete="off">
+                    </div>
+                    <button type="button" class="btn-pesquisar-tabela-saida" id="btnPesquisaSaida">
+                        <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
+                    </button>
+                </div>
+
                 <div class="estoque-table-container">
                     <table class="estoque-table">
                         <thead>
@@ -101,6 +133,8 @@
                     </table>
                 </div>
             </div>
+
+            
 
         </div>
 
@@ -564,6 +598,49 @@
                     Cancelar
                 </button>
                 <button type="button" id="btnConfirmarExportarExcelProdutos" class="btn-confirmar-exportar-produtos" data-url="{% url 'exportar_produtos_excel' %}">
+                    <i class="fa-solid fa-download"></i>
+                    Exportar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE EXPORTAÇÃO PDF - PRODUTOS
+====================================================== -->
+<div class="modal fade" id="modalExportarPdfProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-exportar-pdf-produtos-dialog">
+        <div class="modal-content modal-exportar-pdf-produtos-content">
+            <div class="modal-header modal-exportar-pdf-produtos-header">
+                <h5>
+                    <i class="fa-regular fa-file-pdf"></i>
+                    Exportar Produtos para PDF
+                </h5>
+                <button type="button" class="btn-modal-fechar-exportar-pdf-produtos" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-exportar-pdf-produtos-body">
+                <div class="campo campo-exportar-pdf-produtos">
+                    <label for="tipoExportacaoPdfProdutos">Selecione o que deseja exportar:</label>
+                    <select id="tipoExportacaoPdfProdutos" class="select-exportar-pdf-produtos">
+                        <option value="todos" selected>Ambas as Tabelas (Relatório Completo)</option>
+                        <option value="estoque">Apenas Produtos em Estoque</option>
+                        <option value="saida">Apenas Saída de Produtos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-exportar-pdf-produtos-footer">
+                <button type="button" class="btn-cancelar-exportar-pdf-produtos" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" 
+                        id="btnConfirmarExportarPdfProdutos" 
+                        class="btn-confirmar-exportar-pdf-produtos"
+                        data-url="{% url 'exportar_produtos_tabela_pdf' %}">
                     <i class="fa-solid fa-download"></i>
                     Exportar
                 </button>

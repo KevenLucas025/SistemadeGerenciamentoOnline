@@ -423,7 +423,6 @@ def exportar_historico_excel_produtos(request):
 @login_required
 @require_GET
 def exportar_historico_pdf_produtos(request):
-    print(">>> ENTROU NA EXPORTAÇÃO PDF")
     queryset = _obter_queryset_historico_produtos(request)
 
     dados_historico = []
@@ -717,4 +716,54 @@ def exportar_produtos_tabela_excel(request):
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    return response
+
+@login_required
+@require_GET
+def exportar_produtos_tabela_pdf(request):
+    tipo = request.GET.get('tipo', 'todos').lower()  # 'estoque', 'saida' ou 'todos'
+
+    produtos_estoque = []
+    saidas_produtos = []
+
+    # 1. Filtra produtos em estoque (SEM data de saída)
+    if tipo in ['estoque', 'todos']:
+        produtos_estoque = Produto.objects.filter(
+            quantidade__gt=0
+        ).select_related('criado_por', 'cliente').order_by('-id')
+
+    # 2. Filtra saídas registradas (COM data de saída)
+    if tipo in ['saida', 'todos']:
+        saidas_produtos = SaidaProduto.objects.select_related(
+            'produto', 'criado_por', 'produto__cliente'
+        ).order_by('-data_saida')
+
+    contexto = {
+        'tipo': tipo,
+        'produtos_estoque': produtos_estoque,
+        'saidas_produtos': saidas_produtos,
+        'data_emissao': timezone.now().strftime("%d/%m/%Y às %H:%M:%S"),
+        'usuario_emissor': request.user.get_full_name() or request.user.username,
+        'total_estoque': len(produtos_estoque),
+        'total_saidas': len(saidas_produtos),
+    }
+
+    # Renderiza o template HTML específico do PDF
+    html_string = render_to_string(
+        'estoque/relatorio_produtos_pdf.html',
+        contexto,
+        request=request
+    )
+
+    buffer = BytesIO()
+    pisa_status = pisa.CreatePDF(html_string, dest=buffer, encoding='utf-8')
+
+    if pisa_status.err:
+        return HttpResponse("Erro ao gerar o relatório em PDF.", status=500)
+
+    buffer.seek(0)
+    nome_arquivo = f"produtos_{tipo}_{timezone.now().strftime('%d_%m_%Y')}.pdf"
+
+    response = HttpResponse(buffer.getvalue(), content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{nome_arquivo}"'
     return response

@@ -82,6 +82,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const btnProdutoExportarExcel = document.getElementById('btnExportarProdutosExcel');
 
+
+    // Elementos de Pesquisa - Saídas
+    const inputPesquisaSaida = document.getElementById("inputPesquisaSaida");
+    const btnPesquisarSaida = document.getElementById("btnPesquisaSaida");
+
+    // Elementos de Pesquisa - Estoque
+    const inputPesquisaEstoque = document.getElementById("inputPesquisaEstoque");
+    const btnPesquisarEstoque = document.getElementById("btnPesquisarEstoque");
+
     // Variáveis de seleção e controle em memória
     let itemEstoqueSelecionado = null; // { id, nome, codigo, quantidade }
     let itemSaidaSelecionado = null;   // { id, nome, codigo, quantidade }
@@ -1004,7 +1013,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 1. Abre o modal ao clicar no botão da barra superior
-    document.getElementById('btnExportarProdutosExcel')?.addEventListener('click', function () {
+    btnProdutoExportarExcel?.addEventListener('click', function () {
         const modalEl = document.getElementById('modalExportarExcelProdutos');
         if (modalEl) {
             const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
@@ -1032,5 +1041,107 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
+
+    // 1. Abre o modal ao clicar no botão "Exportar PDF" do topo
+    document.getElementById('btnExportarProdutosPDF')?.addEventListener('click', function () {
+        const modalEl = document.getElementById('modalExportarPdfProdutos');
+        if (modalEl) {
+            const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modalInstance.show();
+        }
+    });
+
+    // 2. Dispara a geração do PDF ao confirmar dentro do modal
+    document.getElementById('btnConfirmarExportarPdfProdutos')?.addEventListener('click', function () {
+        const selectTipo = document.getElementById('tipoExportacaoPdfProdutos');
+        const tipo = selectTipo ? selectTipo.value : 'todos';
+
+        const baseUrl = this.dataset.url || '/exportar/pdf/';
+        window.location.href = `${baseUrl}?tipo=${tipo}`;
+
+        // Fecha o modal
+        const modalEl = document.getElementById('modalExportarPdfProdutos');
+        if (modalEl) {
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+        }
+    });
+
+    /* =========================================
+       PESQUISA DINÂMICA NAS TABELAS
+    ========================================= */
+    function normalizarTextoProdutos(texto) {
+        return (texto || "")
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
+    }
+
+    function filtrarTabelaProdutos(tbody, termoPesquisa, colunasTotal, tipoNome) {
+        if (!tbody) return;
+        const termo = normalizarTextoProdutos(termoPesquisa);
+        const linhas = tbody.querySelectorAll("tr:not(.linha-vazia):not(.linha-sem-busca)");
+        let encontrados = 0;
+
+        if (tbody.querySelectorAll(".linha-vazia, .sem-registros-verificar-produtos").length > 0) {
+            return;
+        }
+
+        linhas.forEach(linha => {
+            const conteudoLinha = normalizarTextoProdutos(linha.textContent);
+            if (conteudoLinha.includes(termo)) {
+                linha.style.display = "";
+                encontrados++;
+            } else {
+                linha.style.display = "none";
+                if (linha.classList.contains("linha-selecionada")) {
+                    desmarcarEstoque();
+                    desmarcarSaida();
+                }
+            }
+        });
+
+        const linhaExistenteAviso = tbody.querySelector(".linha-sem-busca");
+        if (encontrados === 0 && termo !== "") {
+            if (!linhaExistenteAviso) {
+                const tr = document.createElement("tr");
+                tr.className = "linha-sem-busca";
+                tr.innerHTML = `
+                    <td colspan="${colunasTotal}" class="text-center py-4" style="color: #cecfd2 !important;">
+                        <i class="fa-solid fa-magnifying-glass fa-2x mb-2 d-block" style="color: #cecfd2 !important;"></i>
+                        <span style="color: #cecfd2 !important;">Nenhum produto ${tipoNome} corresponde à sua busca "${termoPesquisa}".</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            }
+        } else if (linhaExistenteAviso) {
+            linhaExistenteAviso.remove();
+        }
+    }
+
+    if (inputPesquisaEstoque) {
+        inputPesquisaEstoque.addEventListener("input", () => {
+            filtrarTabelaProdutos(tbodyEstoque, inputPesquisaEstoque.value, 13, "estoque");
+        });
+    }
+    if (btnPesquisarEstoque) {
+        btnPesquisarEstoque.addEventListener("click", () => {
+            filtrarTabelaProdutos(tbodyEstoque, inputPesquisaEstoque?.value || "", 13, "estoque");
+        });
+    }
+
+    if (inputPesquisaSaida) {
+        inputPesquisaSaida.addEventListener("input", () => {
+            filtrarTabelaProdutos(tbodySaidas, inputPesquisaSaida.value, 13, "saida");
+        });
+    }
+    if (btnPesquisarSaida) {
+        btnPesquisarSaida.addEventListener("click", () => {
+            filtrarTabelaProdutos(tbodySaidas, inputPesquisaSaida?.value || "", 13, "saida");
+        });
+    }
 
 });

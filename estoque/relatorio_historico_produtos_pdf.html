@@ -11,16 +11,17 @@
         @page {
             size: a4 landscape;
             margin: 1.2cm;
+            /* Margem inferior da página: a tabela para aqui e não invade o rodapé */
             margin-bottom: 2.2cm;
 
             @frame footer_frame {
                 -pdf-frame-content: rodape-estatico;
-                bottom: 3.5cm;
+                /* Posição física na base da folha: 0.8cm do limite inferior */
+                bottom: 0.8cm;
                 margin-left: 1.2cm;
                 margin-right: 1.2cm;
-                height: 1.2cm;
-            } 
-            
+                height: 0.8cm;
+            }
         }
 
         body {
@@ -107,13 +108,15 @@
             width: 100%;
             font-size: 7.5pt;
             color: #64748b;
+            border-top: 0.5px solid #cbd5e1; /* Linha sutil separando o rodapé */
+            padding-top: 4px;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- RODAPÉ ESTÁTICO (Capturado pelo @frame footer_frame e renderizado na base) -->
+    <!-- RODAPÉ ESTÁTICO (Capturado pelo @frame footer_frame e renderizado na base absoluta de cada página) -->
     <div id="rodape-estatico">
         <table style="width: 100%; border: none;">
             <tr>
