@@ -376,7 +376,7 @@
                                 <input type="text" id="editarClienteCep" name="cep" placeholder="00000-000">
                             </div>
                             <div class="campo">
-                                <label for="editarClienteEstado">Estado *</label>
+                                <label for="editarClienteEstado">Estado</label>
                                 <select id="editarClienteEstado" name="estado">
                                     <option value="">Selecione</option>
                                     <option value="AC">Acre</option>
@@ -431,9 +431,11 @@
                         </div>
                     </div>
 
+
                     <!-- INFORMAÇÕES E HISTÓRICO FINANCEIRO (EXCLUSIVO EDIÇÃO) -->
                     <div class="secao-modal-cliente">
                         <h6><i class="fa-solid fa-circle-info"></i> Informações e Histórico</h6>
+
                         <div class="campos-grid">
                             <div class="campo">
                                 <label for="editarClienteStatus">Status</label>
@@ -443,8 +445,13 @@
                                     <option value="bloqueado">Bloqueado</option>
                                 </select>
                             </div>
+
                             <div class="campo">
-                                <label for="editarClienteCategoria">Categoria do Cliente</label>
+                                <div class="label-categoria">
+                                    <label for="editarClienteCategoria">Categoria do Cliente</label>
+                                    <button type="button" class="btn-info-ajuda" title="Ajuda">?</button>
+                                </div>
+
                                 <select id="editarClienteCategoria" name="categoria">
                                     <option value="">Selecione</option>
                                     <option value="Tecnologia">Tecnologia</option>
@@ -482,7 +489,7 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                                    </form>
             </div>
 
             <!-- RODAPÉ -->
@@ -520,31 +527,31 @@
                         <h6><i class="fa-solid fa-user"></i> Dados do Cliente</h6>
                         <div class="campos-grid">
                             <div class="campo">
-                                <label for="clienteNome">Nome *</label>
+                                <label for="clienteNome">Nome</label>
                                 <input type="text" id="clienteNome" name="nome" placeholder="Nome do cliente">
                             </div>
                             <div class="campo campo-juridico">
-                                <label for="clienteRazaoSocial">Razão Social *</label>
+                                <label for="clienteRazaoSocial">Razão Social</label>
                                 <input type="text" id="clienteRazaoSocial" name="razao_social" placeholder="Razão social">
                             </div>
                             <div class="campo campo-juridico">
-                                <label for="clienteCnpj">CNPJ *</label>
+                                <label for="clienteCnpj">CNPJ</label>
                                 <input type="text" id="clienteCnpj" name="cnpj" placeholder="00.000.000/0000-00">
                             </div>
                             <div class="campo">
-                                <label for="clienteRg">RG *</label>
+                                <label for="clienteRg">RG</label>
                                 <input type="text" id="clienteRg" name="rg" placeholder="RG">
                             </div>
                             <div class="campo">
-                                <label for="clienteCpf">CPF *</label>
+                                <label for="clienteCpf">CPF</label>
                                 <input type="text" id="clienteCpf" name="cpf" placeholder="000.000.000-00">
                             </div>
                             <div class="campo">
-                                <label for="clienteEmail">E-mail *</label>
+                                <label for="clienteEmail">E-mail</label>
                                 <input type="email" id="clienteEmail" name="email" placeholder="cliente@email.com">
                             </div>
                             <div class="campo">
-                                <label for="clienteTelefone">Telefone / WhatsApp *</label>
+                                <label for="clienteTelefone">Telefone / WhatsApp</label>
                                 <input type="text" id="clienteTelefone" name="telefone" placeholder="(00) 00000-0000">
                             </div>
                         </div>
@@ -587,11 +594,11 @@
                         <h6><i class="fa-solid fa-location-dot"></i> Endereço</h6>
                         <div class="campos-grid">
                             <div class="campo">
-                                <label for="clienteCep">CEP *</label>
+                                <label for="clienteCep">CEP</label>
                                 <input type="text" id="clienteCep" name="cep" placeholder="00000-000">
                             </div>
                             <div class="campo">
-                                <label for="clienteEstado">Estado *</label>
+                                <label for="clienteEstado">Estado</label>
                                 <select id="clienteEstado" name="estado">
                                     <option value="">Selecione</option>
                                     <option value="AC">Acre</option>
@@ -624,11 +631,11 @@
                                 </select>
                             </div>
                             <div class="campo campo-grande">
-                                <label for="clienteEndereco">Endereço *</label>
+                                <label for="clienteEndereco">Endereço</label>
                                 <input type="text" id="clienteEndereco" name="endereco" placeholder="Rua, Avenida, etc.">
                             </div>
                             <div class="campo">
-                                <label for="clienteNumero">Número *</label>
+                                <label for="clienteNumero">Número</label>
                                 <input type="text" id="clienteNumero" name="numero" placeholder="Número">
                             </div>
                             <div class="campo">
@@ -636,11 +643,11 @@
                                 <input type="text" id="clienteComplemento" name="complemento" placeholder="Apartamento, sala, etc.">
                             </div>
                             <div class="campo">
-                                <label for="clienteCidade">Cidade *</label>
+                                <label for="clienteCidade">Cidade</label>
                                 <input type="text" id="clienteCidade" name="cidade" placeholder="Cidade">
                             </div>
                             <div class="campo">
-                                <label for="clienteBairro">Bairro *</label>
+                                <label for="clienteBairro">Bairro</label>
                                 <input type="text" id="clienteBairro" name="bairro" placeholder="Bairro">
                             </div>
                         </div>
@@ -650,7 +657,7 @@
                         <h6><i class="fa-solid fa-circle-info"></i> Informações</h6>
                         <div class="campos-grid">
                             <div class="campo">
-                                <label for="clienteStatus">Status *</label>
+                                <label for="clienteStatus">Status</label>
                                 <select id="clienteStatus" name="status">
                                     <option value="ativo">Ativo</option>
                                     <option value="inativo">Inativo</option>
@@ -660,7 +667,7 @@
 
                             <div class="campo">
                                 <div class="label-categoria">
-                                    <label for="clienteCategoria">Categoria do Cliente *</label>
+                                    <label for="clienteCategoria">Categoria do Cliente</label>
                                     <button type="button" 
                                             class="btn-info-ajuda" 
                                             data-bs-toggle="popover" 
@@ -891,7 +898,7 @@
                 <button type="button" id="btnGerarExcelRelatorio" class="btn btn-relatorio-excel">
                     <i class="fa-solid fa-file-excel"></i> Gerar Relatório em Excel
                 </button>
-                <button type="button" class="btn btn-relatorio-cancelar" data-bs-dismiss="modal">
+                <button type="button" class="btn-relatorio-cancelar" data-bs-dismiss="modal">
                     Cancelar
                 </button>
             </div>

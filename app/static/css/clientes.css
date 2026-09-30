@@ -32,7 +32,7 @@ TOPBAR
 
 .dashboard-topbar-clientes h1{
     margin:0;
-    color:#fff;
+    color:#cecfd2;
     font-size:20px;
     font-weight:600;
 }
@@ -103,7 +103,7 @@ TABS
 
 .btn-tab-cliente.ativo{
     background:#7c3aed;
-    color:#fff;
+    color:#cecfd2;
 }
 
 /*=====================================================
@@ -133,7 +133,7 @@ PESQUISA
     background:#1b2230;
     border:1px solid #313b4e;
     border-radius:10px;
-    color:#fff;
+    color:#cecfd2;
     outline:none;
     transition:.25s;
     box-sizing:border-box;
@@ -268,7 +268,7 @@ AÇÕES DA TABELA
     border-radius:8px;
     cursor:pointer;
     transition:.25s;
-    color:#fff;
+    color:#cecfd2;
 }
 
 .btn-tabela-editar{
@@ -315,7 +315,7 @@ PAGINAÇÃO
     background:#1b2230;
     border:1px solid rgba(255,255,255,.08);
     border-radius:8px;
-    color:#e5e7eb;
+    color:#cecfd2;
     cursor:pointer;
     transition:.25s;
 }
@@ -394,7 +394,7 @@ BOTÕES DE AÇÕES
     padding:11px 18px;
     border:none;
     border-radius:10px;
-    color:#fff;
+    color:#cecfd2;
     font-size:13px;
     font-weight:600;
     cursor:pointer;
@@ -481,7 +481,7 @@ BOTÃO DA TAB ATIVA
 
 .btn-tab-cliente.ativo{
     background:#7c3aed;
-    color:#fff;
+    color:#cecfd2;
     box-shadow:0 6px 18px rgba(124,58,237,.30);
 }
 
@@ -495,7 +495,7 @@ BOTÃO DA TAB ATIVA
 
 #modalEditarCadastroCliente .modal-content {
     background: #111827;
-    color: #fff;
+    color: #cecfd2;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     overflow: hidden;
@@ -503,7 +503,7 @@ BOTÃO DA TAB ATIVA
 
 
 #modalEditarCadastroCliente .modal-header {
-    background: #161e2b;
+    background: #111827;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding: 18px 22px;
 }
@@ -512,7 +512,7 @@ BOTÃO DA TAB ATIVA
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #fff;
+    color: #cecfd2;
     font-size: 18px;
     font-weight: 600;
 }
@@ -537,7 +537,7 @@ BOTÃO DA TAB ATIVA
 }
 
 #modalEditarCadastroCliente .campo label {
-    color: #e5e7eb;
+    color: #cecfd2;
     font-size: 12px;
     font-weight: 500;
 }
@@ -555,7 +555,7 @@ BOTÃO DA TAB ATIVA
     border: 1px solid #334155;
     border-radius: 8px;
 
-    color: #fff;
+    color: #cecfd2;
 
     outline: none;
 
@@ -582,11 +582,8 @@ BOTÃO DA TAB ATIVA
 
 
 #modalEditarCadastroCliente .modal-footer {
-    background: #161e2b;
-
-    border-top:
-        1px solid rgba(255, 255, 255, 0.08);
-
+    background: #111827;
+    border-top:1px solid rgba(255, 255, 255, 0.08);
     padding: 14px 22px;
 }
 
@@ -601,14 +598,14 @@ BOTÃO DA TAB ATIVA
 
 #modalCadastrarCliente .modal-content {
     background: #111827;
-    color: #fff;
+    color: #cecfd2;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     overflow: hidden;
 }
 
 #modalCadastrarCliente .modal-header {
-    background: #161e2b;
+    background: #111827;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding: 18px 22px;
 }
@@ -617,7 +614,7 @@ BOTÃO DA TAB ATIVA
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #fff;
+    color: #cecfd2;
     font-size: 18px;
     font-weight: 600;
 }
@@ -668,6 +665,7 @@ BOTÃO DA TAB ATIVA
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
+    align-items: end;
 }
 
 
@@ -679,10 +677,11 @@ BOTÃO DA TAB ATIVA
     display: flex;
     flex-direction: column;
     gap: 6px;
+    justify-content: flex-end;
 }
 
 #modalCadastrarCliente .campo label {
-    color: #e5e7eb;
+    color: #cecfd2;
     font-size: 12px;
     font-weight: 500;
 }
@@ -696,15 +695,39 @@ BOTÃO DA TAB ATIVA
     background: #1b2432;
     border: 1px solid #334155;
     border-radius: 8px;
-    color: #fff;
+    color: #cecfd2;
     outline: none;
     font-size: 13px;
     transition: 0.2s ease;
+    
 }
 
 #modalCadastrarCliente .campo input::placeholder {
     color: #64748b;
 }
+
+/* =====================================================
+   SELECTS - SETA PERSONALIZADA
+   CADASTRAR + EDITAR CLIENTE
+===================================================== */
+#modalEditarCadastroCliente select#editarClienteStatus,
+#modalCadastrarCliente select#clienteStatus,
+#modalEditarCadastroCliente select#editarClienteCategoria,
+#modalCadastrarCliente select#clienteCategoria,
+#modalEditarCadastroCliente select#editarClienteCategoriaCnh,
+#modalCadastrarCliente select#clienteCategoriaCnh,
+#modalEditarCadastroCliente select#editarClienteModoValorGasto {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+
 
 #modalCadastrarCliente .campo input:focus,
 #modalCadastrarCliente .campo select:focus {
@@ -753,31 +776,32 @@ BOTÃO DA TAB ATIVA
 /* 2. HOVER NA LINHA COMUM (Bem mais visível e claro) */
 .clientes-table tbody tr.linha-cliente:hover td {
     background-color: #3f4b5d    !important; /* Tom cinza-azulado bem iluminado */
-    color: #ffffff !important;
+    color: #cecfd2 !important;
 }
 
 /* 3. LINHA SELECIONADA */
 .clientes-table tbody tr.linha-cliente.linha-selecionada td {
     background-color: #3b4758  !important; 
-    color: #ffffff !important;
+    color: #cecfd2 !important;
 }
 
 /* 4. HOVER NA LINHA SELECIONADA */
 .clientes-table tbody tr.linha-cliente.linha-selecionada:hover td {
     background-color: #344052   !important; /* Azul ainda mais claro ao passar o mouse */
-    color: #ffffff !important;
+    color: #cecfd2 !important;
 }
 
-/* Container que alinha o texto da label e o botão lado a lado */
+/* Ajuste fino na altura da label com o botão de interrogação */
 .label-categoria {
-    display: inline-flex !important;
+    display: flex !important;
     align-items: center !important;
     gap: 6px !important;
-    margin-bottom: 6px !important;
+    min-height: 18px; /* Força a mesma altura dos rótulos normais */
 }
 
 .label-categoria label {
     margin-bottom: 0 !important;
+    line-height: 1 !important;
     cursor: pointer;
 }
 
@@ -794,9 +818,9 @@ BOTÃO DA TAB ATIVA
     max-height: 18px !important;
     border-radius: 50% !important;
     background-color: #0d6efd !important; /* Azul padrão */
-    color: #ffffff !important;
+    color: #cecfd2 !important;
     font-size: 11px !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
     font-family: inherit !important;
     border: none !important;
     cursor: pointer !important;
@@ -864,7 +888,7 @@ BOTÃO DA TAB ATIVA
     padding: 10px 20px !important;
     font-size: 0.92rem !important;
     font-weight: 500 !important;
-    color: #ffffff !important;
+    color: #cecfd2 !important;
     background-color: #dc2626 !important;
     border: 1px solid #dc2626 !important;
     border-radius: 8px !important;
@@ -896,7 +920,7 @@ BOTÃO DA TAB ATIVA
     font-weight: 500 !important;
     color: #374151 !important;
     background-color: #f3f4f6 !important;
-    border: 1px solid #e5e7eb !important;
+    border: 1px solid #cecfd2 !important;
     border-radius: 8px !important;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
@@ -904,7 +928,7 @@ BOTÃO DA TAB ATIVA
 
 .modal-footer-botoes-clientes-excluir .btn-secondary:hover {
     color: #111827 !important;
-    background-color: #e5e7eb !important;
+    background-color: #cecfd2 !important;
     border-color: #d1d5db !important;
     transform: translateY(-1px);
 }
@@ -913,34 +937,50 @@ BOTÃO DA TAB ATIVA
     transform: translateY(0);
 }
 .aviso-confirmacao{
-    color: #fff
+    color: #cecfd2
 }
 
 /* =====================================================
    ESTILO DO MODAL DE RELATÓRIO
 ===================================================== */
-.modal-relatorio-content {
-    background-color: #1e1e24;
-    color: #e5e5e5;
-    border: 1px solid #3a3a45;
-    border-radius: 8px;
-    max-height: 90vh;
+#modalRelatorioCliente .modal-title {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: #cecfd2;
+    font-size: 18px;
+    font-weight: 600;
+    background: #161e2b !important;
+}
+#modalRelatorioCliente .modal-title i {
+    color: #cecfd2;
+
+}
+.modal-relatorio-content {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55) !important;
+    background: #111827 !important;
 }
 .modal-header-relatorios{
-    background-color: #1f2937 !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #374151;
+    background: #111827 !important;
 }
 
 .modal-footer-botoes-relatorios{
-    border-top: 1px solid #3a3a45;
-    background-color: #1f2937;
+    border-top: 1px solid #374151;
+    background-color: #111827 !important;
     justify-content: flex-end;
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 16px 24px 24px;
-    border-top: none;
+    
 }
 
 
@@ -948,7 +988,7 @@ BOTÃO DA TAB ATIVA
     overflow-y: auto;
     max-height: calc(90vh - 140px);
     padding: 16px 20px;
-    background-color: #1f2937 !important;
+    background-color: #111827 !important;
 }
 
 /* Molduras / Fieldsets */
@@ -965,7 +1005,7 @@ BOTÃO DA TAB ATIVA
     padding: 0 8px;
     font-size: 13px;
     font-weight: 500;
-    color: #d1d1d6;
+    color: #cecfd2;
     margin-bottom: 0;
 }
 
@@ -986,15 +1026,15 @@ BOTÃO DA TAB ATIVA
 
 .campo-relatorio label {
     font-size: 13px;
-    color: #c5c5cb;
+    color: #cecfd2;
     margin-bottom: 0;
 }
 
 .campo-relatorio select,
 .campo-relatorio input {
-    background-color: #121216;
+    background-color: #1b2432;
     border: 1px solid #6b6b78;
-    color: #ffffff;
+    color: #cecfd2;
     border-radius: 4px;
     padding: 6px 10px;
     font-size: 13px;
@@ -1038,34 +1078,43 @@ BOTÃO DA TAB ATIVA
     cursor: pointer;
 }
 
+
+
 .btn-relatorio-pdf,
 .btn-relatorio-excel,
 .btn-relatorio-cancelar {
     border: 1px solid #4a4a56 !important;
-    color: #fff !important;
+    color: #cecfd2 !important;
     font-size: 13px;
     padding: 7px 16px;
     border-radius: 4px;
     transition: all 0.2s ease;
 }
+
+.btn-relatorio-cancelar{
+    background-color: #6c757d; /* Substitua pelo código da cor que preferir, ex: red, #e63946, #c0392b */
+    color: #cecfd2 !important;
+    font-weight: 600;
+    font-size: 1rem;
+}
 .btn-relatorio-pdf{
     background-color: #dc3545 !important; /* Substitua pelo código da cor que preferir, ex: red, #e63946, #c0392b */
     border-color: #dc3545 !important;
-    color: #ffffff !important;
+    color: #cecfd2 !important;
     font-weight: 500;
 }
 
 .btn-relatorio-excel{
     background-color: #107c41 !important; /* Verde oficial do Excel */
     border-color: #107c41 !important;
-    color: #ffffff !important;
+    color: #cecfd2 !important;
     font-weight: 500;
 }
 
 .btn-relatorio-pdf:hover {
     background-color: #bb2d3b !important; /* Cor ligeiramente mais escura no hover */
     border-color: #b02a37 !important;
-    color: #ffffff !important;
+    color: #cecfd2 !important;
 }
 
 /* Estado de Foco/Clique */
@@ -1076,7 +1125,7 @@ BOTÃO DA TAB ATIVA
 .btn-relatorio-excel:hover {
     background-color: #0c5c30 !important; /* Verde mais escuro no hover */
     border-color: #0a4f29 !important;
-    color: #ffffff !important;
+    color: #cecfd2 !important;
 }
 /* Efeito de foco/clique */
 .btn-relatorio-excel:focus {
@@ -1085,7 +1134,7 @@ BOTÃO DA TAB ATIVA
 
 .btn-relatorio-cancelar:hover {
     background-color: #495057 !important;
-    color: #fff !important;
+    color: #cecfd2 !important;
 }
 
 /* =====================================================
@@ -1194,7 +1243,7 @@ BOTÃO DA TAB ATIVA
     margin-bottom: 6px;
     font-size: 13px;
     font-weight: 500;
-    color: #e5e7eb;
+    color: #cecfd2;
     text-align: center;
 }
 
@@ -1244,7 +1293,7 @@ BOTÃO DA TAB ATIVA
 .btn-cancelar-sensivel {
     background: #374151;
     border: 1px solid #4b5563;
-    color: #e5e7eb;
+    color: #cecfd2;
 }
 
 .btn-cancelar-sensivel:hover {
@@ -1259,7 +1308,7 @@ BOTÃO DA TAB ATIVA
     gap: 8px;
     background: #0284c7;
     border: 1px solid #0284c7;
-    color: #ffffff;
+    color: #cecfd2;
 }
 
 .btn-confirmar-sensivel i {
@@ -1285,7 +1334,7 @@ BOTÃO DA TAB ATIVA
     padding: 0 !important;
     
     border-radius: 50% !important;
-    color: #ffffff !important;
+    color: #cecfd2 !important;
     font-size: 18px !important;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1294,7 +1343,7 @@ BOTÃO DA TAB ATIVA
 /* HOVER (Fica vermelho ao passar o mouse) */
 .btn-fechar-dados-sensiveis:hover {
     background-color: #dc2626 !important;
-    color: #ffffff !important;
+    color: #cecfd2 !important;
     transform: scale(1.1);
 }
 
@@ -1359,22 +1408,3 @@ select.status-select-bloqueado {
     border-color: #f97316 !important;
 }
 
-/* MODAL RELATÓRIO CLIENTES */
-#modalRelatorioCliente .modal-title{
-    color: #fff;
-    text-align: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: 600;
-}
-#modalRelatorioCliente .modal-title i {
-    color: #8b5cf6;
-}
-
-#modalRelatorioCliente .modal-header-relatorios{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 24px;
-    border-bottom: 1px solid #374151;
-}
