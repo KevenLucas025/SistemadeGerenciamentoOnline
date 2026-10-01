@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
     function normalizarValor(val) {
         if (val === null || val === undefined) return "";
+
         return String(val)
             .replace(/^R\$\s?/, "")
             .replace(/\s+/g, " ")
@@ -90,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         formulario.querySelectorAll("input, select, textarea").forEach(campo => {
             const chave = campo.name || campo.id;
+
             if (chave) {
                 clienteOriginal[chave] = normalizarValor(campo.value);
             }
@@ -126,15 +128,45 @@ document.addEventListener("DOMContentLoaded", () => {
             return normalizarValor(el?.value);
         };
 
-        const modoAtual = pegarValor("modo_valor_gasto") || pegarValor("editarClienteModoValorGasto");
-        const valorGastoAtual = pegarValor("valor_gasto") || pegarValor("editarClienteValorGasto");
-        const ultimaCompraAtual = pegarValor("ultima_compra") || pegarValor("editarClienteUltimaCompra");
-        const ultimaAtualizacaoAtual = pegarValor("ultima_atualizacao") || pegarValor("editarClienteUltimaAtualizacao");
+        const modoAtual =
+            pegarValor("modo_valor_gasto") ||
+            pegarValor("editarClienteModoValorGasto");
 
-        const modoOriginal = normalizarValor(clienteOriginal["modo_valor_gasto"] || clienteOriginal["editarClienteModoValorGasto"]);
-        const valorOriginal = normalizarValor(clienteOriginal["valor_gasto"] || clienteOriginal["editarClienteValorGasto"]);
-        const compraOriginal = normalizarValor(clienteOriginal["ultima_compra"] || clienteOriginal["editarClienteUltimaCompra"]);
-        const atualizacaoOriginal = normalizarValor(clienteOriginal["ultima_atualizacao"] || clienteOriginal["editarClienteUltimaAtualizacao"]);
+        const valorGastoAtual =
+            pegarValor("valor_gasto") ||
+            pegarValor("editarClienteValorGasto");
+
+        const ultimaCompraAtual =
+            pegarValor("ultima_compra") ||
+            pegarValor("editarClienteUltimaCompra");
+
+        const ultimaAtualizacaoAtual =
+            pegarValor("ultima_atualizacao") ||
+            pegarValor("editarClienteUltimaAtualizacao");
+
+        const modoOriginal =
+            normalizarValor(
+                clienteOriginal["modo_valor_gasto"] ||
+                clienteOriginal["editarClienteModoValorGasto"]
+            );
+
+        const valorOriginal =
+            normalizarValor(
+                clienteOriginal["valor_gasto"] ||
+                clienteOriginal["editarClienteValorGasto"]
+            );
+
+        const compraOriginal =
+            normalizarValor(
+                clienteOriginal["ultima_compra"] ||
+                clienteOriginal["editarClienteUltimaCompra"]
+            );
+
+        const atualizacaoOriginal =
+            normalizarValor(
+                clienteOriginal["ultima_atualizacao"] ||
+                clienteOriginal["editarClienteUltimaAtualizacao"]
+            );
 
         return (
             modoAtual !== modoOriginal ||
@@ -150,22 +182,34 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnAbrirCadastro) {
         btnAbrirCadastro.addEventListener("click", () => {
             const form = document.getElementById("formCadastrarCliente");
-            if (form) form.reset();
+
+            if (form) {
+                form.reset();
+            }
 
             const tipoAtual = tipoCliente ? tipoCliente.value : "juridico";
+
             if (tipoAtual === "juridico") {
-                if (tituloModal) tituloModal.textContent = "Cadastrar Cliente Jurídico";
+                if (tituloModal) {
+                    tituloModal.textContent = "Cadastrar Cliente Jurídico";
+                }
+
                 camposJuridicos.forEach(campo => {
                     campo.style.display = "";
                 });
             } else {
-                if (tituloModal) tituloModal.textContent = "Cadastrar Cliente Físico";
+                if (tituloModal) {
+                    tituloModal.textContent = "Cadastrar Cliente Físico";
+                }
+
                 camposJuridicos.forEach(campo => {
                     campo.style.display = "none";
                 });
             }
 
-            if (modalCadastro) modalCadastro.show();
+            if (modalCadastro) {
+                modalCadastro.show();
+            }
         });
     }
 
@@ -174,14 +218,26 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
     if (btnJuridico) {
         btnJuridico.addEventListener("click", () => {
-            if (tipoCliente) tipoCliente.value = "juridico";
+            if (tipoCliente) {
+                tipoCliente.value = "juridico";
+            }
+
             btnJuridico.classList.add("ativo");
-            if (btnFisico) btnFisico.classList.remove("ativo");
+
+            if (btnFisico) {
+                btnFisico.classList.remove("ativo");
+            }
 
             const paginaJuridicos = document.getElementById("juridicos");
             const paginaFisicos = document.getElementById("fisicos");
-            if (paginaJuridicos) paginaJuridicos.classList.add("ativa");
-            if (paginaFisicos) paginaFisicos.classList.remove("ativa");
+
+            if (paginaJuridicos) {
+                paginaJuridicos.classList.add("ativa");
+            }
+
+            if (paginaFisicos) {
+                paginaFisicos.classList.remove("ativa");
+            }
 
             camposJuridicos.forEach(campo => {
                 campo.style.display = "";
@@ -194,14 +250,26 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
     if (btnFisico) {
         btnFisico.addEventListener("click", () => {
-            if (tipoCliente) tipoCliente.value = "fisico";
+            if (tipoCliente) {
+                tipoCliente.value = "fisico";
+            }
+
             btnFisico.classList.add("ativo");
-            if (btnJuridico) btnJuridico.classList.remove("ativo");
+
+            if (btnJuridico) {
+                btnJuridico.classList.remove("ativo");
+            }
 
             const paginaJuridicos = document.getElementById("juridicos");
             const paginaFisicos = document.getElementById("fisicos");
-            if (paginaFisicos) paginaFisicos.classList.add("ativa");
-            if (paginaJuridicos) paginaJuridicos.classList.remove("ativa");
+
+            if (paginaFisicos) {
+                paginaFisicos.classList.add("ativa");
+            }
+
+            if (paginaJuridicos) {
+                paginaJuridicos.classList.remove("ativa");
+            }
 
             camposJuridicos.forEach(campo => {
                 campo.style.display = "none";
@@ -213,7 +281,9 @@ document.addEventListener("DOMContentLoaded", () => {
        1. SELEÇÃO DE LINHA NA TABELA
     ===================================================== */
     function inicializarSelecaoTabela() {
-        const linhas = document.querySelectorAll(".clientes-table tbody tr.linha-cliente");
+        const linhas = document.querySelectorAll(
+            ".clientes-table tbody tr.linha-cliente"
+        );
 
         linhas.forEach(linha => {
             linha.addEventListener("click", function (e) {
@@ -225,7 +295,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                linhas.forEach(l => l.classList.remove("linha-selecionada"));
+                linhas.forEach(l => {
+                    l.classList.remove("linha-selecionada");
+                });
+
                 this.classList.add("linha-selecionada");
                 clienteSelecionadoTr = this;
             });
@@ -240,7 +313,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("click", (evento) => {
         if (!clienteSelecionadoTr) return;
 
-        const clicouNaLinha = evento.target.closest(".clientes-table tbody tr.linha-cliente");
+        const clicouNaLinha = evento.target.closest(
+            ".clientes-table tbody tr.linha-cliente"
+        );
+
         const clicouNasAcoes = evento.target.closest(".clientes-acoes");
         const clicouNoModal = evento.target.closest(".modal");
 
@@ -263,7 +339,10 @@ document.addEventListener("DOMContentLoaded", () => {
             e.stopPropagation();
 
             if (!clienteSelecionadoTr) {
-                mostrarAlerta("Selecione um cliente na tabela para editar.", "erro");
+                mostrarAlerta(
+                    "Selecione um cliente na tabela para editar.",
+                    "erro"
+                );
                 return;
             }
 
@@ -279,57 +358,144 @@ document.addEventListener("DOMContentLoaded", () => {
         const inputTipo = document.getElementById("editarTipoCliente");
 
         if (inputId) inputId.value = ds.id || "";
-        if (tituloEdicao) tituloEdicao.textContent = `Editar Cliente: ${ds.nome || ""}`;
-        if (inputTipo) inputTipo.value = ds.tipo || "juridico";
 
-        if (document.getElementById("editarClienteNome")) document.getElementById("editarClienteNome").value = ds.nome || "";
-        if (document.getElementById("editarClienteRazaoSocial")) document.getElementById("editarClienteRazaoSocial").value = ds.razao || "";
-        if (document.getElementById("editarClienteCnpj")) document.getElementById("editarClienteCnpj").value = ds.cnpj || "";
-        if (document.getElementById("editarClienteRg")) document.getElementById("editarClienteRg").value = ds.rg || "";
-        if (document.getElementById("editarClienteCpf")) document.getElementById("editarClienteCpf").value = ds.cpf || "";
-        if (document.getElementById("editarClienteEmail")) document.getElementById("editarClienteEmail").value = ds.email || "";
-        if (document.getElementById("editarClienteTelefone")) document.getElementById("editarClienteTelefone").value = ds.telefone || "";
+        if (tituloEdicao) {
+            tituloEdicao.textContent = `Editar Cliente: ${ds.nome || ""}`;
+        }
 
-        if (document.getElementById("editarClienteCnh")) document.getElementById("editarClienteCnh").value = ds.cnh || "";
-        if (document.getElementById("editarClienteCategoriaCnh")) document.getElementById("editarClienteCategoriaCnh").value = ds.categoriaCnh || "";
-        if (document.getElementById("editarClienteEmissaoCnh")) document.getElementById("editarClienteEmissaoCnh").value = ds.emissaoCnh || "";
-        if (document.getElementById("editarClienteVencimentoCnh")) document.getElementById("editarClienteVencimentoCnh").value = ds.vencimentoCnh || "";
+        if (inputTipo) {
+            inputTipo.value = ds.tipo || "juridico";
+        }
 
-        if (document.getElementById("editarClienteCep")) document.getElementById("editarClienteCep").value = ds.cep || "";
-        if (document.getElementById("editarClienteEstado")) document.getElementById("editarClienteEstado").value = ds.estado || "";
-        if (document.getElementById("editarClienteEndereco")) document.getElementById("editarClienteEndereco").value = ds.endereco || "";
-        if (document.getElementById("editarClienteNumero")) document.getElementById("editarClienteNumero").value = ds.numero || "";
-        if (document.getElementById("editarClienteComplemento")) document.getElementById("editarClienteComplemento").value = ds.complemento || "";
-        if (document.getElementById("editarClienteCidade")) document.getElementById("editarClienteCidade").value = ds.cidade || "";
-        if (document.getElementById("editarClienteBairro")) document.getElementById("editarClienteBairro").value = ds.bairro || "";
+        if (document.getElementById("editarClienteNome")) {
+            document.getElementById("editarClienteNome").value = ds.nome || "";
+        }
 
-        if (document.getElementById("editarClienteStatus")) document.getElementById("editarClienteStatus").value = ds.status || "ativo";
-        if (document.getElementById("editarClienteCategoria")) document.getElementById("editarClienteCategoria").value = ds.categoria || "";
+        if (document.getElementById("editarClienteRazaoSocial")) {
+            document.getElementById("editarClienteRazaoSocial").value = ds.razao || "";
+        }
+
+        if (document.getElementById("editarClienteCnpj")) {
+            document.getElementById("editarClienteCnpj").value = ds.cnpj || "";
+        }
+
+        if (document.getElementById("editarClienteRg")) {
+            document.getElementById("editarClienteRg").value = ds.rg || "";
+        }
+
+        if (document.getElementById("editarClienteCpf")) {
+            document.getElementById("editarClienteCpf").value = ds.cpf || "";
+        }
+
+        if (document.getElementById("editarClienteEmail")) {
+            document.getElementById("editarClienteEmail").value = ds.email || "";
+        }
+
+        if (document.getElementById("editarClienteTelefone")) {
+            document.getElementById("editarClienteTelefone").value = ds.telefone || "";
+        }
+
+        if (document.getElementById("editarClienteCnh")) {
+            document.getElementById("editarClienteCnh").value = ds.cnh || "";
+        }
+
+        if (document.getElementById("editarClienteCategoriaCnh")) {
+            document.getElementById("editarClienteCategoriaCnh").value =
+                ds.categoriaCnh || "";
+        }
+
+        if (document.getElementById("editarClienteEmissaoCnh")) {
+            document.getElementById("editarClienteEmissaoCnh").value =
+                ds.emissaoCnh || "";
+        }
+
+        if (document.getElementById("editarClienteVencimentoCnh")) {
+            document.getElementById("editarClienteVencimentoCnh").value =
+                ds.vencimentoCnh || "";
+        }
+
+        if (document.getElementById("editarClienteCep")) {
+            document.getElementById("editarClienteCep").value = ds.cep || "";
+        }
+
+        if (document.getElementById("editarClienteEstado")) {
+            document.getElementById("editarClienteEstado").value = ds.estado || "";
+        }
+
+        if (document.getElementById("editarClienteEndereco")) {
+            document.getElementById("editarClienteEndereco").value = ds.endereco || "";
+        }
+
+        if (document.getElementById("editarClienteNumero")) {
+            document.getElementById("editarClienteNumero").value = ds.numero || "";
+        }
+
+        if (document.getElementById("editarClienteComplemento")) {
+            document.getElementById("editarClienteComplemento").value =
+                ds.complemento || "";
+        }
+
+        if (document.getElementById("editarClienteCidade")) {
+            document.getElementById("editarClienteCidade").value = ds.cidade || "";
+        }
+
+        if (document.getElementById("editarClienteBairro")) {
+            document.getElementById("editarClienteBairro").value = ds.bairro || "";
+        }
+
+        if (document.getElementById("editarClienteStatus")) {
+            document.getElementById("editarClienteStatus").value =
+                ds.status || "ativo";
+        }
+
+        if (document.getElementById("editarClienteCategoria")) {
+            document.getElementById("editarClienteCategoria").value =
+                ds.categoria || "";
+        }
 
         /* === CAMPOS ADICIONAIS DE EDIÇÃO E HISTÓRICO === */
         if (document.getElementById("editarClienteModoValorGasto")) {
-            document.getElementById("editarClienteModoValorGasto").value = ds.modoValorGasto || "Automático (somar produtos)";
+            document.getElementById("editarClienteModoValorGasto").value =
+                ds.modoValorGasto || "Automático (somar produtos)";
         }
 
         const inputValorGasto = document.getElementById("editarClienteValorGasto");
+
         if (inputValorGasto) {
-            inputValorGasto.value = typeof formatarMoeda === "function" ? formatarMoeda(ds.valorGasto || "0,00") : (ds.valorGasto || "0,00");
+            inputValorGasto.value =
+                typeof formatarMoeda === "function"
+                    ? formatarMoeda(ds.valorGasto || "0,00")
+                    : ds.valorGasto || "0,00";
         }
 
-        const inputUltimaAtualizacao = document.getElementById("editarClienteUltimaAtualizacao");
+        const inputUltimaAtualizacao =
+            document.getElementById("editarClienteUltimaAtualizacao");
+
         if (inputUltimaAtualizacao) {
-            inputUltimaAtualizacao.value = typeof formatarDataHoraBR === "function" ? formatarDataHoraBR(ds.ultimaAtualizacao) : (ds.ultimaAtualizacao || "-");
+            inputUltimaAtualizacao.value =
+                typeof formatarDataHoraBR === "function"
+                    ? formatarDataHoraBR(ds.ultimaAtualizacao)
+                    : ds.ultimaAtualizacao || "-";
         }
 
-        const inputUltimaCompra = document.getElementById("editarClienteUltimaCompra");
+        const inputUltimaCompra =
+            document.getElementById("editarClienteUltimaCompra");
+
         if (inputUltimaCompra) {
-            inputUltimaCompra.value = typeof formatarDataHoraBR === "function" ? formatarDataHoraBR(ds.ultimaCompra) : (ds.ultimaCompra || "-");
+            inputUltimaCompra.value =
+                typeof formatarDataHoraBR === "function"
+                    ? formatarDataHoraBR(ds.ultimaCompra)
+                    : ds.ultimaCompra || "-";
         }
 
         if (ds.tipo === "juridico") {
-            camposJuridicosEditar.forEach(c => c.style.display = "");
+            camposJuridicosEditar.forEach(c => {
+                c.style.display = "";
+            });
         } else {
-            camposJuridicosEditar.forEach(c => c.style.display = "none");
+            camposJuridicosEditar.forEach(c => {
+                c.style.display = "none";
+            });
         }
 
         if (typeof aplicarMascarasFormulario === "function") {
@@ -338,7 +504,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         salvarEstadoOriginal();
 
-        if (modalEdicao) modalEdicao.show();
+        if (modalEdicao) {
+            modalEdicao.show();
+        }
     }
 
     /* =====================================================
@@ -348,18 +516,25 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!input) return;
 
         let nomeCampo = "Este campo";
-        const containerCampo = input.closest(".campo") || input.parentElement;
+        const containerCampo =
+            input.closest(".campo") || input.parentElement;
+
         if (containerCampo) {
             const label = containerCampo.querySelector("label");
+
             if (label) {
-                nomeCampo = `O campo ${label.innerText.replace("*", "").trim()}`;
+                nomeCampo =
+                    `O campo ${label.innerText.replace("*", "").trim()}`;
             }
         }
 
         input.classList.add("input-erro");
         input.focus();
 
-        mostrarAlerta(`${nomeCampo} precisa ser preenchido.`, "erro");
+        mostrarAlerta(
+            `${nomeCampo} precisa ser preenchido.`,
+            "erro"
+        );
 
         const removerErro = () => {
             input.classList.remove("input-erro");
@@ -374,17 +549,22 @@ document.addEventListener("DOMContentLoaded", () => {
        VALIDAÇÃO DOS CAMPOS OBRIGATÓRIOS
     ===================================================== */
     function validarFormularioCliente(formulario) {
-        const inputs = formulario.querySelectorAll("input, select, textarea");
+        const inputs = formulario.querySelectorAll(
+            "input, select, textarea"
+        );
 
         const camposCnh = Array.from(inputs).filter(i => {
             const nomeOuId = (i.name || i.id || "").toLowerCase();
             return nomeOuId.includes("cnh");
         });
 
-        const cnhFoiPreenchida = camposCnh.some(el => el.value.trim() !== "");
+        const cnhFoiPreenchida = camposCnh.some(
+            el => el.value.trim() !== ""
+        );
 
         for (const input of inputs) {
-            const nomeOuId = (input.name || input.id || "").toLowerCase();
+            const nomeOuId =
+                (input.name || input.id || "").toLowerCase();
 
             if (nomeOuId.includes("complemento")) {
                 continue;
@@ -394,7 +574,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 continue;
             }
 
-            if (input.offsetParent === null && input.type !== "hidden") {
+            if (
+                input.offsetParent === null &&
+                input.type !== "hidden"
+            ) {
                 continue;
             }
 
@@ -408,13 +591,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function inserirClienteNaTabela(c) {
-        const tabelaContainer = c.tipo === "juridico"
-            ? document.querySelector("#juridicos tbody")
-            : document.querySelector("#fisicos tbody");
+        const tabelaContainer =
+            c.tipo === "juridico"
+                ? document.querySelector("#juridicos tbody")
+                : document.querySelector("#fisicos tbody");
 
         if (!tabelaContainer) return;
 
-        const linhaVazia = tabelaContainer.querySelector(".sem-registros-clientes");
+        const linhaVazia =
+            tabelaContainer.querySelector(".sem-registros-clientes");
+
         if (linhaVazia) {
             linhaVazia.closest("tr").remove();
         }
@@ -422,7 +608,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const tr = document.createElement("tr");
         tr.classList.add("linha-cliente");
 
-        const valorFormatado = typeof formatarMoeda === "function" ? formatarMoeda(c.valor_gasto) : `R$ ${c.valor_gasto}`;
+        const valorFormatado =
+            typeof formatarMoeda === "function"
+                ? formatarMoeda(c.valor_gasto)
+                : `R$ ${c.valor_gasto}`;
 
         tr.dataset.id = c.id;
         tr.dataset.tipo = c.tipo;
@@ -434,19 +623,25 @@ document.addEventListener("DOMContentLoaded", () => {
         tr.dataset.email = c.email === "-" ? "" : c.email;
         tr.dataset.telefone = c.telefone === "-" ? "" : c.telefone;
         tr.dataset.cnh = c.cnh === "-" ? "" : c.cnh;
-        tr.dataset.categoriaCnh = c.categoria_cnh === "-" ? "" : c.categoria_cnh;
+        tr.dataset.categoriaCnh =
+            c.categoria_cnh === "-" ? "" : c.categoria_cnh;
         tr.dataset.emissaoCnh = c.emissao_cnh_raw || "";
         tr.dataset.vencimentoCnh = c.vencimento_cnh_raw || "";
         tr.dataset.cep = c.cep === "-" ? "" : c.cep;
         tr.dataset.estado = c.estado === "-" ? "" : c.estado;
         tr.dataset.endereco = c.endereco === "-" ? "" : c.endereco;
         tr.dataset.numero = c.numero === "-" ? "" : c.numero;
-        tr.dataset.complemento = c.complemento === "-" ? "" : c.complemento;
+        tr.dataset.complemento =
+            c.complemento === "-" ? "" : c.complemento;
         tr.dataset.cidade = c.cidade === "-" ? "" : c.cidade;
         tr.dataset.bairro = c.bairro === "-" ? "" : c.bairro;
         tr.dataset.status = c.status;
-        tr.dataset.categoria = c.categoria === "-" ? "" : c.categoria;
-        tr.dataset.modoValorGasto = c.modo_valor_gasto === "-" ? "" : c.modo_valor_gasto;
+        tr.dataset.categoria =
+            c.categoria === "-" ? "" : c.categoria;
+        tr.dataset.modoValorGasto =
+            c.modo_valor_gasto === "-"
+                ? ""
+                : c.modo_valor_gasto;
         tr.dataset.valorGasto = c.valor_gasto;
         tr.dataset.ultimaAtualizacao = c.ultima_atualizacao;
         tr.dataset.ultimaCompra = c.ultima_compra;
@@ -515,9 +710,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            document.querySelectorAll(".clientes-table tbody tr.linha-cliente").forEach(l => {
-                l.classList.remove("linha-selecionada");
-            });
+            document
+                .querySelectorAll(
+                    ".clientes-table tbody tr.linha-cliente"
+                )
+                .forEach(l => {
+                    l.classList.remove("linha-selecionada");
+                });
 
             this.classList.add("linha-selecionada");
             clienteSelecionadoTr = this;
@@ -531,7 +730,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
     if (btnCadastrarCliente) {
         btnCadastrarCliente.addEventListener("click", async () => {
-            const formulario = document.getElementById("formCadastrarCliente");
+            const formulario =
+                document.getElementById("formCadastrarCliente");
 
             if (!validarFormularioCliente(formulario)) {
                 return;
@@ -540,35 +740,54 @@ document.addEventListener("DOMContentLoaded", () => {
             const dados = new FormData(formulario);
 
             try {
-                const resposta = await fetch("/clientes/cadastrar/", {
-                    method: "POST",
-                    headers: {
-                        "X-CSRFToken": obterCSRFToken()
-                    },
-                    body: dados
-                });
+                const resposta = await fetch(
+                    "/clientes/cadastrar/",
+                    {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": obterCSRFToken()
+                        },
+                        body: dados
+                    }
+                );
 
                 const resultado = await resposta.json();
 
                 if (resultado.sucesso) {
-                    mostrarAlerta(resultado.mensagem || "Cliente cadastrado com sucesso!", "sucesso");
+                    mostrarAlerta(
+                        resultado.mensagem ||
+                        "Cliente cadastrado com sucesso!",
+                        "sucesso"
+                    );
 
                     if (resultado.cliente) {
-                        inserirClienteNaTabela(resultado.cliente);
+                        inserirClienteNaTabela(
+                            resultado.cliente
+                        );
                     }
 
                     formulario.reset();
-                    if (modalCadastro) modalCadastro.hide();
 
+                    if (modalCadastro) {
+                        modalCadastro.hide();
+                    }
                 } else {
                     mostrarAlerta(
-                        resultado.mensagem || "Não foi possível cadastrar o cliente.",
+                        resultado.mensagem ||
+                        "Não foi possível cadastrar o cliente.",
                         "erro"
                     );
                 }
             } catch (erro) {
-                console.error("Erro ao cadastrar cliente:", erro);
-                mostrarAlerta("Ocorreu um erro ao cadastrar o cliente.", "erro");
+                console.error(
+                    "Erro ao cadastrar cliente:",
+                    erro
+                );
+
+                mostrarAlerta(
+                    "Ocorreu um erro ao cadastrar o cliente.",
+                    "erro"
+                );
             }
         });
     }
@@ -577,67 +796,135 @@ document.addEventListener("DOMContentLoaded", () => {
        REQUISIÇÃO UNIFICADA DE ATUALIZAÇÃO
     ===================================================== */
     async function executarAtualizacaoCliente(senhaSensivel = "") {
-        const formulario = document.getElementById("formEditarCliente");
-        const clienteIdInput = document.getElementById("editarClienteId");
-        const clienteId = clienteIdInput ? clienteIdInput.value : null;
+        const formulario =
+            document.getElementById("formEditarCliente");
+
+        const clienteIdInput =
+            document.getElementById("editarClienteId");
+
+        const clienteId =
+            clienteIdInput
+                ? clienteIdInput.value
+                : null;
 
         if (!clienteId) {
-            mostrarAlerta("Identificador do cliente não encontrado.", "erro");
+            mostrarAlerta(
+                "Identificador do cliente não encontrado.",
+                "erro"
+            );
             return;
         }
 
         const dados = new FormData(formulario);
+
         if (senhaSensivel) {
-            dados.append("senha_confirmacao", senhaSensivel);
+            dados.append(
+                "senha_confirmacao",
+                senhaSensivel
+            );
         }
 
         try {
-            const resposta = await fetch(`/clientes/editar/${clienteId}/`, {
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": obterCSRFToken()
-                },
-                body: dados
-            });
+            const resposta = await fetch(
+                `/clientes/editar/${clienteId}/`,
+                {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": obterCSRFToken()
+                    },
+                    body: dados
+                }
+            );
 
             const resultado = await resposta.json();
 
             if (resultado.sucesso) {
-                mostrarAlerta(resultado.mensagem || "Cliente atualizado com sucesso!", "sucesso");
+                mostrarAlerta(
+                    resultado.mensagem ||
+                    "Cliente atualizado com sucesso!",
+                    "sucesso"
+                );
 
-                if (modalSenhaSensivel) modalSenhaSensivel.hide();
-                if (modalEdicao) modalEdicao.hide();
+                if (modalSenhaSensivel) {
+                    modalSenhaSensivel.hide();
+                }
 
-                // Atualiza em tempo real a linha da tabela
-                if (clienteSelecionadoTr && resultado.cliente) {
+                if (modalEdicao) {
+                    modalEdicao.hide();
+                }
+
+                if (
+                    clienteSelecionadoTr &&
+                    resultado.cliente
+                ) {
                     const c = resultado.cliente;
                     const ds = clienteSelecionadoTr.dataset;
-                    const valorFormatado = typeof formatarMoeda === "function" ? formatarMoeda(c.valor_gasto) : `R$ ${c.valor_gasto}`;
+
+                    const valorFormatado =
+                        typeof formatarMoeda === "function"
+                            ? formatarMoeda(c.valor_gasto)
+                            : `R$ ${c.valor_gasto}`;
 
                     ds.nome = c.nome;
-                    ds.razao = c.razao === "-" ? "" : c.razao;
-                    ds.cnpj = c.cnpj === "-" ? "" : c.cnpj;
-                    ds.rg = c.rg === "-" ? "" : c.rg;
-                    ds.cpf = c.cpf === "-" ? "" : c.cpf;
-                    ds.email = c.email === "-" ? "" : c.email;
-                    ds.telefone = c.telefone === "-" ? "" : c.telefone;
-                    ds.cnh = c.cnh === "-" ? "" : c.cnh;
-                    ds.categoriaCnh = c.categoria_cnh === "-" ? "" : c.categoria_cnh;
-                    ds.emissaoCnh = c.emissao_cnh_raw || "";
-                    ds.vencimentoCnh = c.vencimento_cnh_raw || "";
-                    ds.cep = c.cep === "-" ? "" : c.cep;
-                    ds.estado = c.estado === "-" ? "" : c.estado;
-                    ds.endereco = c.endereco === "-" ? "" : c.endereco;
-                    ds.numero = c.numero === "-" ? "" : c.numero;
-                    ds.complemento = c.complemento === "-" ? "" : c.complemento;
-                    ds.cidade = c.cidade === "-" ? "" : c.cidade;
-                    ds.bairro = c.bairro === "-" ? "" : c.bairro;
+                    ds.razao =
+                        c.razao === "-" ? "" : c.razao;
+                    ds.cnpj =
+                        c.cnpj === "-" ? "" : c.cnpj;
+                    ds.rg =
+                        c.rg === "-" ? "" : c.rg;
+                    ds.cpf =
+                        c.cpf === "-" ? "" : c.cpf;
+                    ds.email =
+                        c.email === "-" ? "" : c.email;
+                    ds.telefone =
+                        c.telefone === "-"
+                            ? ""
+                            : c.telefone;
+                    ds.cnh =
+                        c.cnh === "-" ? "" : c.cnh;
+                    ds.categoriaCnh =
+                        c.categoria_cnh === "-"
+                            ? ""
+                            : c.categoria_cnh;
+                    ds.emissaoCnh =
+                        c.emissao_cnh_raw || "";
+                    ds.vencimentoCnh =
+                        c.vencimento_cnh_raw || "";
+                    ds.cep =
+                        c.cep === "-" ? "" : c.cep;
+                    ds.estado =
+                        c.estado === "-" ? "" : c.estado;
+                    ds.endereco =
+                        c.endereco === "-"
+                            ? ""
+                            : c.endereco;
+                    ds.numero =
+                        c.numero === "-" ? "" : c.numero;
+                    ds.complemento =
+                        c.complemento === "-"
+                            ? ""
+                            : c.complemento;
+                    ds.cidade =
+                        c.cidade === "-"
+                            ? ""
+                            : c.cidade;
+                    ds.bairro =
+                        c.bairro === "-"
+                            ? ""
+                            : c.bairro;
                     ds.status = c.status;
-                    ds.categoria = c.categoria === "-" ? "" : c.categoria;
-                    ds.ultimaAtualizacao = c.ultima_atualizacao;
-                    ds.modoValorGasto = c.modo_valor_gasto;
-                    ds.valorGasto = c.valor_gasto;
-                    ds.ultimaCompra = c.ultima_compra;
+                    ds.categoria =
+                        c.categoria === "-"
+                            ? ""
+                            : c.categoria;
+                    ds.ultimaAtualizacao =
+                        c.ultima_atualizacao;
+                    ds.modoValorGasto =
+                        c.modo_valor_gasto;
+                    ds.valorGasto =
+                        c.valor_gasto;
+                    ds.ultimaCompra =
+                        c.ultima_compra;
 
                     if (c.tipo === "juridico") {
                         clienteSelecionadoTr.innerHTML = `
@@ -663,7 +950,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             <td>${c.status}</td>
                             <td>${c.categoria}</td>
                             <td>${c.ultima_atualizacao}</td>
-                            <td class="col-valor-gasto">${valorFormatado}</td>
+                            <td class="col-valor-gasto">
+                                ${valorFormatado}
+                            </td>
                             <td>${c.modo_valor_gasto}</td>
                             <td>${c.ultima_compra}</td>
                         `;
@@ -688,18 +977,31 @@ document.addEventListener("DOMContentLoaded", () => {
                             <td>${c.status}</td>
                             <td>${c.categoria}</td>
                             <td>${c.ultima_atualizacao}</td>
-                            <td class="col-valor-gasto">${valorFormatado}</td>
+                            <td class="col-valor-gasto">
+                                ${valorFormatado}
+                            </td>
                             <td>${c.modo_valor_gasto}</td>
                             <td>${c.ultima_compra}</td>
                         `;
                     }
                 }
             } else {
-                mostrarAlerta(resultado.mensagem || "Não foi possível atualizar o cliente.", "erro");
+                mostrarAlerta(
+                    resultado.mensagem ||
+                    "Não foi possível atualizar o cliente.",
+                    "erro"
+                );
             }
         } catch (erro) {
-            console.error("Erro ao atualizar cliente:", erro);
-            mostrarAlerta("Ocorreu um erro ao atualizar o cliente.", "erro");
+            console.error(
+                "Erro ao atualizar cliente:",
+                erro
+            );
+
+            mostrarAlerta(
+                "Ocorreu um erro ao atualizar o cliente.",
+                "erro"
+            );
         }
     }
 
@@ -708,17 +1010,30 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
     if (btnAtualizarCliente) {
         btnAtualizarCliente.addEventListener("click", async () => {
-            const formulario = document.getElementById("formEditarCliente");
-            const clienteIdInput = document.getElementById("editarClienteId");
-            const clienteId = clienteIdInput ? clienteIdInput.value : null;
+            const formulario =
+                document.getElementById("formEditarCliente");
+
+            const clienteIdInput =
+                document.getElementById("editarClienteId");
+
+            const clienteId =
+                clienteIdInput
+                    ? clienteIdInput.value
+                    : null;
 
             if (!clienteId) {
-                mostrarAlerta("Identificador do cliente não encontrado.", "erro");
+                mostrarAlerta(
+                    "Identificador do cliente não encontrado.",
+                    "erro"
+                );
                 return;
             }
 
             if (!houveAlteracao()) {
-                mostrarAlerta("Nenhuma informação foi alterada para atualizar.", "erro");
+                mostrarAlerta(
+                    "Nenhuma informação foi alterada para atualizar.",
+                    "erro"
+                );
                 return;
             }
 
@@ -726,16 +1041,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Se alterou dados sensíveis, pede confirmação de senha
             if (alterouDadosSensiveis()) {
-                if (inputSenhaConfirmacaoSensivel) inputSenhaConfirmacaoSensivel.value = "";
+                if (inputSenhaConfirmacaoSensivel) {
+                    inputSenhaConfirmacaoSensivel.value = "";
+                }
+
                 if (modalSenhaSensivel) {
                     modalSenhaSensivel.show();
                 }
+
                 return;
             }
 
-            // Se não alterou dados sensíveis, atualiza diretamente
             executarAtualizacaoCliente();
         });
     }
@@ -744,17 +1061,30 @@ document.addEventListener("DOMContentLoaded", () => {
        CONFIRMAR SENHA PARA DADOS SENSÍVEIS
     ===================================================== */
     if (btnConfirmarAlteracaoSensivel) {
-        btnConfirmarAlteracaoSensivel.addEventListener("click", () => {
-            const senha = inputSenhaConfirmacaoSensivel ? inputSenhaConfirmacaoSensivel.value.trim() : "";
+        btnConfirmarAlteracaoSensivel.addEventListener(
+            "click",
+            () => {
+                const senha =
+                    inputSenhaConfirmacaoSensivel
+                        ? inputSenhaConfirmacaoSensivel.value.trim()
+                        : "";
 
-            if (!senha) {
-                mostrarAlerta("Por favor, informe a senha para continuar.", "erro");
-                if (inputSenhaConfirmacaoSensivel) inputSenhaConfirmacaoSensivel.focus();
-                return;
+                if (!senha) {
+                    mostrarAlerta(
+                        "Por favor, informe a senha para continuar.",
+                        "erro"
+                    );
+
+                    if (inputSenhaConfirmacaoSensivel) {
+                        inputSenhaConfirmacaoSensivel.focus();
+                    }
+
+                    return;
+                }
+
+                executarAtualizacaoCliente(senha);
             }
-
-            executarAtualizacaoCliente(senha);
-        });
+        );
     }
 
     /* =====================================================
@@ -765,6 +1095,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         for (const cookie of cookies) {
             const [nome, valor] = cookie.trim().split("=");
+
             if (nome === "csrftoken") {
                 return decodeURIComponent(valor);
             }
@@ -783,13 +1114,22 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =====================================================
        ELEMENTOS DO MODAL: EXCLUIR CLIENTE
     ===================================================== */
-    const btnExcluirCliente = document.querySelector(".btn-cliente.excluir");
-    const modalExcluirElement = document.getElementById("modalExcluirCliente");
-    const nomeClienteParaExcluir = document.getElementById("nomeClienteParaExcluir");
-    const btnConfirmarExcluirCliente = document.getElementById("btnConfirmarExcluirCliente");
+    const btnExcluirCliente =
+        document.querySelector(".btn-cliente.excluir");
+
+    const modalExcluirElement =
+        document.getElementById("modalExcluirCliente");
+
+    const nomeClienteParaExcluir =
+        document.getElementById("nomeClienteParaExcluir");
+
+    const btnConfirmarExcluirCliente =
+        document.getElementById("btnConfirmarExcluirCliente");
 
     const modalExclusao = modalExcluirElement
-        ? bootstrap.Modal.getOrCreateInstance(modalExcluirElement)
+        ? bootstrap.Modal.getOrCreateInstance(
+            modalExcluirElement
+        )
         : null;
 
     let clienteParaExcluirId = null;
@@ -798,115 +1138,491 @@ document.addEventListener("DOMContentLoaded", () => {
        ABRIR MODAL DE CONFIRMAÇÃO DE EXCLUSÃO
     ===================================================== */
     if (btnExcluirCliente) {
-        btnExcluirCliente.addEventListener("click", (e) => {
-            e.stopPropagation();
+        btnExcluirCliente.addEventListener(
+            "click",
+            (e) => {
+                e.stopPropagation();
 
-            if (!clienteSelecionadoTr) {
-                mostrarAlerta("Selecione um cliente na tabela para excluir.", "erro");
-                return;
+                if (!clienteSelecionadoTr) {
+                    mostrarAlerta(
+                        "Selecione um cliente na tabela para excluir.",
+                        "erro"
+                    );
+                    return;
+                }
+
+                const ds =
+                    clienteSelecionadoTr.dataset;
+
+                clienteParaExcluirId = ds.id;
+
+                if (nomeClienteParaExcluir) {
+                    nomeClienteParaExcluir.textContent =
+                        ds.nome ||
+                        "Cliente selecionado";
+                }
+
+                if (modalExclusao) {
+                    modalExclusao.show();
+                }
             }
-
-            const ds = clienteSelecionadoTr.dataset;
-            clienteParaExcluirId = ds.id;
-
-            if (nomeClienteParaExcluir) {
-                nomeClienteParaExcluir.textContent = ds.nome || "Cliente selecionado";
-            }
-
-            if (modalExclusao) {
-                modalExclusao.show();
-            }
-        });
+        );
     }
 
     /* =====================================================
        CONFIRMAR EXCLUSÃO NO SERVIDOR
     ===================================================== */
     if (btnConfirmarExcluirCliente) {
-        btnConfirmarExcluirCliente.addEventListener("click", async () => {
-            if (!clienteParaExcluirId) {
-                mostrarAlerta("Nenhum cliente selecionado para exclusão.", "erro");
-                return;
-            }
-
-            try {
-                const resposta = await fetch(`/clientes/excluir/${clienteParaExcluirId}/`, {
-                    method: "POST",
-                    headers: {
-                        "X-CSRFToken": obterCSRFToken()
-                    }
-                });
-
-                const resultado = await resposta.json();
-
-                if (resultado.sucesso) {
-                    mostrarAlerta(resultado.mensagem || "Cliente excluído com sucesso!", "sucesso");
-                    if (modalExclusao) modalExclusao.hide();
-
-                    if (clienteSelecionadoTr) {
-                        clienteSelecionadoTr.remove();
-                        clienteSelecionadoTr = null;
-                    }
-                    clienteParaExcluirId = null;
-
-                } else {
-                    mostrarAlerta(resultado.mensagem || "Não foi possível excluir o cliente.", "erro");
+        btnConfirmarExcluirCliente.addEventListener(
+            "click",
+            async () => {
+                if (!clienteParaExcluirId) {
+                    mostrarAlerta(
+                        "Nenhum cliente selecionado para exclusão.",
+                        "erro"
+                    );
+                    return;
                 }
-            } catch (erro) {
-                console.error("Erro ao excluir cliente:", erro);
-                mostrarAlerta("Ocorreu um erro ao tentar excluir o cliente.", "erro");
+
+                try {
+                    const resposta = await fetch(
+                        `/clientes/excluir/${clienteParaExcluirId}/`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "X-CSRFToken":
+                                    obterCSRFToken()
+                            }
+                        }
+                    );
+
+                    const resultado =
+                        await resposta.json();
+
+                    if (resultado.sucesso) {
+                        mostrarAlerta(
+                            resultado.mensagem ||
+                            "Cliente excluído com sucesso!",
+                            "sucesso"
+                        );
+
+                        if (modalExclusao) {
+                            modalExclusao.hide();
+                        }
+
+                        if (clienteSelecionadoTr) {
+                            clienteSelecionadoTr.remove();
+                            clienteSelecionadoTr = null;
+                        }
+
+                        clienteParaExcluirId = null;
+                    } else {
+                        mostrarAlerta(
+                            resultado.mensagem ||
+                            "Não foi possível excluir o cliente.",
+                            "erro"
+                        );
+                    }
+                } catch (erro) {
+                    console.error(
+                        "Erro ao excluir cliente:",
+                        erro
+                    );
+
+                    mostrarAlerta(
+                        "Ocorreu um erro ao tentar excluir o cliente.",
+                        "erro"
+                    );
+                }
             }
-        });
+        );
     }
 
-    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-    popoverTriggerList.forEach(popoverTriggerEl => {
-        new bootstrap.Popover(popoverTriggerEl, {
-            container: 'body'
-        });
-    });
+    /* =====================================================
+       POPOVERS
+    ===================================================== */
+    const popoverTriggerList =
+        document.querySelectorAll(
+            '[data-bs-toggle="popover"]'
+        );
+
+    popoverTriggerList.forEach(
+        popoverTriggerEl => {
+            new bootstrap.Popover(
+                popoverTriggerEl,
+                {
+                    container: "body"
+                }
+            );
+        }
+    );
 
     /* =====================================================
        MODAL DE RELATÓRIO
     ===================================================== */
-    if (btnAbrirRelatorio) {
-        btnAbrirRelatorio.addEventListener("click", () => {
-            const ehJuridico = btnJuridico ? btnJuridico.classList.contains("ativo") : true;
+    function atualizarEstadoSelecionarTodos() {
+        if (!checkSelecionarTodos || !containerCheckboxes) {
+            return;
+        }
 
-            if (tituloModalRelatorio) {
-                tituloModalRelatorio.textContent = ehJuridico
-                    ? "Relatório de Clientes Jurídicos"
-                    : "Relatório de Clientes Físicos";
-            }
+        const checkboxes =
+            containerCheckboxes.querySelectorAll(
+                'input[name="colunas"]'
+            );
 
-            checksColunasJuridicas.forEach(col => {
-                col.style.display = ehJuridico ? "" : "none";
-            });
+        if (checkboxes.length === 0) {
+            checkSelecionarTodos.checked = false;
+            checkSelecionarTodos.indeterminate = false;
+            return;
+        }
 
-            if (modalRelatorio) {
-                modalRelatorio.show();
-            }
-        });
+        const total =
+            checkboxes.length;
 
-        if (checkSelecionarTodos && containerCheckboxes) {
-            checkSelecionarTodos.addEventListener("change", function () {
-                const checkboxes = containerCheckboxes.querySelectorAll('input[name="colunas"]');
-                checkboxes.forEach(cb => {
-                    cb.checked = checkSelecionarTodos.checked;
-                });
-            });
+        const checados =
+            containerCheckboxes.querySelectorAll(
+                'input[name="colunas"]:checked'
+            ).length;
 
-            containerCheckboxes.addEventListener("change", function (e) {
-                if (e.target.name === "colunas") {
-                    const checkboxes = containerCheckboxes.querySelectorAll('input[name="colunas"]');
-                    const todosMarcados = Array.from(checkboxes).every(cb => cb.checked);
-                    checkSelecionarTodos.checked = todosMarcados;
-                }
-            });
+        if (checados === 0) {
+            checkSelecionarTodos.checked = false;
+            checkSelecionarTodos.indeterminate = false;
+        } else if (checados === total) {
+            checkSelecionarTodos.checked = true;
+            checkSelecionarTodos.indeterminate = false;
+        } else {
+            checkSelecionarTodos.checked = false;
+            checkSelecionarTodos.indeterminate = true;
         }
     }
 
-    
-    
+    function atualizarCheckboxesColunas() {
+        if (!checkSelecionarTodos || !containerCheckboxes) {
+            return;
+        }
 
+        const checkboxes =
+            containerCheckboxes.querySelectorAll(
+                'input[name="colunas"]'
+            );
+
+        checkboxes.forEach(checkbox => {
+            checkbox.checked =
+                checkSelecionarTodos.checked;
+        });
+
+        checkSelecionarTodos.indeterminate = false;
+    }
+
+    if (btnAbrirRelatorio) {
+        btnAbrirRelatorio.addEventListener(
+            "click",
+            () => {
+                const ehJuridico =
+                    btnJuridico
+                        ? btnJuridico.classList.contains("ativo")
+                        : true;
+
+                if (tituloModalRelatorio) {
+                    tituloModalRelatorio.textContent =
+                        ehJuridico
+                            ? "Relatório de Clientes Jurídicos"
+                            : "Relatório de Clientes Físicos";
+                }
+
+                checksColunasJuridicas.forEach(col => {
+                    col.style.display =
+                        ehJuridico ? "" : "none";
+                });
+
+                atualizarEstadoSelecionarTodos();
+
+                if (modalRelatorio) {
+                    modalRelatorio.show();
+                }
+            }
+        );
+    }
+
+    /* =====================================================
+       CHECKBOX — SELECIONAR TODOS
+    ===================================================== */
+    if (checkSelecionarTodos && containerCheckboxes) {
+        checkSelecionarTodos.addEventListener(
+            "change",
+            () => {
+                atualizarCheckboxesColunas();
+            }
+        );
+
+        containerCheckboxes.addEventListener(
+            "change",
+            (e) => {
+                if (
+                    e.target.matches(
+                        'input[name="colunas"]'
+                    )
+                ) {
+                    atualizarEstadoSelecionarTodos();
+                }
+            }
+        );
+    }
+
+    /* =====================================================
+       BOTÃO GERAR EXCEL
+    ===================================================== */
+    const btnGerarExcel =
+        document.getElementById(
+            "btnGerarExcelRelatorio"
+        );
+
+    if (btnGerarExcel) {
+        btnGerarExcel.addEventListener(
+            "click",
+            gerarExcelRelatorioCliente
+        );
+    }
+
+    /**
+     * Função para capturar o Cookie do CSRF Token do Django
+     */
+    function getCookie(name) {
+        let cookieValue = null;
+
+        if (
+            document.cookie &&
+            document.cookie !== ""
+        ) {
+            const cookies =
+                document.cookie.split(";");
+
+            for (
+                let i = 0;
+                i < cookies.length;
+                i++
+            ) {
+                const cookie =
+                    cookies[i].trim();
+
+                if (
+                    cookie.substring(
+                        0,
+                        name.length + 1
+                    ) ===
+                    (name + "=")
+                ) {
+                    cookieValue =
+                        decodeURIComponent(
+                            cookie.substring(
+                                name.length + 1
+                            )
+                        );
+
+                    break;
+                }
+            }
+        }
+
+        return cookieValue;
+    }
+
+    /**
+     * Valida o formulário e faz o envio para o Python (Django)
+     */
+    function gerarExcelRelatorioCliente() {
+        const status =
+            document.getElementById(
+                "relatorioStatus"
+            );
+
+        const categoria =
+            document.getElementById(
+                "relatorioCategoria"
+            );
+
+        const dataDe =
+            document.getElementById(
+                "relatorioDataDe"
+            );
+
+        const dataAte =
+            document.getElementById(
+                "relatorioDataAte"
+            );
+
+        const origem =
+            document.getElementById(
+                "relatorioOrigem"
+            );
+
+        /* =================================================
+           1. VALIDAÇÕES DOS FILTROS
+        ================================================= */
+        if (status.value === "") {
+            alert(
+                'Por favor, selecione o tipo de filtro correspondente ao "Status do Cliente".'
+            );
+
+            status.focus();
+            return;
+        }
+
+        if (categoria.value === "") {
+            alert(
+                'Por favor, selecione o tipo de filtro correspondente à "Categoria do Cliente".'
+            );
+
+            categoria.focus();
+            return;
+        }
+
+        if (!dataDe.value) {
+            alert(
+                'Por favor, selecione a data no campo "Última Compra - De".'
+            );
+
+            dataDe.focus();
+            return;
+        }
+
+        if (!dataAte.value) {
+            alert(
+                'Por favor, selecione a data no campo "Última Compra - Até".'
+            );
+
+            dataAte.focus();
+            return;
+        }
+
+        if (dataDe.value > dataAte.value) {
+            alert(
+                'A data inicial ("De") não pode ser maior do que a data final ("Até").'
+            );
+
+            dataDe.focus();
+            return;
+        }
+
+        if (origem.value === "") {
+            alert(
+                'Por favor, selecione o tipo de filtro correspondente à "Origem do Cliente".'
+            );
+
+            origem.focus();
+            return;
+        }
+
+        /* =================================================
+           2. VALIDAÇÃO DOS CHECKBOXES DE COLUNAS
+        ================================================= */
+        const colunasSelecionadas =
+            document.querySelectorAll(
+                "#containerCheckboxesRelatorio input[name=\"colunas\"]:checked"
+            );
+
+        if (colunasSelecionadas.length === 0) {
+            alert(
+                "Pelo menos 1 informação/coluna é obrigatória estar selecionada para incluir no relatório."
+            );
+
+            return;
+        }
+
+        /* =================================================
+           3. ENVIO VIA FETCH PARA O PYTHON (DJANGO)
+        ================================================= */
+        const formElement =
+            document.getElementById(
+                "formRelatorioCliente"
+            );
+
+        const formData =
+            new FormData(formElement);
+
+        const urlExportar =
+            "/clientes/relatorio/excel/";
+
+        const btnGerarExcel =
+            document.getElementById(
+                "btnGerarExcelRelatorio"
+            );
+
+        const textoOriginal =
+            btnGerarExcel.innerHTML;
+
+        btnGerarExcel.disabled = true;
+
+        btnGerarExcel.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i> Gerando...';
+
+        fetch(urlExportar, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken":
+                    getCookie("csrftoken")
+            },
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response
+                        .json()
+                        .then(err => {
+                            throw new Error(
+                                err.erro ||
+                                "Erro ao gerar relatório."
+                            );
+                        });
+                }
+
+                return response.blob();
+            })
+            .then(blob => {
+                const url =
+                    window.URL.createObjectURL(
+                        blob
+                    );
+
+                const a =
+                    document.createElement("a");
+
+                a.href = url;
+
+                a.download =
+                    `Relatorio_Clientes_${new Date().toISOString().slice(0, 10)}.xlsx`;
+
+                document.body.appendChild(a);
+
+                a.click();
+
+                a.remove();
+
+                window.URL.revokeObjectURL(
+                    url
+                );
+
+                const modalElement =
+                    document.getElementById(
+                        "modalRelatorioCliente"
+                    );
+
+                const modalInstance =
+                    bootstrap.Modal.getInstance(
+                        modalElement
+                    );
+
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+            })
+            .catch(error => {
+                alert(error.message);
+            })
+            .finally(() => {
+                btnGerarExcel.disabled = false;
+                btnGerarExcel.innerHTML =
+                    textoOriginal;
+            });
+    }
 });

@@ -38,6 +38,7 @@ urlpatterns = [
     path("clientes/cadastrar/", views.cadastrar_cliente, name="cadastrar_cliente"),
     path('clientes/editar/<int:cliente_id>/', views.editar_cliente, name='editar_cliente'),
     path('clientes/excluir/<int:cliente_id>/', views.excluir_cliente, name='excluir_cliente'),
+    path('clientes/', include('clientes.urls')),
     
     
 ]
