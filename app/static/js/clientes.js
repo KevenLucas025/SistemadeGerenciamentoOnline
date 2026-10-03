@@ -520,27 +520,49 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* =====================================================
-       2. ABRIR MODAL DE EDIÇÃO
+   2. ABRIR MODAL DE EDIÇÃO
     ===================================================== */
     if (btnEditarCliente) {
-        btnEditarCliente.addEventListener("click", e => {
+        btnEditarCliente.addEventListener("click", (e) => {
             e.stopPropagation();
+
+            const tabela = obterTabelaClientesAtiva();
+
+            if (tabela) {
+                const clientesMarcados = tabela.querySelectorAll(
+                    ".checkbox-cliente:checked"
+                );
+
+                if (clientesMarcados.length > 1) {
+                    mostrarAlerta(
+                        "Não é possível editar mais de um cliente por vez. Selecione apenas 1 cliente para editar.",
+                        "erro"
+                    );
+                    return;
+                }
+
+                if (clientesMarcados.length === 1) {
+                    const linha = clientesMarcados[0].closest(
+                        "tr.linha-cliente"
+                    );
+
+                    if (linha) {
+                        clienteSelecionadoTr = linha;
+                    }
+                }
+            }
 
             if (!clienteSelecionadoTr) {
                 mostrarAlerta(
                     "Selecione um cliente na tabela para editar.",
                     "erro"
                 );
-
                 return;
             }
 
-            preencherModalParaEdicao(
-                clienteSelecionadoTr
-            );
+            preencherModalParaEdicao(clienteSelecionadoTr);
         });
     }
-
     function preencherModalParaEdicao(tr) {
         const ds = tr.dataset;
 
