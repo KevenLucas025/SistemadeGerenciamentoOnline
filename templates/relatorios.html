@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/relatorios.css' %}">
@@ -197,8 +198,8 @@
             <div class="icone-card"><i class="fa-solid fa-dollar-sign"></i></div>
             <div>
                 <span>Valor movimentado</span>
-                <strong>R$ 186.450,00</strong>
-                <small>Total no período filtrado</small>
+                <strong>R$ {{ valor_movimentado }}</strong>
+                <small>Total de todos os clientes</small>
             </div>
         </div>
     </section>

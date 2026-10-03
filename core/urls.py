@@ -7,7 +7,7 @@ urlpatterns = [
     path('produtos/', views.cadastrar_produtos, name='produtos'),
     path('cadastrar_usuarios/', views.cadastrar_usuarios, name='cadastrar_usuarios'),
     path('clientes/', views.clientes, name='clientes'),
-    path('relatorios/', views.relatorios, name='relatorios'),
+    path('relatorios/', include('relatorios.urls')),
     
     # PRODUTOS
     path('produtos/apagar/<int:id>/', views.apagar_produto, name="apagar_produto"),

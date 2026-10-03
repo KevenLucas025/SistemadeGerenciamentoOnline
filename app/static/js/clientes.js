@@ -56,7 +56,14 @@ document.addEventListener("DOMContentLoaded", () => {
         ? bootstrap.Modal.getOrCreateInstance(modalSenhaSensivelElement)
         : null;
 
+    /* =====================================================
+       MARCAR CLIENTES
+    ===================================================== */
+    const btnMarcarClientes = document.getElementById("btnMarcarClientes");
+
+    let modoMarcarClientes = false;
     let clienteSelecionadoTr = null;
+    let clientesSelecionados = new Set();
     let clienteOriginal = {};
 
     /* =====================================================
@@ -64,7 +71,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
     document.querySelectorAll(".linha-cliente").forEach(tr => {
         const celulaValor = tr.querySelector(".col-valor-gasto");
-        const valorOriginal = tr.dataset.valorGasto || (celulaValor ? celulaValor.textContent : "0");
+        const valorOriginal =
+            tr.dataset.valorGasto ||
+            (celulaValor ? celulaValor.textContent : "0");
 
         if (celulaValor && typeof formatarMoeda === "function") {
             celulaValor.textContent = formatarMoeda(valorOriginal);
@@ -85,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function salvarEstadoOriginal() {
         const formulario = document.getElementById("formEditarCliente");
+
         if (!formulario) return;
 
         clienteOriginal = {};
@@ -100,16 +110,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function houveAlteracao() {
         const formulario = document.getElementById("formEditarCliente");
+
         if (!formulario) return false;
 
         let mudou = false;
 
         formulario.querySelectorAll("input, select, textarea").forEach(campo => {
             const chave = campo.name || campo.id;
+
             if (!chave) return;
 
             const valorAtual = normalizarValor(campo.value);
-            const valorOriginal = normalizarValor(clienteOriginal[chave] || "");
+            const valorOriginal = normalizarValor(
+                clienteOriginal[chave] || ""
+            );
 
             if (valorAtual !== valorOriginal) {
                 mudou = true;
@@ -121,10 +135,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function alterouDadosSensiveis() {
         const formulario = document.getElementById("formEditarCliente");
+
         if (!formulario) return false;
 
-        const pegarValor = (idOuNome) => {
-            const el = formulario.querySelector(`[name='${idOuNome}'], #${idOuNome}`);
+        const pegarValor = idOuNome => {
+            const el = formulario.querySelector(
+                `[name='${idOuNome}'], #${idOuNome}`
+            );
+
             return normalizarValor(el?.value);
         };
 
@@ -144,29 +162,25 @@ document.addEventListener("DOMContentLoaded", () => {
             pegarValor("ultima_atualizacao") ||
             pegarValor("editarClienteUltimaAtualizacao");
 
-        const modoOriginal =
-            normalizarValor(
-                clienteOriginal["modo_valor_gasto"] ||
-                clienteOriginal["editarClienteModoValorGasto"]
-            );
+        const modoOriginal = normalizarValor(
+            clienteOriginal["modo_valor_gasto"] ||
+            clienteOriginal["editarClienteModoValorGasto"]
+        );
 
-        const valorOriginal =
-            normalizarValor(
-                clienteOriginal["valor_gasto"] ||
-                clienteOriginal["editarClienteValorGasto"]
-            );
+        const valorOriginal = normalizarValor(
+            clienteOriginal["valor_gasto"] ||
+            clienteOriginal["editarClienteValorGasto"]
+        );
 
-        const compraOriginal =
-            normalizarValor(
-                clienteOriginal["ultima_compra"] ||
-                clienteOriginal["editarClienteUltimaCompra"]
-            );
+        const compraOriginal = normalizarValor(
+            clienteOriginal["ultima_compra"] ||
+            clienteOriginal["editarClienteUltimaCompra"]
+        );
 
-        const atualizacaoOriginal =
-            normalizarValor(
-                clienteOriginal["ultima_atualizacao"] ||
-                clienteOriginal["editarClienteUltimaAtualizacao"]
-            );
+        const atualizacaoOriginal = normalizarValor(
+            clienteOriginal["ultima_atualizacao"] ||
+            clienteOriginal["editarClienteUltimaAtualizacao"]
+        );
 
         return (
             modoAtual !== modoOriginal ||
@@ -187,11 +201,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 form.reset();
             }
 
-            const tipoAtual = tipoCliente ? tipoCliente.value : "juridico";
+            const tipoAtual = tipoCliente
+                ? tipoCliente.value
+                : "juridico";
 
             if (tipoAtual === "juridico") {
                 if (tituloModal) {
-                    tituloModal.textContent = "Cadastrar Cliente Jurídico";
+                    tituloModal.textContent =
+                        "Cadastrar Cliente Jurídico";
                 }
 
                 camposJuridicos.forEach(campo => {
@@ -199,7 +216,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             } else {
                 if (tituloModal) {
-                    tituloModal.textContent = "Cadastrar Cliente Físico";
+                    tituloModal.textContent =
+                        "Cadastrar Cliente Físico";
                 }
 
                 camposJuridicos.forEach(campo => {
@@ -214,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       SELECIONAR CLIENTE JURÍDICO (ABAS DA PÁGINA)
+       SELECIONAR CLIENTE JURÍDICO
     ===================================================== */
     if (btnJuridico) {
         btnJuridico.addEventListener("click", () => {
@@ -228,8 +246,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 btnFisico.classList.remove("ativo");
             }
 
-            const paginaJuridicos = document.getElementById("juridicos");
-            const paginaFisicos = document.getElementById("fisicos");
+            const paginaJuridicos =
+                document.getElementById("juridicos");
+
+            const paginaFisicos =
+                document.getElementById("fisicos");
 
             if (paginaJuridicos) {
                 paginaJuridicos.classList.add("ativa");
@@ -246,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       SELECIONAR CLIENTE FÍSICO (ABAS DA PÁGINA)
+       SELECIONAR CLIENTE FÍSICO
     ===================================================== */
     if (btnFisico) {
         btnFisico.addEventListener("click", () => {
@@ -260,8 +281,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 btnJuridico.classList.remove("ativo");
             }
 
-            const paginaJuridicos = document.getElementById("juridicos");
-            const paginaFisicos = document.getElementById("fisicos");
+            const paginaJuridicos =
+                document.getElementById("juridicos");
+
+            const paginaFisicos =
+                document.getElementById("fisicos");
 
             if (paginaFisicos) {
                 paginaFisicos.classList.add("ativa");
@@ -289,18 +313,109 @@ document.addEventListener("DOMContentLoaded", () => {
             linha.addEventListener("click", function (e) {
                 e.stopPropagation();
 
-                if (this.classList.contains("linha-selecionada")) {
-                    this.classList.remove("linha-selecionada");
-                    clienteSelecionadoTr = null;
+                const checkbox = this.querySelector(
+                    ".checkbox-cliente"
+                );
+
+                /* =================================================
+                   CLIQUE DIRETO NO CHECKBOX
+                ================================================= */
+                if (e.target.closest(".checkbox-cliente")) {
+                    const marcado = e.target.checked;
+
+                    this.classList.toggle(
+                        "linha-selecionada",
+                        marcado
+                    );
+
+                    if (marcado) {
+                        clientesSelecionados.add(
+                            this.dataset.id
+                        );
+
+                        clienteSelecionadoTr = this;
+                    } else {
+                        clientesSelecionados.delete(
+                            this.dataset.id
+                        );
+
+                        if (clienteSelecionadoTr === this) {
+                            clienteSelecionadoTr = null;
+                        }
+                    }
+
+                    atualizarEstadoCheckboxTodos(this.closest(".clientes-table"));
+
                     return;
                 }
 
+                /* =================================================
+                   CLIQUE NA LINHA JÁ SELECIONADA
+                ================================================= */
+                if (this.classList.contains("linha-selecionada")) {
+                    this.classList.remove(
+                        "linha-selecionada"
+                    );
+
+                    if (checkbox) {
+                        checkbox.checked = false;
+                    }
+
+                    clientesSelecionados.delete(
+                        this.dataset.id
+                    );
+
+                    if (clienteSelecionadoTr === this) {
+                        clienteSelecionadoTr = null;
+                    }
+
+                    atualizarEstadoCheckboxTodos(
+                        this.closest(".clientes-table")
+                    );
+
+                    return;
+                }
+
+                /* =================================================
+                   CLIQUE DIRETO NA LINHA
+                   MODO NORMAL: UMA SELEÇÃO POR VEZ
+                ================================================= */
                 linhas.forEach(l => {
-                    l.classList.remove("linha-selecionada");
+                    l.classList.remove(
+                        "linha-selecionada"
+                    );
+
+                    const outroCheckbox =
+                        l.querySelector(
+                            ".checkbox-cliente"
+                        );
+
+                    if (outroCheckbox) {
+                        outroCheckbox.checked = false;
+                    }
+
+                    clientesSelecionados.delete(
+                        l.dataset.id
+                    );
                 });
 
-                this.classList.add("linha-selecionada");
+                this.classList.add(
+                    "linha-selecionada"
+                );
+
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+
+                clientesSelecionados.add(
+                    this.dataset.id
+                );
+
                 clienteSelecionadoTr = this;
+
+                atualizarEstadoCheckboxTodos(
+                    this.closest(".clientes-table")
+                );
             });
         });
     }
@@ -308,26 +423,99 @@ document.addEventListener("DOMContentLoaded", () => {
     inicializarSelecaoTabela();
 
     /* =====================================================
+       ATUALIZAR CHECKBOX "SELECIONAR TODOS"
+    ===================================================== */
+    function atualizarEstadoCheckboxTodos(tabela) {
+        if (!tabela) return;
+
+        const checkboxTodos =
+            tabela.querySelector(
+                ".checkbox-selecionar-todos-clientes"
+            );
+
+        if (!checkboxTodos) return;
+
+        const checkboxes =
+            tabela.querySelectorAll(
+                ".checkbox-cliente"
+            );
+
+        if (checkboxes.length === 0) {
+            checkboxTodos.checked = false;
+            checkboxTodos.indeterminate = false;
+            return;
+        }
+
+        const marcados =
+            tabela.querySelectorAll(
+                ".checkbox-cliente:checked"
+            ).length;
+
+        checkboxTodos.checked =
+            marcados === checkboxes.length;
+
+        checkboxTodos.indeterminate =
+            marcados > 0 &&
+            marcados < checkboxes.length;
+    }
+
+    /* =====================================================
        DESSELECIONAR AO CLICAR FORA DAS LINHAS
     ===================================================== */
-    document.addEventListener("click", (evento) => {
-        if (!clienteSelecionadoTr) return;
+    document.addEventListener("click", evento => {
+        if (
+            clientesSelecionados.size === 0 &&
+            !clienteSelecionadoTr
+        ) {
+            return;
+        }
 
-        const clicouNaLinha = evento.target.closest(
-            ".clientes-table tbody tr.linha-cliente"
-        );
+        const clicouNaLinha =
+            evento.target.closest(
+                ".clientes-table tbody tr.linha-cliente"
+            );
 
-        const clicouNasAcoes = evento.target.closest(".clientes-acoes");
-        const clicouNoModal = evento.target.closest(".modal");
+        const clicouNasAcoes =
+            evento.target.closest(".clientes-acoes");
 
-        if (!clicouNaLinha && !clicouNasAcoes && !clicouNoModal) {
+        const clicouNoModal =
+            evento.target.closest(".modal");
+
+        if (
+            !clicouNaLinha &&
+            !clicouNasAcoes &&
+            !clicouNoModal
+        ) {
             document
-                .querySelectorAll(".clientes-table tbody tr.linha-cliente")
+                .querySelectorAll(
+                    ".clientes-table tbody tr.linha-cliente"
+                )
                 .forEach(linha => {
-                    linha.classList.remove("linha-selecionada");
+                    linha.classList.remove(
+                        "linha-selecionada"
+                    );
+
+                    const checkbox =
+                        linha.querySelector(
+                            ".checkbox-cliente"
+                        );
+
+                    if (checkbox) {
+                        checkbox.checked = false;
+                    }
                 });
 
+            clientesSelecionados.clear();
             clienteSelecionadoTr = null;
+
+            document
+                .querySelectorAll(
+                    ".checkbox-selecionar-todos-clientes"
+                )
+                .forEach(checkbox => {
+                    checkbox.checked = false;
+                    checkbox.indeterminate = false;
+                });
         }
     });
 
@@ -335,7 +523,7 @@ document.addEventListener("DOMContentLoaded", () => {
        2. ABRIR MODAL DE EDIÇÃO
     ===================================================== */
     if (btnEditarCliente) {
-        btnEditarCliente.addEventListener("click", (e) => {
+        btnEditarCliente.addEventListener("click", e => {
             e.stopPropagation();
 
             if (!clienteSelecionadoTr) {
@@ -343,149 +531,312 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Selecione um cliente na tabela para editar.",
                     "erro"
                 );
+
                 return;
             }
 
-            preencherModalParaEdicao(clienteSelecionadoTr);
+            preencherModalParaEdicao(
+                clienteSelecionadoTr
+            );
         });
     }
 
     function preencherModalParaEdicao(tr) {
         const ds = tr.dataset;
 
-        const inputId = document.getElementById("editarClienteId");
-        const tituloEdicao = document.getElementById("tituloModalEditarCliente");
-        const inputTipo = document.getElementById("editarTipoCliente");
+        const inputId =
+            document.getElementById("editarClienteId");
 
-        if (inputId) inputId.value = ds.id || "";
+        const tituloEdicao =
+            document.getElementById(
+                "tituloModalEditarCliente"
+            );
+
+        const inputTipo =
+            document.getElementById("editarTipoCliente");
+
+        if (inputId) {
+            inputId.value = ds.id || "";
+        }
 
         if (tituloEdicao) {
-            tituloEdicao.textContent = `Editar Cliente: ${ds.nome || ""}`;
+            tituloEdicao.textContent =
+                `Editar Cliente: ${ds.nome || ""}`;
         }
 
         if (inputTipo) {
-            inputTipo.value = ds.tipo || "juridico";
+            inputTipo.value =
+                ds.tipo || "juridico";
         }
 
-        if (document.getElementById("editarClienteNome")) {
-            document.getElementById("editarClienteNome").value = ds.nome || "";
+        if (
+            document.getElementById(
+                "editarClienteNome"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteNome"
+            ).value = ds.nome || "";
         }
 
-        if (document.getElementById("editarClienteRazaoSocial")) {
-            document.getElementById("editarClienteRazaoSocial").value = ds.razao || "";
+        if (
+            document.getElementById(
+                "editarClienteRazaoSocial"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteRazaoSocial"
+            ).value = ds.razao || "";
         }
 
-        if (document.getElementById("editarClienteCnpj")) {
-            document.getElementById("editarClienteCnpj").value = ds.cnpj || "";
+        if (
+            document.getElementById(
+                "editarClienteCnpj"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteCnpj"
+            ).value = ds.cnpj || "";
         }
 
-        if (document.getElementById("editarClienteRg")) {
-            document.getElementById("editarClienteRg").value = ds.rg || "";
+        if (
+            document.getElementById(
+                "editarClienteRg"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteRg"
+            ).value = ds.rg || "";
         }
 
-        if (document.getElementById("editarClienteCpf")) {
-            document.getElementById("editarClienteCpf").value = ds.cpf || "";
+        if (
+            document.getElementById(
+                "editarClienteCpf"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteCpf"
+            ).value = ds.cpf || "";
         }
 
-        if (document.getElementById("editarClienteEmail")) {
-            document.getElementById("editarClienteEmail").value = ds.email || "";
+        if (
+            document.getElementById(
+                "editarClienteEmail"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteEmail"
+            ).value = ds.email || "";
         }
 
-        if (document.getElementById("editarClienteTelefone")) {
-            document.getElementById("editarClienteTelefone").value = ds.telefone || "";
+        if (
+            document.getElementById(
+                "editarClienteTelefone"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteTelefone"
+            ).value = ds.telefone || "";
         }
 
-        if (document.getElementById("editarClienteCnh")) {
-            document.getElementById("editarClienteCnh").value = ds.cnh || "";
+        if (
+            document.getElementById(
+                "editarClienteCnh"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteCnh"
+            ).value = ds.cnh || "";
         }
 
-        if (document.getElementById("editarClienteCategoriaCnh")) {
-            document.getElementById("editarClienteCategoriaCnh").value =
+        if (
+            document.getElementById(
+                "editarClienteCategoriaCnh"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteCategoriaCnh"
+            ).value =
                 ds.categoriaCnh || "";
         }
 
-        if (document.getElementById("editarClienteEmissaoCnh")) {
-            document.getElementById("editarClienteEmissaoCnh").value =
+        if (
+            document.getElementById(
+                "editarClienteEmissaoCnh"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteEmissaoCnh"
+            ).value =
                 ds.emissaoCnh || "";
         }
 
-        if (document.getElementById("editarClienteVencimentoCnh")) {
-            document.getElementById("editarClienteVencimentoCnh").value =
+        if (
+            document.getElementById(
+                "editarClienteVencimentoCnh"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteVencimentoCnh"
+            ).value =
                 ds.vencimentoCnh || "";
         }
 
-        if (document.getElementById("editarClienteCep")) {
-            document.getElementById("editarClienteCep").value = ds.cep || "";
+        if (
+            document.getElementById(
+                "editarClienteCep"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteCep"
+            ).value = ds.cep || "";
         }
 
-        if (document.getElementById("editarClienteEstado")) {
-            document.getElementById("editarClienteEstado").value = ds.estado || "";
+        if (
+            document.getElementById(
+                "editarClienteEstado"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteEstado"
+            ).value =
+                ds.estado || "";
         }
 
-        if (document.getElementById("editarClienteEndereco")) {
-            document.getElementById("editarClienteEndereco").value = ds.endereco || "";
+        if (
+            document.getElementById(
+                "editarClienteEndereco"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteEndereco"
+            ).value =
+                ds.endereco || "";
         }
 
-        if (document.getElementById("editarClienteNumero")) {
-            document.getElementById("editarClienteNumero").value = ds.numero || "";
+        if (
+            document.getElementById(
+                "editarClienteNumero"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteNumero"
+            ).value =
+                ds.numero || "";
         }
 
-        if (document.getElementById("editarClienteComplemento")) {
-            document.getElementById("editarClienteComplemento").value =
+        if (
+            document.getElementById(
+                "editarClienteComplemento"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteComplemento"
+            ).value =
                 ds.complemento || "";
         }
 
-        if (document.getElementById("editarClienteCidade")) {
-            document.getElementById("editarClienteCidade").value = ds.cidade || "";
+        if (
+            document.getElementById(
+                "editarClienteCidade"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteCidade"
+            ).value =
+                ds.cidade || "";
         }
 
-        if (document.getElementById("editarClienteBairro")) {
-            document.getElementById("editarClienteBairro").value = ds.bairro || "";
+        if (
+            document.getElementById(
+                "editarClienteBairro"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteBairro"
+            ).value =
+                ds.bairro || "";
         }
 
-        if (document.getElementById("editarClienteStatus")) {
-            document.getElementById("editarClienteStatus").value =
+        if (
+            document.getElementById(
+                "editarClienteStatus"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteStatus"
+            ).value =
                 ds.status || "ativo";
         }
 
-        if (document.getElementById("editarClienteCategoria")) {
-            document.getElementById("editarClienteCategoria").value =
+        if (
+            document.getElementById(
+                "editarClienteCategoria"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteCategoria"
+            ).value =
                 ds.categoria || "";
         }
 
         /* === CAMPOS ADICIONAIS DE EDIÇÃO E HISTÓRICO === */
-        if (document.getElementById("editarClienteModoValorGasto")) {
-            document.getElementById("editarClienteModoValorGasto").value =
-                ds.modoValorGasto || "Automático (somar produtos)";
+        if (
+            document.getElementById(
+                "editarClienteModoValorGasto"
+            )
+        ) {
+            document.getElementById(
+                "editarClienteModoValorGasto"
+            ).value =
+                ds.modoValorGasto ||
+                "Automático (somar produtos)";
         }
 
-        const inputValorGasto = document.getElementById("editarClienteValorGasto");
+        const inputValorGasto =
+            document.getElementById(
+                "editarClienteValorGasto"
+            );
 
         if (inputValorGasto) {
             inputValorGasto.value =
                 typeof formatarMoeda === "function"
-                    ? formatarMoeda(ds.valorGasto || "0,00")
-                    : ds.valorGasto || "0,00";
+                    ? formatarMoeda(
+                        ds.valorGasto ||
+                        "0,00"
+                    )
+                    : ds.valorGasto ||
+                    "0,00";
         }
 
         const inputUltimaAtualizacao =
-            document.getElementById("editarClienteUltimaAtualizacao");
+            document.getElementById(
+                "editarClienteUltimaAtualizacao"
+            );
 
         if (inputUltimaAtualizacao) {
             inputUltimaAtualizacao.value =
                 typeof formatarDataHoraBR === "function"
-                    ? formatarDataHoraBR(ds.ultimaAtualizacao)
-                    : ds.ultimaAtualizacao || "-";
+                    ? formatarDataHoraBR(
+                        ds.ultimaAtualizacao
+                    )
+                    : ds.ultimaAtualizacao ||
+                    "-";
         }
 
         const inputUltimaCompra =
-            document.getElementById("editarClienteUltimaCompra");
+            document.getElementById(
+                "editarClienteUltimaCompra"
+            );
 
         if (inputUltimaCompra) {
             inputUltimaCompra.value =
                 typeof formatarDataHoraBR === "function"
-                    ? formatarDataHoraBR(ds.ultimaCompra)
-                    : ds.ultimaCompra || "-";
+                    ? formatarDataHoraBR(
+                        ds.ultimaCompra
+                    )
+                    : ds.ultimaCompra ||
+                    "-";
         }
 
         if (ds.tipo === "juridico") {
@@ -498,7 +849,10 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        if (typeof aplicarMascarasFormulario === "function") {
+        if (
+            typeof aplicarMascarasFormulario ===
+            "function"
+        ) {
             aplicarMascarasFormulario();
         }
 
@@ -516,15 +870,22 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!input) return;
 
         let nomeCampo = "Este campo";
+
         const containerCampo =
-            input.closest(".campo") || input.parentElement;
+            input.closest(".campo") ||
+            input.parentElement;
 
         if (containerCampo) {
-            const label = containerCampo.querySelector("label");
+            const label =
+                containerCampo.querySelector(
+                    "label"
+                );
 
             if (label) {
                 nomeCampo =
-                    `O campo ${label.innerText.replace("*", "").trim()}`;
+                    `O campo ${label.innerText
+                        .replace("*", "")
+                        .trim()}`;
             }
         }
 
@@ -537,40 +898,79 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         const removerErro = () => {
-            input.classList.remove("input-erro");
+            input.classList.remove(
+                "input-erro"
+            );
         };
 
-        input.addEventListener("input", removerErro, { once: true });
-        input.addEventListener("change", removerErro, { once: true });
-        input.addEventListener("pointerdown", removerErro, { once: true });
+        input.addEventListener(
+            "input",
+            removerErro,
+            { once: true }
+        );
+
+        input.addEventListener(
+            "change",
+            removerErro,
+            { once: true }
+        );
+
+        input.addEventListener(
+            "pointerdown",
+            removerErro,
+            { once: true }
+        );
     }
 
     /* =====================================================
        VALIDAÇÃO DOS CAMPOS OBRIGATÓRIOS
     ===================================================== */
     function validarFormularioCliente(formulario) {
-        const inputs = formulario.querySelectorAll(
-            "input, select, textarea"
-        );
+        const inputs =
+            formulario.querySelectorAll(
+                "input, select, textarea"
+            );
 
-        const camposCnh = Array.from(inputs).filter(i => {
-            const nomeOuId = (i.name || i.id || "").toLowerCase();
-            return nomeOuId.includes("cnh");
-        });
+        const camposCnh =
+            Array.from(inputs).filter(i => {
+                const nomeOuId =
+                    (
+                        i.name ||
+                        i.id ||
+                        ""
+                    ).toLowerCase();
 
-        const cnhFoiPreenchida = camposCnh.some(
-            el => el.value.trim() !== ""
-        );
+                return nomeOuId.includes(
+                    "cnh"
+                );
+            });
+
+        const cnhFoiPreenchida =
+            camposCnh.some(
+                el =>
+                    el.value.trim() !== ""
+            );
 
         for (const input of inputs) {
             const nomeOuId =
-                (input.name || input.id || "").toLowerCase();
+                (
+                    input.name ||
+                    input.id ||
+                    ""
+                ).toLowerCase();
 
-            if (nomeOuId.includes("complemento")) {
+            if (
+                nomeOuId.includes(
+                    "complemento"
+                )
+            ) {
                 continue;
             }
 
-            if (camposCnh.includes(input) && !cnhFoiPreenchida) {
+            if (
+                camposCnh.includes(input) &&
+                !cnhFoiPreenchida
+            ) {
                 continue;
             }
 
@@ -581,7 +981,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 continue;
             }
 
-            if (input.value.trim() === "") {
+            if (
+                input.value.trim() === ""
+            ) {
                 marcarErroCliente(input);
                 return false;
             }
@@ -590,61 +992,130 @@ document.addEventListener("DOMContentLoaded", () => {
         return true;
     }
 
+    /* =====================================================
+       INSERIR CLIENTE NA TABELA
+    ===================================================== */
     function inserirClienteNaTabela(c) {
         const tabelaContainer =
             c.tipo === "juridico"
-                ? document.querySelector("#juridicos tbody")
-                : document.querySelector("#fisicos tbody");
+                ? document.querySelector(
+                    "#juridicos tbody"
+                )
+                : document.querySelector(
+                    "#fisicos tbody"
+                );
 
         if (!tabelaContainer) return;
 
         const linhaVazia =
-            tabelaContainer.querySelector(".sem-registros-clientes");
+            tabelaContainer.querySelector(
+                ".sem-registros-clientes"
+            );
 
         if (linhaVazia) {
-            linhaVazia.closest("tr").remove();
+            linhaVazia
+                .closest("tr")
+                .remove();
         }
 
-        const tr = document.createElement("tr");
-        tr.classList.add("linha-cliente");
+        const tr =
+            document.createElement("tr");
+
+        tr.classList.add(
+            "linha-cliente"
+        );
 
         const valorFormatado =
-            typeof formatarMoeda === "function"
-                ? formatarMoeda(c.valor_gasto)
+            typeof formatarMoeda ===
+            "function"
+                ? formatarMoeda(
+                    c.valor_gasto
+                )
                 : `R$ ${c.valor_gasto}`;
 
         tr.dataset.id = c.id;
         tr.dataset.tipo = c.tipo;
         tr.dataset.nome = c.nome;
-        tr.dataset.razao = c.razao === "-" ? "" : c.razao;
-        tr.dataset.cnpj = c.cnpj === "-" ? "" : c.cnpj;
-        tr.dataset.rg = c.rg === "-" ? "" : c.rg;
-        tr.dataset.cpf = c.cpf === "-" ? "" : c.cpf;
-        tr.dataset.email = c.email === "-" ? "" : c.email;
-        tr.dataset.telefone = c.telefone === "-" ? "" : c.telefone;
-        tr.dataset.cnh = c.cnh === "-" ? "" : c.cnh;
+        tr.dataset.razao =
+            c.razao === "-"
+                ? ""
+                : c.razao;
+        tr.dataset.cnpj =
+            c.cnpj === "-"
+                ? ""
+                : c.cnpj;
+        tr.dataset.rg =
+            c.rg === "-"
+                ? ""
+                : c.rg;
+        tr.dataset.cpf =
+            c.cpf === "-"
+                ? ""
+                : c.cpf;
+        tr.dataset.email =
+            c.email === "-"
+                ? ""
+                : c.email;
+        tr.dataset.telefone =
+            c.telefone === "-"
+                ? ""
+                : c.telefone;
+        tr.dataset.cnh =
+            c.cnh === "-"
+                ? ""
+                : c.cnh;
         tr.dataset.categoriaCnh =
-            c.categoria_cnh === "-" ? "" : c.categoria_cnh;
-        tr.dataset.emissaoCnh = c.emissao_cnh_raw || "";
-        tr.dataset.vencimentoCnh = c.vencimento_cnh_raw || "";
-        tr.dataset.cep = c.cep === "-" ? "" : c.cep;
-        tr.dataset.estado = c.estado === "-" ? "" : c.estado;
-        tr.dataset.endereco = c.endereco === "-" ? "" : c.endereco;
-        tr.dataset.numero = c.numero === "-" ? "" : c.numero;
+            c.categoria_cnh === "-"
+                ? ""
+                : c.categoria_cnh;
+        tr.dataset.emissaoCnh =
+            c.emissao_cnh_raw || "";
+        tr.dataset.vencimentoCnh =
+            c.vencimento_cnh_raw || "";
+        tr.dataset.cep =
+            c.cep === "-"
+                ? ""
+                : c.cep;
+        tr.dataset.estado =
+            c.estado === "-"
+                ? ""
+                : c.estado;
+        tr.dataset.endereco =
+            c.endereco === "-"
+                ? ""
+                : c.endereco;
+        tr.dataset.numero =
+            c.numero === "-"
+                ? ""
+                : c.numero;
         tr.dataset.complemento =
-            c.complemento === "-" ? "" : c.complemento;
-        tr.dataset.cidade = c.cidade === "-" ? "" : c.cidade;
-        tr.dataset.bairro = c.bairro === "-" ? "" : c.bairro;
-        tr.dataset.status = c.status;
+            c.complemento === "-"
+                ? ""
+                : c.complemento;
+        tr.dataset.cidade =
+            c.cidade === "-"
+                ? ""
+                : c.cidade;
+        tr.dataset.bairro =
+            c.bairro === "-"
+                ? ""
+                : c.bairro;
+        tr.dataset.status =
+            c.status;
         tr.dataset.categoria =
-            c.categoria === "-" ? "" : c.categoria;
+            c.categoria === "-"
+                ? ""
+                : c.categoria;
         tr.dataset.modoValorGasto =
             c.modo_valor_gasto === "-"
                 ? ""
                 : c.modo_valor_gasto;
-        tr.dataset.valorGasto = c.valor_gasto;
-        tr.dataset.ultimaAtualizacao = c.ultima_atualizacao;
-        tr.dataset.ultimaCompra = c.ultima_compra;
+        tr.dataset.valorGasto =
+            c.valor_gasto;
+        tr.dataset.ultimaAtualizacao =
+            c.ultima_atualizacao;
+        tr.dataset.ultimaCompra =
+            c.ultima_compra;
 
         if (c.tipo === "juridico") {
             tr.innerHTML = `
@@ -701,106 +1172,314 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
         }
 
+        /* =================================================
+           EVENTO DE SELEÇÃO DA NOVA LINHA
+        ================================================= */
         tr.addEventListener("click", function (e) {
             e.stopPropagation();
 
-            if (this.classList.contains("linha-selecionada")) {
-                this.classList.remove("linha-selecionada");
-                clienteSelecionadoTr = null;
+            const checkbox =
+                this.querySelector(
+                    ".checkbox-cliente"
+                );
+
+            if (
+                e.target.closest(
+                    ".checkbox-cliente"
+                )
+            ) {
+                const marcado =
+                    e.target.checked;
+
+                this.classList.toggle(
+                    "linha-selecionada",
+                    marcado
+                );
+
+                if (marcado) {
+                    clientesSelecionados.add(
+                        this.dataset.id
+                    );
+
+                    clienteSelecionadoTr =
+                        this;
+                } else {
+                    clientesSelecionados.delete(
+                        this.dataset.id
+                    );
+
+                    if (
+                        clienteSelecionadoTr ===
+                        this
+                    ) {
+                        clienteSelecionadoTr =
+                            null;
+                    }
+                }
+
+                atualizarEstadoCheckboxTodos(
+                    this.closest(".clientes-table")
+                );
+
                 return;
             }
 
-            document
-                .querySelectorAll(
-                    ".clientes-table tbody tr.linha-cliente"
+            if (
+                this.classList.contains(
+                    "linha-selecionada"
                 )
-                .forEach(l => {
-                    l.classList.remove("linha-selecionada");
-                });
+            ) {
+                this.classList.remove(
+                    "linha-selecionada"
+                );
 
-            this.classList.add("linha-selecionada");
-            clienteSelecionadoTr = this;
+                if (checkbox) {
+                    checkbox.checked = false;
+                }
+
+                clientesSelecionados.delete(
+                    this.dataset.id
+                );
+
+                if (
+                    clienteSelecionadoTr ===
+                    this
+                ) {
+                    clienteSelecionadoTr =
+                        null;
+                }
+
+                atualizarEstadoCheckboxTodos(
+                    this.closest(".clientes-table")
+                );
+
+                return;
+            }
+
+            const tabela =
+                this.closest(
+                    ".clientes-table"
+                );
+
+            if (tabela) {
+                tabela
+                    .querySelectorAll(
+                        "tbody tr.linha-cliente"
+                    )
+                    .forEach(linha => {
+                        linha.classList.remove(
+                            "linha-selecionada"
+                        );
+
+                        const outroCheckbox =
+                            linha.querySelector(
+                                ".checkbox-cliente"
+                            );
+
+                        if (outroCheckbox) {
+                            outroCheckbox.checked =
+                                false;
+                        }
+
+                        clientesSelecionados.delete(
+                            linha.dataset.id
+                        );
+                    });
+            }
+
+            this.classList.add(
+                "linha-selecionada"
+            );
+
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+
+            clientesSelecionados.add(
+                this.dataset.id
+            );
+
+            clienteSelecionadoTr =
+                this;
+
+            atualizarEstadoCheckboxTodos(
+                tabela
+            );
         });
+
+        /* =================================================
+           SE "MARCAR COMO" ESTIVER ATIVO,
+           ADICIONA CHECKBOX À NOVA LINHA
+        ================================================= */
+        if (modoMarcarClientes) {
+            const td =
+                document.createElement("td");
+
+            td.className =
+                "coluna-selecao-cliente";
+
+            td.innerHTML = `
+                <input
+                    type="checkbox"
+                    class="checkbox-cliente"
+                    data-id="${c.id}"
+                >
+            `;
+
+            tr.insertBefore(
+                td,
+                tr.firstElementChild
+            );
+
+            const checkbox =
+                td.querySelector(
+                    ".checkbox-cliente"
+                );
+
+            checkbox.addEventListener(
+                "change",
+                () => {
+                    const tabela =
+                        tr.closest(
+                            ".clientes-table"
+                        );
+
+                    const marcado =
+                        checkbox.checked;
+
+                    tr.classList.toggle(
+                        "linha-selecionada",
+                        marcado
+                    );
+
+                    if (marcado) {
+                        clientesSelecionados.add(
+                            tr.dataset.id
+                        );
+
+                        clienteSelecionadoTr =
+                            tr;
+                    } else {
+                        clientesSelecionados.delete(
+                            tr.dataset.id
+                        );
+
+                        if (
+                            clienteSelecionadoTr ===
+                            tr
+                        ) {
+                            clienteSelecionadoTr =
+                                null;
+                        }
+                    }
+
+                    atualizarEstadoCheckboxTodos(
+                        tabela
+                    );
+                }
+            );
+        }
 
         tabelaContainer.prepend(tr);
     }
 
     /* =====================================================
-       AÇÃO 1: CADASTRAR CLIENTE (NOVO)
+       AÇÃO 1: CADASTRAR CLIENTE
     ===================================================== */
     if (btnCadastrarCliente) {
-        btnCadastrarCliente.addEventListener("click", async () => {
-            const formulario =
-                document.getElementById("formCadastrarCliente");
-
-            if (!validarFormularioCliente(formulario)) {
-                return;
-            }
-
-            const dados = new FormData(formulario);
-
-            try {
-                const resposta = await fetch(
-                    "/clientes/cadastrar/",
-                    {
-                        method: "POST",
-                        headers: {
-                            "X-CSRFToken": obterCSRFToken()
-                        },
-                        body: dados
-                    }
-                );
-
-                const resultado = await resposta.json();
-
-                if (resultado.sucesso) {
-                    mostrarAlerta(
-                        resultado.mensagem ||
-                        "Cliente cadastrado com sucesso!",
-                        "sucesso"
+        btnCadastrarCliente.addEventListener(
+            "click",
+            async () => {
+                const formulario =
+                    document.getElementById(
+                        "formCadastrarCliente"
                     );
 
-                    if (resultado.cliente) {
-                        inserirClienteNaTabela(
+                if (
+                    !validarFormularioCliente(
+                        formulario
+                    )
+                ) {
+                    return;
+                }
+
+                const dados =
+                    new FormData(formulario);
+
+                try {
+                    const resposta =
+                        await fetch(
+                            "/clientes/cadastrar/",
+                            {
+                                method: "POST",
+                                headers: {
+                                    "X-CSRFToken":
+                                        obterCSRFToken()
+                                },
+                                body: dados
+                            }
+                        );
+
+                    const resultado =
+                        await resposta.json();
+
+                    if (resultado.sucesso) {
+                        mostrarAlerta(
+                            resultado.mensagem ||
+                            "Cliente cadastrado com sucesso!",
+                            "sucesso"
+                        );
+
+                        if (
                             resultado.cliente
+                        ) {
+                            inserirClienteNaTabela(
+                                resultado.cliente
+                            );
+                        }
+
+                        formulario.reset();
+
+                        if (modalCadastro) {
+                            modalCadastro.hide();
+                        }
+                    } else {
+                        mostrarAlerta(
+                            resultado.mensagem ||
+                            "Não foi possível cadastrar o cliente.",
+                            "erro"
                         );
                     }
+                } catch (erro) {
+                    console.error(
+                        "Erro ao cadastrar cliente:",
+                        erro
+                    );
 
-                    formulario.reset();
-
-                    if (modalCadastro) {
-                        modalCadastro.hide();
-                    }
-                } else {
                     mostrarAlerta(
-                        resultado.mensagem ||
-                        "Não foi possível cadastrar o cliente.",
+                        "Ocorreu um erro ao cadastrar o cliente.",
                         "erro"
                     );
                 }
-            } catch (erro) {
-                console.error(
-                    "Erro ao cadastrar cliente:",
-                    erro
-                );
-
-                mostrarAlerta(
-                    "Ocorreu um erro ao cadastrar o cliente.",
-                    "erro"
-                );
             }
-        });
+        );
     }
 
     /* =====================================================
        REQUISIÇÃO UNIFICADA DE ATUALIZAÇÃO
     ===================================================== */
-    async function executarAtualizacaoCliente(senhaSensivel = "") {
+    async function executarAtualizacaoCliente(
+        senhaSensivel = ""
+    ) {
         const formulario =
-            document.getElementById("formEditarCliente");
+            document.getElementById(
+                "formEditarCliente"
+            );
 
         const clienteIdInput =
-            document.getElementById("editarClienteId");
+            document.getElementById(
+                "editarClienteId"
+            );
 
         const clienteId =
             clienteIdInput
@@ -812,10 +1491,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Identificador do cliente não encontrado.",
                 "erro"
             );
+
             return;
         }
 
-        const dados = new FormData(formulario);
+        const dados =
+            new FormData(formulario);
 
         if (senhaSensivel) {
             dados.append(
@@ -825,18 +1506,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const resposta = await fetch(
-                `/clientes/editar/${clienteId}/`,
-                {
-                    method: "POST",
-                    headers: {
-                        "X-CSRFToken": obterCSRFToken()
-                    },
-                    body: dados
-                }
-            );
+            const resposta =
+                await fetch(
+                    `/clientes/editar/${clienteId}/`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken":
+                                obterCSRFToken()
+                        },
+                        body: dados
+                    }
+                );
 
-            const resultado = await resposta.json();
+            const resultado =
+                await resposta.json();
 
             if (resultado.sucesso) {
                 mostrarAlerta(
@@ -857,76 +1541,127 @@ document.addEventListener("DOMContentLoaded", () => {
                     clienteSelecionadoTr &&
                     resultado.cliente
                 ) {
-                    const c = resultado.cliente;
-                    const ds = clienteSelecionadoTr.dataset;
+                    const c =
+                        resultado.cliente;
+
+                    const ds =
+                        clienteSelecionadoTr.dataset;
 
                     const valorFormatado =
-                        typeof formatarMoeda === "function"
-                            ? formatarMoeda(c.valor_gasto)
+                        typeof formatarMoeda ===
+                        "function"
+                            ? formatarMoeda(
+                                c.valor_gasto
+                            )
                             : `R$ ${c.valor_gasto}`;
 
                     ds.nome = c.nome;
+
                     ds.razao =
-                        c.razao === "-" ? "" : c.razao;
+                        c.razao === "-"
+                            ? ""
+                            : c.razao;
+
                     ds.cnpj =
-                        c.cnpj === "-" ? "" : c.cnpj;
+                        c.cnpj === "-"
+                            ? ""
+                            : c.cnpj;
+
                     ds.rg =
-                        c.rg === "-" ? "" : c.rg;
+                        c.rg === "-"
+                            ? ""
+                            : c.rg;
+
                     ds.cpf =
-                        c.cpf === "-" ? "" : c.cpf;
+                        c.cpf === "-"
+                            ? ""
+                            : c.cpf;
+
                     ds.email =
-                        c.email === "-" ? "" : c.email;
+                        c.email === "-"
+                            ? ""
+                            : c.email;
+
                     ds.telefone =
                         c.telefone === "-"
                             ? ""
                             : c.telefone;
+
                     ds.cnh =
-                        c.cnh === "-" ? "" : c.cnh;
+                        c.cnh === "-"
+                            ? ""
+                            : c.cnh;
+
                     ds.categoriaCnh =
                         c.categoria_cnh === "-"
                             ? ""
                             : c.categoria_cnh;
+
                     ds.emissaoCnh =
                         c.emissao_cnh_raw || "";
+
                     ds.vencimentoCnh =
                         c.vencimento_cnh_raw || "";
+
                     ds.cep =
-                        c.cep === "-" ? "" : c.cep;
+                        c.cep === "-"
+                            ? ""
+                            : c.cep;
+
                     ds.estado =
-                        c.estado === "-" ? "" : c.estado;
+                        c.estado === "-"
+                            ? ""
+                            : c.estado;
+
                     ds.endereco =
                         c.endereco === "-"
                             ? ""
                             : c.endereco;
+
                     ds.numero =
-                        c.numero === "-" ? "" : c.numero;
+                        c.numero === "-"
+                            ? ""
+                            : c.numero;
+
                     ds.complemento =
                         c.complemento === "-"
                             ? ""
                             : c.complemento;
+
                     ds.cidade =
                         c.cidade === "-"
                             ? ""
                             : c.cidade;
+
                     ds.bairro =
                         c.bairro === "-"
                             ? ""
                             : c.bairro;
-                    ds.status = c.status;
+
+                    ds.status =
+                        c.status;
+
                     ds.categoria =
                         c.categoria === "-"
                             ? ""
                             : c.categoria;
+
                     ds.ultimaAtualizacao =
                         c.ultima_atualizacao;
+
                     ds.modoValorGasto =
                         c.modo_valor_gasto;
+
                     ds.valorGasto =
                         c.valor_gasto;
+
                     ds.ultimaCompra =
                         c.ultima_compra;
 
-                    if (c.tipo === "juridico") {
+                    if (
+                        c.tipo ===
+                        "juridico"
+                    ) {
                         clienteSelecionadoTr.innerHTML = `
                             <td>${c.nome}</td>
                             <td>${c.razao}</td>
@@ -984,6 +1719,68 @@ document.addEventListener("DOMContentLoaded", () => {
                             <td>${c.ultima_compra}</td>
                         `;
                     }
+
+                    /* =================================================
+                       RECOLOCA CHECKBOX SE ESTIVER NO MODO MARCAR
+                    ================================================= */
+                    if (modoMarcarClientes) {
+                        const checkboxExistente =
+                            clienteSelecionadoTr.querySelector(
+                                ".checkbox-cliente"
+                            );
+
+                        if (!checkboxExistente) {
+                            const td =
+                                document.createElement(
+                                    "td"
+                                );
+
+                            td.className =
+                                "coluna-selecao-cliente";
+
+                            td.innerHTML = `
+                                <input
+                                    type="checkbox"
+                                    class="checkbox-cliente"
+                                    data-id="${ds.id}"
+                                    checked
+                                >
+                            `;
+
+                            clienteSelecionadoTr.insertBefore(
+                                td,
+                                clienteSelecionadoTr.firstElementChild
+                            );
+
+                            const checkbox =
+                                td.querySelector(
+                                    ".checkbox-cliente"
+                                );
+
+                            checkbox.addEventListener(
+                                "change",
+                                () => {
+                                    const marcado =
+                                        checkbox.checked;
+
+                                    clienteSelecionadoTr.classList.toggle(
+                                        "linha-selecionada",
+                                        marcado
+                                    );
+
+                                    if (marcado) {
+                                        clientesSelecionados.add(
+                                            ds.id
+                                        );
+                                    } else {
+                                        clientesSelecionados.delete(
+                                            ds.id
+                                        );
+                                    }
+                                }
+                            );
+                        }
+                    }
                 }
             } else {
                 mostrarAlerta(
@@ -1006,61 +1803,83 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       AÇÃO 2: ATUALIZAR CLIENTE (CLIQUE DO BOTÃO)
+       AÇÃO 2: ATUALIZAR CLIENTE
     ===================================================== */
     if (btnAtualizarCliente) {
-        btnAtualizarCliente.addEventListener("click", async () => {
-            const formulario =
-                document.getElementById("formEditarCliente");
+        btnAtualizarCliente.addEventListener(
+            "click",
+            async () => {
+                const formulario =
+                    document.getElementById(
+                        "formEditarCliente"
+                    );
 
-            const clienteIdInput =
-                document.getElementById("editarClienteId");
+                const clienteIdInput =
+                    document.getElementById(
+                        "editarClienteId"
+                    );
 
-            const clienteId =
-                clienteIdInput
-                    ? clienteIdInput.value
-                    : null;
+                const clienteId =
+                    clienteIdInput
+                        ? clienteIdInput.value
+                        : null;
 
-            if (!clienteId) {
-                mostrarAlerta(
-                    "Identificador do cliente não encontrado.",
-                    "erro"
-                );
-                return;
-            }
+                if (!clienteId) {
+                    mostrarAlerta(
+                        "Identificador do cliente não encontrado.",
+                        "erro"
+                    );
 
-            if (!houveAlteracao()) {
-                mostrarAlerta(
-                    "Nenhuma informação foi alterada para atualizar.",
-                    "erro"
-                );
-                return;
-            }
-
-            if (!validarFormularioCliente(formulario)) {
-                return;
-            }
-
-            if (alterouDadosSensiveis()) {
-                if (inputSenhaConfirmacaoSensivel) {
-                    inputSenhaConfirmacaoSensivel.value = "";
+                    return;
                 }
 
-                if (modalSenhaSensivel) {
-                    modalSenhaSensivel.show();
+                if (!houveAlteracao()) {
+                    mostrarAlerta(
+                        "Nenhuma informação foi alterada para atualizar.",
+                        "erro"
+                    );
+
+                    return;
                 }
 
-                return;
-            }
+                if (
+                    !validarFormularioCliente(
+                        formulario
+                    )
+                ) {
+                    return;
+                }
 
-            executarAtualizacaoCliente();
-        });
+                if (
+                    alterouDadosSensiveis()
+                ) {
+                    if (
+                        inputSenhaConfirmacaoSensivel
+                    ) {
+                        inputSenhaConfirmacaoSensivel.value =
+                            "";
+                    }
+
+                    if (
+                        modalSenhaSensivel
+                    ) {
+                        modalSenhaSensivel.show();
+                    }
+
+                    return;
+                }
+
+                executarAtualizacaoCliente();
+            }
+        );
     }
 
     /* =====================================================
        CONFIRMAR SENHA PARA DADOS SENSÍVEIS
     ===================================================== */
-    if (btnConfirmarAlteracaoSensivel) {
+    if (
+        btnConfirmarAlteracaoSensivel
+    ) {
         btnConfirmarAlteracaoSensivel.addEventListener(
             "click",
             () => {
@@ -1075,14 +1894,18 @@ document.addEventListener("DOMContentLoaded", () => {
                         "erro"
                     );
 
-                    if (inputSenhaConfirmacaoSensivel) {
+                    if (
+                        inputSenhaConfirmacaoSensivel
+                    ) {
                         inputSenhaConfirmacaoSensivel.focus();
                     }
 
                     return;
                 }
 
-                executarAtualizacaoCliente(senha);
+                executarAtualizacaoCliente(
+                    senha
+                );
             }
         );
     }
@@ -1091,13 +1914,17 @@ document.addEventListener("DOMContentLoaded", () => {
        CSRF TOKEN
     ===================================================== */
     function obterCSRFToken() {
-        const cookies = document.cookie.split(";");
+        const cookies =
+            document.cookie.split(";");
 
         for (const cookie of cookies) {
-            const [nome, valor] = cookie.trim().split("=");
+            const [nome, valor] =
+                cookie.trim().split("=");
 
             if (nome === "csrftoken") {
-                return decodeURIComponent(valor);
+                return decodeURIComponent(
+                    valor
+                );
             }
         }
 
@@ -1107,7 +1934,10 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =====================================================
        APLICA MÁSCARAS
     ===================================================== */
-    if (typeof aplicarMascarasFormulario === "function") {
+    if (
+        typeof aplicarMascarasFormulario ===
+        "function"
+    ) {
         aplicarMascarasFormulario();
     }
 
@@ -1115,22 +1945,31 @@ document.addEventListener("DOMContentLoaded", () => {
        ELEMENTOS DO MODAL: EXCLUIR CLIENTE
     ===================================================== */
     const btnExcluirCliente =
-        document.querySelector(".btn-cliente.excluir");
+        document.querySelector(
+            ".btn-cliente.excluir"
+        );
 
     const modalExcluirElement =
-        document.getElementById("modalExcluirCliente");
+        document.getElementById(
+            "modalExcluirCliente"
+        );
 
     const nomeClienteParaExcluir =
-        document.getElementById("nomeClienteParaExcluir");
+        document.getElementById(
+            "nomeClienteParaExcluir"
+        );
 
     const btnConfirmarExcluirCliente =
-        document.getElementById("btnConfirmarExcluirCliente");
+        document.getElementById(
+            "btnConfirmarExcluirCliente"
+        );
 
-    const modalExclusao = modalExcluirElement
-        ? bootstrap.Modal.getOrCreateInstance(
-            modalExcluirElement
-        )
-        : null;
+    const modalExclusao =
+        modalExcluirElement
+            ? bootstrap.Modal.getOrCreateInstance(
+                modalExcluirElement
+            )
+            : null;
 
     let clienteParaExcluirId = null;
 
@@ -1140,23 +1979,90 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnExcluirCliente) {
         btnExcluirCliente.addEventListener(
             "click",
-            (e) => {
+            e => {
                 e.stopPropagation();
 
-                if (!clienteSelecionadoTr) {
+                const clientesMarcados =
+                    Array.from(
+                        clientesSelecionados
+                    );
+
+                /* =============================================
+                   USA CHECKBOXES COMO FONTE PRINCIPAL
+                ============================================= */
+                if (
+                    clientesMarcados.length ===
+                    0 &&
+                    !clienteSelecionadoTr
+                ) {
                     mostrarAlerta(
                         "Selecione um cliente na tabela para excluir.",
                         "erro"
                     );
+
+                    return;
+                }
+
+                /* =============================================
+                   VÁRIOS CLIENTES SELECIONADOS
+                ============================================= */
+                if (
+                    clientesMarcados.length >
+                    1
+                ) {
+                    clienteParaExcluirId =
+                        null;
+
+                    if (
+                        nomeClienteParaExcluir
+                    ) {
+                        nomeClienteParaExcluir.textContent =
+                            `${clientesMarcados.length} clientes selecionados`;
+                    }
+
+                    if (modalExclusao) {
+                        modalExclusao.show();
+                    }
+
+                    return;
+                }
+
+                /* =============================================
+                   UM CLIENTE SELECIONADO
+                ============================================= */
+                const idSelecionado =
+                    clientesMarcados.length ===
+                    1
+                        ? clientesMarcados[0]
+                        : clienteSelecionadoTr
+                            ?.dataset.id;
+
+                const linhaSelecionada =
+                    document.querySelector(
+                        `.linha-cliente[data-id="${idSelecionado}"]`
+                    );
+
+                if (!linhaSelecionada) {
+                    mostrarAlerta(
+                        "Cliente selecionado não encontrado.",
+                        "erro"
+                    );
+
                     return;
                 }
 
                 const ds =
-                    clienteSelecionadoTr.dataset;
+                    linhaSelecionada.dataset;
 
-                clienteParaExcluirId = ds.id;
+                clienteSelecionadoTr =
+                    linhaSelecionada;
 
-                if (nomeClienteParaExcluir) {
+                clienteParaExcluirId =
+                    ds.id;
+
+                if (
+                    nomeClienteParaExcluir
+                ) {
                     nomeClienteParaExcluir.textContent =
                         ds.nome ||
                         "Cliente selecionado";
@@ -1176,53 +2082,164 @@ document.addEventListener("DOMContentLoaded", () => {
         btnConfirmarExcluirCliente.addEventListener(
             "click",
             async () => {
-                if (!clienteParaExcluirId) {
+                let idsParaExcluir =
+                    Array.from(
+                        clientesSelecionados
+                    );
+
+                /* =============================================
+                   COMPATIBILIDADE COM SELEÇÃO POR LINHA
+                ============================================= */
+                if (
+                    idsParaExcluir.length ===
+                    0 &&
+                    clienteParaExcluirId
+                ) {
+                    idsParaExcluir = [
+                        clienteParaExcluirId
+                    ];
+                }
+
+                if (
+                    idsParaExcluir.length ===
+                    0 &&
+                    clienteSelecionadoTr
+                ) {
+                    idsParaExcluir = [
+                        clienteSelecionadoTr.dataset.id
+                    ];
+                }
+
+                if (
+                    idsParaExcluir.length ===
+                    0
+                ) {
                     mostrarAlerta(
                         "Nenhum cliente selecionado para exclusão.",
                         "erro"
                     );
+
                     return;
                 }
 
+                btnConfirmarExcluirCliente.disabled =
+                    true;
+
                 try {
-                    const resposta = await fetch(
-                        `/clientes/excluir/${clienteParaExcluirId}/`,
-                        {
-                            method: "POST",
-                            headers: {
-                                "X-CSRFToken":
-                                    obterCSRFToken()
+                    let quantidadeExcluida =
+                        0;
+
+                    for (
+                        const clienteId of idsParaExcluir
+                    ) {
+                        try {
+                            const resposta =
+                                await fetch(
+                                    `/clientes/excluir/${clienteId}/`,
+                                    {
+                                        method:
+                                            "POST",
+                                        headers: {
+                                            "X-CSRFToken":
+                                                obterCSRFToken()
+                                        }
+                                    }
+                                );
+
+                            const resultado =
+                                await resposta.json();
+
+                            if (
+                                resultado.sucesso
+                            ) {
+                                quantidadeExcluida++;
+
+                                const linha =
+                                    document.querySelector(
+                                        `.linha-cliente[data-id="${clienteId}"]`
+                                    );
+
+                                if (linha) {
+                                    linha.remove();
+                                }
+
+                                clientesSelecionados.delete(
+                                    clienteId
+                                );
+
+                                if (
+                                    clienteSelecionadoTr &&
+                                    clienteSelecionadoTr.dataset.id ===
+                                        clienteId
+                                ) {
+                                    clienteSelecionadoTr =
+                                        null;
+                                }
+                            } else {
+                                console.error(
+                                    `Erro ao excluir cliente ${clienteId}:`,
+                                    resultado.mensagem
+                                );
                             }
+                        } catch (erro) {
+                            console.error(
+                                `Erro ao excluir cliente ${clienteId}:`,
+                                erro
+                            );
                         }
-                    );
+                    }
 
-                    const resultado =
-                        await resposta.json();
+                    if (modalExclusao) {
+                        modalExclusao.hide();
+                    }
 
-                    if (resultado.sucesso) {
+                    if (
+                        quantidadeExcluida ===
+                        idsParaExcluir.length
+                    ) {
                         mostrarAlerta(
-                            resultado.mensagem ||
-                            "Cliente excluído com sucesso!",
+                            quantidadeExcluida ===
+                                1
+                                ? "Cliente excluído com sucesso!"
+                                : `${quantidadeExcluida} clientes excluídos com sucesso!`,
                             "sucesso"
                         );
-
-                        if (modalExclusao) {
-                            modalExclusao.hide();
-                        }
-
-                        if (clienteSelecionadoTr) {
-                            clienteSelecionadoTr.remove();
-                            clienteSelecionadoTr = null;
-                        }
-
-                        clienteParaExcluirId = null;
+                    } else if (
+                        quantidadeExcluida >
+                        0
+                    ) {
+                        mostrarAlerta(
+                            `${quantidadeExcluida} de ${idsParaExcluir.length} clientes foram excluídos.`,
+                            "sucesso"
+                        );
                     } else {
                         mostrarAlerta(
-                            resultado.mensagem ||
-                            "Não foi possível excluir o cliente.",
+                            "Não foi possível excluir os clientes selecionados.",
                             "erro"
                         );
                     }
+
+                    clienteParaExcluirId =
+                        null;
+
+                    clientesSelecionados.clear();
+
+                    clienteSelecionadoTr =
+                        null;
+
+                    document
+                        .querySelectorAll(
+                            ".checkbox-selecionar-todos-clientes"
+                        )
+                        .forEach(
+                            checkbox => {
+                                checkbox.checked =
+                                    false;
+
+                                checkbox.indeterminate =
+                                    false;
+                            }
+                        );
                 } catch (erro) {
                     console.error(
                         "Erro ao excluir cliente:",
@@ -1233,6 +2250,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         "Ocorreu um erro ao tentar excluir o cliente.",
                         "erro"
                     );
+                } finally {
+                    btnConfirmarExcluirCliente.disabled =
+                        false;
                 }
             }
         );
@@ -1261,7 +2281,10 @@ document.addEventListener("DOMContentLoaded", () => {
        MODAL DE RELATÓRIO
     ===================================================== */
     function atualizarEstadoSelecionarTodos() {
-        if (!checkSelecionarTodos || !containerCheckboxes) {
+        if (
+            !checkSelecionarTodos ||
+            !containerCheckboxes
+        ) {
             return;
         }
 
@@ -1270,9 +2293,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 'input[name="colunas"]'
             );
 
-        if (checkboxes.length === 0) {
-            checkSelecionarTodos.checked = false;
-            checkSelecionarTodos.indeterminate = false;
+        if (
+            checkboxes.length ===
+            0
+        ) {
+            checkSelecionarTodos.checked =
+                false;
+
+            checkSelecionarTodos.indeterminate =
+                false;
+
             return;
         }
 
@@ -1285,19 +2315,33 @@ document.addEventListener("DOMContentLoaded", () => {
             ).length;
 
         if (checados === 0) {
-            checkSelecionarTodos.checked = false;
-            checkSelecionarTodos.indeterminate = false;
-        } else if (checados === total) {
-            checkSelecionarTodos.checked = true;
-            checkSelecionarTodos.indeterminate = false;
+            checkSelecionarTodos.checked =
+                false;
+
+            checkSelecionarTodos.indeterminate =
+                false;
+        } else if (
+            checados === total
+        ) {
+            checkSelecionarTodos.checked =
+                true;
+
+            checkSelecionarTodos.indeterminate =
+                false;
         } else {
-            checkSelecionarTodos.checked = false;
-            checkSelecionarTodos.indeterminate = true;
+            checkSelecionarTodos.checked =
+                false;
+
+            checkSelecionarTodos.indeterminate =
+                true;
         }
     }
 
     function atualizarCheckboxesColunas() {
-        if (!checkSelecionarTodos || !containerCheckboxes) {
+        if (
+            !checkSelecionarTodos ||
+            !containerCheckboxes
+        ) {
             return;
         }
 
@@ -1306,12 +2350,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 'input[name="colunas"]'
             );
 
-        checkboxes.forEach(checkbox => {
-            checkbox.checked =
-                checkSelecionarTodos.checked;
-        });
+        checkboxes.forEach(
+            checkbox => {
+                checkbox.checked =
+                    checkSelecionarTodos.checked;
+            }
+        );
 
-        checkSelecionarTodos.indeterminate = false;
+        checkSelecionarTodos.indeterminate =
+            false;
     }
 
     if (btnAbrirRelatorio) {
@@ -1320,20 +2367,28 @@ document.addEventListener("DOMContentLoaded", () => {
             () => {
                 const ehJuridico =
                     btnJuridico
-                        ? btnJuridico.classList.contains("ativo")
+                        ? btnJuridico.classList.contains(
+                            "ativo"
+                        )
                         : true;
 
-                if (tituloModalRelatorio) {
+                if (
+                    tituloModalRelatorio
+                ) {
                     tituloModalRelatorio.textContent =
                         ehJuridico
-                            ? "Relatório de Clientes Jurídicos"
-                            : "Relatório de Clientes Físicos";
+                            ? "Exportações Clientes Jurídicos"
+                            : "Exportações Clientes Físicos";
                 }
 
-                checksColunasJuridicas.forEach(col => {
-                    col.style.display =
-                        ehJuridico ? "" : "none";
-                });
+                checksColunasJuridicas.forEach(
+                    col => {
+                        col.style.display =
+                            ehJuridico
+                                ? ""
+                                : "none";
+                    }
+                );
 
                 atualizarEstadoSelecionarTodos();
 
@@ -1345,9 +2400,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       CHECKBOX — SELECIONAR TODOS
+       CHECKBOX — SELECIONAR TODOS DO RELATÓRIO
     ===================================================== */
-    if (checkSelecionarTodos && containerCheckboxes) {
+    if (
+        checkSelecionarTodos &&
+        containerCheckboxes
+    ) {
         checkSelecionarTodos.addEventListener(
             "change",
             () => {
@@ -1357,7 +2415,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         containerCheckboxes.addEventListener(
             "change",
-            (e) => {
+            e => {
                 if (
                     e.target.matches(
                         'input[name="colunas"]'
@@ -1384,9 +2442,9 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
-    /**
-     * Função para capturar o Cookie do CSRF Token do Django
-     */
+    /* =====================================================
+       COOKIE CSRF
+    ===================================================== */
     function getCookie(name) {
         let cookieValue = null;
 
@@ -1410,7 +2468,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         0,
                         name.length + 1
                     ) ===
-                    (name + "=")
+                    name + "="
                 ) {
                     cookieValue =
                         decodeURIComponent(
@@ -1427,9 +2485,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return cookieValue;
     }
 
-    /**
-     * Valida o formulário e faz o envio para o Python (Django)
-     */
+    /* =====================================================
+       GERAR RELATÓRIO EXCEL
+    ===================================================== */
     function gerarExcelRelatorioCliente() {
         const status =
             document.getElementById(
@@ -1451,65 +2509,44 @@ document.addEventListener("DOMContentLoaded", () => {
                 "relatorioDataAte"
             );
 
-        const origem =
-            document.getElementById(
-                "relatorioOrigem"
-            );
-
         /* =================================================
            1. VALIDAÇÕES DOS FILTROS
         ================================================= */
         if (status.value === "") {
-            alert(
+            mostrarAlerta(
                 'Por favor, selecione o tipo de filtro correspondente ao "Status do Cliente".'
             );
 
             status.focus();
+
             return;
         }
 
         if (categoria.value === "") {
-            alert(
+            mostrarAlerta(
                 'Por favor, selecione o tipo de filtro correspondente à "Categoria do Cliente".'
             );
 
             categoria.focus();
+
             return;
         }
 
-        if (!dataDe.value) {
-            alert(
-                'Por favor, selecione a data no campo "Última Compra - De".'
-            );
-
-            dataDe.focus();
-            return;
-        }
-
-        if (!dataAte.value) {
-            alert(
-                'Por favor, selecione a data no campo "Última Compra - Até".'
-            );
-
-            dataAte.focus();
-            return;
-        }
-
-        if (dataDe.value > dataAte.value) {
-            alert(
+        /* =================================================
+           VALIDAÇÃO DAS DATAS
+        ================================================= */
+        if (
+            dataDe.value &&
+            dataAte.value &&
+            dataDe.value >
+                dataAte.value
+        ) {
+            mostrarAlerta(
                 'A data inicial ("De") não pode ser maior do que a data final ("Até").'
             );
 
             dataDe.focus();
-            return;
-        }
 
-        if (origem.value === "") {
-            alert(
-                'Por favor, selecione o tipo de filtro correspondente à "Origem do Cliente".'
-            );
-
-            origem.focus();
             return;
         }
 
@@ -1518,11 +2555,14 @@ document.addEventListener("DOMContentLoaded", () => {
         ================================================= */
         const colunasSelecionadas =
             document.querySelectorAll(
-                "#containerCheckboxesRelatorio input[name=\"colunas\"]:checked"
+                '#containerCheckboxesRelatorio input[name="colunas"]:checked'
             );
 
-        if (colunasSelecionadas.length === 0) {
-            alert(
+        if (
+            colunasSelecionadas.length ===
+            0
+        ) {
+            mostrarAlerta(
                 "Pelo menos 1 informação/coluna é obrigatória estar selecionada para incluir no relatório."
             );
 
@@ -1530,7 +2570,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         /* =================================================
-           3. ENVIO VIA FETCH PARA O PYTHON (DJANGO)
+           3. ENVIO VIA FETCH PARA O DJANGO
         ================================================= */
         const formElement =
             document.getElementById(
@@ -1540,20 +2580,40 @@ document.addEventListener("DOMContentLoaded", () => {
         const formData =
             new FormData(formElement);
 
+        const btnJuridicoRelatorio =
+            document.getElementById(
+                "btnJuridico"
+            );
+
+        const ehJuridico =
+            btnJuridicoRelatorio
+                ? btnJuridicoRelatorio.classList.contains(
+                    "ativo"
+                )
+                : false;
+
+        formData.set(
+            "tipo_cliente",
+            ehJuridico
+                ? "juridico"
+                : "fisico"
+        );
+
         const urlExportar =
             "/clientes/relatorio/excel/";
 
-        const btnGerarExcel =
+        const btnGerarExcelAtual =
             document.getElementById(
                 "btnGerarExcelRelatorio"
             );
 
         const textoOriginal =
-            btnGerarExcel.innerHTML;
+            btnGerarExcelAtual.innerHTML;
 
-        btnGerarExcel.disabled = true;
+        btnGerarExcelAtual.disabled =
+            true;
 
-        btnGerarExcel.innerHTML =
+        btnGerarExcelAtual.innerHTML =
             '<i class="fa-solid fa-spinner fa-spin"></i> Gerando...';
 
         fetch(urlExportar, {
@@ -1585,12 +2645,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
                 const a =
-                    document.createElement("a");
+                    document.createElement(
+                        "a"
+                    );
 
                 a.href = url;
 
                 a.download =
-                    `Relatorio_Clientes_${new Date().toISOString().slice(0, 10)}.xlsx`;
+                    `Relatorio_Clientes_${new Date()
+                        .toISOString()
+                        .slice(0, 10)}.xlsx`;
 
                 document.body.appendChild(a);
 
@@ -1620,9 +2684,302 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert(error.message);
             })
             .finally(() => {
-                btnGerarExcel.disabled = false;
-                btnGerarExcel.innerHTML =
+                btnGerarExcelAtual.disabled =
+                    false;
+
+                btnGerarExcelAtual.innerHTML =
                     textoOriginal;
             });
+    }
+
+    /* =====================================================
+       OBTER TABELA DE CLIENTES ATIVA
+    ===================================================== */
+    function obterTabelaClientesAtiva() {
+        const tabelas =
+            document.querySelectorAll(
+                ".clientes-table"
+            );
+
+        for (const tabela of tabelas) {
+            const container =
+                tabela.closest(
+                    ".tabela-clientes, .clientes-tabela, .clientes-conteudo"
+                );
+
+            if (
+                container &&
+                container.offsetParent !==
+                    null
+            ) {
+                return tabela;
+            }
+
+            if (
+                tabela.offsetParent !==
+                null
+            ) {
+                return tabela;
+            }
+        }
+
+        return null;
+    }
+
+    /* =====================================================
+       ATUALIZAR CHECKBOXES DOS CLIENTES
+    ===================================================== */
+    function atualizarCheckboxesClientes() {
+        const tabela =
+            obterTabelaClientesAtiva();
+
+        if (!tabela) {
+            return;
+        }
+
+        const cabecalho =
+            tabela.querySelector(
+                "thead tr"
+            );
+
+        const linhas =
+            tabela.querySelectorAll(
+                "tbody tr.linha-cliente"
+            );
+
+        if (!cabecalho) {
+            return;
+        }
+
+        if (modoMarcarClientes) {
+            /* =============================================
+               ADICIONA CHECKBOX DO CABEÇALHO
+            ============================================= */
+            if (
+                !cabecalho.querySelector(
+                    ".coluna-selecao-cliente"
+                )
+            ) {
+                const th =
+                    document.createElement(
+                        "th"
+                    );
+
+                th.className =
+                    "coluna-selecao-cliente";
+
+                th.innerHTML = `
+                    <input
+                        type="checkbox"
+                        class="checkbox-selecionar-todos-clientes"
+                        title="Selecionar todos"
+                    >
+                `;
+
+                cabecalho.insertBefore(
+                    th,
+                    cabecalho.firstElementChild
+                );
+
+                const checkboxTodos =
+                    th.querySelector(
+                        ".checkbox-selecionar-todos-clientes"
+                    );
+
+                checkboxTodos.addEventListener(
+                    "change",
+                    () => {
+                        const checkboxes =
+                            tabela.querySelectorAll(
+                                ".checkbox-cliente"
+                            );
+
+                        checkboxes.forEach(
+                            checkbox => {
+                                checkbox.checked =
+                                    checkboxTodos.checked;
+
+                                const linha =
+                                    checkbox.closest(
+                                        "tr.linha-cliente"
+                                    );
+
+                                if (!linha) {
+                                    return;
+                                }
+
+                                linha.classList.toggle(
+                                    "linha-selecionada",
+                                    checkboxTodos.checked
+                                );
+
+                                if (
+                                    checkboxTodos.checked
+                                ) {
+                                    clientesSelecionados.add(
+                                        linha.dataset.id
+                                    );
+                                } else {
+                                    clientesSelecionados.delete(
+                                        linha.dataset.id
+                                    );
+                                }
+                            }
+                        );
+
+                        if (
+                            checkboxTodos.checked &&
+                            checkboxes.length >
+                                0
+                        ) {
+                            clienteSelecionadoTr =
+                                checkboxes[0].closest(
+                                    "tr.linha-cliente"
+                                );
+                        } else {
+                            clienteSelecionadoTr =
+                                null;
+                        }
+
+                        atualizarEstadoCheckboxTodos(
+                            tabela
+                        );
+                    }
+                );
+            }
+
+            /* =============================================
+               ADICIONA CHECKBOXES DAS LINHAS
+            ============================================= */
+            linhas.forEach(linha => {
+                if (
+                    linha.querySelector(
+                        ".checkbox-cliente"
+                    )
+                ) {
+                    return;
+                }
+
+                const td =
+                    document.createElement(
+                        "td"
+                    );
+
+                td.className =
+                    "coluna-selecao-cliente";
+
+                td.innerHTML = `
+                    <input
+                        type="checkbox"
+                        class="checkbox-cliente"
+                        data-id="${linha.dataset.id}"
+                    >
+                `;
+
+                linha.insertBefore(
+                    td,
+                    linha.firstElementChild
+                );
+
+                const checkbox =
+                    td.querySelector(
+                        ".checkbox-cliente"
+                    );
+
+                checkbox.addEventListener(
+                    "change",
+                    () => {
+                        const marcado =
+                            checkbox.checked;
+
+                        linha.classList.toggle(
+                            "linha-selecionada",
+                            marcado
+                        );
+
+                        if (marcado) {
+                            clientesSelecionados.add(
+                                linha.dataset.id
+                            );
+
+                            clienteSelecionadoTr =
+                                linha;
+                        } else {
+                            clientesSelecionados.delete(
+                                linha.dataset.id
+                            );
+
+                            if (
+                                clienteSelecionadoTr ===
+                                linha
+                            ) {
+                                clienteSelecionadoTr =
+                                    null;
+                            }
+                        }
+
+                        atualizarEstadoCheckboxTodos(
+                            tabela
+                        );
+                    }
+                );
+            });
+
+            atualizarEstadoCheckboxTodos(
+                tabela
+            );
+        } else {
+            /* =============================================
+               DESATIVA MODO MARCAR
+            ============================================= */
+            linhas.forEach(linha => {
+                clientesSelecionados.delete(
+                    linha.dataset.id
+                );
+
+                linha.classList.remove(
+                    "linha-selecionada"
+                );
+            });
+
+            cabecalho
+                .querySelector(
+                    ".coluna-selecao-cliente"
+                )
+                ?.remove();
+
+            linhas.forEach(linha => {
+                linha
+                    .querySelector(
+                        ".coluna-selecao-cliente"
+                    )
+                    ?.remove();
+            });
+
+            clienteSelecionadoTr =
+                null;
+
+            clientesSelecionados.clear();
+        }
+    }
+
+    /* =====================================================
+       BOTÃO MARCAR COMO
+    ===================================================== */
+    if (btnMarcarClientes) {
+        btnMarcarClientes.addEventListener(
+            "click",
+            () => {
+                modoMarcarClientes =
+                    !modoMarcarClientes;
+
+                atualizarCheckboxesClientes();
+
+                btnMarcarClientes.classList.toggle(
+                    "ativo",
+                    modoMarcarClientes
+                );
+            }
+        );
     }
 });

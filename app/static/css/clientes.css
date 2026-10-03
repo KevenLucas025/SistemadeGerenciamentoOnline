@@ -1043,7 +1043,8 @@ BOTÃO DA TAB ATIVA
 
 .campo-relatorio select:focus,
 .campo-relatorio input:focus {
-    border-color: #0d6efd;
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, .15);
 }
 
 /* Checkboxes */
@@ -1132,58 +1133,28 @@ BOTÃO DA TAB ATIVA
 .btn-relatorio-pdf,
 .btn-relatorio-excel,
 .btn-relatorio-cancelar {
-    border: 1px solid #4a4a56 !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px !important;
+    background: #1f2937 !important;
+    border: 1px solid #374151 !important;
+    border-radius: 8px !important;
     color: #cecfd2 !important;
-    font-size: 13px;
-    padding: 7px 16px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-}
-
-.btn-relatorio-cancelar{
-    background-color: #6c757d; /* Substitua pelo código da cor que preferir, ex: red, #e63946, #c0392b */
-    color: #cecfd2 !important;
-    font-weight: 600;
     font-size: 1rem;
-}
-.btn-relatorio-pdf{
-    background-color: #dc3545 !important; /* Substitua pelo código da cor que preferir, ex: red, #e63946, #c0392b */
-    border-color: #dc3545 !important;
-    color: #cecfd2 !important;
-    font-weight: 500;
+    font-weight: 600 !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
-.btn-relatorio-excel{
-    background-color: #107c41 !important; /* Verde oficial do Excel */
-    border-color: #107c41 !important;
-    color: #cecfd2 !important;
-    font-weight: 500;
-}
 
-.btn-relatorio-pdf:hover {
-    background-color: #bb2d3b !important; /* Cor ligeiramente mais escura no hover */
-    border-color: #b02a37 !important;
-    color: #cecfd2 !important;
-}
-
-/* Estado de Foco/Clique */
-.btn-relatorio-pdf:focus {
-    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.4) !important;
-}
-
-.btn-relatorio-excel:hover {
-    background-color: #0c5c30 !important; /* Verde mais escuro no hover */
-    border-color: #0a4f29 !important;
-    color: #cecfd2 !important;
-}
-/* Efeito de foco/clique */
-.btn-relatorio-excel:focus {
-    box-shadow: 0 0 0 3px rgba(16, 124, 65, 0.4) !important;
-}
-
+.btn-relatorio-pdf:hover,
+.btn-relatorio-excel:hover,
 .btn-relatorio-cancelar:hover {
-    background-color: #495057 !important;
-    color: #cecfd2 !important;
+    background: rgba(255,255,255,0.05) !important;
+    border-color: rgba(255,255,255,0.3) !important;
+    transform: scale(1.05);
 }
 
 /* =====================================================
@@ -1457,3 +1428,70 @@ select.status-select-bloqueado {
     border-color: #f97316 !important;
 }
 
+/* Checkboxes - Clientes */
+.coluna-selecao-cliente {
+    width: 45px;
+    min-width: 45px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.checkbox-cliente,
+.checkbox-selecionar-todos-clientes {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    background: #1b2432;
+    border: 1px solid #475569;
+    border-radius: 5px;
+    display: inline-grid;
+    place-content: center;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+.checkbox-cliente::before,
+.checkbox-selecionar-todos-clientes::before {
+    content: "";
+    width: 9px;
+    height: 5px;
+    border-left: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+    transform: rotate(-45deg) scale(0);
+    transition: transform 0.15s ease;
+}
+
+.checkbox-cliente:checked,
+.checkbox-selecionar-todos-clientes:checked {
+    background: #7c3aed;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+.checkbox-cliente:checked::before,
+.checkbox-selecionar-todos-clientes:checked::before {
+    transform: rotate(-45deg) scale(1);
+}
+
+.checkbox-cliente:hover,
+.checkbox-selecionar-todos-clientes:hover {
+    border-color: #8b5cf6;
+}
+
+.checkbox-cliente:focus-visible,
+.checkbox-selecionar-todos-clientes:focus-visible {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.18);
+}
+
+.checkbox-cliente:disabled,
+.checkbox-selecionar-todos-clientes:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

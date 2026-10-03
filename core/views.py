@@ -190,10 +190,6 @@ def clientes(request):
         }
     )
 
-@login_required
-def relatorios(request):
-    return render(request, 'relatorios.html',{'clientes_relatorio':[]})
-
 
 
 @login_required

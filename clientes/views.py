@@ -1,5 +1,8 @@
 import openpyxl
+
 from django.http import HttpResponse, JsonResponse
+from django.utils import timezone
+
 from .models import Cliente
 
 
@@ -10,26 +13,29 @@ def exportar_relatorio_excel(request):
             status=405
         )
 
-    # =====================================================
-    # 1. RECEBER OS FILTROS DO FORMULÁRIO
-    # =====================================================
     status = request.POST.get('status', '')
     categoria = request.POST.get('categoria', '')
     data_de = request.POST.get('data_de', '')
     data_ate = request.POST.get('data_ate', '')
+    tipo_cliente = request.POST.get('tipo_cliente','')
 
-    # Origem NÃO é utilizada porque o model Cliente
-    # atualmente não possui esse campo.
     colunas_selecionadas = request.POST.getlist('colunas')
 
-    # =====================================================
-    # 2. VALIDAÇÃO
-    # =====================================================
-    if not all([status, categoria, data_de, data_ate]):
+    if not status:
         return JsonResponse(
-            {'erro': 'Todos os filtros são obrigatórios!'},
+            {'erro': 'Por favor, selecione o filtro de Status do Cliente.'},
             status=400
         )
+
+    if not categoria:
+        return JsonResponse(
+            {'erro': 'Por favor, selecione o filtro de Categoria do Cliente.'},
+            status=400
+        )
+    if tipo_cliente not in ['fisico','juridico']:
+        return JsonResponse({
+            'erro': 'Tipo de cliente inválido'
+        },status=400)
 
     if not colunas_selecionadas:
         return JsonResponse(
@@ -37,32 +43,31 @@ def exportar_relatorio_excel(request):
             status=400
         )
 
-    # =====================================================
-    # 3. FILTRAR CLIENTES
-    # =====================================================
-    queryset = Cliente.objects.all()
+    queryset = Cliente.objects.filter(tipo_cliente=tipo_cliente)
 
     if status != 'todos':
-        queryset = queryset.filter(status=status)
+        queryset = queryset.filter(status__iexact=status)
 
     if categoria != 'todos':
-        queryset = queryset.filter(categoria=categoria)
+        queryset = queryset.filter(categoria__iexact=categoria)
 
     if data_de and data_ate:
         queryset = queryset.filter(
             ultima_compra__date__range=[data_de, data_ate]
         )
+    elif data_de:
+        queryset = queryset.filter(
+            ultima_compra__date__gte=data_de
+        )
+    elif data_ate:
+        queryset = queryset.filter(
+            ultima_compra__date__lte=data_ate
+        )
 
-    # =====================================================
-    # 4. CRIAR PLANILHA EXCEL
-    # =====================================================
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Relatório de Clientes"
 
-    # =====================================================
-    # 5. MAPEAMENTO DAS COLUNAS
-    # =====================================================
     MAPEAMENTO_COLUNAS = {
         'nome': 'Nome',
         'razao_social': 'Razão Social',
@@ -91,41 +96,57 @@ def exportar_relatorio_excel(request):
         'ultima_compra': 'Última Compra',
     }
 
-    # =====================================================
-    # 6. ESCREVER CABEÇALHO
-    # =====================================================
-    headers = [
-        MAPEAMENTO_COLUNAS.get(col, col)
+    # Mantém somente as colunas que realmente existem no mapeamento
+    colunas_validas = [
+        col
         for col in colunas_selecionadas
         if col in MAPEAMENTO_COLUNAS
     ]
 
+    # Cabeçalhos
+    headers = [
+        MAPEAMENTO_COLUNAS[col]
+        for col in colunas_validas
+    ]
+
     ws.append(headers)
 
-    # =====================================================
-    # 7. ESCREVER DADOS
-    # =====================================================
+    # Dados
     for cliente in queryset:
         linha = []
 
-        for col in colunas_selecionadas:
-
-            # Ignora campos que não existem no model
-            if col not in MAPEAMENTO_COLUNAS:
-                continue
-
+        for col in colunas_validas:
             valor = getattr(cliente, col, '')
 
             if valor is None:
                 valor = ''
 
-            linha.append(str(valor))
+            elif col in [
+                'data_inclusao',
+                'ultima_atualizacao',
+                'ultima_compra'
+            ]:
+                valor = timezone.localtime(valor).replace(
+                    tzinfo=None
+                )
+
+            elif col in [
+                'emissao_cnh',
+                'vencimento_cnh'
+            ]:
+                valor = valor
+
+            elif col == 'valor_gasto':
+                valor = float(valor)
+
+            else:
+                valor = str(valor)
+
+            linha.append(valor)
 
         ws.append(linha)
 
-    # =====================================================
-    # 8. AJUSTAR LARGURA DAS COLUNAS
-    # =====================================================
+    # Ajuste automático da largura das colunas
     for coluna in ws.columns:
         maior_tamanho = 0
         letra_coluna = coluna[0].column_letter
@@ -142,9 +163,34 @@ def exportar_relatorio_excel(request):
             40
         )
 
-    # =====================================================
-    # 9. GERAR DOWNLOAD
-    # =====================================================
+    # Formatação das colunas
+    for indice, col in enumerate(colunas_validas, start=1):
+
+        for linha in range(2, ws.max_row + 1):
+            celula = ws.cell(
+                row=linha,
+                column=indice
+            )
+
+            if col in [
+                'data_inclusao',
+                'ultima_atualizacao',
+                'ultima_compra'
+            ]:
+                if celula.value:
+                    celula.number_format = 'DD/MM/YYYY HH:MM:SS'
+
+            elif col in [
+                'emissao_cnh',
+                'vencimento_cnh'
+            ]:
+                if celula.value:
+                    celula.number_format = 'DD/MM/YYYY'
+
+            elif col == 'valor_gasto':
+                if celula.value is not None:
+                    celula.number_format = '"R$ " #,##0.00'
+
     response = HttpResponse(
         content_type=(
             'application/vnd.openxmlformats-officedocument.'
