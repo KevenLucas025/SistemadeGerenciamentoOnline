@@ -1,9 +1,10 @@
 import openpyxl
-
 from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
-
-from .models import Cliente
+from .models import Cliente,ClienteHistorico
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_GET, require_POST
+from django.template.loader import render_to_string
 
 
 def exportar_relatorio_excel(request):
@@ -205,3 +206,46 @@ def exportar_relatorio_excel(request):
     wb.save(response)
 
     return response
+
+def historico_clientes(request):
+    try:
+        tipo_cliente = request.GET.get("tipo_cliente", "")
+
+        if tipo_cliente not in ["fisico", "juridico"]:
+            return JsonResponse({
+                "sucesso": False,
+                "mensagem": "Tipo de cliente inválido."
+            }, status=400)
+
+        historicos = (
+            ClienteHistorico.objects
+            .select_related("cliente")
+            .filter(tipo_cliente=tipo_cliente)
+            .order_by("-data")[:100]
+        )
+
+        html = render_to_string(
+            "clientes/linhas_tabela_historico_clientes.html",
+            {
+                "historicos": historicos
+            },
+            request=request
+        )
+
+        return JsonResponse({
+            "sucesso": True,
+            "tipo_cliente": tipo_cliente,
+            "html": html,
+            "total": historicos.count()
+        })
+
+    except Exception as erro:
+        print(f"Erro ao carregar histórico de clientes: {erro}")
+
+        return JsonResponse({
+            "sucesso": False,
+            "mensagem": (
+                f"Erro ao carregar histórico: {str(erro)}"
+            )
+        }, status=500)
+    

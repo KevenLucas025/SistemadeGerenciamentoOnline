@@ -57,9 +57,9 @@
                     <i class="fa-solid fa-file-lines"></i> Exportações
                 </button>
                 <button class="btn-cliente marcar" id="btnMarcarClientes">
-                    <i class="fa-solid fa-bookmark"></i> Marcar como
+                    <i class="fa-solid fa-bookmark"></i> Selecionar
                 </button>
-                <button class="btn-cliente historico">
+                <button class="btn-cliente historico" id="btnHistoricoClientes">
                     <i class="fa-solid fa-clock-rotate-left"></i> Histórico
                 </button>
             </div>
@@ -453,7 +453,15 @@
                             <div class="campo">
                                 <div class="label-categoria">
                                     <label for="editarClienteCategoria">Categoria do Cliente</label>
-                                    <button type="button" class="btn-info-ajuda" title="Ajuda">?</button>
+                                    <button type="button"
+                                            class="btn-info-ajuda"
+                                            data-bs-toggle="popover"
+                                            data-bs-placement="top"
+                                            data-bs-trigger="focus"
+                                            data-bs-title="Informação"
+                                            data-bs-content="Caso não encontre a categoria desejada, entre em contato com o setor de T.I para solicitar o cadastro.">
+                                        ?
+                                    </button>
                                 </div>
 
                                 <select id="editarClienteCategoria" name="categoria">
@@ -493,7 +501,7 @@
                             </div>
                         </div>
                     </div>
-                                    </form>
+                </form>
             </div>
 
             <!-- RODAPÉ -->
@@ -683,6 +691,7 @@
                                         ?
                                     </button>
                                 </div>
+
                                 <select id="clienteCategoria" name="categoria">
                                     <option value="">Selecione</option>
                                     <option value="Tecnologia">Tecnologia</option>
@@ -936,6 +945,104 @@
                     <i class="fa-solid fa-shield-halved"></i> Confirmar
                 </button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE HISTÓRICO DE AÇÕES DE CLIENTES
+====================================================== -->
+<div class="modal fade" id="modalHistoricoClientes" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content modal-historico-clientes-content">
+            
+            <!-- HEADER -->
+            <div class="modal-header modal-historico-clientes-header">
+                <div class="modal-historico-clientes-titulo-box">
+                    <div class="modal-historico-clientes-icon">
+                        <i class="fa-solid fa-user-clock"></i>
+                    </div>
+                    <div>
+                        <h3 class="modal-historico-clientes-titulo">Histórico de Atividades do Cliente</h3>
+                        <p class="modal-historico-clientes-subtitulo">Registro detalhado de alterações, interações e histórico de clientes no sistema</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-modal-fechar-historico-clientes" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- TOOLBAR DE AÇÕES -->
+            <div class="modal-historico-clientes-toolbar">
+                <div class="modal-historico-clientes-toolbar-acoes">
+                    <button type="button" class="btn-historico-clientes-acao btn-historico-clientes-atualizar" id="btnAtualizarHistoricoClientes">
+                        <i class="fa-solid fa-rotate"></i> Atualizar histórico
+                    </button>
+                    <button type="button" class="btn-historico-clientes-acao btn-historico-clientes-perigo" id="btnApagarHistoricoClientes">
+                        <i class="fa-regular fa-trash-can"></i> Apagar histórico
+                    </button>
+                    <button type="button" class="btn-historico-clientes-acao btn-historico-clientes-exportar-csv" id="btnExportarCsvHistoricoClientes">
+                        <i class="fa-solid fa-file-csv"></i> Exportar CSV
+                    </button>
+                    <button type="button" class="btn-historico-clientes-acao btn-historico-clientes-exportar-excel" id="btnExportarExcelHistoricoClientes">
+                        <i class="fa-regular fa-file-excel"></i> Exportar Excel
+                    </button>
+                    <button type="button" class="btn-historico-clientes-acao btn-historico-clientes-exportar-pdf" id="btnExportarPdfHistoricoClientes">
+                        <i class="fa-regular fa-file-pdf"></i> Exportar PDF
+                    </button>
+                    <button type="button" class="btn-historico-clientes-acao btn-historico-clientes-pausar" id="btnPausarHistoricoClientes">
+                        <i class="fa-solid fa-pause"></i> <span id="textoStatusPausaHistoricoClientes">Pausar histórico</span>
+                    </button>
+                    <button type="button" class="btn-historico-clientes-acao btn-historico-clientes-ordenar" id="btnOrdenarHistoricoClientes">
+                        <i class="fa-solid fa-arrow-down-a-z"></i> Ordenar histórico
+                    </button>
+                    <button type="button" class="btn-historico-clientes-acao btn-historico-clientes-filtrar" id="btnFiltrarHistoricoClientes">
+                        <i class="fa-solid fa-filter"></i> Filtrar histórico
+                    </button>
+                </div>
+            </div>
+
+            <!-- BODY COM TABELA E CHECKBOXES -->
+            <div class="modal-body modal-historico-clientes-body">
+                <div class="modal-historico-clientes-table-container">
+                    <table class="clientes-table modal-historico-clientes-table">
+                        <thead>
+                            <tr>
+                                <th class="col-checkbox">
+                                    <input type="checkbox" id="checkboxMasterHistoricoClientes" class="col-checkbox-clientes">
+                                </th>
+                                <th>Data/Hora</th>
+                                <th>Cliente</th>
+                                <th>Ação</th>
+                                <th>Descrição</th>
+                                <th>Usuário</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyHistoricoClientes">
+                            <!-- Linha vazia padrão para quando não houver dados -->
+                            <tr class="linha-vazia-historico-clientes">
+                                <td colspan="5">
+                                    <div class="sem-registros-content-historico-clientes">
+                                        <i class="fa-solid fa-user-clock"></i>
+                                        <p>Nenhum registro de histórico de clientes encontrado.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-historico-clientes-footer">
+                <span class="contador-selecionados-historico-clientes" id="contadorSelecionadosHistoricoClientes">
+                    0 itens selecionados
+                </span>
+                <button type="button" class="btn-cancelar-historico-clientes" data-bs-dismiss="modal">
+                    Fechar
+                </button>
+            </div>
+
         </div>
     </div>
 </div>

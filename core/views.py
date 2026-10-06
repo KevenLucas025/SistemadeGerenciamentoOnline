@@ -8,7 +8,7 @@ import random
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
-from clientes.models import Cliente
+from clientes.models import Cliente,ClienteHistorico
 from django.utils import timezone
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -865,6 +865,18 @@ def cadastrar_cliente(request):
             categoria=categoria,
             modo_valor_gasto = "Automático (somar produtos)"
         )
+        
+        ClienteHistorico.objects.create(
+            cliente=cliente,
+            usuario=request.user,
+            nome_cliente=cliente.nome,
+            tipo_cliente=cliente.tipo_cliente,
+            acao="Cadastro",
+            descricao=(
+                f"Cliente {cliente.nome} "
+                f"cadastrado no sistema."
+            )
+        )
 
         # CONVERSÃO PARA HORÁRIO LOCAL COM timezone.localtime
         data_inclusao_fmt = timezone.localtime(cliente.data_inclusao).strftime("%d/%m/%Y %H:%M") if cliente.data_inclusao else "-"
@@ -926,11 +938,42 @@ def cadastrar_cliente(request):
 def editar_cliente(request, cliente_id):
     try:
         cliente = get_object_or_404(Cliente, id=cliente_id)
+
+        # Guarda os dados originais antes da edição
+        dados_originais = {
+            "tipo_cliente": cliente.tipo_cliente,
+            "nome": cliente.nome,
+            "razao_social": cliente.razao_social,
+            "cnpj": cliente.cnpj,
+            "rg": cliente.rg,
+            "cpf": cliente.cpf,
+            "email": cliente.email,
+            "telefone": cliente.telefone,
+            "cnh": cliente.cnh,
+            "categoria_cnh": cliente.categoria_cnh,
+            "emissao_cnh": cliente.emissao_cnh,
+            "vencimento_cnh": cliente.vencimento_cnh,
+            "cep": cliente.cep,
+            "estado": cliente.estado,
+            "endereco": cliente.endereco,
+            "numero": cliente.numero,
+            "complemento": cliente.complemento,
+            "cidade": cliente.cidade,
+            "bairro": cliente.bairro,
+            "status": cliente.status,
+            "categoria": cliente.categoria,
+            "modo_valor_gasto": cliente.modo_valor_gasto,
+            "valor_gasto": cliente.valor_gasto,
+            "ultima_atualizacao": cliente.ultima_atualizacao,
+            "ultima_compra": cliente.ultima_compra,
+        }
+
         tipo_cliente = request.POST.get("tipo_cliente", "").strip()
 
         # =========================================================
         # 1. CAPTURA DOS CAMPOS SENSÍVEIS (NORMALIZADOS)
         # =========================================================
+
         # 1. Modo do Valor Gasto
         modo_post = request.POST.get("modo_valor_gasto", "").strip()
         modo_original = cliente.modo_valor_gasto or "Automático (somar produtos)"
@@ -944,135 +987,319 @@ def editar_cliente(request, cliente_id):
             .replace(",", ".")
             .strip()
         )
+
         alterou_valor = False
         novo_valor_gasto = cliente.valor_gasto
 
         if valor_raw:
             try:
                 valor_convertido = Decimal(valor_raw)
-                # Só considera alteração se o valor numérico for diferente do banco
+
                 if abs(valor_convertido - cliente.valor_gasto) > Decimal("0.001"):
                     alterou_valor = True
                     novo_valor_gasto = valor_convertido
+
             except Exception:
                 pass
 
-        # 3. Datas Sensíveis (Última Compra e Última Atualização)
+        # 3. Datas Sensíveis
         data_atualizacao_original_str = (
             timezone.localtime(cliente.ultima_atualizacao).strftime("%d/%m/%Y %H:%M")
-            if cliente.ultima_atualizacao else "-"
+            if cliente.ultima_atualizacao
+            else "-"
         )
+
         data_compra_original_str = (
             timezone.localtime(cliente.ultima_compra).strftime("%d/%m/%Y %H:%M")
-            if cliente.ultima_compra else "-"
+            if cliente.ultima_compra
+            else "-"
         )
 
-        data_atualizacao_post = request.POST.get("ultima_atualizacao", "").strip()
-        data_compra_post = request.POST.get("ultima_compra", "").strip()
+        data_atualizacao_post = request.POST.get(
+            "ultima_atualizacao",
+            ""
+        ).strip()
 
-        alterou_data_atualizacao = bool(data_atualizacao_post and data_atualizacao_post != data_atualizacao_original_str)
-        alterou_data_compra = bool(data_compra_post and data_compra_post != data_compra_original_str)
+        data_compra_post = request.POST.get(
+            "ultima_compra",
+            ""
+        ).strip()
+
+        alterou_data_atualizacao = bool(
+            data_atualizacao_post
+            and data_atualizacao_post != data_atualizacao_original_str
+        )
+
+        alterou_data_compra = bool(
+            data_compra_post
+            and data_compra_post != data_compra_original_str
+        )
 
         # =========================================================
         # 2. CHECK SE REALMENTE ALTEROU ALGUM DOS 4 SENSÍVEIS
         # =========================================================
+
         alterou_dados_sensiveis = (
-            alterou_modo or
-            alterou_valor or
-            alterou_data_atualizacao or
-            alterou_data_compra
+            alterou_modo
+            or alterou_valor
+            or alterou_data_atualizacao
+            or alterou_data_compra
         )
 
         # =========================================================
-        # 3. VALIDAÇÃO DE SENHA (SOMENTE SE ALTEROU DADOS SENSÍVEIS)
+        # 3. VALIDAÇÃO DE SENHA
         # =========================================================
+
         if alterou_dados_sensiveis:
-            senha_confirmacao = request.POST.get("senha_confirmacao", "").strip()
+
+            senha_confirmacao = request.POST.get(
+                "senha_confirmacao",
+                ""
+            ).strip()
 
             if not senha_confirmacao:
                 return JsonResponse({
                     "sucesso": False,
-                    "mensagem": "Campos de dados sensíveis foram alterados. Por favor, informe sua senha para prosseguir."
+                    "mensagem": (
+                        "Campos de dados sensíveis foram alterados. "
+                        "Por favor, informe sua senha para prosseguir."
+                    )
                 }, status=400)
 
             if not request.user.check_password(senha_confirmacao):
                 return JsonResponse({
                     "sucesso": False,
-                    "mensagem": "Senha incorreta. A alteração de dados sensíveis foi bloqueada."
+                    "mensagem": (
+                        "Senha incorreta. "
+                        "A alteração de dados sensíveis foi bloqueada."
+                    )
                 }, status=403)
 
         # =========================================================
-        # 4. ATUALIZAÇÃO DOS CAMPOS NORMAIS (CATEGORIA, NOME, ETC.)
+        # 4. ATUALIZAÇÃO DOS CAMPOS NORMAIS
         # =========================================================
+
         cliente.tipo_cliente = tipo_cliente
         cliente.nome = request.POST.get("nome", "").strip()
-        cliente.razao_social = request.POST.get("razao_social", "").strip() or None
+        cliente.razao_social = (
+            request.POST.get("razao_social", "").strip()
+            or None
+        )
+
         cliente.cnpj = (
             request.POST.get("cnpj", "").strip() or None
             if tipo_cliente == "juridico"
             else None
         )
+
         cliente.rg = request.POST.get("rg", "").strip() or None
         cliente.cpf = request.POST.get("cpf", "").strip() or None
         cliente.email = request.POST.get("email", "").strip() or None
         cliente.telefone = request.POST.get("telefone", "").strip()
 
         cliente.cnh = request.POST.get("cnh", "").strip() or None
-        cliente.categoria_cnh = request.POST.get("categoria_cnh", "").strip() or None
-        cliente.emissao_cnh = request.POST.get("emissao_cnh", "").strip() or None
-        cliente.vencimento_cnh = request.POST.get("vencimento_cnh", "").strip() or None
+
+        cliente.categoria_cnh = (
+            request.POST.get("categoria_cnh", "").strip()
+            or None
+        )
+
+        cliente.emissao_cnh = (
+            request.POST.get("emissao_cnh", "").strip()
+            or None
+        )
+
+        cliente.vencimento_cnh = (
+            request.POST.get("vencimento_cnh", "").strip()
+            or None
+        )
 
         cliente.cep = request.POST.get("cep", "").strip()
         cliente.estado = request.POST.get("estado", "").strip()
         cliente.endereco = request.POST.get("endereco", "").strip()
         cliente.numero = request.POST.get("numero", "").strip()
-        cliente.complemento = request.POST.get("complemento", "").strip() or None
+
+        cliente.complemento = (
+            request.POST.get("complemento", "").strip()
+            or None
+        )
+
         cliente.cidade = request.POST.get("cidade", "").strip()
         cliente.bairro = request.POST.get("bairro", "").strip()
-
         cliente.status = request.POST.get("status", "").strip()
-        
-        # Categoria do Cliente (Campo Normal)
         cliente.categoria = request.POST.get("categoria", "").strip()
 
-        # Atualiza os dados sensíveis caso tenham sido alterados e aprovados pela senha
+        # =========================================================
+        # ATUALIZA DADOS SENSÍVEIS
+        # =========================================================
+
         if modo_post:
             cliente.modo_valor_gasto = modo_post
+
         if alterou_valor:
             cliente.valor_gasto = novo_valor_gasto
 
+        # =========================================================
+        # SALVA CLIENTE
+        # =========================================================
+
         cliente.save()
 
+        # Atualização automática do valor gasto
         if cliente.modo_valor_gasto == "Automático (somar produtos)":
             cliente.atualizar_valor_gasto_automatico()
 
+        # Recarrega os dados atualizados do banco
+        cliente.refresh_from_db()
+
         # =========================================================
-        # 5. RETORNO DOS DADOS FORMATADOS
+        # 5. IDENTIFICA OS CAMPOS ALTERADOS
         # =========================================================
+
+        campos_alterados = []
+
+        if dados_originais["tipo_cliente"] != cliente.tipo_cliente:
+            campos_alterados.append("Tipo de cliente")
+
+        if dados_originais["nome"] != cliente.nome:
+            campos_alterados.append("Nome")
+
+        if dados_originais["razao_social"] != cliente.razao_social:
+            campos_alterados.append("Razão Social")
+
+        if dados_originais["cnpj"] != cliente.cnpj:
+            campos_alterados.append("CNPJ")
+
+        if dados_originais["rg"] != cliente.rg:
+            campos_alterados.append("RG")
+
+        if dados_originais["cpf"] != cliente.cpf:
+            campos_alterados.append("CPF")
+
+        if dados_originais["email"] != cliente.email:
+            campos_alterados.append("E-mail")
+
+        if dados_originais["telefone"] != cliente.telefone:
+            campos_alterados.append("Telefone")
+
+        if dados_originais["cnh"] != cliente.cnh:
+            campos_alterados.append("CNH")
+
+        if dados_originais["categoria_cnh"] != cliente.categoria_cnh:
+            campos_alterados.append("Categoria da CNH")
+
+        if dados_originais["emissao_cnh"] != cliente.emissao_cnh:
+            campos_alterados.append("Emissão da CNH")
+
+        if dados_originais["vencimento_cnh"] != cliente.vencimento_cnh:
+            campos_alterados.append("Vencimento da CNH")
+
+        if dados_originais["cep"] != cliente.cep:
+            campos_alterados.append("CEP")
+
+        if dados_originais["estado"] != cliente.estado:
+            campos_alterados.append("Estado")
+
+        if dados_originais["endereco"] != cliente.endereco:
+            campos_alterados.append("Endereço")
+
+        if dados_originais["numero"] != cliente.numero:
+            campos_alterados.append("Número")
+
+        if dados_originais["complemento"] != cliente.complemento:
+            campos_alterados.append("Complemento")
+
+        if dados_originais["cidade"] != cliente.cidade:
+            campos_alterados.append("Cidade")
+
+        if dados_originais["bairro"] != cliente.bairro:
+            campos_alterados.append("Bairro")
+
+        if dados_originais["status"] != cliente.status:
+            campos_alterados.append("Status")
+
+        if dados_originais["categoria"] != cliente.categoria:
+            campos_alterados.append("Categoria")
+
+        if dados_originais["modo_valor_gasto"] != cliente.modo_valor_gasto:
+            campos_alterados.append("Modo do valor gasto")
+
+        if dados_originais["valor_gasto"] != cliente.valor_gasto:
+            campos_alterados.append("Valor gasto")
+
+        if dados_originais["ultima_atualizacao"] != cliente.ultima_atualizacao:
+            campos_alterados.append("Última atualização")
+
+        if dados_originais["ultima_compra"] != cliente.ultima_compra:
+            campos_alterados.append("Última compra")
+
+        # =========================================================
+        # 6. REGISTRA HISTÓRICO DE EDIÇÃO
+        # =========================================================
+
+        if campos_alterados:
+
+            campos_formatados = ", ".join(campos_alterados)
+
+            ClienteHistorico.objects.create(
+                cliente=cliente,
+                usuario=request.user,
+                nome_cliente=cliente.nome,
+                tipo_cliente=cliente.tipo_cliente,
+                acao="Edição",
+                descricao=(
+                    f"Cliente {cliente.nome} foi editado no sistema. "
+                    f"Campos alterados: {campos_formatados}."
+                )
+            )
+
+        # =========================================================
+        # 7. RETORNO DOS DADOS FORMATADOS
+        # =========================================================
+
         data_inclusao_fmt = (
-            timezone.localtime(cliente.data_inclusao).strftime("%d/%m/%Y %H:%M")
+            timezone.localtime(cliente.data_inclusao).strftime(
+                "%d/%m/%Y %H:%M"
+            )
             if cliente.data_inclusao
             else "-"
         )
+
         data_atualizacao_fmt = (
-            timezone.localtime(cliente.ultima_atualizacao).strftime("%d/%m/%Y %H:%M")
+            timezone.localtime(cliente.ultima_atualizacao).strftime(
+                "%d/%m/%Y %H:%M"
+            )
             if cliente.ultima_atualizacao
             else "-"
         )
+
         ultima_compra_fmt = (
-            timezone.localtime(cliente.ultima_compra).strftime("%d/%m/%Y %H:%M")
+            timezone.localtime(cliente.ultima_compra).strftime(
+                "%d/%m/%Y %H:%M"
+            )
             if cliente.ultima_compra
             else "-"
         )
 
         emissao_cnh_fmt = (
-            cliente.emissao_cnh.strftime("%d/%m/%Y") if cliente.emissao_cnh else "-"
+            cliente.emissao_cnh.strftime("%d/%m/%Y")
+            if cliente.emissao_cnh
+            else "-"
         )
+
         vencimento_cnh_fmt = (
-            cliente.vencimento_cnh.strftime("%d/%m/%Y") if cliente.vencimento_cnh else "-"
+            cliente.vencimento_cnh.strftime("%d/%m/%Y")
+            if cliente.vencimento_cnh
+            else "-"
         )
-        # Formata com separador de milhar '.' e decimal ',' (ex: 144.522,21)
-        valor_gasto_fmt = f"{cliente.valor_gasto:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+        # Formata com separador de milhar '.' e decimal ','
+        valor_gasto_fmt = (
+            f"{cliente.valor_gasto:,.2f}"
+            .replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
+        )
 
         return JsonResponse({
             "sucesso": True,
@@ -1091,8 +1318,16 @@ def editar_cliente(request, cliente_id):
                 "categoria_cnh": cliente.categoria_cnh or "-",
                 "emissao_cnh": emissao_cnh_fmt,
                 "vencimento_cnh": vencimento_cnh_fmt,
-                "emissao_cnh_raw": cliente.emissao_cnh.strftime("%Y-%m-%d") if cliente.emissao_cnh else "",
-                "vencimento_cnh_raw": cliente.vencimento_cnh.strftime("%Y-%m-%d") if cliente.vencimento_cnh else "",
+                "emissao_cnh_raw": (
+                    cliente.emissao_cnh.strftime("%Y-%m-%d")
+                    if cliente.emissao_cnh
+                    else ""
+                ),
+                "vencimento_cnh_raw": (
+                    cliente.vencimento_cnh.strftime("%Y-%m-%d")
+                    if cliente.vencimento_cnh
+                    else ""
+                ),
                 "telefone": cliente.telefone or "-",
                 "cep": cliente.cep or "-",
                 "endereco": cliente.endereco or "-",
@@ -1112,21 +1347,44 @@ def editar_cliente(request, cliente_id):
 
     except Exception as erro:
         print(f"Erro ao editar cliente: {erro}")
+
         return JsonResponse(
-            {"sucesso": False, "mensagem": f"Erro interno: {str(erro)}"}, status=500
+            {
+                "sucesso": False,
+                "mensagem": f"Erro interno: {str(erro)}"
+            },
+            status=500
         )
+
+
+        
 @login_required
 @require_POST
 def excluir_cliente(request, cliente_id):
     try:
         cliente = get_object_or_404(Cliente, id=cliente_id)
         nome_cliente = cliente.nome
+        tipo_cliente = cliente.tipo_cliente
+
+        ClienteHistorico.objects.create(
+            cliente=cliente,
+            usuario=request.user,
+            nome_cliente=nome_cliente,
+            tipo_cliente=tipo_cliente,
+            acao="Exclusão",
+            descricao=(
+                f"Cliente {nome_cliente} "
+                f"foi excluído do sistema."
+            )
+        )
+
         cliente.delete()
 
         return JsonResponse({
             "sucesso": True,
             "mensagem": f"O cliente '{nome_cliente}' foi excluído com sucesso!"
         })
+
     except Exception as erro:
         print(f"Erro ao excluir cliente: {erro}")
         return JsonResponse({

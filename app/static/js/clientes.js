@@ -61,6 +61,18 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
     const btnMarcarClientes = document.getElementById("btnMarcarClientes");
 
+    /* =====================================================
+        HISTÓRICO CLIENTES
+    ===================================================== */
+    const btnHistoricoClientes = document.getElementById("btnHistoricoClientes");
+    /* =====================================================
+    ELEMENTOS DO MODAL DE HISTÓRICO
+    ===================================================== */
+    const modalHistoricoElement = document.getElementById("modalHistoricoClientes");
+
+    const modalHistorico = modalHistoricoElement? bootstrap.Modal.getOrCreateInstance(modalHistoricoElement): null;
+
+
     let modoMarcarClientes = false;
     let clienteSelecionadoTr = null;
     let clientesSelecionados = new Set();
@@ -3001,6 +3013,124 @@ document.addEventListener("DOMContentLoaded", () => {
                     "ativo",
                     modoMarcarClientes
                 );
+            }
+        );
+    }
+
+    function obterTipoClienteAtivo() {
+        const paginaJuridicos =document.getElementById("juridicos");
+
+        const paginaFisicos = document.getElementById("fisicos");
+
+        if (
+            paginaJuridicos &&
+            paginaJuridicos.classList.contains("ativa")
+        ) {
+            return "juridico";
+        }
+
+        if (
+            paginaFisicos &&
+            paginaFisicos.classList.contains("ativa")
+        ) {
+            return "fisico";
+        }
+
+        return null;
+    }
+
+    async function carregarHistoricoClientes() {
+        const tipoCliente = obterTipoClienteAtivo();
+
+        if (!tipoCliente) {
+            mostrarAlerta(
+                "Não foi possível identificar o tipo de cliente.",
+                "erro"
+            );
+
+            return;
+        }
+
+        try {
+            const resposta = await fetch(
+                `/clientes/historico/?tipo_cliente=${tipoCliente}`
+            );
+
+            const resultado = await resposta.json();
+
+            console.log("Resposta histórico clientes:", resultado);
+
+            if (!resposta.ok || !resultado.sucesso) {
+                mostrarAlerta(
+                    resultado.mensagem ||
+                    resultado.erro ||
+                    "Não foi possível carregar o histórico.",
+                    "erro"
+                );
+
+                return;
+            }
+
+            const tbodyHistorico =
+                document.getElementById(
+                    "tbodyHistoricoClientes"
+                );
+
+            if (!tbodyHistorico) {
+                console.error(
+                    "Tabela do histórico não encontrada."
+                );
+
+                return;
+            }
+
+            tbodyHistorico.innerHTML =
+                resultado.html || `
+                    <tr class="linha-vazia-historico-clientes">
+                        <td colspan="6">
+                            <div class="sem-registros-content-historico-clientes">
+                                <i class="fa-solid fa-user-clock"></i>
+                                <p>Nenhum registro de histórico de clientes encontrado.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+
+            const contador = document.getElementById("contadorSelecionadosHistoricoClientes");
+
+            if (contador) {
+                contador.textContent ="0 itens selecionados";
+            }
+
+            const modalElement = document.getElementById("modalHistoricoClientes");
+
+            if (modalElement) {
+                const modal =
+                    bootstrap.Modal.getOrCreateInstance(
+                        modalElement
+                    );
+
+                modal.show();
+            }
+
+        } catch (erro) {
+            console.error(
+                "Erro ao carregar histórico:",
+                erro
+            );
+
+            mostrarAlerta(
+                "Ocorreu um erro ao carregar o histórico.",
+                "erro"
+            );
+        }
+    }
+
+    if (btnHistoricoClientes) {
+        btnHistoricoClientes.addEventListener(
+            "click",
+            () => {
+                carregarHistoricoClientes();
             }
         );
     }

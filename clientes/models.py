@@ -2,14 +2,13 @@ from django.db import models
 from django.db.models import Sum
 from decimal import Decimal
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Cliente(models.Model):
-
     # =====================================================
     # IDENTIFICAÇÃO
     # =====================================================
-    
     TIPO_CLIENTE_CHOICES = [
         ('fisico', 'Pessoa Física'),
         ('juridico', 'Pessoa Jurídica'),
@@ -198,16 +197,69 @@ class Cliente(models.Model):
                 total_acumulado=Sum('total_com_desconto')
             )
             
-            # Acessa a chave correta definida no aggregate
-            self.valor_gasto = resultado.get('total_acumulado') or Decimal("0.00")
+            self.valor_gasto = resultado.get(
+                'total_acumulado'
+            ) or Decimal("0.00")
             
-            # Pega a data do produto mais recente cadastrado
-            ultimo_produto = self.produtos.order_by("-id").first()
+            ultimo_produto = self.produtos.order_by(
+                "-id"
+            ).first()
+
             if ultimo_produto:
-                # Registra a data e hora exatas do momento da compra/cadastro
                 self.ultima_compra = timezone.now()
             else:
                 self.ultima_compra = None
 
-            # Salva os campos atualizados no banco
-            self.save(update_fields=['valor_gasto', 'ultima_compra', 'ultima_atualizacao'])
+            self.save(
+                update_fields=[
+                    'valor_gasto',
+                    'ultima_compra',
+                    'ultima_atualizacao'
+                ]
+            )
+
+
+# =====================================================
+# HISTÓRICO DO CLIENTE
+# =====================================================
+
+class ClienteHistorico(models.Model):
+    cliente = models.ForeignKey(
+        Cliente,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="historico"
+    )
+
+    nome_cliente = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True
+    )
+    
+    usuario = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True
+    )
+
+    tipo_cliente = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True
+    )
+
+    acao = models.CharField(
+        max_length=100
+    )
+
+    descricao = models.TextField()
+
+    data = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"{self.nome_cliente} - {self.acao}"
