@@ -1,0 +1,689 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/usuarios.css' %}">
+<script src="{% static 'js/usuarios.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+
+{% csrf_token %}
+
+<!-- BARRA VERTICAL MOBILE -->
+<div class="dashboard-sidebar-bar">
+    <button class="btn-menu-mobile"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#menuLateral">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</div>
+
+<!-- PÁGINA DE Verificar Usuários -->
+<div class="dashboard-page-verificar-usuarios">
+    <!-- TOPO -->
+    <div class="dashboard-topbar-verificar-usuarios">
+        <div>
+            <h1>Usuários</h1>
+            <p>Gerencie usuários, permissões de acesso e acompanhe os usuários ativos e inativos do sistema.</p>
+        </div>
+    </div>
+
+    <!-- CONTAINER PRINCIPAL COM GRID DE 2 COLUNAS -->
+    <div class="verificar-usuarios-grid-layout">
+
+        <!-- COLUNA ESQUERDA: PAINEIS DE TABELAS -->
+        <div class="main-content-verificar-usuarios">
+
+            <!-- CARD 1: USUÁRIOS ATIVOS -->
+            <div class="dashboard-card-verificar-usuarios">
+                <div class="verificar-usuarios-header">
+                    <div>
+                        <h2>Usuários ativos</h2>
+                    </div>
+
+                    <div class="verificar-usuarios-acoes-topo">
+                        <button type="button" class="btn-verificar-usuarios-outline" id="btnAbrirModalExportarExcel">
+                            <i class="fa-regular fa-file-excel"></i> Exportar Excel
+                        </button>
+                        <button class="btn-verificar-usuarios-outline" id="btnAbrirModalExportarPdf">
+                            <i class="fa-regular fa-file-pdf"></i> Exportar PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- BARRA DE PESQUISA: USUÁRIOS ATIVOS -->
+                <div class="verificar-usuarios-search-bar">
+                    <div class="input-search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input 
+                            type="text" 
+                            id="inputPesquisaAtivos" 
+                            class="input-pesquisa-tabela" 
+                            placeholder="Pesquisar por nome, usuário, e-mail ou CPF..." 
+                            autocomplete="off">
+                    </div>
+                    <button type="button" class="btn-pesquisar-tabela" id="btnPesquisarAtivos">
+                        <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
+                    </button>
+                </div>
+
+                <!-- TABELA 1: USUÁRIOS ATIVOS -->
+                <div class="verificar-usuarios-table-container">
+                    <table class="verificar-usuarios-table">
+                        <thead>
+                            <tr>
+                                <th>NOME</th>
+                                <th>USUÁRIO</th>
+                                <th>CEP</th>
+                                <th>ENDEREÇO</th>
+                                <th>NÚMERO</th>
+                                <th>CIDADE</th>
+                                <th>BAIRRO</th>
+                                <th>ESTADO</th>
+                                <th>COMPLEMENTO</th>
+                                <th>TELEFONE</th>
+                                <th>E-MAIL</th>
+                                <th>DATA DE NASCIMENTO</th>
+                                <th>RG</th>
+                                <th>CPF</th>
+                                <th>CNPJ</th>
+                                <th>ÚLTIMA TROCA DE SENHA</th>
+                                <th>DATA DA SENHA CADASTRADA</th>
+                                <th>DATA DA INCLUSÃO DO USUÁRIO</th>
+                                <th>SEGREDO</th>
+                                <th>USUÁRIO LOGADO</th>
+                                <th>ACESSO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyUsuariosAtivos">
+                            {% if usuarios %}
+                                {% for usuario in usuarios %}
+                                <tr class="linha-usuario-ativo" data-usuario-id="{{ usuario.id }}">
+                                    <td><strong>{{ usuario.get_full_name|default:usuario.username }}</strong></td>
+                                    <td>{{ usuario.username }}</td>
+                                    <td>{{ usuario.perfil.cep|default:"Não informado" }}</td>
+                                    <td>{{ usuario.perfil.endereco|default:"Não informado" }}</td>
+                                    <td>{{ usuario.perfil.numero|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.cidade|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.bairro|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.estado|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.complemento|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.telefone|default:"—" }}</td>
+                                    <td>{{ usuario.email|default:"Não informado" }}</td>
+                                    <td>{% if usuario.perfil.data_nascimento %}{{ usuario.perfil.data_nascimento|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+                                    <td>{{ usuario.perfil.rg|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.cpf|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.cnpj|default:"—" }}</td>
+                                    <td>{% if usuario.perfil.ultima_troca_senha %}{{ usuario.perfil.ultima_troca_senha|date:"d/m/Y H:i" }}{% else %}Nunca alterada{% endif %}</td>
+                                    <td>{% if usuario.perfil.data_senha_cadastrada %}{{ usuario.perfil.data_senha_cadastrada|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                                    <td>{% if usuario.date_joined %}{{ usuario.date_joined|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                                    <td>{{ usuario.perfil.segredo|default:"—" }}</td>
+                                    <td>
+                                        {% if usuario.id == usuario_atual_id %}
+                                            <span class="status-badge logado">{{ request.user.username }}</span>
+                                        {% else %}
+                                            <span class="texto-sem-dado">{{ request.user.username }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if usuario.perfil.acesso %}
+                                            {{ usuario.perfil.acesso }}
+                                        {% elif usuario.is_superuser %}
+                                            Administrador
+                                        {% else %}
+                                            Usuário Comum
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="21" class="sem-registros-verificar-usuarios">
+                                        <div class="sem-registros-content">
+                                            <i class="fa-solid fa-users-slash"></i>
+                                            <p>Nenhum usuário ativo encontrado.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CARD 2: USUÁRIOS INATIVOS -->
+            <div class="dashboard-card-verificar-usuarios">
+                <div class="verificar-usuarios-header">
+                    <div>
+                        <h2>Usuários Inativos</h2>
+                    </div>
+                </div>
+
+                <!-- BARRA DE PESQUISA: USUÁRIOS INATIVOS -->
+                <div class="verificar-usuarios-search-bar">
+                    <div class="input-search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input 
+                            type="text" 
+                            id="inputPesquisaInativos" 
+                            class="input-pesquisa-tabela" 
+                            placeholder="Pesquisar por nome, usuário, e-mail ou CPF..." 
+                            autocomplete="off">
+                    </div>
+                    <button type="button" class="btn-pesquisar-tabela" id="btnPesquisarInativos">
+                        <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
+                    </button>
+                </div>
+
+                <!-- TABELA 2: USUÁRIOS INATIVOS -->
+                <div class="verificar-usuarios-table-container">
+                    <table class="verificar-usuarios-table">
+                        <thead>
+                            <tr>
+                                <th>NOME</th>
+                                <th>USUÁRIO</th>
+                                <th>CEP</th>
+                                <th>ENDEREÇO</th>
+                                <th>NÚMERO</th>
+                                <th>CIDADE</th>
+                                <th>BAIRRO</th>
+                                <th>ESTADO</th>
+                                <th>COMPLEMENTO</th>
+                                <th>TELEFONE</th>
+                                <th>E-MAIL</th>
+                                <th>DATA DE NASCIMENTO</th>
+                                <th>RG</th>
+                                <th>CPF</th>
+                                <th>CNPJ</th>
+                                <th>ÚLTIMA TROCA DE SENHA</th>
+                                <th>DATA DA SENHA CADASTRADA</th>
+                                <th>DATA DA INCLUSÃO DO USUÁRIO</th>
+                                <th>DATA DA INATIVIDADE DO USUÁRIO</th>
+                                <th>SEGREDO</th>
+                                <th>USUÁRIO LOGADO</th>
+                                <th>ACESSO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyUsuariosInativos">
+                            {% if usuarios_inativos %}
+                                {% for usuario in usuarios_inativos %}
+                                <tr data-usuario-id="{{ usuario.id }}">
+                                    <td><strong>{{ usuario.get_full_name|default:usuario.username }}</strong></td>
+                                    <td>{{ usuario.username }}</td>
+                                    <td>{{ usuario.perfil.cep|default:"Não informado" }}</td>
+                                    <td>{{ usuario.perfil.endereco|default:"Não informado" }}</td>
+                                    <td>{{ usuario.perfil.numero|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.cidade|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.bairro|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.estado|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.complemento|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.telefone|default:"—" }}</td>
+                                    <td>{{ usuario.email|default:"Não informado" }}</td>
+                                    <td>{% if usuario.perfil.data_nascimento %}{{ usuario.perfil.data_nascimento|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+                                    <td>{{ usuario.perfil.rg|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.cpf|default:"—" }}</td>
+                                    <td>{{ usuario.perfil.cnpj|default:"—" }}</td>
+                                    <td>{% if usuario.perfil.ultima_troca_senha %}{{ usuario.perfil.ultima_troca_senha|date:"d/m/Y H:i" }}{% else %}Nunca alterada{% endif %}</td>
+                                    <td>{% if usuario.perfil.data_senha_cadastrada %}{{ usuario.perfil.data_senha_cadastrada|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                                    <td>{% if usuario.date_joined %}{{ usuario.date_joined|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                                    <td>{% if usuario.perfil.data_inatividade %}{{ usuario.perfil.data_inatividade|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                                    <td>{{ usuario.perfil.segredo|default:"—" }}</td>
+                                    <td>
+                                        {% if usuario == request.user %}
+                                            <span class="status-badge logado">Sim</span>
+                                        {% else %}
+                                            <span class="texto-sem-dado">Não</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if usuario.perfil.acesso %}
+                                            {{ usuario.perfil.acesso }}
+                                        {% elif usuario.is_superuser %}
+                                            Administrador
+                                        {% else %}
+                                            Usuário Comum
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="22" class="sem-registros-verificar-usuarios">
+                                        <div class="sem-registros-content">
+                                            <i class="fa-solid fa-users-slash"></i>
+                                            <p>Nenhum usuário inativo encontrado.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COLUNA DIREITA: BARRA DE AÇÕES LATERAIS -->
+        <div class="verificar-usuarios-side-actions">
+            <a href="{% url 'cadastrar_usuarios' %}" class="btn-side-action">
+                <i class="fa-regular fa-circle-plus"></i> Novo Usuário
+            </a>
+            <button type="button" class="btn-side-action" id="btnAtualizarAtivos">
+                <i class="fa-solid fa-rotate"></i> Atualizar Ativos
+            </button>
+            <button type="button" class="btn-side-action" id="btnAtualizarInativos">
+                <i class="fa-solid fa-rotate"></i> Atualizar Inativos
+            </button>
+            <button type="button" class="btn-side-action" id="btnGerarSaida">
+                <i class="fa-regular fa-trash-can"></i> Gerar Saída
+            </button>
+            <button type="button" class="btn-side-action" id="btnAbrirHistorico">
+                <i class="fa-regular fa-calendar-days"></i> Histórico
+            </button>
+            <button type="button" id="btnLimparTabelas" class="btn-side-action">
+                <i class="fa-regular fa-trash-can"></i> Limpar Tabelas
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE CONFIRMAÇÃO IRREVERSÍVEL (GERAR SAÍDA)
+====================================================== -->
+<div class="modal fade" id="modalConfirmarSaida" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-aviso-irreversivel-content">
+            <div class="modal-aviso-irreversivel-header">
+                <div class="modal-aviso-irreversivel-icon">
+                    <i class="fa-solid fa-shield-alt"></i>
+                </div>
+                <button type="button" class="btn-modal-fechar-aviso-irreversivel" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body modal-aviso-irreversivel-body text-center">
+                <h4>Gerar Saída do Usuário?</h4>
+                <p>
+                    Esta ação é <strong>irreversível</strong>. O usuário será inativado permanentemente e movido para a tabela de inativos.
+                </p>
+                <div class="alert alert-dark text-start py-2 px-3 small border-secondary">
+                    <span class="texto-usuario-selecionado">Usuário selecionado:</span> <strong id="nomeUsuarioSaidaModal"></strong>
+                </div>
+            </div>
+            <div class="modal-aviso-irreversivel-footer">
+                <button type="button" class="btn-cancelar-irreversivel" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnConfirmarSaidaDefinitiva" class="btn-confirmar-irreversivel">
+                    Confirmar Saída
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE HISTÓRICO DE AÇÕES DE USUÁRIOS
+====================================================== -->
+<div class="modal fade" id="modalHistoricoUsuarios" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content modal-historico-content">
+            
+            <!-- HEADER -->
+            <div class="modal-historico-header">
+                <div class="modal-historico-titulo-box">
+                    <div class="modal-historico-icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <div>
+                        <h3 class="modal-historico-titulo">Histórico de Atividades</h3>
+                        <p class="modal-historico-subtitulo">Registro detalhado de ações, saídas e alterações de usuários no sistema</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-modal-fechar-historico" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- TOOLBAR DE AÇÕES (8 BOTÕES) -->
+            <div class="modal-historico-toolbar">
+                <div class="modal-historico-toolbar-acoes">
+                    <button type="button" class="btn-historico-acao btn-historico-atualizar" id="btnAtualizarHistorico">
+                        <i class="fa-solid fa-rotate"></i> Atualizar histórico
+                    </button>
+                    <button type="button" class="btn-historico-acao btn-historico-perigo" id="btnApagarHistorico">
+                        <i class="fa-regular fa-trash-can"></i> Apagar histórico
+                    </button>
+                    <button type="button" class="btn-historico-acao btn-historico-exportar-csv" id="btnExportarCsvHistorico">
+                        <i class="fa-solid fa-file-csv"></i> Exportar CSV
+                    </button>
+                    <button type="button" class="btn-historico-acao btn-historico-exportar-excel" id="btnExportarExcelHistorico">
+                        <i class="fa-regular fa-file-excel"></i> Exportar Excel
+                    </button>
+                    <button type="button" class="btn-historico-acao btn-historico-exportar-pdf" id="btnExportarPdfHistorico">
+                        <i class="fa-regular fa-file-pdf"></i> Exportar PDF
+                    </button>
+                    <button type="button" class="btn-historico-acao btn-historico-pausar" id="btnPausarHistorico">
+                        <i class="fa-solid fa-pause"></i> <span id="textoStatusPausaHistorico">Pausar histórico</span>
+                    </button>
+                    <button type="button" class="btn-historico-acao btn-historico-ordenar" id="btnOrdenarHistorico">
+                        <i class="fa-solid fa-arrow-down-a-z"></i> Ordenar histórico
+                    </button>
+                    <button type="button" class="btn-historico-acao btn-historico-filtrar" id="btnFiltrarHistorico">
+                        <i class="fa-solid fa-filter"></i> Filtrar histórico
+                    </button>
+                </div>
+            </div>
+
+            <!-- BODY COM TABELA E CHECKBOXES -->
+            <div class="modal-body modal-historico-body">
+                <div class="modal-historico-table-container">
+                    <table class="verificar-usuarios-table modal-historico-table">
+                        <thead>
+                            <tr>
+                                <th class="col-checkbox">
+                                    <input type="checkbox" id="checkAllHistorico" class="checkbox-custom-historico">
+                                </th>
+                                <th>DATA / HORA</th>
+                                <th>USUÁRIO</th>
+                                <th>AÇÃO</th>
+                                <th>DESCRIÇÃO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyHistoricoUsuarios">
+                            <tr class="linha-vazia-historico">
+                                <td colspan="5">
+                                    <div class="sem-registros-content-historico">
+                                        <i class="fa-solid fa-clock-rotate-left"></i>
+                                        <p>Nenhum registro de histórico encontrado.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-historico-footer">
+                <span class="contador-selecionados-historico" id="contadorSelecionadosHistorico">
+                    0 itens selecionados
+                </span>
+                <button type="button" class="btn-fechar-modal-historico-usuarios" data-bs-dismiss="modal">
+                    Fechar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE CONFIRMAÇÃO — APAGAR HISTÓRICO
+====================================================== -->
+<div class="modal fade" id="modalConfirmarApagarHistorico" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-confirmar-apagar-historico-dialog">
+        <div class="modal-content modal-confirmar-apagar-historico-content">
+            <div class="modal-confirmar-apagar-historico-header">
+                <div class="modal-confirmar-apagar-historico-icon">
+                    <i class="fa-regular fa-trash-can"></i>
+                </div>
+                <button type="button" class="btn-modal-fechar-apagar-historico" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-confirmar-apagar-historico-body text-center">
+                <h4 class="modal-confirmar-apagar-historico-titulo">Apagar Registro(s) do Histórico?</h4>
+                <p class="modal-confirmar-apagar-historico-descricao">
+                    Esta ação é <strong>irreversível</strong>. Os registros selecionados serão excluídos permanentemente da base de dados do sistema.
+                </p>
+                <div class="modal-confirmar-apagar-historico-alerta">
+                    <span class="modal-confirmar-apagar-historico-alerta-label">Quantidade selecionada:</span> 
+                    <strong id="qtdHistoricoApagarModal" class="modal-confirmar-apagar-historico-alerta-valor">0 itens</strong>
+                </div>
+            </div>
+
+            <div class="modal-confirmar-apagar-historico-footer">
+                <button type="button" class="btn-cancelar-apagar-historico" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" id="btnConfirmarApagarHistoricoDefinitivo" class="btn-confirmar-apagar-historico">
+                    <i class="fa-regular fa-trash-can"></i> Confirmar Exclusão
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE CONFIRMAÇÃO — PAUSAR / ATIVAR HISTÓRICO
+====================================================== -->
+<div class="modal fade" id="modalStatusPausaHistorico" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-status-pausa-historico-dialog">
+        <div class="modal-content modal-status-pausa-historico-content">
+            <div class="modal-status-pausa-historico-header">
+                <div class="modal-status-pausa-historico-icon">
+                    <i class="fa-solid fa-circle-pause"></i>
+                </div>
+                <button type="button" class="btn-modal-fechar-pausa-historico" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-status-pausa-historico-body text-center">
+                <h4 class="modal-status-pausa-historico-titulo">Gravação do Histórico</h4>
+                <p class="modal-status-pausa-historico-descricao">
+                    Deseja manter o registro de atividades do sistema <strong>ativo</strong>?
+                </p>
+
+                <div class="modal-status-pausa-historico-card-info">
+                    <span class="modal-status-pausa-historico-card-label">Status atual no sistema:</span>
+                    <span id="badgeStatusPausaAtual" class="modal-status-pausa-badge ativo">
+                        <i class="fa-solid fa-circle-check"></i> Gravando normalmente
+                    </span>
+                </div>
+
+                <small class="modal-status-pausa-historico-legenda">
+                    Clique em <strong>Sim</strong> para ativar ou em <strong>Não</strong> para pausar a gravação.
+                </small>
+            </div>
+
+            <div class="modal-status-pausa-historico-footer">
+                <button type="button" id="btnNaoPausarHistorico" class="btn-status-pausa-acao btn-status-pausa-nao">
+                    <i class="fa-solid fa-pause"></i> Não (Pausar)
+                </button>
+                <button type="button" id="btnSimAtivarHistorico" class="btn-status-pausa-acao btn-status-pausa-sim">
+                    <i class="fa-solid fa-play"></i> Sim (Ativar)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE ORDENAÇÃO — HISTÓRICO DE USUÁRIOS
+====================================================== -->
+<div class="modal fade" id="modalOrdenarHistoricoUsuarios" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-ordenar-historico-dialog">
+        <div class="modal-content modal-ordenar-historico-content">
+            <div class="modal-header modal-ordenar-historico-header">
+                <h5>
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Direção da Ordenação
+                </h5>
+                <button
+                    type="button"
+                    class="btn-modal-fechar-ordenar-historico"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-ordenar-historico-body">
+                <div class="campo campo-ordenar-historico">
+                    <label for="tipoOrdenacaoHistorico">Escolha a direção</label>
+                    <select id="tipoOrdenacaoHistorico">
+                        <option value="desc" selected>Decrescente (Mais recentes primeiro)</option>
+                        <option value="asc">Crescente (Mais antigos primeiro)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-ordenar-historico-footer">
+                <button
+                    type="button"
+                    class="btn-cancelar-ordenar-historico"
+                    data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button
+                    type="button"
+                    id="btnExecutarOrdenacaoHistorico"
+                    class="btn-confirmar-ordenar-historico">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Ordenar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE FILTRAGEM — HISTÓRICO DE ATIVIDADES
+====================================================== -->
+<div class="modal fade" id="modalFiltrarHistoricoUsuarios" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-filtrar-historico-dialog">
+        <div class="modal-content modal-filtrar-historico-content">
+            <div class="modal-filtrar-historico-header">
+                <div class="modal-filtrar-historico-titulo">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>Filtrar Histórico</span>
+                </div>
+                <button type="button" class="btn-modal-fechar-filtrar-historico" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-filtrar-historico-body">
+                <fieldset class="modal-filtrar-fieldset">
+                    <legend class="modal-filtrar-legend">Filtros Disponíveis</legend>
+                    <div class="modal-filtrar-campo">
+                        <input 
+                            type="text" 
+                            id="filtroDataHistorico" 
+                            class="modal-filtrar-input-data" 
+                            placeholder="formato DD/MM/AAAA..." 
+                            maxlength="10"
+                            autocomplete="off">
+                    </div>
+                </fieldset>
+
+                <fieldset class="modal-filtrar-fieldset">
+                    <legend class="modal-filtrar-legend">Filtrar por Hora</legend>
+                    <div class="modal-filtrar-radio-group">
+                        <label class="modal-filtrar-radio-label">
+                            <input type="radio" name="filtroOrdemHora" value="desc" checked class="modal-filtrar-radio">
+                            <span class="modal-filtrar-radio-custom"></span>
+                            <span>Mais Recente</span>
+                        </label>
+
+                        <label class="modal-filtrar-radio-label">
+                            <input type="radio" name="filtroOrdemHora" value="asc" class="modal-filtrar-radio">
+                            <span class="modal-filtrar-radio-custom"></span>
+                            <span>Mais Antigo</span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <button type="button" id="btnAplicarFiltroHistorico" class="btn-filtrar-historico-submit">
+                    Aplicar Filtro
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE EXPORTAÇÃO EXCEL (ESCOLHA DE TABELA)
+====================================================== -->
+<div class="modal fade" id="modalEscolhaExportarExcel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-exportar-excel-dialog">
+        <div class="modal-content modal-exportar-excel-content">
+            <div class="modal-header modal-exportar-excel-header">
+                <h5>
+                    <i class="fa-regular fa-file-excel"></i>
+                    Exportar para Excel
+                </h5>
+                <button type="button" class="btn-modal-fechar-exportar-excel" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-exportar-excel-body">
+                <div class="campo campo-exportar-excel">
+                    <label for="tipoExportacaoExcel">Selecione o que deseja exportar:</label>
+                    <select id="tipoExportacaoExcel">
+                        <option value="todos" selected>Ambas as Tabelas (Abas separadas)</option>
+                        <option value="ativos">Apenas Usuários Ativos</option>
+                        <option value="inativos">Apenas Usuários Inativos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-exportar-excel-footer">
+                <button type="button" class="btn-cancelar-exportar-excel" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" id="btnConfirmarExportarExcelUsuarios" class="btn-confirmar-exportar-excel">
+                    <i class="fa-solid fa-download"></i>
+                    Exportar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE EXPORTAÇÃO PDF (ESCOLHA DE TABELA)
+====================================================== -->
+<div class="modal fade" id="modalEscolhaExportarPdf" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-exportar-pdf-dialog">
+        <div class="modal-content modal-exportar-pdf-content">
+            <div class="modal-header modal-exportar-pdf-header">
+                <h5>
+                    <i class="fa-regular fa-file-pdf"></i>
+                    Exportar para PDF
+                </h5>
+                <button type="button" class="btn-modal-fechar-exportar-pdf" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-exportar-pdf-body">
+                <div class="campo campo-exportar-pdf">
+                    <label for="tipoExportacaoPdf">Selecione o que deseja exportar:</label>
+                    <select id="tipoExportacaoPdf">
+                        <option value="todos" selected>Ambas as Tabelas (Relatório Completo)</option>
+                        <option value="ativos">Apenas Usuários Ativos</option>
+                        <option value="inativos">Apenas Usuários Inativos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-exportar-pdf-footer">
+                <button type="button" class="btn-cancelar-exportar-pdf" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" id="btnConfirmarExportarPdfUsuarios" class="btn-confirmar-exportar-pdf">
+                    <i class="fa-solid fa-download"></i>
+                    Exportar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

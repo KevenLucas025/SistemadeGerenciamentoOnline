@@ -1,0 +1,1948 @@
+/*=====================================================
+PÁGINA CLIENTES
+=====================================================*/
+.dashboard-page-clientes{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    /* COMPENSAÇÃO DA SIDEBAR LATERAL DE 70PX */
+    margin-left: 70px; 
+    width: calc(100% - 70px);
+    height: 100%;
+    padding: 0px 20px 20px;
+    box-sizing: border-box;
+
+}
+
+/*=====================================================
+TOPBAR
+=====================================================*/
+.dashboard-topbar-clientes{
+    width:100%;
+    padding:10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;
+    height: 60px;
+}
+
+.dashboard-topbar-clientes h1{
+    margin:0;
+    color:#cecfd2;
+    font-size:20px;
+    font-weight:600;
+}
+
+.dashboard-topbar-clientes p{
+    margin:6px 0 0;
+    color:#94a3b8;
+    font-size:14px;
+}
+
+/*=====================================================
+CARD PRINCIPAL
+=====================================================*/
+.clientes-card{
+    background:#121824;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;
+    padding:22px 28px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+    overflow:hidden;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
+    flex: 1;
+
+}
+
+/*=====================================================
+HEADER
+=====================================================*/
+
+.clientes-header{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+/*=====================================================
+TABS
+=====================================================*/
+
+.clientes-tabs{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.btn-tab-cliente{
+    padding:12px 18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#1f2937;
+    color:#cbd5e1;
+    font-size:14px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transition:.25s;
+}
+
+.btn-tab-cliente:hover{
+    background:#273449;
+}
+
+.btn-tab-cliente.ativo{
+    background:#7c3aed;
+    color:#cecfd2;
+}
+
+/*=====================================================
+AÇÕES
+=====================================================*/
+
+.clientes-acoes{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    align-items:center;
+}
+
+/*=====================================================
+PESQUISA
+=====================================================*/
+
+.clientes-pesquisa{
+    position:relative;
+    min-width:320px;
+    flex:1;
+}
+
+.clientes-pesquisa input{
+    width:100%;
+    padding:12px 16px 12px 44px;
+    background:#1b2230;
+    border:1px solid #313b4e;
+    border-radius:10px;
+    color:#cecfd2;
+    outline:none;
+    transition:.25s;
+    box-sizing:border-box;
+}
+
+.clientes-pesquisa input:focus{
+    border-color:#7c3aed;
+    box-shadow:0 0 0 3px rgba(124,58,237,.15);
+}
+
+.clientes-pesquisa i{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#94a3b8;
+}
+
+/*=====================================================
+TABELA
+=====================================================*/
+
+.clientes-table-container{
+    flex:1;
+    min-height:0;
+    overflow:auto;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;
+}
+
+.clientes-table{
+    width:100%;
+    min-width:1600px;
+    border-collapse:collapse;
+}
+
+.clientes-table thead{
+    position:sticky;
+    top:0;
+    z-index:5;
+}
+
+.clientes-table th{
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: #111827;
+    color: #9ca3af;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 12px 16px;
+    border-bottom: 1px solid #374151;
+    text-align: left;
+}
+
+.clientes-table td{
+    padding:14px 12px;
+    color:#dbe3ef;
+    font-size:13px;
+    white-space:nowrap;
+}
+
+.clientes-table tbody tr{
+    transition:.2s;
+}
+
+
+
+.clientes-table td:first-child,
+.clientes-table th:first-child{
+    text-align:center;
+}
+
+.clientes-table::-webkit-scrollbar{
+    height:8px;
+}
+
+.clientes-table-container::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+.clientes-table-container::-webkit-scrollbar-thumb{
+    background:#4b5563;
+    border-radius:20px;
+}
+
+.clientes-table-container::-webkit-scrollbar-track{
+    background:#141b27;
+}
+
+/*=====================================================
+BADGES
+=====================================================*/
+
+.badge-pessoa{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.badge-pessoa.fisica{
+    background:rgba(59,130,246,.15);
+    color:#60a5fa;
+}
+
+.badge-pessoa.juridica{
+    background:rgba(34,197,94,.15);
+    color:#22c55e;
+}
+
+/*=====================================================
+AÇÕES DA TABELA
+=====================================================*/
+
+.clientes-acoes{
+    display:flex;
+    gap:8px;
+}
+
+.btn-tabela-editar,
+.btn-tabela-excluir{
+    width:36px;
+    height:36px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.25s;
+    color:#cecfd2;
+}
+
+.btn-tabela-editar{
+    background:#2563eb;
+}
+
+.btn-tabela-editar:hover{
+    background:#3b82f6;
+}
+
+.btn-tabela-excluir{
+    background:#dc2626;
+}
+
+.btn-tabela-excluir:hover{
+    background:#ef4444;
+}
+
+/*=====================================================
+PAGINAÇÃO
+=====================================================*/
+
+.clientes-paginacao{
+    margin-top:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.clientes-paginacao span{
+    color:#94a3b8;
+    font-size:13px;
+}
+
+.paginacao-botoes{
+    display:flex;
+    gap:10px;
+}
+
+.btn-paginacao{
+    padding:10px 16px;
+    background:#1b2230;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:8px;
+    color:#cecfd2;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.btn-paginacao:hover{
+    background:#7c3aed;
+    border-color:#7c3aed;
+}
+
+.btn-paginacao.ativo{
+    background:#7c3aed;
+    border-color:#7c3aed;
+}
+
+/*=====================================================
+SEM REGISTROS
+=====================================================*/
+
+.sem-registros-clientes{
+    text-align:center;
+    padding:0px !important;
+}
+
+.sem-registros-clientes td {
+    vertical-align: middle;
+    /* Faz a td ocupar a altura total disponível no container da tabela */
+    height: 100%; 
+}
+
+.sem-registros-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* Reduzido de 280px para 120px (ajuste o padding vertical conforme preferir) */
+    min-height: calc(100vh - 390px);
+    padding: 20px 0;
+    
+    color: #9ca3af;
+    text-align: center;
+    
+}
+
+.sem-registros-content i{
+    font-size: 32px; /* Reduzido de 48px para não ocupar muito espaço vertical */
+    margin-bottom: 10px; /* Espaçamento menor entre o ícone e o texto */
+    color: #6b7280;
+    
+}
+.sem-registros-content p{
+    margin: 0;
+    font-size: 14px;
+}
+/* Desativa hover e fundo da linha sem registros */
+.clientes-table tbody tr.sem-registros-clientes,
+.clientes-table tbody tr.sem-registros-clientes:hover,
+.clientes-table tbody tr.sem-registros-clientes td,
+.clientes-table tbody tr.sem-registros-clientes:hover td {
+    cursor: default !important;
+    background-color: transparent !important;
+    background: transparent !important;
+    border-bottom: none !important;
+    color: white;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-accent-bg: transparent !important;
+}
+
+/*=====================================================
+BOTÕES DE AÇÕES
+=====================================================*/
+.btn-cliente{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:11px 18px;
+    border:none;
+    border-radius:10px;
+    color:#cecfd2;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+    white-space:nowrap;
+    background: #1f2937;
+}
+
+.btn-cliente i{
+    font-size:13px;
+}
+
+.btn-cliente:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.08);
+}
+
+/* Criar */
+
+.btn-cliente.criar:hover{
+    background:#22c55e;
+}
+
+/* Editar */
+
+.btn-cliente.editar:hover{
+    background:#3b82f6;
+}
+
+/* Excluir */
+
+.btn-cliente.excluir:hover{
+    background:#ef4444;
+}
+
+/* Relatório */
+
+.btn-cliente.relatorio:hover{
+    background:#8b5cf6;
+}
+
+/* Marcar */
+
+.btn-cliente.marcar:hover{
+    background:#f59e0b;
+}
+
+/* Histórico */
+
+.btn-cliente.historico:hover{
+    background:#06b6d4;
+}
+
+.clientes-pagina{
+    display:none;
+    flex:1;
+    min-height:0;
+    flex-direction:column;
+    animation:fadeClientes .25s ease;
+}
+
+.clientes-pagina.ativa{
+    display:flex;
+}
+
+@keyframes fadeClientes{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/*=====================================================
+BOTÃO DA TAB ATIVA
+=====================================================*/
+
+.btn-tab-cliente{
+    transition:.25s;
+}
+
+.btn-tab-cliente.ativo{
+    background:#7c3aed;
+    color:#cecfd2;
+    box-shadow:0 6px 18px rgba(124,58,237,.30);
+}
+
+/* =====================================================
+   MODAL — EDITAR CADASTRO CLIENTE
+===================================================== */
+#modalEditarCadastroCliente .modal-dialog {
+    max-width: 900px;
+    width: 95%;
+}
+
+#modalEditarCadastroCliente .modal-content {
+    background: #111827;
+    color: #cecfd2;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+
+#modalEditarCadastroCliente .modal-header {
+    background: #111827;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 22px;
+}
+
+#modalEditarCadastroCliente .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #cecfd2;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#modalEditarCadastroCliente .modal-title i {
+    color: #8b5cf6;
+}
+
+
+#modalEditarCadastroCliente .modal-body {
+    background: #111827;
+    padding: 24px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+
+#modalEditarCadastroCliente .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#modalEditarCadastroCliente .campo label {
+    color: #cecfd2;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+#modalEditarCadastroCliente .campo input,
+#modalEditarCadastroCliente .campo select {
+    width: 100%;
+    height: 40px;
+
+    padding: 8px 11px;
+
+    box-sizing: border-box;
+
+    background: #1b2432;
+    border: 1px solid #334155;
+    border-radius: 8px;
+
+    color: #cecfd2;
+
+    outline: none;
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+#modalEditarCadastroCliente .campo input::placeholder {
+    color: #64748b;
+}
+
+#modalEditarCadastroCliente .campo input:focus,
+#modalEditarCadastroCliente .campo select:focus {
+    border-color: #7c3aed;
+
+    box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+#modalEditarCadastroCliente .campo-grande {
+    grid-column: span 2;
+}
+
+
+
+#modalEditarCadastroCliente .modal-footer {
+    background: #111827;
+    border-top:1px solid rgba(255, 255, 255, 0.08);
+    padding: 14px 22px;
+}
+
+
+/* =====================================================
+   MODAL — CADASTRO DE CLIENTE
+===================================================== */
+#modalCadastrarCliente .modal-dialog {
+    max-width: 900px;
+    width: 95%;
+}
+
+#modalCadastrarCliente .modal-content {
+    background: #111827;
+    color: #cecfd2;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+#modalCadastrarCliente .modal-header {
+    background: #111827;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 22px;
+}
+
+#modalCadastrarCliente .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #cecfd2;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#modalCadastrarCliente .modal-title i {
+    color: #8b5cf6;
+}
+
+
+#modalCadastrarCliente .modal-body {
+    background: #111827;
+    padding: 24px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+
+.secao-modal-cliente {
+    margin-bottom: 25px;
+}
+
+.secao-modal-cliente:last-child {
+    margin-bottom: 0;
+}
+
+.secao-modal-cliente h6 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 0 0 15px;
+
+    color: #8b5cf6;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.secao-modal-cliente h6 i {
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   GRID DOS CAMPOS
+===================================================== */
+
+.campos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    align-items: end;
+}
+
+
+/* =====================================================
+   CAMPOS
+===================================================== */
+
+#modalCadastrarCliente .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+#modalCadastrarCliente .campo label {
+    color: #cecfd2;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+#modalCadastrarCliente .campo input,
+#modalCadastrarCliente .campo select {
+    width: 100%;
+    height: 40px;
+    padding: 8px 11px;
+    box-sizing: border-box;
+    background: #1b2432;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: #cecfd2;
+    outline: none;
+    font-size: 13px;
+    transition: 0.2s ease;
+    
+}
+
+#modalCadastrarCliente .campo input::placeholder {
+    color: #64748b;
+}
+
+/* =====================================================
+   SELECTS - SETA PERSONALIZADA
+   CADASTRAR + EDITAR CLIENTE
+===================================================== */
+#modalEditarCadastroCliente select#editarClienteStatus,
+#modalCadastrarCliente select#clienteStatus,
+#modalEditarCadastroCliente select#editarClienteCategoria,
+#modalCadastrarCliente select#clienteCategoria,
+#modalEditarCadastroCliente select#editarClienteCategoriaCnh,
+#modalCadastrarCliente select#clienteCategoriaCnh,
+#modalEditarCadastroCliente select#editarClienteModoValorGasto {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+
+
+#modalCadastrarCliente .campo input:focus,
+#modalCadastrarCliente .campo select:focus {
+    border-color: #7c3aed;
+
+    box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+
+#modalCadastrarCliente .campo-grande {
+    grid-column: span 2;
+}
+
+
+
+
+#modalCadastrarCliente .modal-footer {
+    background: #161e2b;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    padding: 14px 22px;
+}
+
+.campo input.input-erro,
+.campo input.input-erro:focus,
+.campo textarea.input-erro,
+.campo textarea.input-erro:focus,
+.campo select.input-erro,
+.campo select.input-erro:focus{
+    border-color:#dc3545 !important;
+    box-shadow:0 0 0 4px rgba(220,53,69,.15) !important;
+}
+/* =====================================================
+   HOVER E SELEÇÃO DAS LINHAS (BEM MAIS CLARO)
+===================================================== */
+
+/* 1. Transição */
+.clientes-table tbody tr.linha-cliente {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* 2. HOVER NA LINHA COMUM (Bem mais visível e claro) */
+.clientes-table tbody tr.linha-cliente:hover td {
+    background-color: #3f4b5d    !important; /* Tom cinza-azulado bem iluminado */
+    color: #cecfd2 !important;
+}
+
+/* 3. LINHA SELECIONADA */
+.clientes-table tbody tr.linha-cliente.linha-selecionada td {
+    background-color: #3b4758  !important; 
+    color: #cecfd2 !important;
+}
+
+/* 4. HOVER NA LINHA SELECIONADA */
+.clientes-table tbody tr.linha-cliente.linha-selecionada:hover td {
+    background-color: #344052   !important; /* Azul ainda mais claro ao passar o mouse */
+    color: #cecfd2 !important;
+}
+
+/* Ajuste fino na altura da label com o botão de interrogação */
+.label-categoria {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    min-height: 18px; /* Força a mesma altura dos rótulos normais */
+}
+
+.label-categoria label {
+    margin-bottom: 0 !important;
+    line-height: 1 !important;
+    cursor: pointer;
+}
+
+/* Botão Redondo com ? (Classe corrigida para .btn-info-ajuda) */
+.btn-info-ajuda {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    max-width: 18px !important;
+    max-height: 18px !important;
+    border-radius: 50% !important;
+    background-color: #0d6efd !important; /* Azul padrão */
+    color: #cecfd2 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    font-family: inherit !important;
+    border: none !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+    vertical-align: middle !important;
+    box-shadow: none !important;
+    transition: background-color 0.2s ease, transform 0.1s ease !important;
+}
+
+.btn-info-ajuda:hover {
+    background-color: #0b5ed7 !important;
+    transform: scale(1.1);
+}
+
+.btn-info-ajuda:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.4) !important;
+}
+
+.modal-header-clientes-excluir{
+    color: black;
+}
+
+#modalExcluirCliente .modal-content.modal-cliente-content{
+    background-color: #1f2937 !important;
+}
+.modal-header-clientes-excluir{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #374151;
+    color: white;
+}
+.aviso-excluir-cliente {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    color: #991b1b;
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    line-height: 1.4;
+} 
+
+
+/* Container dos botões no rodapé do modal de exclusão */
+.modal-footer-botoes-clientes-excluir {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 24px 24px;
+    border-top: none;
+}
+
+/* Botão Confirmar Exclusão (Vermelho) */
+.modal-footer-botoes-clientes-excluir .btn-danger {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 10px 20px !important;
+    font-size: 0.92rem !important;
+    font-weight: 500 !important;
+    color: #cecfd2 !important;
+    background-color: #dc2626 !important;
+    border: 1px solid #dc2626 !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+}
+
+.modal-footer-botoes-clientes-excluir .btn-danger:hover {
+    background-color: #b91c1c !important;
+    border-color: #b91c1c !important;
+    box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.25);
+    transform: translateY(-1px);
+}
+
+.modal-footer-botoes-clientes-excluir .btn-danger:active {
+    background-color: #991b1b !important;
+    border-color: #991b1b !important;
+    transform: translateY(0);
+}
+
+/* Botão Cancelar (Cinza) */
+.modal-footer-botoes-clientes-excluir .btn-secondary {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 10px 20px !important;
+    font-size: 0.92rem !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    background-color: #f3f4f6 !important;
+    border: 1px solid #cecfd2 !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.modal-footer-botoes-clientes-excluir .btn-secondary:hover {
+    color: #111827 !important;
+    background-color: #cecfd2 !important;
+    border-color: #d1d5db !important;
+    transform: translateY(-1px);
+}
+
+.modal-footer-botoes-clientes-excluir .btn-secondary:active {
+    transform: translateY(0);
+}
+.aviso-confirmacao{
+    color: #cecfd2
+}
+
+/* =====================================================
+   ESTILO DO MODAL DE RELATÓRIO
+===================================================== */
+#modalRelatorioCliente .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #cecfd2;
+    font-size: 18px;
+    font-weight: 600;
+    
+}
+#modalRelatorioCliente .modal-title i {
+    color: #cecfd2;
+
+}
+.modal-relatorio-content {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55) !important;
+    background: #111827 !important;
+}
+.modal-header-relatorios{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #374151;
+    background: #111827 !important;
+}
+
+.modal-footer-botoes-relatorios{
+    border-top: 1px solid #374151;
+    background-color: #111827 !important;
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px 24px;
+    
+}
+
+
+.modal-relatorio-content .modal-body {
+    overflow-y: auto;
+    max-height: calc(90vh - 140px);
+    padding: 16px 20px;
+    background-color: #111827 !important;
+}
+
+/* Molduras / Fieldsets */
+.grupo-relatorio {
+    border: 1px solid #555562;
+    border-radius: 6px;
+    padding: 14px 18px 18px 18px;
+    position: relative;
+}
+
+.legenda-relatorio {
+    float: none;
+    width: auto;
+    padding: 0 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #cecfd2;
+    margin-bottom: 0;
+}
+
+/* Filtros Grid */
+.filtros-relatorio-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.campo-relatorio {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    align-items: center;
+    gap: 12px;
+}
+
+.campo-relatorio label {
+    font-size: 13px;
+    color: #cecfd2;
+    margin-bottom: 0;
+}
+
+.campo-relatorio select,
+.campo-relatorio input {
+    background-color: #1b2432;
+    border: 1px solid #6b6b78;
+    color: #cecfd2;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 13px;
+    outline: none;
+    width: 100%;
+}
+
+.campo-relatorio select:focus,
+.campo-relatorio input:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, .15);
+}
+
+/* Checkboxes */
+.destacar-todos {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #3a3a45;
+    margin-bottom: 12px;
+}
+
+.checkboxes-relatorio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px 14px;
+}
+
+.item-checkbox-relatorio label {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    color: #dddddf;
+    cursor: pointer;
+    margin-bottom: 0;
+    user-select: none;
+    transition: color 0.2s ease;
+}
+.item-checkbox-relatorio label:hover {
+    color: #ffffff;
+}
+
+.item-checkbox-relatorio input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    background: #1b2432;
+    border: 1px solid #475569;
+    border-radius: 5px;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.item-checkbox-relatorio input[type="checkbox"]::before {
+    content: "";
+    width: 9px;
+    height: 5px;
+    border-left: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+    transform: rotate(-45deg) scale(0);
+    transition: transform 0.15s ease;
+}
+
+.item-checkbox-relatorio input[type="checkbox"]:checked {
+    background: #7c3aed;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+.item-checkbox-relatorio input[type="checkbox"]:checked::before {
+    transform: rotate(-45deg) scale(1);
+}
+
+.item-checkbox-relatorio input[type="checkbox"]:hover {
+    border-color: #8b5cf6;
+}
+
+.item-checkbox-relatorio input[type="checkbox"]:focus-visible {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.18);
+}
+
+.item-checkbox-relatorio input[type="checkbox"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+.btn-relatorio-pdf,
+.btn-relatorio-excel,
+.btn-relatorio-cancelar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px !important;
+    background: #1f2937 !important;
+    border: 1px solid #374151 !important;
+    border-radius: 8px !important;
+    color: #cecfd2 !important;
+    font-size: 1rem;
+    font-weight: 600 !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+
+.btn-relatorio-pdf:hover,
+.btn-relatorio-excel:hover,
+.btn-relatorio-cancelar:hover {
+    background: rgba(255,255,255,0.05) !important;
+    border-color: rgba(255,255,255,0.3) !important;
+    transform: scale(1.05);
+}
+
+/* =====================================================
+   MODAL DE CONFIRMAÇÃO DE SENHA (DADOS SENSÍVEIS)
+===================================================== */
+
+/* Força a largura na caixa de diálogo do modal */
+#modalConfirmarSenhaDadosSensiveis .modal-dialog {
+    max-width: 440px !important; /* Ajuste para o tamanho desejado (ex: 420px, 460px) */
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+/* Força a altura mínima no conteúdo */
+#modalConfirmarSenhaDadosSensiveis .modal-content {
+    min-height: 340px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+
+.modal-dados-sensiveis-content {
+    background-color: #1f2937 !important;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* =====================================================
+   CABEÇALHO E ÍCONE DO TOPO
+===================================================== */
+.modal-dados-sensiveis-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 15px;
+    border: none;
+    border-bottom: 1px solid #374151;
+}
+
+.modal-dados-sensiveis-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    font-size: 21px;
+}
+
+.btn-fechar-dados-sensiveis {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.btn-fechar-dados-sensiveis:hover {
+    color: #f9fafb;
+}
+
+/* =====================================================
+   CORPO
+===================================================== */
+/* Controla a largura total da janela do modal */
+.modal-dialog-dados-sensiveis {
+    max-width: 800px; /* Ajuste o valor da largura (ex: 400px, 450px, 480px) */
+    width: 100%;
+}
+
+/* Controla a altura mínima e o layout interno */
+.modal-dados-sensiveis-content {
+    min-height: 320px; /* Use min-height para evitar que o conteúdo estoure se faltar espaço */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.modal-dados-sensiveis-body {
+    padding: 24px 24px 20px;
+}
+
+.modal-dados-sensiveis-body h4 {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-dados-sensiveis-body p {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.campo-senha-sensivel label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #cecfd2;
+    text-align: center;
+}
+
+.input-senha-sensivel {
+    width: 100%;
+    padding: 9px 12px;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    color: #f9fafb;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-senha-sensivel:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+/* =====================================================
+   RODAPÉ
+===================================================== */
+.modal-dados-sensiveis-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 18px 24px;
+    border-top: 1px solid #374151;
+}
+
+/* =====================================================
+   BOTÕES
+===================================================== */
+.btn-cancelar-sensivel,
+.btn-confirmar-sensivel {
+    min-width: 110px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* CANCELAR */
+.btn-cancelar-sensivel {
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #cecfd2;
+}
+
+.btn-cancelar-sensivel:hover {
+    background: #4b5563;
+}
+
+/* CONFIRMAR (COM ÍCONE) */
+.btn-confirmar-sensivel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #0284c7;
+    border: 1px solid #0284c7;
+    color: #cecfd2;
+}
+
+.btn-confirmar-sensivel i {
+    font-size: 14px;
+}
+
+.btn-confirmar-sensivel:hover {
+    background: #0369a1;
+    border-color: #0369a1;
+}
+.btn-fechar-dados-sensiveis {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Reseta estilos do Bootstrap */
+    background: rgba(255, 255, 255, 0.1) !important; 
+    border: none !important;
+    background-image: none !important; /* Remove o X nativo do Bootstrap */
+    opacity: 1 !important;
+    padding: 0 !important;
+    
+    border-radius: 50% !important;
+    color: #cecfd2 !important;
+    font-size: 18px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* HOVER (Fica vermelho ao passar o mouse) */
+.btn-fechar-dados-sensiveis:hover {
+    background-color: #dc2626 !important;
+    color: #cecfd2 !important;
+    transform: scale(1.1);
+}
+
+/* FOCO */
+.btn-fechar-dados-sensiveis:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* =====================================================
+   BADGES DE STATUS DO CLIENTE
+===================================================== */
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+}
+
+/* ATIVO: Fundo verde translúcido + texto verde */
+.badge-status.ativo {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* INATIVO: Fundo vermelho translúcido + texto vermelho */
+.badge-status.inativo {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* BLOQUEADO: Fundo laranja translúcido + texto laranja */
+.badge-status.bloqueado {
+    background: rgba(249, 115, 22, 0.15);
+    color: #fb923c !important;
+    border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+/* Cores dinâmicas para o select de status */
+select.status-select-ativo {
+    background-color: rgba(34, 197, 94, 0.15) !important;
+    color: #4ade80 !important;
+    border-color: #22c55e !important;
+}
+
+select.status-select-inativo {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    color: #f87171 !important;
+    border-color: #ef4444 !important;
+}
+
+select.status-select-bloqueado {
+    background-color: rgba(249, 115, 22, 0.15) !important;
+    color: #fb923c !important;
+    border-color: #f97316 !important;
+}
+
+/* Checkboxes - Clientes */
+.coluna-selecao-cliente {
+    width: 45px;
+    min-width: 45px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.checkbox-cliente,
+.checkbox-selecionar-todos-clientes {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    background: #1b2432;
+    border: 1px solid #475569;
+    border-radius: 5px;
+    display: inline-grid;
+    place-content: center;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+.checkbox-cliente::before,
+.checkbox-selecionar-todos-clientes::before {
+    content: "";
+    width: 9px;
+    height: 5px;
+    border-left: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+    transform: rotate(-45deg) scale(0);
+    transition: transform 0.15s ease;
+}
+
+.checkbox-cliente:checked,
+.checkbox-selecionar-todos-clientes:checked {
+    background: #7c3aed;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+.checkbox-cliente:checked::before,
+.checkbox-selecionar-todos-clientes:checked::before {
+    transform: rotate(-45deg) scale(1);
+}
+
+.checkbox-cliente:hover,
+.checkbox-selecionar-todos-clientes:hover {
+    border-color: #8b5cf6;
+}
+
+.checkbox-cliente:focus-visible,
+.checkbox-selecionar-todos-clientes:focus-visible {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.18);
+}
+
+.checkbox-cliente:disabled,
+.checkbox-selecionar-todos-clientes:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* =====================================================
+   ESTRUTURA DO MODAL DE CLIENTES      
+===================================================== */
+#modalHistoricoClientes .modal-dialog {
+    max-width: 1100px !important;
+    width: 95% !important;
+    height: 90vh !important;
+    max-height: 90vh !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-historico-clientes-content {
+    background: #111827 !important;
+    border: 1px solid #374151 !important;
+    border-radius: 16px !important;
+    color: #cecfd2;
+    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
+    height: 100% !important;
+    max-height: 100% !important;
+    position: relative;
+    isolation: isolate;
+}
+
+.modal-historico-clientes-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid #374151;
+    background: #111827;
+}
+
+.modal-historico-clientes-titulo-box{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.modal-historico-clientes-icon{
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.modal-historico-clientes-titulo {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #cecfd2;
+}
+
+.modal-historico-clientes-subtitulo {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: #cecfd2;
+}
+
+.btn-modal-fechar-historico-clientes {
+    width: 34px !important;
+    height: 34px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    color: #cecfd2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-historico-clientes:hover {
+    background-color: #dc2626 !important;
+    color: #cecfd2 !important;
+    transform: scale(1.05);
+}
+
+.modal-historico-clientes-toolbar {
+    padding: 12px 24px;
+    background: #111827;
+    border-bottom: 1px solid #2d3748;
+}
+
+.modal-historico-clientes-toolbar-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.btn-historico-clientes-acao{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    color: #cecfd2;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-historico-clientes-acao:hover {
+    background: #374151;
+    border-color: #4b5563;
+    color: #cecfd2;
+}
+
+
+
+.modal-historico-clientes-body {
+    padding: 20px 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 380px;
+    background: #111827;
+}
+
+/* =====================================================
+   CORREÇÃO DEFINITIVA DA BORDA DO HISTÓRICO
+===================================================== */
+.modal-historico-clientes-table-container {
+    width: 100%;
+    flex: 1 1 0% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow-x: auto;
+    overflow-y: auto;
+    border: 1px solid #374151 !important;
+    border-radius: 12px !important;
+    background: #111827 !important;
+    box-sizing: border-box;
+}
+
+
+.modal-historico-clientes-table {
+    width: 100% !important;
+    min-width: 100% !important;
+    margin: 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    table-layout: auto;
+    background: #111827 !important;
+    color: #cecfd2 !important;
+}
+
+/* Anula o position:sticky herdado de .verificar-usuarios-table para não vazar a borda */
+.modal-historico-clientes-table thead th {
+    position: static !important; 
+    height: 46px;
+    padding: 10px 14px !important;
+    background: #111827 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid #374151 !important;
+    color: #cecfd2 !important;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Cantos arredondados na primeira e última célula do header */
+.modal-historico-clientes-table thead th:first-child {
+    border-top-left-radius: 11px !important;
+}
+
+.modal-historico-clientes-table thead th:last-child {
+    border-top-right-radius: 11px !important;
+}
+
+.modal-historico-clientes-table tbody td {
+    padding: 12px 14px !important;
+    background: transparent !important;
+    border-bottom: 1px solid #1f2937 !important;
+    color: #cecfd2 !important;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.modal-historico-clientes-table th.col-checkbox,
+.modal-historico-clientes-table td.col-checkbox {
+    width: 44px;
+    text-align: center;
+    padding: 10px 8px;
+}
+
+.col-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #0284c7;
+}
+
+.modal-historico-clientes-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: #111827;
+    border-top: 1px solid #374151;
+}
+
+.contador-selecionados-historico-clientes {
+    font-size: 13px;
+    color: #cecfd2;
+    font-weight: 500;
+}
+
+.modal-historico-clientes-table tbody tr.linha-vazia-historico-clientes,
+.modal-historico-clientes-table tbody tr.linha-vazia-historico-clientes:hover {
+    height: calc(48vh - 50px) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-hover-color: inherit !important;
+    --bs-table-accent-bg: transparent !important;
+    --bs-table-bg-state: transparent !important;
+    box-shadow: none !important;
+}
+
+.modal-historico-clientes-table tbody tr.linha-vazia-historico-clientes td,
+.modal-historico-clientes-table tbody tr.linha-vazia-historico-clientes:hover td {
+    height: calc(48vh - 50px) !important;
+    padding: 0 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    justify-content: center;
+    background: transparent !important;
+    background-color: transparent !important;
+    border-bottom: none !important;
+    color: inherit !important;
+}
+
+
+.sem-registros-content-historico-clientes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: #cecfd2;
+    text-align: center;
+    pointer-events: none;
+    user-select: none;
+    margin: 0;
+}
+
+.sem-registros-content-historico-clientes i {
+    font-size: 36px;
+    margin-bottom: 12px;
+    color: #cecfd2;
+    display: block;
+}
+
+.sem-registros-content-historico-clientes p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #cecfd2;
+}
+
+.btn-historico-clientes-perigo:hover {
+    background-color: #dc2626;
+    color: #cecfd2;
+    transform: scale(1.05);
+}
+
+.btn-historico-clientes-exportar-csv:hover{
+    background-color: #059669;
+    color: #cecfd2;
+    transform: scale(1.05);
+    
+}
+.btn-historico-clientes-exportar-pdf:hover{
+    background-color: #dc2626;
+    transform: scale(1.05);
+    color: #cecfd2;
+}
+.btn-historico-clientes-pausar:hover{
+    background-color: #d97706;
+    transform: scale(1.05);
+    color: #cecfd2;
+}
+.btn-historico-clientes-ordenar:hover{
+    background-color: #7c3aed;
+    transform: scale(1.05);
+    color: #cecfd2;
+}
+.btn-historico-clientes-filtrar:hover{
+    background-color: #0284c7;
+    transform: scale(1.05);
+    color: #cecfd2;
+}
+.btn-historico-clientes-atualizar:hover{
+    background-color: #2563eb;
+    color: #cecfd2;
+    transform: scale(1.05);
+}
+
+.btn-historico-clientes-exportar-excel:hover{
+    background-color: #107c41; 
+    color: #cecfd2;
+    transform: scale(1.05);
+}
+
+.btn-cancelar-historico-clientes{
+    min-width: 110px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #cecfd2;
+}
+
+.btn-cancelar-historico-clientes:hover {
+    background: #4b5563;
+}
+
+.badge-historico-cliente {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0.35em 0.65em;
+    border-radius: 1rem;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+}
+
+.badge-historico-cadastro {
+    background: rgb(220,53,69);
+    color: #cecfd2;
+}
+
+.badge-historico-exclusao {
+    background: rgba(56, 189, 248, 0.15);
+    color: #cecfd2;
+}
+
+.badge-historico-edicao {
+    background: rgba(245, 158, 11, 0.15);
+    color: #cecfd2;
+    width: 150px;
+    
+}
+.popover {
+    border: 1px solid #343a40;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.popover-header {
+    background: #161e2b !important;
+    color: #cecfd2 !important;
+    border-bottom: 1px solid #343a40;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 12px;
+}
+
+.popover-body {
+    background: #111827;
+    color: #cecfd2 !important;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 10px 12px;
+}
+
+.popover .popover-arrow::after {
+    border-top-color: #1e1e1e;
+}
+
+.popover .popover-arrow::before {
+    border-top-color: #343a40;
+}
+
+
+
+/* CHECKBOXES PERSONALIZADAS COMPACTAS */
+/* CHECKBOXES PERSONALIZADAS COMPACTAS */
+
+input.col-checkbox-clientes[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    padding: 0;
+    background-color: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+input.col-checkbox-clientes[type="checkbox"]:hover {
+    border-color: #8b5cf6;
+    background-color: #171e2b;
+}
+
+input.col-checkbox-clientes[type="checkbox"]:checked {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+    box-shadow: 0 0 8px rgba(124, 58, 237, 0.4);
+}
+
+input.col-checkbox-clientes[type="checkbox"]:checked::after {
+    content: '';
+    width: 3px;
+    height: 6px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 2px;
+    left: 4px;
+}

@@ -1,0 +1,279 @@
+/* =====================================================
+   ESTRUTURA DA PÁGINA (RESPONSIVA)
+===================================================== */
+.dashboard-page-verificar-usuarios {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 75px);
+    padding: 0px 20px 20px;
+    overflow: hidden;
+    margin-left: 70px;
+    box-sizing: border-box;
+}
+
+/* BARRA SUPERIOR */
+.dashboard-topbar-verificar-usuarios {
+    width: 100%;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    min-height: 60px;
+    height: auto;
+}
+
+.dashboard-topbar-verificar-usuarios h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+
+.dashboard-topbar-verificar-usuarios p {
+    margin: 4px 0 0 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #94a3b8;
+}
+
+/* =====================================================
+   GRID PRINCIPAL
+===================================================== */
+.verificar-usuarios-grid-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 16px;
+    flex: 1;
+    min-height: 0; /* Essencial para flex/grid não estourarem a tela */
+    height: 100%;
+    align-items: stretch;
+}
+
+.main-content-verificar-usuarios {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+}
+
+/* =====================================================
+   CARDS E CONTEÚDO
+===================================================== */
+.dashboard-card-verificar-usuarios {
+    background: #121824;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+    min-height: 0;
+    box-sizing: border-box;
+}
+
+.verificar-usuarios-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.verificar-usuarios-header h2 {
+    margin: 0;
+    color: #f9fafb;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.verificar-usuarios-header p {
+    margin: 4px 0 0;
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+/* =====================================================
+   BOTÕES E AÇÕES LATERAIS (CORREÇÃO DO CORTE)
+===================================================== */
+.verificar-usuarios-side-actions {
+    display: flex;
+    flex-direction: column;
+    /* Substituído gap: 80px por distribuição fluida */
+    justify-content: space-evenly; 
+    gap: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    flex: 1;
+    min-height: 0;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 20px 16px;
+    background: #121824;
+    overflow-y: auto; /* Se a tela for extremamente pequena, adiciona scroll sem cortar */
+}
+
+/* Scrollbar estilizada para a coluna lateral */
+.verificar-usuarios-side-actions::-webkit-scrollbar {
+    width: 6px;
+}
+.verificar-usuarios-side-actions::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 10px;
+}
+
+.btn-side-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #e2e8f0;
+    padding: 11px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.btn-side-action:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.verificar-usuarios-acoes-topo {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-verificar-usuarios {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    background: #1f2937;
+    color: #e5e7eb;
+    cursor: pointer;
+    transition: 0.2s ease;
+    font-size: 13px;
+}
+
+.btn-verificar-usuarios:hover {
+    background: #374151;
+}
+
+/* =====================================================
+   TABELA E CONTAINER
+===================================================== */
+.verificar-usuarios-table-container {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    border: 1px solid #374151;
+    border-radius: 10px;
+    background: #1f2937;
+    box-sizing: border-box;
+}
+
+.verificar-usuarios-table {
+    width: max-content;
+    min-width: 100%;
+    border-collapse: collapse;
+}
+
+.verificar-usuarios-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: #111827;
+    color: #9ca3af;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 10px 14px;
+    border-bottom: 1px solid #374151;
+    text-align: left;
+}
+
+.verificar-usuarios-table td {
+    white-space: nowrap;
+    padding: 10px 14px;
+    border-bottom: 1px solid #374151;
+    color: #d1d5db;
+    font-size: 13px;
+}
+
+.verificar-usuarios-table tbody tr:hover {
+    background: rgba(99, 102, 241, 0.08);
+}
+
+.verificar-usuarios-table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.verificar-usuarios-table-container::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 20px;
+}
+
+.verificar-usuarios-table-container::-webkit-scrollbar-track {
+    background: #141b27;
+}
+
+.sem-registros-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px;
+    padding: 20px 0;
+    color: #9ca3af;
+    text-align: center;
+}
+
+.sem-registros-content i {
+    font-size: 32px;
+    margin-bottom: 8px;
+    color: #6b7280;
+}
+
+.sem-registros-content p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.btn-verificar-usuarios-outline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #e2e8f0;
+    padding: 9px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-verificar-usuarios-outline:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+}

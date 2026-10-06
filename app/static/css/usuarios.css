@@ -1,0 +1,1922 @@
+/* =====================================================
+   ESTRUTURA DA PÁGINA (RESPONSIVA)
+===================================================== */
+.dashboard-page-verificar-usuarios {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 75px);
+    padding: 0px 20px 20px;
+    overflow: hidden;
+    margin-left: 70px;
+    box-sizing: border-box;
+}
+
+/* BARRA SUPERIOR */
+.dashboard-topbar-verificar-usuarios {
+    width: 100%;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    min-height: 60px;
+    height: auto;
+}
+
+.dashboard-topbar-verificar-usuarios h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+
+.dashboard-topbar-verificar-usuarios p {
+    margin: 4px 0 0 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #94a3b8;
+}
+
+/* =====================================================
+   GRID PRINCIPAL
+===================================================== */
+.verificar-usuarios-grid-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 16px;
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    align-items: stretch;
+}
+
+.main-content-verificar-usuarios {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+}
+
+/* =====================================================
+   CARDS E CONTEÚDO
+===================================================== */
+.dashboard-card-verificar-usuarios {
+    background: #121824;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+    min-height: 0;
+    box-sizing: border-box;
+}
+
+.verificar-usuarios-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.verificar-usuarios-header h2 {
+    margin: 0;
+    color: #f9fafb;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.verificar-usuarios-header p {
+    margin: 4px 0 0;
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+/* =====================================================
+   BOTÕES E AÇÕES LATERAIS
+===================================================== */
+.verificar-usuarios-side-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; 
+    gap: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    flex: 1;
+    min-height: 0;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 20px 16px;
+    background: #121824;
+    overflow-y: auto;
+}
+
+.verificar-usuarios-side-actions::-webkit-scrollbar {
+    width: 6px;
+}
+.verificar-usuarios-side-actions::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 10px;
+}
+
+.btn-side-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #1f2937;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #CECFD2;
+    padding: 11px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+.btn-side-action:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.verificar-usuarios-acoes-topo {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-verificar-usuarios {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    background: #1f2937;
+    color: #e5e7eb;
+    cursor: pointer;
+    transition: 0.2s ease;
+    font-size: 13px;
+}
+
+.btn-verificar-usuarios:hover {
+    background: #374151;
+}
+
+/* =====================================================
+   TABELA E CONTAINER PRINCIPAL
+===================================================== */
+.verificar-usuarios-table-container {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    border: 1px solid #374151;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.verificar-usuarios-table {
+    width: max-content;
+    min-width: 100%;
+    border-collapse: collapse;
+}
+
+.verificar-usuarios-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: #111827;
+    color: #9ca3af;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 10px 14px;
+    border-bottom: 1px solid #374151;
+    text-align: left;
+}
+
+.verificar-usuarios-table td {
+    white-space: nowrap;
+    padding: 10px 14px;
+    border-bottom: 1px solid #374151;
+    color: #d1d5db;
+    font-size: 13px;
+}
+
+.verificar-usuarios-table tbody tr {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.verificar-usuarios-table tbody tr:hover td {
+    background-color: #262f3d !important;
+    color: #f9fafb !important;
+}
+
+.verificar-usuarios-table tbody tr.linha-selecionada td {
+    background-color: #1e3a5f !important;
+    color: #cecfd2 !important;
+    border-bottom-color: #2b4c7e !important;
+}
+
+.verificar-usuarios-table tbody tr.linha-selecionada td:first-child {
+    border-left: 3px solid #38bdf8 !important;
+}
+
+.verificar-usuarios-table-container tbody tr.linha-selecionada:hover td {
+    cursor: default !important;
+    background-color: #1e3a5f !important;
+    color: #cecfd2 !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-accent-bg: transparent !important;
+}
+
+.verificar-usuarios-table tbody tr.linha-vazia td,
+.verificar-usuarios-table tbody td:has(.sem-registros-content) {
+    height: calc(30vh - 50px);
+    vertical-align: middle;
+    text-align: center;
+}
+
+.verificar-usuarios-table tbody tr.linha-vazia,
+.verificar-usuarios-table tbody tr.linha-vazia:hover,
+.verificar-usuarios-table tbody tr:has(.sem-registros-content),
+.verificar-usuarios-table tbody tr:has(.sem-registros-content):hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-hover-color: inherit !important;
+    --bs-table-accent-bg: transparent !important;
+    --bs-table-bg-state: transparent !important;
+    box-shadow: none !important;
+}
+
+.verificar-usuarios-table tbody tr.linha-vazia td,
+.verificar-usuarios-table tbody tr.linha-vazia:hover td,
+.verificar-usuarios-table tbody tr:has(.sem-registros-content) td,
+.verificar-usuarios-table tbody tr:has(.sem-registros-content):hover td {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: inherit !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-accent-bg: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+.sem-registros-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px;
+    padding: 20px 0;
+    color: #9ca3af;
+    text-align: center;
+    user-select: none;
+    pointer-events: none;
+}
+
+.sem-registros-content i {
+    font-size: 36px;
+    margin-bottom: 12px;
+    color: #6b7280;
+    display: inline-block;
+}
+
+.sem-registros-content p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #9ca3af;
+}
+
+.verificar-usuarios-table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.verificar-usuarios-table-container::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 20px;
+}
+
+.verificar-usuarios-table-container::-webkit-scrollbar-track {
+    background: #141b27;
+}
+
+.btn-verificar-usuarios-outline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #1f2937;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #cecfd2;
+    padding: 11px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-verificar-usuarios-outline:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* =====================================================
+   MODAL CONFIRMAR SAÍDA
+===================================================== */
+#modalConfirmarSaida .modal-content {
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 16px;
+    color: #cecfd2;
+    overflow: hidden;
+}
+
+#modalConfirmarSaida .modal-dialog {
+    max-width: 440px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-aviso-irreversivel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 15px;
+    border: none;
+    border-bottom: 1px solid #374151;
+}
+
+.modal-aviso-irreversivel-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    font-size: 21px;
+}
+
+.modal-aviso-irreversivel-body {
+    padding: 24px 24px 20px;
+}
+
+.modal-aviso-irreversivel-body h4 {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-aviso-irreversivel-body p {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.modal-aviso-irreversivel-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 18px 24px;
+    border-top: 1px solid #374151;
+}
+
+.btn-fechar-modal-historico-usuarios,
+.btn-confirmar-irreversivel-sensivel {
+    min-width: 110px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-fechar-modal-historico-usuarios {
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #e5e7eb;
+}
+
+.btn-fechar-modal-historico-usuarios:hover {
+    background: #4b5563;
+}
+
+.btn-confirmar-irreversivel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #0284c7;
+    border: 1px solid #0284c7;
+    color: #cecfd2;
+    border-radius: 8px;
+}
+
+.btn-confirmar-irreversivel i {
+    font-size: 14px;
+}
+
+.btn-confirmar-irreversivel:hover {
+    background: #0369a1;
+    border-color: #0369a1;
+}
+
+.btn-modal-fechar-aviso-irreversivel {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important; 
+    border: none !important;
+    background-image: none !important;
+    opacity: 1 !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    color: #cecfd2 !important;
+    font-size: 18px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-aviso-irreversivel:hover {
+    background-color: #dc2626 !important;
+    color: #cecfd2 !important;
+    transform: scale(1.1);
+}
+
+.btn-modal-fechar-aviso-irreversivel:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* =====================================================
+   ESTRUTURA DO MODAL DE HISTÓRICO
+===================================================== */
+#modalHistoricoUsuarios .modal-dialog {
+    max-width: 1100px !important;
+    width: 95% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-historico-content {
+    background: #111827 !important;
+    border: 1px solid #374151 !important;
+    border-radius: 16px !important;
+    color: #cecfd2;
+    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    isolation: isolate;
+}
+
+.modal-historico-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid #374151;
+    background: #111827;
+}
+
+.modal-historico-titulo-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.modal-historico-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.modal-historico-titulo {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #f9fafb;
+}
+
+.modal-historico-subtitulo {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+.btn-modal-fechar-historico {
+    width: 34px !important;
+    height: 34px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    color: #cecfd2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-historico:hover {
+    background-color: #dc2626 !important;
+    color: #cecfd2 !important;
+    transform: scale(1.05);
+}
+
+.modal-historico-toolbar {
+    padding: 12px 24px;
+    background: #111827;
+    border-bottom: 1px solid #2d3748;
+}
+
+.modal-historico-toolbar-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.btn-historico-acao {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    color: #e5e7eb;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-historico-acao:hover {
+    background: #374151;
+    border-color: #4b5563;
+    color: #cecfd2;
+}
+
+
+
+.modal-historico-body {
+    padding: 20px 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 380px;
+    background: #111827;
+}
+
+/* =====================================================
+   CORREÇÃO DEFINITIVA DA BORDA DO HISTÓRICO
+===================================================== */
+.modal-historico-table-container {
+    width: 100%;
+    flex: 1 1 0% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow-x: auto;
+    overflow-y: auto;
+    border: 1px solid #374151 !important;
+    border-radius: 12px !important;
+    background: #111827 !important;
+    box-sizing: border-box;
+}
+
+
+.modal-historico-table {
+    width: 100% !important;
+    min-width: 100% !important;
+    margin: 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    table-layout: auto;
+    background: #111827 !important;
+    color: #cecfd2 !important;
+}
+
+/* Anula o position:sticky herdado de .verificar-usuarios-table para não vazar a borda */
+.modal-historico-table thead th {
+    position: static !important; 
+    height: 46px;
+    padding: 10px 14px !important;
+    background: #111827 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid #374151 !important;
+    color: #9ca3af !important;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Cantos arredondados na primeira e última célula do header */
+.modal-historico-table thead th:first-child {
+    border-top-left-radius: 11px !important;
+}
+
+.modal-historico-table thead th:last-child {
+    border-top-right-radius: 11px !important;
+}
+
+.modal-historico-table tbody td {
+    padding: 12px 14px !important;
+    background: transparent !important;
+    border-bottom: 1px solid #1f2937 !important;
+    color: #e5e7eb !important;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.modal-historico-table th.col-checkbox,
+.modal-historico-table td.col-checkbox {
+    width: 44px;
+    text-align: center;
+    padding: 10px 8px;
+}
+
+.checkbox-custom-historico {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #0284c7;
+}
+
+.modal-historico-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: #111827;
+    border-top: 1px solid #374151;
+}
+
+.contador-selecionados-historico {
+    font-size: 13px;
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+.modal-historico-table tbody tr.linha-vazia-historico,
+.modal-historico-table tbody tr.linha-vazia-historico:hover,
+.modal-historico-table tbody tr:has(.sem-registros-content-historico),
+.modal-historico-table tbody tr:has(.sem-registros-content-historico):hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-hover-color: inherit !important;
+    --bs-table-accent-bg: transparent !important;
+    --bs-table-bg-state: transparent !important;
+    box-shadow: none !important;
+}
+
+.modal-historico-table tbody tr.linha-vazia-historico td,
+.modal-historico-table tbody tr.linha-vazia-historico:hover td,
+.modal-historico-table tbody tr:has(.sem-registros-content-historico) td,
+.modal-historico-table tbody tr:has(.sem-registros-content-historico):hover td {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: inherit !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-accent-bg: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    height: calc(48vh - 50px) !important;
+    padding: 0 !important;
+}
+
+.sem-registros-content-historico {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    color: #9ca3af;
+    text-align: center;
+    pointer-events: none;
+    user-select: none;
+    margin: 0 auto;
+}
+
+.sem-registros-content-historico i {
+    font-size: 36px;
+    margin-bottom: 12px;
+    color: #6b7280;
+    display: block;
+}
+
+.sem-registros-content-historico p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #9ca3af;
+}
+
+/* =====================================================
+   MODAL CONFIRMAR APAGAR HISTÓRICO 
+===================================================== */
+#modalConfirmarApagarHistorico {
+    z-index: 1065 !important;
+}
+
+.modal-confirmar-apagar-historico-dialog {
+    max-width: 440px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-confirmar-apagar-historico-content {
+    background: #111827 !important;
+    border: 1px solid #374151 !important;
+    border-radius: 16px !important;
+    color: #cecfd2;
+    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    isolation: isolate;
+}
+/* HEADER */
+.modal-confirmar-apagar-historico-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 15px;
+    border-bottom: 1px solid #374151;
+    background: #1f2937;
+}
+
+.modal-confirmar-apagar-historico-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    font-size: 21px;
+    flex-shrink: 0;
+}
+.btn-historico-acao.btn-historico-perigo:hover {
+    background: rgba(220, 38, 38, 0.2);
+    border-color: #dc2626;
+    color: #fff;
+    transform: scale(1.05);
+}
+.btn-modal-fechar-apagar-historico {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    color: #cecfd2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-apagar-historico:hover {
+    background-color: #dc2626;
+    color: #fff;
+    transform: scale(1.05);
+}
+.btn-historico-exportar-csv:hover{
+    background-color: #059669;
+    color: white;
+    transform: scale(1.05);
+    
+}
+.btn-historico-exportar-pdf:hover{
+    background-color: #dc2626;
+    transform: scale(1.05);
+    color: white;
+}
+.btn-historico-pausar:hover{
+    background-color: #d97706;
+    transform: scale(1.05);
+    color: white;
+}
+.btn-historico-ordenar:hover{
+    background-color: #7c3aed;
+    transform: scale(1.05);
+    color: white;
+}
+.btn-historico-filtrar:hover{
+    background-color: #0284c7;
+    transform: scale(1.05);
+    color: white;
+}
+.btn-historico-atualizar:hover{
+    background-color: #2563eb;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.btn-historico-exportar-excel:hover{
+    background-color: #107c41; 
+    color: #cecfd2;
+    transform: scale(1.05);
+}
+
+/* BODY */
+.modal-confirmar-apagar-historico-body {
+    padding: 24px 24px 20px;
+    background: #1f2937;
+}
+
+.modal-confirmar-apagar-historico-titulo {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.modal-confirmar-apagar-historico-descricao {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+.modal-confirmar-apagar-historico-alerta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 16px;
+    font-size: 13px;
+    text-align: left;
+}
+
+.modal-confirmar-apagar-historico-alerta-label {
+    color: #9ca3af;
+}
+
+.modal-confirmar-apagar-historico-alerta-valor {
+    color: #f87171;
+    font-weight: 600;
+}
+
+/* FOOTER */
+.modal-confirmar-apagar-historico-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid #374151;
+    background: #1f2937;
+}
+
+.btn-cancelar-apagar-historico {
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 500;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #e5e7eb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancelar-apagar-historico:hover {
+    background: #4b5563;
+    color: #cecfd2;
+}
+
+.btn-confirmar-apagar-historico {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    background: #dc2626;
+    border: 1px solid #dc2626;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-confirmar-apagar-historico:hover {
+    background: #b91c1c;
+    border-color: #b91c1c;
+    transform: translateY(-1px);
+}
+
+.btn-confirmar-apagar-historico:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* =====================================================
+   MODAL PAUSAR / ATIVAR HISTÓRICO 
+===================================================== */
+#modalStatusPausaHistorico {
+    z-index: 1065 !important;
+}
+
+.modal-status-pausa-historico-content {
+    background: #111827 !important;
+    border: 1px solid #374151 !important;
+    border-radius: 16px;
+    color: #CECFD2;
+    overflow: hidden;
+
+}
+
+/* HEADER */
+.modal-status-pausa-historico-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 15px;
+    border-bottom: 1px solid #374151;
+    background: #111827;
+}
+.modal-status-pausa-historico-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(217, 119, 6, 0.15);
+    color: #f59e0b;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+.btn-modal-fechar-pausa-historico {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none;
+    border-radius: 50% !important;
+    color: #CECFD2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-pausa-historico:hover {
+    background-color: #dc2626 !important;
+    color: #CECFD2 !important;
+    transform: scale(1.05);
+}
+
+/* BODY */
+.modal-status-pausa-historico-body {
+    padding: 24px 24px 20px;
+}
+
+.modal-status-pausa-historico-titulo {
+    margin: 0 0 10px;
+    color: #CECFD2;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.modal-status-pausa-historico-descricao {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+.modal-status-pausa-historico-card-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 16px 0 10px;
+    font-size: 13px;
+}
+
+.modal-status-pausa-historico-card-label {
+    color: #CECFD2;
+}
+
+.modal-status-pausa-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.modal-status-pausa-badge.ativo {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.modal-status-pausa-badge.pausado {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.modal-status-pausa-historico-legenda {
+    display: block;
+    color: #CECFD2;
+    font-size: 11.5px;
+    margin-top: 4px;
+}
+
+/* FOOTER */
+.modal-status-pausa-historico-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid #374151;
+    background: #111827;
+}
+
+.btn-status-pausa-acao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+/* Botão Não (Pausar) - Tom Âmbar / Vermelho */
+.btn-status-pausa-nao {
+    background: #374151;
+    border-color: #4b5563;
+    color: #fca5a5;
+}
+
+.btn-status-pausa-nao:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+}
+
+/* Botão Sim (Ativar) - Tom Verde / Sucesso */
+.btn-status-pausa-sim {
+    background: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+}
+
+.btn-status-pausa-sim:hover {
+    background: #15803d;
+    border-color: #15803d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+}
+
+.btn-status-pausa-acao:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* =====================================================
+   MODAL DE ORDENAÇÃO DO HISTÓRICO (CLASSES EXCLUSIVAS)
+===================================================== */
+#modalOrdenarHistoricoUsuarios {
+    z-index: 1065 !important;
+}
+
+.modal-ordenar-historico-dialog {
+    max-width: 380px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-ordenar-historico-content {
+    background: #161e2b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: #CECFD2;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+}
+
+.modal-ordenar-historico-header {
+    background: #161e2b;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-ordenar-historico-header h5 {
+    color: #CECFD2;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-ordenar-historico-header h5 i {
+    color: #CECFD2;
+}
+
+.btn-modal-fechar-ordenar-historico {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: #CECFD2;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-ordenar-historico:hover {
+    background-color: #dc2626;
+    color: #CECFD2;
+    transform: scale(1.05);
+}
+
+.modal-ordenar-historico-body {
+    padding: 20px;
+    background: #161e2b;
+}
+
+.campo-ordenar-historico label {
+    font-size: 13px;
+    color: #CECFD2;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+#tipoOrdenacaoHistorico:focus,
+#tipoOrdenacaoHistorico:hover {
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+}
+
+#tipoOrdenacaoHistorico option {
+    background-color: #1b2230;
+    color: #f8fafc;
+    
+}
+#tipoOrdenacaoHistorico {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    padding: 10px;
+    background: #1b2230;
+    border: 1px solid #313b4e;
+    border-radius: 10px;
+    color: #f8fafc;
+    outline: none;
+    font-size: 14px;
+    transition: .25s;
+    box-sizing: border-box;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+}
+
+.modal-ordenar-historico-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: #161e2b !important;
+}
+
+.btn-cancelar-ordenar-historico {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #CECFD2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-cancelar-ordenar-historico:hover {
+    background: #4b5563;
+    color: #CECFD2;
+}
+
+.btn-confirmar-ordenar-historico {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #7c3aed;
+    border: 1px solid #8b5cf6;
+    color: #CECFD2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-confirmar-ordenar-historico:hover {
+    background: #6d28d9;
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+/* =====================================================
+   MODAL DE FILTRAGEM DO HISTÓRICO (CLASSES EXCLUSIVAS)
+===================================================== */
+#modalFiltrarHistoricoUsuarios {
+    z-index: 1065 !important;
+}
+
+.modal-filtrar-historico-dialog {
+    max-width: 400px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-filtrar-historico-content {
+    background: #161e2b !important;
+    border: 1px solid #383a3e !important;
+    border-radius: 12px !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+    color: #cecfd2;
+    overflow: hidden;
+}
+
+/* HEADER */
+.modal-filtrar-historico-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid #333538;
+    background: #161e2b;
+}
+
+.modal-filtrar-historico-titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #cecfd2;
+}
+
+.modal-filtrar-historico-titulo i {
+    color: #38bdf8;
+    font-size: 15px;
+}
+
+.btn-modal-fechar-filtrar-historico {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: 0.2s ease;
+}
+
+.btn-modal-fechar-filtrar-historico:hover {
+    color: #cecfd2;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* BODY */
+.modal-filtrar-historico-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* FIELDSET & LEGEND IDÊNTICOS À IMAGEM */
+.modal-filtrar-fieldset {
+    border: 1px solid #44474c !important;
+    border-radius: 8px !important;
+    padding: 10px 12px 12px !important;
+    margin: 0 !important;
+}
+
+.modal-filtrar-legend {
+    width: auto !important;
+    float: none !important;
+    margin: 0 0 0 6px !important;
+    padding: 0 6px !important;
+    font-size: 12.5px !important;
+    font-weight: 600;
+    color: #e2e8f0 !important;
+}
+
+/* INPUT DE DATA */
+.modal-filtrar-input-data {
+    width: 100% !important;
+    background: #1c1d1f !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 20px !important;
+    padding: 7px 14px !important;
+    font-size: 13px !important;
+    color: #cecfd2 !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    transition: 0.2s ease;
+}
+
+.modal-filtrar-input-data::placeholder {
+    color: #64748b;
+}
+
+.modal-filtrar-input-data:focus {
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2) !important;
+}
+
+/* RADIO BUTTONS */
+.modal-filtrar-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.modal-filtrar-radio-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #f1f5f9;
+    cursor: pointer;
+    user-select: none;
+}
+
+.modal-filtrar-radio {
+    display: none;
+}
+
+.modal-filtrar-radio-custom {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid #94a3b8;
+    background: #1c1d1f;
+    display: inline-block;
+    position: relative;
+    transition: 0.2s ease;
+}
+
+.modal-filtrar-radio:checked + .modal-filtrar-radio-custom {
+    border-color: #cecfd2;
+    background: #cecfd2;
+    box-shadow: inset 0 0 0 3px #1c1d1f;
+}
+
+/* BOTÃO DE APLICAR */
+.btn-filtrar-historico-submit {
+    width: 100%;
+    padding: 9px;
+    background: #37393d;
+    border: 1px solid #484b50;
+    border-radius: 8px;
+    color: #cecfd2;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+    margin-top: 2px;
+}
+
+.btn-filtrar-historico-submit:hover {
+    background: #0284c7;
+    border-color: #38bdf8;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+}
+
+/* =====================================================
+   BARRA DE PESQUISA DAS TABELAS (ATIVOS E INATIVOS)
+===================================================== */
+.verificar-usuarios-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    width: 100%;
+}
+
+.input-search-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.input-search-wrapper i {
+    position: absolute;
+    left: 14px;
+    color: #64748b;
+    font-size: 13px;
+    pointer-events: none;
+}
+
+.input-pesquisa-tabela {
+    width: 100%;
+    background-color: #161e2b;
+    border: 1px solid #313b4e;
+    border-radius: 8px;
+    padding: 8px 14px 8px 36px;
+    font-size: 13px;
+    color: #f8fafc;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.input-pesquisa-tabela::placeholder {
+    color: #64748b;
+}
+
+.input-pesquisa-tabela:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    background-color: #1a2332;
+}
+
+.btn-pesquisar-tabela {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    color: #e5e7eb;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-pesquisar-tabela:hover {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #cecfd2;
+    transform: translateY(-1px);
+}
+
+.btn-pesquisar-tabela i {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.btn-pesquisar-tabela:hover i {
+    color: #cecfd2;
+}
+
+/* =====================================================
+   MODAL DE ESCOLHA EXPORTAÇÃO EXCEL
+===================================================== */
+#modalEscolhaExportarExcel {
+    z-index: 1065 !important;
+}
+
+.modal-exportar-excel-dialog {
+    max-width: 380px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-exportar-excel-content {
+    background: #161e2b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: #cecfd2;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+}
+
+.modal-exportar-excel-header {
+    background: #161e2b;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-exportar-excel-header h5 {
+    color: #cecfd2;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-exportar-excel-header h5 i {
+    color: #22c55e;
+}
+
+.btn-modal-fechar-exportar-excel {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 50%;
+    color: #cecfd2;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-modal-fechar-exportar-excel:hover {
+    background-color: #dc2626;
+    color: #cecfd2;
+}
+
+.modal-exportar-excel-body {
+    padding: 20px;
+    background: #161e2b;
+}
+
+.campo-exportar-excel label {
+    font-size: 13px;
+    color: #cecfd2;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+#tipoExportacaoExcel {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100% !important;
+    padding: 10px 38px 10px 14px !important;
+    background: #1b2230 !important;
+    border: 1px solid #313b4e !important;
+    border-radius: 10px !important;
+    color: #f8fafc !important;
+    outline: none !important;
+    font-size: 13.5px !important;
+    transition: all 0.25s ease !important;
+    box-sizing: border-box !important;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+}
+
+#tipoExportacaoExcel:focus,
+#tipoExportacaoExcel:hover {
+    border-color: #22c55e !important;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2) !important;
+}
+
+#tipoExportacaoExcel option {
+    background-color: #1b2230 !important;
+    color: #f8fafc !important;
+}
+
+.modal-exportar-excel-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: #161e2b !important;
+}
+
+.btn-cancelar-exportar-excel {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-cancelar-exportar-excel:hover {
+    background: #4b5563;
+    color: #cecfd2;
+}
+
+.btn-confirmar-exportar-excel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #16a34a;
+    border: 1px solid #22c55e;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-confirmar-exportar-excel:hover {
+    background: #15803d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+}
+
+/* =====================================================
+   MODAL DE ESCOLHA EXPORTAÇÃO PDF
+===================================================== */
+#modalEscolhaExportarPdf {
+    z-index: 1065 !important;
+}
+
+.modal-exportar-pdf-dialog {
+    max-width: 380px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-exportar-pdf-content {
+    background: #161e2b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: #cecfd2;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+}
+
+.modal-exportar-pdf-header {
+    background: #161e2b;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-exportar-pdf-header h5 {
+    color: #cecfd2;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-exportar-pdf-header h5 i {
+    color: #ef4444;
+}
+
+.btn-modal-fechar-exportar-pdf {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 50%;
+    color: #cecfd2;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-modal-fechar-exportar-pdf:hover {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.modal-exportar-pdf-body {
+    padding: 20px;
+    background: #161e2b;
+}
+
+.campo-exportar-pdf label {
+    font-size: 13px;
+    color: #cecfd2;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+#tipoExportacaoPdf {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100% !important;
+    padding: 10px 38px 10px 14px !important;
+    background: #1b2230 !important;
+    border: 1px solid #313b4e !important;
+    border-radius: 10px !important;
+    color: #f8fafc !important;
+    outline: none !important;
+    font-size: 13.5px !important;
+    transition: all 0.25s ease !important;
+    box-sizing: border-box !important;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+}
+
+#tipoExportacaoPdf:focus,
+#tipoExportacaoPdf:hover {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+}
+
+#tipoExportacaoPdf option {
+    background-color: #1b2230 !important;
+    color: #f8fafc !important;
+}
+
+.modal-exportar-pdf-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: #161e2b !important;
+}
+
+.btn-cancelar-exportar-pdf {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-cancelar-exportar-pdf:hover {
+    background: #4b5563;
+    color: #ffffff;
+}
+
+.btn-confirmar-exportar-pdf {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #dc2626;
+    border: 1px solid #ef4444;
+    color: #ffffff;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-confirmar-exportar-pdf:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+}
+
+/* =====================================================
+   BADGES PERSONALIZADOS DE AÇÃO — HISTÓRICO DE USUÁRIOS
+===================================================== */
+.badge-historico-usuario {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.35em 0.65em;
+    border-radius: 0.375rem;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+}
+/* Badge: Saída / Inativação (Vermelho/Coral) */
+.badge-historico-usuario-saida {
+    background: rgb(220,53,69);
+    color: #cecfd2;
+}
+
+
+/* Badge: Estorno / Reativação / Entrada (Ciano/Azul) */
+.badge-historico-usuario-estorno {
+    background: rgba(56, 189, 248, 0.15);
+    color: #cecfd2;
+   
+}
+
+/* Badge: Cadastro / Novo Usuário (Verde) */
+.badge-historico-usuario-cadastro {
+    background: rgba(34, 197, 94, 0.15);
+    color: #cecfd2;
+    
+}
+
+/* Badge: Alteração / Edição (Âmbar/Laranja) */
+.badge-historico-usuario-edicao {
+    background: rgba(245, 158, 11, 0.15);
+    color: #cecfd2;
+    
+}
+
+/* Badge Neutro / Outras Ações (Cinza) */
+.badge-historico-usuario-padrao {
+    background: rgba(148, 163, 184, 0.15);
+    color: #cecfd2;
+    
+}

@@ -1,0 +1,55 @@
+{% if historicos %}
+    {% for item in historicos %}
+        <tr class="linha-item-historico-cliente" data-historico-id="{{ item.id }}">
+            <td class="col-checkbox">
+                <input
+                    type="checkbox"
+                    class="col-checkbox-clientes checkbox-item-historico-clientes"
+                    value="{{ item.id }}"
+                >
+            </td>
+
+            <td>
+                {{ item.data|date:"d/m/Y H:i" }}
+            </td>
+
+            <td>
+                <strong>
+                    {{ item.cliente.nome|default:item.nome_cliente }}
+                </strong>
+            </td>
+
+            <td>
+                {% if item.acao == 'Cadastro' %}
+                    <span class="badge-historico-cliente badge-historico-cadastro">
+                        <i class="fa-solid fa-user-plus"></i>
+                        Cadastro do Cliente
+                    </span>
+                {% elif item.acao == 'Edição' %}
+                    <span class="badge-historico-cliente badge-historico-edicao">
+                        <i class="fa-solid fa-user-pen"></i>
+                        Edição do Cliente
+                    </span>
+                {% elif item.acao == 'Exclusão' %}
+                    <span class="badge-historico-cliente badge-historico-exclusao">
+                        <i class="fa-solid fa-user-minus"></i>
+                        Exclusão do Cliente
+                    </span>
+                {% else %}
+                    <span class="badge-historico-cliente badge-historico-padrao">
+                        <i class="fa-solid fa-circle-info"></i>
+                        {{ item.acao }}
+                    </span>
+                {% endif %}
+            </td>
+
+            <td>
+                {{ item.descricao }}
+            </td>
+
+            <td>
+                {{ item.usuario.username|default:"Sistema" }}
+            </td>
+        </tr>
+    {% endfor %}
+{% endif %}

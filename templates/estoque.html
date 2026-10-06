@@ -1,0 +1,652 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/estoque.css' %}">
+<script src="{% static 'js/estoque.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<!-- BARRA VERTICAL MOBILE -->
+<div class="dashboard-sidebar-bar">
+    <button class="btn-menu-mobile" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</div>
+
+<div class="dashboard-page-estoque">
+    <div class="dashboard-topbar-estoque">
+        <div>
+            <h1>Estoque</h1>
+            <p>Visualize, acompanhe e gerencie os produtos disponíveis no estoque.</p>
+        </div>
+    </div>
+
+    <div class="estoque-grid-layout">
+        <div class="estoque-main-content">
+
+            <!-- CARD 1: ESTOQUE -->
+            <div class="dashboard-card">
+                <div class="estoque-header">
+                    <div>
+                        <h2>Produtos em estoque</h2>
+                    </div>
+                    <div class="estoque-acoes-topo">
+                        <button class="btn-estoque-outline" id="btnExportarProdutosExcel">
+                            <i class="fa-regular fa-file-excel"></i> Exportar Excel
+                        </button>
+                        <button class="btn-estoque-outline" id="btnExportarProdutosPDF">
+                            <i class="fa-regular fa-file-pdf"></i> Exportar PDF
+                        </button>
+                    </div>
+                </div>
+
+                 <!-- BARRA DE PESQUISA: PRODUTOS EM ESTOQUE -->
+                <div class="verificar-produtos-search-bar">
+                    <div class="input-search-wrapper-produtos">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input 
+                            type="text" 
+                            id="inputPesquisaEstoque" 
+                            class="input-pesquisa-tabela-estoque" 
+                            placeholder="Pesquisar por nome, ID, Código do Produto..." 
+                            autocomplete="off">
+                    </div>
+                    <button type="button" class="btn-pesquisar-tabela-estoque" id="btnPesquisarEstoque">
+                        <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
+                    </button>
+                </div>
+
+                <div class="estoque-table-container">
+                    <table class="estoque-table" id="tabelaEstoqueProdutos">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>PRODUTO</th>
+                                <th>QUANTIDADE</th>
+                                <th>VALOR UNITÁRIO</th>
+                                <th>DESCONTO</th>
+                                <th>TOTAL SEM DESCONTO</th>
+                                <th>TOTAL COM DESCONTO</th>
+                                <th>DATA DO CADASTRO</th>
+                                <th>CÓDIGO DO PRODUTO</th>
+                                <th>CLIENTE</th>
+                                <th>DESCRIÇÃO DO PRODUTO</th>
+                                <th>USUÁRIO</th>
+                                <th>STATUS DA SAÍDA</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyEstoqueProdutos">
+                            {% include "estoque/linhas_tabela_estoque.html" with produtos=produtos %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CARD 2: SAÍDA -->
+            <div class="dashboard-card mt-4">
+                <div class="estoque-header" id="tabelaSaidaProdutos">
+                    <div>
+                        <h2>Saída</h2>
+                    </div>
+                </div>
+
+                <!-- BARRA DE PESQUISA: PRODUTOS SAÍDA -->
+                <div class="verificar-produtos-search-bar">
+                    <div class="input-search-wrapper-produtos">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input 
+                            type="text" 
+                            id="inputPesquisaSaida" 
+                            class="input-pesquisa-tabela-saida" 
+                            placeholder="Pesquisar por nome, ID, Código do Produto..." 
+                            autocomplete="off">
+                    </div>
+                    <button type="button" class="btn-pesquisar-tabela-saida" id="btnPesquisaSaida">
+                        <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
+                    </button>
+                </div>
+
+                <div class="estoque-table-container">
+                    <table class="estoque-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>PRODUTO</th>
+                                <th>QUANTIDADE</th>
+                                <th>VALOR UNITÁRIO</th>
+                                <th>DESCONTO</th>
+                                <th>TOTAL SEM DESCONTO</th>
+                                <th>TOTAL COM DESCONTO</th>
+                                <th>DATA DA SAÍDA</th>
+                                <th>DATA DO CADASTRO</th>
+                                <th>CÓDIGO DO PRODUTO</th>
+                                <th>CLIENTE</th>
+                                <th>DESCRIÇÃO DO PRODUTO</th>
+                                <th>USUÁRIO</th>
+                                <th>STATUS DA SAÍDA</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyEstoqueSaidas">
+                            {% include "estoque/linhas_tabela_saidas.html" with saidas=saidas %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            
+
+        </div>
+
+        <!-- COLUNA DIREITA -->
+        <div class="estoque-side-actions">
+            <a href="{% url 'produtos' %}" class="btn-side-action">
+                <i class="fa-regular fa-circle-plus"></i> Novo Produto
+            </a>
+            <button type="button" class="btn-side-action" id="btnAtualizarSaida">
+                <i class="fa-solid fa-rotate"></i> Atualizar saída
+            </button>
+            <button type="button" class="btn-side-action" id="btnAtualizarEstoque">
+                <i class="fa-solid fa-rotate"></i> Atualizar estoque
+            </button>
+            <button type="button" class="btn-side-action" id="btnHistoricoEstoque">
+                <i class="fa-regular fa-calendar-days"></i> Histórico
+            </button>
+            <button type="button" class="btn-side-action" id="btnLimparTabelasEstoque">
+                <i class="fa-regular fa-trash-can"></i> Limpar Tabelas
+            </button>
+            <button type="button" class="btn-side-action" id="btnGerarEstorno">
+                <i class="fa-solid fa-rotate-left"></i> Gerar estorno
+            </button>
+            <button type="button" class="btn-side-action" id="btnGerarSaidaEstoque">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Gerar saída
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL GERAR SAÍDA POR QUANTIDADE -->
+<div class="modal fade" id="modalConfirmarSaidaEstoque" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-saida-estoque-dialog">
+        <div class="modal-content modal-saida-estoque-content">
+            <div class="modal-header modal-saida-estoque-header">
+                <h5><i class="fa-solid fa-arrow-right-from-bracket"></i> Gerar Saída</h5>
+                <button type="button" class="btn-modal-fechar-saida-estoque" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body modal-saida-estoque-body">
+                <div class="card-info-saida-produto mb-3">
+                    <span class="label-info-saida">Produto:</span> <strong id="nomeProdutoSaidaModal">—</strong><br>
+                    <span class="label-info-saida">Qtd Atual no Estoque:</span> <strong id="qtdDisponivelSaidaModal" class="text-info">0</strong>
+                </div>
+                <div class="mb-3 text-start">
+                    <label class="form-label text-light small">Quantidade para dar saída:</label>
+                    <input type="number" id="inputQtdSaida" class="form-control form-control-sm bg-dark text-light border-secondary" min="1" value="1">
+                    <small id="erroQtdSaida" class="text-danger d-none">Quantidade inválida.</small>
+                </div>
+            </div>
+            <div class="modal-footer modal-saida-estoque-footer">
+                <button type="button" class="btn-cancelar-saida-estoque" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnConfirmarSaidaEstoqueDefinitiva" class="btn-confirmar-saida-estoque">Confirmar Saída</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- =====================================================
+     MODAL DE HISTÓRICO DE AÇÕES DE PRODUTOS / ESTOQUE
+====================================================== -->
+<div class="modal fade" id="modalHistoricoProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content modal-historico-produtos-content">
+            
+            <!-- HEADER -->
+            <div class="modal-header modal-historico-produtos-header">
+                <div class="modal-historico-produtos-titulo-box">
+                    <div class="modal-historico-produtos-icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <div>
+                        <h3 class="modal-historico-produtos-titulo">Histórico de Atividades</h3>
+                        <p class="modal-historico-produtos-subtitulo">Registro detalhado de ações, saídas, estornos e alterações de produtos no sistema</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-modal-fechar-historico-produtos" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- TOOLBAR DE AÇÕES (8 BOTÕES) -->
+            <div class="modal-historico-produtos-toolbar">
+                <div class="modal-historico-produtos-toolbar-acoes">
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-atualizar" id="btnAtualizarHistoricoProdutos">
+                        <i class="fa-solid fa-rotate"></i> Atualizar histórico
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-perigo" id="btnApagarHistoricoProdutos">
+                        <i class="fa-regular fa-trash-can"></i> Apagar histórico
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-exportar-csv" id="btnExportarCsvHistoricoProdutos">
+                        <i class="fa-solid fa-file-csv"></i> Exportar CSV
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-exportar-excel" id="btnExportarExcelHistoricoProdutos">
+                        <i class="fa-regular fa-file-excel"></i> Exportar Excel
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-exportar-pdf" id="btnExportarPdfHistoricoProdutos">
+                        <i class="fa-regular fa-file-pdf"></i> Exportar PDF
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-pausar" id="btnPausarHistoricoProdutos">
+                        <i class="fa-solid fa-pause"></i> <span id="textoStatusPausaHistoricoProdutos">Pausar histórico</span>
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-ordenar" id="btnOrdenarHistoricoProdutos">
+                        <i class="fa-solid fa-arrow-down-a-z"></i> Ordenar histórico
+                    </button>
+                    <button type="button" class="btn-historico-produtos-acao btn-historico-produtos-filtrar" id="btnFiltrarHistoricoProdutos">
+                        <i class="fa-solid fa-filter"></i> Filtrar histórico
+                    </button>
+                </div>
+            </div>
+
+            <!-- BODY COM TABELA E CHECKBOXES -->
+            <div class="modal-body modal-historico-produtos-body">
+                <div class="modal-historico-produtos-table-container">
+                    <table class="estoque-table modal-historico-produtos-table">
+                        <thead>
+                            <tr>
+                                <th class="col-checkbox">
+                                    <input type="checkbox" id="checkboxMasterHistoricoProdutos" class="col-checkbox-produtos">
+                                </th>
+                                <th>Data/Hora</th>
+                                <th>Produto</th>
+                                <th>Ação</th>
+                                <th>Descrição</th>
+                                <th>Usuário</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyHistoricoProdutos">
+                            <!-- Linha vazia padrão para quando não houver dados -->
+                            <tr class="linha-vazia-historico-produtos">
+                                <td colspan="6">
+                                    <div class="sem-registros-content-historico-produtos">
+                                        <i class="fa-solid fa-clock-rotate-left"></i>
+                                        <p>Nenhum registro de histórico de produtos encontrado.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-historico-produtos-footer">
+                <span class="contador-selecionados-historico-produtos" id="contadorSelecionadosHistoricoProdutos">
+                    0 itens selecionados
+                </span>
+                <button type="button" class="btn-cancelar-historico-produtos" data-bs-dismiss="modal">
+                    Fechar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- =====================================================
+     MODAL DE ORDENAÇÃO — HISTÓRICO DE PRODUTOS
+====================================================== -->
+<div class="modal fade" id="modalOrdenarHistoricoProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-ordenar-historico-produtos-dialog">
+        <div class="modal-content modal-ordenar-historico-produtos-content">
+            <div class="modal-header modal-ordenar-historico-produtos-header">
+                <h5>
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Direção da Ordenação
+                </h5>
+                <button
+                    type="button"
+                    class="btn-modal-fechar-ordenar-historico-produtos"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-ordenar-historico-produtos-body">
+                <div class="campo campo-ordenar-historico-produtos">
+                    <label for="tipoOrdenacaoHistoricoProdutos">Escolha a direção</label>
+                    <select id="tipoOrdenacaoHistoricoProdutos">
+                        <option value="desc" selected>Decrescente (Mais recentes primeiro)</option>
+                        <option value="asc">Crescente (Mais antigos primeiro)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-ordenar-historico-produtos-footer">
+                <button
+                    type="button"
+                    class="btn-cancelar-ordenar-historico-produtos"
+                    data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button
+                    type="button"
+                    id="btnExecutarOrdenacaoHistoricoProdutos"
+                    class="btn-confirmar-ordenar-historico-produto">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Ordenar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL GERAR ESTORNO POR QUANTIDADE -->
+<div class="modal fade" id="modalConfirmarEstornoEstoque" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-saida-estoque-dialog">
+        <div class="modal-content modal-saida-estoque-content">
+            <div class="modal-header modal-saida-estoque-header">
+                <h5><i class="fa-solid fa-rotate-left" style="color: #38bdf8;"></i> Gerar Estorno</h5>
+                <button type="button" class="btn-modal-fechar-saida-estoque" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body modal-saida-estoque-body">
+                <div class="card-info-saida-produto mb-3">
+                    <span class="label-info-saida">Produto:</span> <strong id="nomeProdutoEstornoModal">—</strong><br>
+                    <span class="label-info-saida">Qtd na Saída:</span> <strong id="qtdDisponivelEstornoModal" class="text-info">0</strong>
+                </div>
+                <div class="mb-3 text-start">
+                    <label class="form-label text-light small">Quantidade para estornar:</label>
+                    <input type="number" id="inputQtdEstorno" class="form-control form-control-sm bg-dark text-light border-secondary" min="1" value="1">
+                    <small id="erroQtdEstorno" class="text-danger d-none">Quantidade inválida.</small>
+                </div>
+            </div>
+            <div class="modal-footer modal-saida-estoque-footer">
+                <button type="button" class="btn-cancelar-saida-estoque" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnConfirmarEstornoEstoqueDefinitiva" class="btn-confirmar-saida-estoque" style="background: #0284c7; border-color: #38bdf8;">Confirmar Estorno</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL ESPECÍFICO — CONFIRMAR EXCLUSÃO DE HISTÓRICO
+====================================================== -->
+<div class="modal fade" id="modalConfirmarExclusaoHistorico" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-exclusao-historico-dialog">
+        <div class="modal-content modal-exclusao-historico-content">
+            <div class="modal-header modal-exclusao-historico-header">
+                <h5>
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-modal-fechar-exclusao-historico" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-exclusao-historico-body text-center">
+                <!-- Texto dinâmico alterado via JS conforme a quantidade -->
+                <p id="textoConfirmacaoExclusaoHistorico" class="modal-exclusao-historico-texto">
+                    Deseja apagar os registros selecionados?
+                </p>
+
+                <div class="alerta-aviso-exclusao-historico">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Esta ação é irreversível e os dados serão excluídos definitivamente.</span>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-exclusao-historico-footer">
+                <button type="button" class="btn-cancelar-exclusao-historico" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" id="btnConfirmarExclusaoHistoricoDefinitiva" class="btn-confirmar-exclusao-historico">
+                    <i class="fa-solid fa-trash-can"></i>
+                    Confirmar Exclusão
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- =====================================================
+     MODAL DE CONFIRMAÇÃO — PAUSAR / ATIVAR HISTÓRICO DE PRODUTOS
+====================================================== -->
+<div class="modal fade" id="modalStatusPausaHistoricoProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-status-pausa-historico-produtos-dialog">
+        <div class="modal-content modal-status-pausa-historico-produtos-content">
+            <div class="modal-status-pausa-historico-produtos-header">
+                <div class="modal-status-pausa-historico-produtos-icon">
+                    <i class="fa-solid fa-circle-pause"></i>
+                </div>
+                <button type="button" class="btn-modal-fechar-pausa-historico-produtos" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-status-pausa-historico-produtos-body text-center">
+                <h4 class="modal-status-pausa-historico-produtos-titulo">Gravação do Histórico de Produtos</h4>
+                <p class="modal-status-pausa-historico-produtos-descricao">
+                    Deseja manter o registro de auditoria dos produtos <strong>ativo</strong>?
+                </p>
+
+                <div class="modal-status-pausa-historico-produtos-card-info">
+                    <span class="modal-status-pausa-historico-produtos-card-label">Status atual no sistema:</span>
+                    <span id="badgeStatusPausaAtualProdutos" class="modal-status-pausa-produtos-badge ativo">
+                        <i class="fa-solid fa-circle-check"></i> Gravando normalmente
+                    </span>
+                </div>
+
+                <small class="modal-status-pausa-historico-produtos-legenda">
+                    Clique em <strong>Sim</strong> para ativar ou em <strong>Não</strong> para pausar a gravação.
+                </small>
+            </div>
+
+            <div class="modal-status-pausa-historico-produtos-footer">
+                <button type="button" id="btnNaoPausarHistoricoProdutos" class="btn-status-pausa-produtos-acao btn-status-pausa-produtos-nao">
+                    <i class="fa-solid fa-pause"></i> Não (Pausar)
+                </button>
+                <button type="button" id="btnSimAtivarHistoricoProdutos" class="btn-status-pausa-produtos-acao btn-status-pausa-produtos-sim">
+                    <i class="fa-solid fa-play"></i> Sim (Ativar)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE ORDENAÇÃO — HISTÓRICO DE PRODUTOS
+====================================================== -->
+<div class="modal fade" id="modalOrdenarHistoricoProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-ordenar-historico-produtos-dialog">
+        <div class="modal-content modal-ordenar-historico-produtos-content">
+            <div class="modal-header modal-ordenar-historico-produtos-header">
+                <h5>
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Direção da Ordenação
+                </h5>
+                <button
+                    type="button"
+                    class="btn-modal-fechar-ordenar-historico-produtos"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-ordenar-historico-produtos-body">
+                <div class="campo-ordenar-historico-produtos">
+                    <label for="tipoOrdenacaoHistoricoProdutos">Escolha a direção</label>
+                    <select id="tipoOrdenacaoHistoricoProdutos" class="form-select-ordenar-historico-produtos">
+                        <option value="desc" selected>Decrescente (Mais recentes primeiro)</option>
+                        <option value="asc">Crescente (Mais antigos primeiro)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-ordenar-historico-produtos-footer">
+                <button
+                    type="button"
+                    class="btn-cancelar-ordenar-historico-produtos"
+                    data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button
+                    type="button"
+                    id="btnExecutarOrdenacaoHistoricoProdutos"
+                    class="btn-confirmar-ordenar-historico-produtos">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Ordenar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE FILTRAGEM — HISTÓRICO DE PRODUTOS
+====================================================== -->
+<div class="modal fade" id="modalFiltrarHistoricoProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-filtrar-historico-produtos-dialog">
+        <div class="modal-content modal-filtrar-historico-produtos-content">
+            <div class="modal-filtrar-historico-produtos-header">
+                <div class="modal-filtrar-historico-produtos-titulo">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <span>Filtrar Histórico de Produtos</span>
+                </div>
+                <button type="button" class="btn-modal-fechar-filtrar-historico-produtos" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-filtrar-historico-produtos-body">
+                <fieldset class="modal-filtrar-produtos-fieldset">
+                    <legend class="modal-filtrar-produtos-legend">Filtro por Data</legend>
+                    <div class="modal-filtrar-produtos-campo">
+                        <input 
+                            type="text" 
+                            id="filtroDataHistoricoProdutos" 
+                            class="modal-filtrar-produtos-input-data" 
+                            placeholder="DD/MM/AAAA..." 
+                            maxlength="10"
+                            autocomplete="off">
+                    </div>
+                </fieldset>
+
+                <fieldset class="modal-filtrar-produtos-fieldset">
+                    <legend class="modal-filtrar-produtos-legend">Filtrar por Horário</legend>
+                    <div class="modal-filtrar-produtos-radio-group">
+                        <label class="modal-filtrar-produtos-radio-label">
+                            <input type="radio" name="filtroOrdemHoraProdutos" value="desc" checked class="modal-filtrar-produtos-radio">
+                            <span class="modal-filtrar-produtos-radio-custom"></span>
+                            <span>Mais Recentes Primeiro</span>
+                        </label>
+
+                        <label class="modal-filtrar-produtos-radio-label">
+                            <input type="radio" name="filtroOrdemHoraProdutos" value="asc" class="modal-filtrar-produtos-radio">
+                            <span class="modal-filtrar-produtos-radio-custom"></span>
+                            <span>Mais Antigos Primeiro</span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div class="modal-filtrar-produtos-acoes">
+                    <button type="button" id="btnAplicarFiltroHistoricoProdutos" class="btn-filtrar-produtos-submit">
+                        <i class="fa-solid fa-filter"></i> Aplicar Filtro
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE EXPORTAÇÃO EXCEL - PRODUTOS
+====================================================== -->
+<div class="modal fade" id="modalExportarExcelProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-exportar-produtos-dialog">
+        <div class="modal-content modal-exportar-produtos-content">
+            <div class="modal-header modal-exportar-produtos-header">
+                <h5>
+                    <i class="fa-regular fa-file-excel"></i>
+                    Exportar Produtos para Excel
+                </h5>
+                <button type="button" class="btn-modal-fechar-exportar-produtos" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-exportar-produtos-body">
+                <div class="campo campo-exportar-produtos">
+                    <label for="tipoExportacaoExcelProdutos">Selecione o que deseja exportar:</label>
+                    <select id="tipoExportacaoExcelProdutos" class="select-exportar-produtos">
+                        <option value="todos" selected>Ambas as Tabelas (Abas separadas)</option>
+                        <option value="estoque">Apenas Produtos Estoque</option>
+                        <option value="saida">Apenas Produtos Saída</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-exportar-produtos-footer">
+                <button type="button" class="btn-cancelar-exportar-produtos" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" id="btnConfirmarExportarExcelProdutos" class="btn-confirmar-exportar-produtos" data-url="{% url 'exportar_produtos_excel' %}">
+                    <i class="fa-solid fa-download"></i>
+                    Exportar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE EXPORTAÇÃO PDF - PRODUTOS
+====================================================== -->
+<div class="modal fade" id="modalExportarPdfProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-exportar-pdf-produtos-dialog">
+        <div class="modal-content modal-exportar-pdf-produtos-content">
+            <div class="modal-header modal-exportar-pdf-produtos-header">
+                <h5>
+                    <i class="fa-regular fa-file-pdf"></i>
+                    Exportar Produtos para PDF
+                </h5>
+                <button type="button" class="btn-modal-fechar-exportar-pdf-produtos" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-exportar-pdf-produtos-body">
+                <div class="campo campo-exportar-pdf-produtos">
+                    <label for="tipoExportacaoPdfProdutos">Selecione o que deseja exportar:</label>
+                    <select id="tipoExportacaoPdfProdutos" class="select-exportar-pdf-produtos">
+                        <option value="todos" selected>Ambas as Tabelas (Relatório Completo)</option>
+                        <option value="estoque">Apenas Produtos em Estoque</option>
+                        <option value="saida">Apenas Saída de Produtos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-exportar-pdf-produtos-footer">
+                <button type="button" class="btn-cancelar-exportar-pdf-produtos" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" 
+                        id="btnConfirmarExportarPdfProdutos" 
+                        class="btn-confirmar-exportar-pdf-produtos"
+                        data-url="{% url 'exportar_produtos_tabela_pdf' %}">
+                    <i class="fa-solid fa-download"></i>
+                    Exportar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

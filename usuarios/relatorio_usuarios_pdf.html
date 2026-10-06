@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>Relatório de Usuários</title>
+    <style>
+        @page {
+            size: a4 landscape;
+            margin: 1cm;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 8.5px;
+            color: #1f2937;
+        }
+        .header {
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        .header h1 {
+            font-size: 16px;
+            color: #111827;
+            margin: 0 0 4px 0;
+        }
+        .meta-info {
+            font-size: 9px;
+            color: #4b5563;
+        }
+        .secao-titulo {
+            font-size: 11px;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid #cbd5e1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 14px;
+        }
+        th {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            font-weight: bold;
+            padding: 4px;
+            border: 0.5px solid #cbd5e1;
+            text-align: left;
+            font-size: 7.5px;
+        }
+        td {
+            padding: 4px;
+            border: 0.5px solid #e2e8f0;
+            font-size: 7.5px;
+        }
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        .vazio {
+            text-align: center;
+            color: #64748b;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Relatório de Usuários do Sistema</h1>
+        <div class="meta-info">
+            <strong>Emissão:</strong> {{ data_emissao }} | 
+            <strong>Gerado por:</strong> {{ usuario_emissor }} | 
+            <strong>Filtro aplicado:</strong> {{ tipo_relatorio }}
+        </div>
+    </div>
+
+    {% if usuarios_ativos is not None %}
+        <div class="secao-titulo">Usuários Ativos (Total: {{ usuarios_ativos|length }})</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Usuário</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>Cidade / UF</th>
+                    <th>CPF</th>
+                    <th>Data Entrada</th>
+                    <th>Acesso</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in usuarios_ativos %}
+                <tr>
+                    <td><strong>{{ u.get_full_name|default:u.username }}</strong></td>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.email|default:"Não informado" }}</td>
+                    <td>{{ u.perfil.telefone|default:"—" }}</td>
+                    <td>{{ u.perfil.cidade|default:"—" }}/{{ u.perfil.estado|default:"—" }}</td>
+                    <td>{{ u.perfil.cpf|default:"—" }}</td>
+                    <td>{{ u.date_joined|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        {% if u.perfil.acesso %}
+                            {{ u.perfil.acesso }}
+                        {% elif u.is_superuser %}
+                            Administrador
+                        {% else %}
+                            Usuário Comum
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="vazio">Nenhum usuário ativo cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if usuarios_inativos is not None %}
+        <div class="secao-titulo">Usuários Inativos (Total: {{ usuarios_inativos|length }})</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Usuário</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>Cidade / UF</th>
+                    <th>Data Entrada</th>
+                    <th>Data Inativação</th>
+                    <th>Acesso</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in usuarios_inativos %}
+                <tr>
+                    <td><strong>{{ u.get_full_name|default:u.username }}</strong></td>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.email|default:"Não informado" }}</td>
+                    <td>{{ u.perfil.telefone|default:"—" }}</td>
+                    <td>{{ u.perfil.cidade|default:"—" }}/{{ u.perfil.estado|default:"—" }}</td>
+                    <td>{{ u.date_joined|date:"d/m/Y H:i" }}</td>
+                    <td>{{ u.perfil.data_inatividade|date:"d/m/Y H:i"|default:"—" }}</td>
+                    <td>
+                        {% if u.perfil.acesso %}
+                            {{ u.perfil.acesso }}
+                        {% elif u.is_superuser %}
+                            Administrador
+                        {% else %}
+                            Usuário Comum
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="vazio">Nenhum usuário inativo encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+</body>
+</html>

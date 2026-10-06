@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Histórico de Atividades</title>
+    <style>
+        /* A4 Paisagem com margens calculadas diretamente na página */
+        @page {
+            size: a4 landscape;
+            margin-top: 1.2cm;
+            margin-bottom: 1.2cm;
+            margin-left: 1.2cm;
+            margin-right: 1.2cm;
+        }
+
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #1e293b;
+            font-size: 8.5pt;
+        }
+
+        /* CABEÇALHO DO RELATÓRIO */
+        .tabela-cabecalho {
+            width: 100%;
+            border-bottom: 2px solid #0f172a;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+        }
+
+        .titulo {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .subtitulo {
+            font-size: 8pt;
+            color: #475569;
+            margin: 2px 0 0 0;
+        }
+
+        .info-emissao {
+            text-align: right;
+            font-size: 7.5pt;
+            color: #64748b;
+            line-height: 1.3;
+        }
+
+        /* TABELA DE REGISTROS */
+        .tabela-dados {
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .tabela-dados th {
+            background-color: #0f172a;
+            color: #ffffff;
+            font-size: 7.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 6px 8px;
+            border: 1px solid #0f172a;
+        }
+
+        .tabela-dados td {
+            padding: 5px 8px;
+            font-size: 8pt;
+            border: 1px solid #cbd5e1;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .linha-par {
+            background-color: #f8fafc;
+        }
+
+        .badge {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 2px 6px;
+            font-size: 6.5pt;
+            font-weight: bold;
+            border: 1px solid #fca5a5;
+        }
+
+        /* RODAPÉ DO DOCUMENTO */
+        .rodape-container {
+            width: 100%;
+            margin-top: 14px;
+            padding-top: 6px;
+            font-size: 7.5pt;
+            color: #64748b;
+            
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABEÇALHO -->
+    <table class="tabela-cabecalho">
+        <tr>
+            <td style="border: none; padding: 0;">
+                <h1 class="titulo">Relatório de Histórico de Atividades</h1>
+                <p class="subtitulo">Auditoria de ações, saídas e alterações de usuários no sistema</p>
+            </td>
+            <td class="info-emissao" style="border: none; padding: 0;">
+                <div><strong>Emissão:</strong> {{ data_emissao }}</div>
+                <div><strong>Emitido por:</strong> {{ usuario_emissor }}</div>
+                <div><strong>Total listado:</strong> {{ total_registros }} registro(s)</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- TABELA DE DADOS -->
+    <table class="tabela-dados">
+        <thead>
+            <tr>
+                <th style="width: 8%;" class="text-center">ID</th>
+                <th style="width: 18%;" class="text-center">DATA / HORA</th>
+                <th style="width: 18%;">RESPONSÁVEL</th>
+                <th style="width: 14%;" class="text-center">AÇÃO</th>
+                <th style="width: 42%;">DESCRIÇÃO</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in historico %}
+            <tr class="{% cycle '' 'linha-par' %}">
+                <td class="text-center"><strong>#{{ item.id }}</strong></td>
+                <td class="text-center">{{ item.data_hora }}</td>
+                <td><strong>{{ item.usuario_responsavel }}</strong></td>
+                <td class="text-center">
+                    <span class="badge">{{ item.acao }}</span>
+                </td>
+                <td>{{ item.descricao }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center" style="padding: 20px; color: #64748b;">
+                    Nenhum registro encontrado para exportação.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- RODAPÉ FINAL -->
+    <table class="rodape-container">
+        <tr>
+            <td style="border: none; padding: 0; text-align: left;">
+                Sistema de Gerenciamento Online &bull; Módulo de Usuários
+            </td>
+            <td style="border: none; padding: 0; text-align: right;">
+                Página <pdf:pageNumber> de <pdf:pageCount>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
