@@ -16,6 +16,10 @@ from accounts.models import PerfilUsuario
 from datetime import datetime
 from notificacoes.models import Notificacao
 from django.utils.dateparse import parse_datetime
+from groq import Groq
+from django.conf import settings
+import json
+from .ia.conhecimento import CONHECIMENTO_SISTEMA
 
 
 
@@ -1390,6 +1394,137 @@ def excluir_cliente(request, cliente_id):
         return JsonResponse({
             "sucesso": False,
             "mensagem": f"Erro interno ao excluir cliente: {str(erro)}"
+        }, status=500)
+
+# =========================================================
+# ASSISTENTE IA
+# =========================================================
+
+@login_required
+@require_POST
+def chat_ia(request):
+
+    try:
+
+        dados = json.loads(request.body)
+
+        mensagem = dados.get("mensagem", "").strip()
+
+        if not mensagem:
+            return JsonResponse({
+                "sucesso": False,
+                "mensagem": "Digite uma pergunta."
+            }, status=400)
+
+
+        # =================================================
+        # VERIFICA API KEY
+        # =================================================
+        api_key = settings.GROQ_API_KEY
+
+        if not api_key:
+
+            return JsonResponse({
+                "sucesso": False,
+                "mensagem": "A chave da API da Groq não está configurada."
+            }, status=500)
+
+
+        # =================================================
+        # CLIENTE GROQ
+        # =================================================
+
+        client = Groq(
+            api_key=api_key
+        )
+
+
+        # =================================================
+        # SOLICITA RESPOSTA À IA
+        # =================================================
+
+        resposta = client.chat.completions.create(
+
+            model="openai/gpt-oss-120b",
+
+           messages=[
+
+            {
+                "role": "system",
+
+                "content": f"""
+        Você é o Assistente IA do Sistema de Gerenciamento.
+
+        Você deve responder exclusivamente com base
+        nas informações reais do sistema fornecidas abaixo.
+
+        Não invente telas.
+        Não invente botões.
+        Não invente campos.
+        Não invente funcionalidades.
+        Não invente regras.
+
+        Se a informação não estiver na base de conhecimento,
+        diga claramente que você não possui essa informação.
+
+        Responda em português do Brasil.
+
+        BASE DE CONHECIMENTO DO SISTEMA:
+
+        {CONHECIMENTO_SISTEMA}
+        """
+            },
+
+            {
+                "role": "user",
+                "content": mensagem
+            }
+
+        ],
+
+            temperature=0.7,
+
+            max_tokens=1000
+        )
+
+
+        # =================================================
+        # PEGA A RESPOSTA
+        # =================================================
+        resposta_texto = (
+            resposta.choices[0]
+            .message
+            .content
+        )
+
+
+        # =================================================
+        # RETORNA PARA O JAVASCRIPT
+        # ================================================
+
+        return JsonResponse({
+
+            "sucesso": True,
+
+            "resposta": resposta_texto
+
+        })
+
+
+    except Exception as erro:
+
+        print(
+            f"Erro no Assistente IA: {erro}"
+        )
+
+
+        return JsonResponse({
+
+            "sucesso": False,
+
+            "mensagem":
+                "Não foi possível obter uma resposta da IA."
+
         }, status=500)
         
 

@@ -5,6 +5,7 @@ from .models import Cliente,ClienteHistorico
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET, require_POST
 from django.template.loader import render_to_string
+import json
 
 
 def exportar_relatorio_excel(request):
@@ -249,3 +250,96 @@ def historico_clientes(request):
             )
         }, status=500)
     
+@login_required
+@require_POST
+def atualizar_historico_cliente(request):
+    try:
+        tipo_cliente = request.POST.get("tipo_cliente", "").strip()
+
+        if tipo_cliente not in ["fisico", "juridico"]:
+            return JsonResponse({
+                "sucesso": False,
+                "mensagem": "Tipo de cliente inválido."
+            }, status=400)
+
+        cliente_id = request.POST.get("cliente_id", "").strip()
+
+        if not cliente_id:
+            return JsonResponse({
+                "sucesso": False,
+                "mensagem": "Cliente não informado."
+            }, status=400)
+
+        cliente = Cliente.objects.filter(
+            id=cliente_id,
+            tipo_cliente=tipo_cliente
+        ).first()
+
+        if not cliente:
+            return JsonResponse({
+                "sucesso": False,
+                "mensagem": "Cliente não encontrado."
+            }, status=404)
+
+        historico = ClienteHistorico.objects.create(
+            cliente=cliente,
+            tipo_cliente=tipo_cliente
+        )
+
+        return JsonResponse({
+            "sucesso": True,
+            "mensagem": "Histórico atualizado com sucesso.",
+            "tipo_cliente": tipo_cliente,
+            "historico_id": historico.id
+        })
+
+    except Exception as erro:
+        print(
+            f"Erro ao atualizar histórico do cliente: {erro}"
+        )
+
+        return JsonResponse({
+            "sucesso": False,
+            "mensagem": (
+                f"Erro ao atualizar histórico: {str(erro)}"
+            )
+        }, status=500)
+        
+        
+@login_required
+@require_POST
+def apagar_historico_clientes(request):
+    try:
+        dados = json.loads(request.body)
+        ids_para_apagar = dados.get('ids',[])
+        
+        if not ids_para_apagar or not isinstance(ids_para_apagar, list):
+            return JsonResponse({
+                'sucesso': False,
+                'mensagem': 'Nenhum histórico selecionado para exclusão.'
+            }, status=400)
+        deletados, _ = ClienteHistorico.objects.filter(id__in=ids_para_apagar).delete()
+        
+        if deletados == 0:
+            return JsonResponse({
+                'sucesso': False,
+                'mensagem': 'Nenhum registro correspondente foi encontrado.'
+            })
+        msg = (
+            "Histórico apagado com sucesso!"
+            if deletados == 1
+                else f"{deletados} histórico apagados com sucesso!"
+        )
+        
+        return JsonResponse({
+            'sucesso': True,
+            'mensagem': msg,
+            'total_deletados': deletados
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'sucesso': False,
+            'mensagem': f'Erro ao apagados o históricos: {str(e)}'
+        }, status=500)
+        

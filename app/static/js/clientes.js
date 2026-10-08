@@ -1,18 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
+
     /* =====================================================
-       ELEMENTOS GERAIS E ABAS DA TABELA
+        ELEMENTOS GERAIS E ABAS DA TABELA
     ===================================================== */
     const btnJuridico = document.getElementById("btnClientesJuridicos");
     const btnFisico = document.getElementById("btnClientesFisicos");
 
     /* =====================================================
-       ELEMENTOS DO MODAL 1: CADASTRAR
+        ELEMENTOS DO MODAL 1: CADASTRAR
     ===================================================== */
     const btnAbrirCadastro = document.getElementById("btnAbrirCadastroCliente");
     const modalCadastrarElement = document.getElementById("modalCadastrarCliente");
     const tipoCliente = document.getElementById("tipoCliente");
     const tituloModal = document.getElementById("tituloModalCliente");
-    const camposJuridicos = document.querySelectorAll("#modalCadastrarCliente .campo-juridico");
+    const camposJuridicos = document.querySelectorAll(
+        "#modalCadastrarCliente .campo-juridico"
+    );
     const btnCadastrarCliente = document.getElementById("btnCadastrarCliente");
 
     const modalCadastro = modalCadastrarElement
@@ -20,83 +23,179 @@ document.addEventListener("DOMContentLoaded", () => {
         : null;
 
     /* =====================================================
-       ELEMENTOS DO MODAL DE RELATÓRIO
+        ELEMENTOS DO MODAL DE RELATÓRIO
     ===================================================== */
     const btnAbrirRelatorio = document.querySelector(".btn-cliente.relatorio");
     const modalRelatorioElement = document.getElementById("modalRelatorioCliente");
     const tituloModalRelatorio = document.getElementById("tituloModalRelatorio");
-    const checkSelecionarTodos = document.getElementById("checkSelecionarTodosRelatorio");
-    const containerCheckboxes = document.getElementById("containerCheckboxesRelatorio");
-    const checksColunasJuridicas = document.querySelectorAll(".check-col-juridico");
+    const checkSelecionarTodos = document.getElementById(
+        "checkSelecionarTodosRelatorio"
+    );
+    const containerCheckboxes = document.getElementById(
+        "containerCheckboxesRelatorio"
+    );
+    const checksColunasJuridicas = document.querySelectorAll(
+        ".check-col-juridico"
+    );
 
     const modalRelatorio = modalRelatorioElement
         ? bootstrap.Modal.getOrCreateInstance(modalRelatorioElement)
         : null;
 
     /* =====================================================
-       ELEMENTOS DO MODAL 2: EDITAR
+        ELEMENTOS DO MODAL 2: EDITAR
     ===================================================== */
     const btnEditarCliente = document.querySelector(".btn-cliente.editar");
-    const modalEditarElement = document.getElementById("modalEditarCadastroCliente");
-    const btnAtualizarCliente = document.getElementById("btnAtualizarCliente");
-    const camposJuridicosEditar = document.querySelectorAll(".campo-juridico-editar");
+    const modalEditarElement = document.getElementById(
+        "modalEditarCadastroCliente"
+    );
+    const btnAtualizarCliente = document.getElementById(
+        "btnAtualizarCliente"
+    );
+    const camposJuridicosEditar = document.querySelectorAll(
+        ".campo-juridico-editar"
+    );
 
     const modalEdicao = modalEditarElement
         ? bootstrap.Modal.getOrCreateInstance(modalEditarElement)
         : null;
 
     /* =====================================================
-       ELEMENTOS DO MODAL DE CONFIRMAÇÃO DE SENHA (SENSÍVEL)
+        ELEMENTOS DO MODAL DE CONFIRMAÇÃO DE SENHA
     ===================================================== */
-    const modalSenhaSensivelElement = document.getElementById("modalConfirmarSenhaDadosSensiveis");
-    const btnConfirmarAlteracaoSensivel = document.getElementById("btnConfirmarAlteracaoSensivel");
-    const inputSenhaConfirmacaoSensivel = document.getElementById("senhaConfirmacaoSensivel");
+    const modalSenhaSensivelElement = document.getElementById(
+        "modalConfirmarSenhaDadosSensiveis"
+    );
+    const btnConfirmarAlteracaoSensivel = document.getElementById(
+        "btnConfirmarAlteracaoSensivel"
+    );
+    const inputSenhaConfirmacaoSensivel = document.getElementById(
+        "senhaConfirmacaoSensivel"
+    );
 
     const modalSenhaSensivel = modalSenhaSensivelElement
-        ? bootstrap.Modal.getOrCreateInstance(modalSenhaSensivelElement)
+        ? bootstrap.Modal.getOrCreateInstance(
+            modalSenhaSensivelElement
+        )
         : null;
 
     /* =====================================================
-       MARCAR CLIENTES
+        MARCAR CLIENTES
     ===================================================== */
     const btnMarcarClientes = document.getElementById("btnMarcarClientes");
 
     /* =====================================================
         HISTÓRICO CLIENTES
     ===================================================== */
-    const btnHistoricoClientes = document.getElementById("btnHistoricoClientes");
+    const btnHistoricoClientes = document.getElementById(
+        "btnHistoricoClientes"
+    );
+
+    const modalHistoricoClientesEl = document.getElementById(
+        "modalHistoricoClientes"
+    );
+
+    const modalHistoricoClientes = modalHistoricoClientesEl
+        ? bootstrap.Modal.getOrCreateInstance(
+            modalHistoricoClientesEl
+        )
+        : null;
+
+    const tbodyHistoricoClientes = document.getElementById(
+        "tbodyHistoricoClientes"
+    );
+
+    const btnAtualizarHistoricoClientes = document.getElementById(
+        "btnAtualizarHistoricoClientes"
+    );
+
     /* =====================================================
-    ELEMENTOS DO MODAL DE HISTÓRICO
+        MODAL DE HISTÓRICO
     ===================================================== */
-    const modalHistoricoElement = document.getElementById("modalHistoricoClientes");
+    const modalHistoricoElement = document.getElementById(
+        "modalHistoricoClientes"
+    );
 
-    const modalHistorico = modalHistoricoElement? bootstrap.Modal.getOrCreateInstance(modalHistoricoElement): null;
+    const modalHistorico = modalHistoricoElement
+        ? bootstrap.Modal.getOrCreateInstance(
+            modalHistoricoElement
+        )
+        : null;
 
+    /* =====================================================
+        HISTÓRICO — SELEÇÃO E EXCLUSÃO
+    ===================================================== */
+    const checkboxMasterHistorico = document.getElementById(
+        "checkboxMasterHistoricoClientes"
+    );
 
+    const btnApagarHistorico = document.querySelector(
+        ".btn-historico-clientes-perigo"
+    );
+
+    const modalExclusaoHistoricoEl = document.getElementById(
+        "modalConfirmarExclusaoHistoricoClientes"
+    );
+
+    const modalExclusaoHistorico = modalExclusaoHistoricoEl
+        ? bootstrap.Modal.getOrCreateInstance(
+            modalExclusaoHistoricoEl
+        )
+        : null;
+
+    const textoConfirmacaoExclusao = document.getElementById(
+        "textoConfirmacaoExclusaoHistoricoClientes"
+    );
+
+    const btnConfirmarExclusaoHistoricoDefinitiva =
+        document.getElementById(
+            "btnConfirmarExclusaoHistoricoClientesDefinitiva"
+        );
+
+    const contadorSelecionadosEl = document.querySelector(
+        ".contador-selecionados-historico-clientes"
+    );
+
+    /* =====================================================
+        ESTADOS GERAIS
+    ===================================================== */
     let modoMarcarClientes = false;
     let clienteSelecionadoTr = null;
     let clientesSelecionados = new Set();
     let clienteOriginal = {};
 
     /* =====================================================
-       FORMATAÇÃO INICIAL DE TODAS AS LINHAS DA TABELA
+        ESTADO DOS HISTÓRICOS SELECIONADOS
+    ===================================================== */
+    let historicosSelecionados = new Set();
+
+    /* =====================================================
+        FORMATAÇÃO INICIAL DAS LINHAS
     ===================================================== */
     document.querySelectorAll(".linha-cliente").forEach(tr => {
         const celulaValor = tr.querySelector(".col-valor-gasto");
+
         const valorOriginal =
             tr.dataset.valorGasto ||
             (celulaValor ? celulaValor.textContent : "0");
 
-        if (celulaValor && typeof formatarMoeda === "function") {
-            celulaValor.textContent = formatarMoeda(valorOriginal);
+        if (
+            celulaValor &&
+            typeof formatarMoeda === "function"
+        ) {
+            celulaValor.textContent =
+                formatarMoeda(valorOriginal);
         }
     });
 
     /* =====================================================
-       FUNÇÕES AUXILIARES DE COMPARAÇÃO E NORMALIZAÇÃO
+        FUNÇÕES AUXILIARES
     ===================================================== */
+
     function normalizarValor(val) {
-        if (val === null || val === undefined) return "";
+        if (val === null || val === undefined) {
+            return "";
+        }
 
         return String(val)
             .replace(/^R\$\s?/, "")
@@ -105,55 +204,77 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function salvarEstadoOriginal() {
-        const formulario = document.getElementById("formEditarCliente");
+        const formulario =
+            document.getElementById("formEditarCliente");
 
-        if (!formulario) return;
+        if (!formulario) {
+            return;
+        }
 
         clienteOriginal = {};
 
-        formulario.querySelectorAll("input, select, textarea").forEach(campo => {
-            const chave = campo.name || campo.id;
+        formulario
+            .querySelectorAll("input, select, textarea")
+            .forEach(campo => {
+                const chave =
+                    campo.name || campo.id;
 
-            if (chave) {
-                clienteOriginal[chave] = normalizarValor(campo.value);
-            }
-        });
+                if (chave) {
+                    clienteOriginal[chave] =
+                        normalizarValor(campo.value);
+                }
+            });
     }
 
     function houveAlteracao() {
-        const formulario = document.getElementById("formEditarCliente");
+        const formulario =
+            document.getElementById("formEditarCliente");
 
-        if (!formulario) return false;
+        if (!formulario) {
+            return false;
+        }
 
         let mudou = false;
 
-        formulario.querySelectorAll("input, select, textarea").forEach(campo => {
-            const chave = campo.name || campo.id;
+        formulario
+            .querySelectorAll("input, select, textarea")
+            .forEach(campo => {
+                const chave =
+                    campo.name || campo.id;
 
-            if (!chave) return;
+                if (!chave) {
+                    return;
+                }
 
-            const valorAtual = normalizarValor(campo.value);
-            const valorOriginal = normalizarValor(
-                clienteOriginal[chave] || ""
-            );
+                const valorAtual =
+                    normalizarValor(campo.value);
 
-            if (valorAtual !== valorOriginal) {
-                mudou = true;
-            }
-        });
+                const valorOriginal =
+                    normalizarValor(
+                        clienteOriginal[chave] || ""
+                    );
+
+                if (valorAtual !== valorOriginal) {
+                    mudou = true;
+                }
+            });
 
         return mudou;
     }
 
     function alterouDadosSensiveis() {
-        const formulario = document.getElementById("formEditarCliente");
+        const formulario =
+            document.getElementById("formEditarCliente");
 
-        if (!formulario) return false;
+        if (!formulario) {
+            return false;
+        }
 
         const pegarValor = idOuNome => {
-            const el = formulario.querySelector(
-                `[name='${idOuNome}'], #${idOuNome}`
-            );
+            const el =
+                formulario.querySelector(
+                    `[name='${idOuNome}'], #${idOuNome}`
+                );
 
             return normalizarValor(el?.value);
         };
@@ -174,25 +295,29 @@ document.addEventListener("DOMContentLoaded", () => {
             pegarValor("ultima_atualizacao") ||
             pegarValor("editarClienteUltimaAtualizacao");
 
-        const modoOriginal = normalizarValor(
-            clienteOriginal["modo_valor_gasto"] ||
-            clienteOriginal["editarClienteModoValorGasto"]
-        );
+        const modoOriginal =
+            normalizarValor(
+                clienteOriginal["modo_valor_gasto"] ||
+                clienteOriginal["editarClienteModoValorGasto"]
+            );
 
-        const valorOriginal = normalizarValor(
-            clienteOriginal["valor_gasto"] ||
-            clienteOriginal["editarClienteValorGasto"]
-        );
+        const valorOriginal =
+            normalizarValor(
+                clienteOriginal["valor_gasto"] ||
+                clienteOriginal["editarClienteValorGasto"]
+            );
 
-        const compraOriginal = normalizarValor(
-            clienteOriginal["ultima_compra"] ||
-            clienteOriginal["editarClienteUltimaCompra"]
-        );
+        const compraOriginal =
+            normalizarValor(
+                clienteOriginal["ultima_compra"] ||
+                clienteOriginal["editarClienteUltimaCompra"]
+            );
 
-        const atualizacaoOriginal = normalizarValor(
-            clienteOriginal["ultima_atualizacao"] ||
-            clienteOriginal["editarClienteUltimaAtualizacao"]
-        );
+        const atualizacaoOriginal =
+            normalizarValor(
+                clienteOriginal["ultima_atualizacao"] ||
+                clienteOriginal["editarClienteUltimaAtualizacao"]
+            );
 
         return (
             modoAtual !== modoOriginal ||
@@ -203,19 +328,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       ABRIR MODAL DE CADASTRO
+        ABRIR MODAL DE CADASTRO
     ===================================================== */
     if (btnAbrirCadastro) {
         btnAbrirCadastro.addEventListener("click", () => {
-            const form = document.getElementById("formCadastrarCliente");
+            const form =
+                document.getElementById("formCadastrarCliente");
 
             if (form) {
                 form.reset();
             }
 
-            const tipoAtual = tipoCliente
-                ? tipoCliente.value
-                : "juridico";
+            const tipoAtual =
+                tipoCliente
+                    ? tipoCliente.value
+                    : "juridico";
 
             if (tipoAtual === "juridico") {
                 if (tituloModal) {
@@ -244,7 +371,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       SELECIONAR CLIENTE JURÍDICO
+        SELECIONAR CLIENTE JURÍDICO
     ===================================================== */
     if (btnJuridico) {
         btnJuridico.addEventListener("click", () => {
@@ -279,7 +406,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       SELECIONAR CLIENTE FÍSICO
+        SELECIONAR CLIENTE FÍSICO
     ===================================================== */
     if (btnFisico) {
         btnFisico.addEventListener("click", () => {
@@ -314,26 +441,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       1. SELEÇÃO DE LINHA NA TABELA
+        SELEÇÃO DE LINHAS DA TABELA PRINCIPAL
     ===================================================== */
     function inicializarSelecaoTabela() {
-        const linhas = document.querySelectorAll(
-            ".clientes-table tbody tr.linha-cliente"
-        );
+        const linhas =
+            document.querySelectorAll(
+                ".clientes-table tbody tr.linha-cliente"
+            );
 
         linhas.forEach(linha => {
             linha.addEventListener("click", function (e) {
                 e.stopPropagation();
 
-                const checkbox = this.querySelector(
-                    ".checkbox-cliente"
-                );
+                const checkbox =
+                    this.querySelector(
+                        ".checkbox-cliente"
+                    );
 
-                /* =================================================
-                   CLIQUE DIRETO NO CHECKBOX
-                ================================================= */
-                if (e.target.closest(".checkbox-cliente")) {
-                    const marcado = e.target.checked;
+                if (
+                    e.target.closest(
+                        ".checkbox-cliente"
+                    )
+                ) {
+                    const marcado =
+                        e.target.checked;
 
                     this.classList.toggle(
                         "linha-selecionada",
@@ -345,26 +476,34 @@ document.addEventListener("DOMContentLoaded", () => {
                             this.dataset.id
                         );
 
-                        clienteSelecionadoTr = this;
+                        clienteSelecionadoTr =
+                            this;
                     } else {
                         clientesSelecionados.delete(
                             this.dataset.id
                         );
 
-                        if (clienteSelecionadoTr === this) {
-                            clienteSelecionadoTr = null;
+                        if (
+                            clienteSelecionadoTr ===
+                            this
+                        ) {
+                            clienteSelecionadoTr =
+                                null;
                         }
                     }
 
-                    atualizarEstadoCheckboxTodos(this.closest(".clientes-table"));
+                    atualizarEstadoCheckboxTodos(
+                        this.closest(".clientes-table")
+                    );
 
                     return;
                 }
 
-                /* =================================================
-                   CLIQUE NA LINHA JÁ SELECIONADA
-                ================================================= */
-                if (this.classList.contains("linha-selecionada")) {
+                if (
+                    this.classList.contains(
+                        "linha-selecionada"
+                    )
+                ) {
                     this.classList.remove(
                         "linha-selecionada"
                     );
@@ -377,8 +516,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         this.dataset.id
                     );
 
-                    if (clienteSelecionadoTr === this) {
-                        clienteSelecionadoTr = null;
+                    if (
+                        clienteSelecionadoTr ===
+                        this
+                    ) {
+                        clienteSelecionadoTr =
+                            null;
                     }
 
                     atualizarEstadoCheckboxTodos(
@@ -388,10 +531,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                /* =================================================
-                   CLIQUE DIRETO NA LINHA
-                   MODO NORMAL: UMA SELEÇÃO POR VEZ
-                ================================================= */
                 linhas.forEach(l => {
                     l.classList.remove(
                         "linha-selecionada"
@@ -423,7 +562,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     this.dataset.id
                 );
 
-                clienteSelecionadoTr = this;
+                clienteSelecionadoTr =
+                    this;
 
                 atualizarEstadoCheckboxTodos(
                     this.closest(".clientes-table")
@@ -435,17 +575,21 @@ document.addEventListener("DOMContentLoaded", () => {
     inicializarSelecaoTabela();
 
     /* =====================================================
-       ATUALIZAR CHECKBOX "SELECIONAR TODOS"
+        ATUALIZAR CHECKBOX "SELECIONAR TODOS"
     ===================================================== */
     function atualizarEstadoCheckboxTodos(tabela) {
-        if (!tabela) return;
+        if (!tabela) {
+            return;
+        }
 
         const checkboxTodos =
             tabela.querySelector(
                 ".checkbox-selecionar-todos-clientes"
             );
 
-        if (!checkboxTodos) return;
+        if (!checkboxTodos) {
+            return;
+        }
 
         const checkboxes =
             tabela.querySelectorAll(
@@ -472,7 +616,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       DESSELECIONAR AO CLICAR FORA DAS LINHAS
+        DESSELECIONAR AO CLICAR FORA (TABELA PRINCIPAL)
     ===================================================== */
     document.addEventListener("click", evento => {
         if (
@@ -532,34 +676,43 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* =====================================================
-   2. ABRIR MODAL DE EDIÇÃO
+        ABRIR MODAL DE EDIÇÃO
     ===================================================== */
     if (btnEditarCliente) {
-        btnEditarCliente.addEventListener("click", (e) => {
+        btnEditarCliente.addEventListener("click", e => {
             e.stopPropagation();
 
-            const tabela = obterTabelaClientesAtiva();
+            const tabela =
+                obterTabelaClientesAtiva();
 
             if (tabela) {
-                const clientesMarcados = tabela.querySelectorAll(
-                    ".checkbox-cliente:checked"
-                );
+                const clientesMarcados =
+                    tabela.querySelectorAll(
+                        ".checkbox-cliente:checked"
+                    );
 
-                if (clientesMarcados.length > 1) {
+                if (
+                    clientesMarcados.length > 1
+                ) {
                     mostrarAlerta(
                         "Não é possível editar mais de um cliente por vez. Selecione apenas 1 cliente para editar.",
                         "erro"
                     );
+
                     return;
                 }
 
-                if (clientesMarcados.length === 1) {
-                    const linha = clientesMarcados[0].closest(
-                        "tr.linha-cliente"
-                    );
+                if (
+                    clientesMarcados.length === 1
+                ) {
+                    const linha =
+                        clientesMarcados[0].closest(
+                            "tr.linha-cliente"
+                        );
 
                     if (linha) {
-                        clienteSelecionadoTr = linha;
+                        clienteSelecionadoTr =
+                            linha;
                     }
                 }
             }
@@ -569,17 +722,26 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Selecione um cliente na tabela para editar.",
                     "erro"
                 );
+
                 return;
             }
 
-            preencherModalParaEdicao(clienteSelecionadoTr);
+            preencherModalParaEdicao(
+                clienteSelecionadoTr
+            );
         });
     }
+
+    /* =====================================================
+        PREENCHER MODAL DE EDIÇÃO
+    ===================================================== */
     function preencherModalParaEdicao(tr) {
         const ds = tr.dataset;
 
         const inputId =
-            document.getElementById("editarClienteId");
+            document.getElementById(
+                "editarClienteId"
+            );
 
         const tituloEdicao =
             document.getElementById(
@@ -587,7 +749,9 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
         const inputTipo =
-            document.getElementById("editarTipoCliente");
+            document.getElementById(
+                "editarTipoCliente"
+            );
 
         if (inputId) {
             inputId.value = ds.id || "";
@@ -603,226 +767,48 @@ document.addEventListener("DOMContentLoaded", () => {
                 ds.tipo || "juridico";
         }
 
-        if (
-            document.getElementById(
-                "editarClienteNome"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteNome"
-            ).value = ds.nome || "";
-        }
+        const campos = {
+            editarClienteNome: ds.nome,
+            editarClienteRazaoSocial: ds.razao,
+            editarClienteCnpj: ds.cnpj,
+            editarClienteRg: ds.rg,
+            editarClienteCpf: ds.cpf,
+            editarClienteEmail: ds.email,
+            editarClienteTelefone: ds.telefone,
+            editarClienteCnh: ds.cnh,
+            editarClienteCategoriaCnh: ds.categoriaCnh,
+            editarClienteEmissaoCnh: ds.emissaoCnh,
+            editarClienteVencimentoCnh: ds.vencimentoCnh,
+            editarClienteCep: ds.cep,
+            editarClienteEstado: ds.estado,
+            editarClienteEndereco: ds.endereco,
+            editarClienteNumero: ds.numero,
+            editarClienteComplemento: ds.complemento,
+            editarClienteCidade: ds.cidade,
+            editarClienteBairro: ds.bairro,
+            editarClienteStatus: ds.status || "ativo",
+            editarClienteCategoria: ds.categoria
+        };
 
-        if (
-            document.getElementById(
-                "editarClienteRazaoSocial"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteRazaoSocial"
-            ).value = ds.razao || "";
-        }
+        Object.entries(campos).forEach(
+            ([id, valor]) => {
+                const elemento =
+                    document.getElementById(id);
 
-        if (
-            document.getElementById(
-                "editarClienteCnpj"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteCnpj"
-            ).value = ds.cnpj || "";
-        }
+                if (elemento) {
+                    elemento.value =
+                        valor || "";
+                }
+            }
+        );
 
-        if (
-            document.getElementById(
-                "editarClienteRg"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteRg"
-            ).value = ds.rg || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteCpf"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteCpf"
-            ).value = ds.cpf || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteEmail"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteEmail"
-            ).value = ds.email || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteTelefone"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteTelefone"
-            ).value = ds.telefone || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteCnh"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteCnh"
-            ).value = ds.cnh || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteCategoriaCnh"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteCategoriaCnh"
-            ).value =
-                ds.categoriaCnh || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteEmissaoCnh"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteEmissaoCnh"
-            ).value =
-                ds.emissaoCnh || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteVencimentoCnh"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteVencimentoCnh"
-            ).value =
-                ds.vencimentoCnh || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteCep"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteCep"
-            ).value = ds.cep || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteEstado"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteEstado"
-            ).value =
-                ds.estado || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteEndereco"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteEndereco"
-            ).value =
-                ds.endereco || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteNumero"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteNumero"
-            ).value =
-                ds.numero || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteComplemento"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteComplemento"
-            ).value =
-                ds.complemento || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteCidade"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteCidade"
-            ).value =
-                ds.cidade || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteBairro"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteBairro"
-            ).value =
-                ds.bairro || "";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteStatus"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteStatus"
-            ).value =
-                ds.status || "ativo";
-        }
-
-        if (
-            document.getElementById(
-                "editarClienteCategoria"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteCategoria"
-            ).value =
-                ds.categoria || "";
-        }
-
-        /* === CAMPOS ADICIONAIS DE EDIÇÃO E HISTÓRICO === */
-        if (
+        const modoValorGasto =
             document.getElementById(
                 "editarClienteModoValorGasto"
-            )
-        ) {
-            document.getElementById(
-                "editarClienteModoValorGasto"
-            ).value =
+            );
+
+        if (modoValorGasto) {
+            modoValorGasto.value =
                 ds.modoValorGasto ||
                 "Automático (somar produtos)";
         }
@@ -834,7 +820,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (inputValorGasto) {
             inputValorGasto.value =
-                typeof formatarMoeda === "function"
+                typeof formatarMoeda ===
+                "function"
                     ? formatarMoeda(
                         ds.valorGasto ||
                         "0,00"
@@ -850,7 +837,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (inputUltimaAtualizacao) {
             inputUltimaAtualizacao.value =
-                typeof formatarDataHoraBR === "function"
+                typeof formatarDataHoraBR ===
+                "function"
                     ? formatarDataHoraBR(
                         ds.ultimaAtualizacao
                     )
@@ -865,7 +853,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (inputUltimaCompra) {
             inputUltimaCompra.value =
-                typeof formatarDataHoraBR === "function"
+                typeof formatarDataHoraBR ===
+                "function"
                     ? formatarDataHoraBR(
                         ds.ultimaCompra
                     )
@@ -873,15 +862,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     "-";
         }
 
-        if (ds.tipo === "juridico") {
-            camposJuridicosEditar.forEach(c => {
-                c.style.display = "";
-            });
-        } else {
-            camposJuridicosEditar.forEach(c => {
-                c.style.display = "none";
-            });
-        }
+        camposJuridicosEditar.forEach(campo => {
+            campo.style.display =
+                ds.tipo === "juridico"
+                    ? ""
+                    : "none";
+        });
 
         if (
             typeof aplicarMascarasFormulario ===
@@ -898,10 +884,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       MARCAR ERRO NO INPUT
+        MARCAR ERRO NO INPUT
     ===================================================== */
     function marcarErroCliente(input) {
-        if (!input) return;
+        if (!input) {
+            return;
+        }
 
         let nomeCampo = "Este campo";
 
@@ -957,9 +945,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       VALIDAÇÃO DOS CAMPOS OBRIGATÓRIOS
+        VALIDAÇÃO DOS CAMPOS
     ===================================================== */
     function validarFormularioCliente(formulario) {
+        if (!formulario) {
+            return false;
+        }
+
         const inputs =
             formulario.querySelectorAll(
                 "input, select, textarea"
@@ -974,9 +966,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         ""
                     ).toLowerCase();
 
-                return nomeOuId.includes(
-                    "cnh"
-                );
+                return nomeOuId.includes("cnh");
             });
 
         const cnhFoiPreenchida =
@@ -1027,7 +1017,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       INSERIR CLIENTE NA TABELA
+        INSERIR CLIENTE NA TABELA
     ===================================================== */
     function inserirClienteNaTabela(c) {
         const tabelaContainer =
@@ -1039,7 +1029,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     "#fisicos tbody"
                 );
 
-        if (!tabelaContainer) return;
+        if (!tabelaContainer) {
+            return;
+        }
 
         const linhaVazia =
             tabelaContainer.querySelector(
@@ -1049,7 +1041,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (linhaVazia) {
             linhaVazia
                 .closest("tr")
-                .remove();
+                ?.remove();
         }
 
         const tr =
@@ -1206,9 +1198,6 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
         }
 
-        /* =================================================
-           EVENTO DE SELEÇÃO DA NOVA LINHA
-        ================================================= */
         tr.addEventListener("click", function (e) {
             e.stopPropagation();
 
@@ -1341,10 +1330,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         });
 
-        /* =================================================
-           SE "MARCAR COMO" ESTIVER ATIVO,
-           ADICIONA CHECKBOX À NOVA LINHA
-        ================================================= */
         if (modoMarcarClientes) {
             const td =
                 document.createElement("td");
@@ -1364,61 +1349,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 td,
                 tr.firstElementChild
             );
-
-            const checkbox =
-                td.querySelector(
-                    ".checkbox-cliente"
-                );
-
-            checkbox.addEventListener(
-                "change",
-                () => {
-                    const tabela =
-                        tr.closest(
-                            ".clientes-table"
-                        );
-
-                    const marcado =
-                        checkbox.checked;
-
-                    tr.classList.toggle(
-                        "linha-selecionada",
-                        marcado
-                    );
-
-                    if (marcado) {
-                        clientesSelecionados.add(
-                            tr.dataset.id
-                        );
-
-                        clienteSelecionadoTr =
-                            tr;
-                    } else {
-                        clientesSelecionados.delete(
-                            tr.dataset.id
-                        );
-
-                        if (
-                            clienteSelecionadoTr ===
-                            tr
-                        ) {
-                            clienteSelecionadoTr =
-                                null;
-                        }
-                    }
-
-                    atualizarEstadoCheckboxTodos(
-                        tabela
-                    );
-                }
-            );
         }
 
         tabelaContainer.prepend(tr);
     }
 
     /* =====================================================
-       AÇÃO 1: CADASTRAR CLIENTE
+        CADASTRAR CLIENTE
     ===================================================== */
     if (btnCadastrarCliente) {
         btnCadastrarCliente.addEventListener(
@@ -1464,9 +1401,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             "sucesso"
                         );
 
-                        if (
-                            resultado.cliente
-                        ) {
+                        if (resultado.cliente) {
                             inserirClienteNaTabela(
                                 resultado.cliente
                             );
@@ -1500,7 +1435,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       REQUISIÇÃO UNIFICADA DE ATUALIZAÇÃO
+        ATUALIZAÇÃO DE CLIENTE
     ===================================================== */
     async function executarAtualizacaoCliente(
         senhaSensivel = ""
@@ -1590,105 +1525,82 @@ document.addEventListener("DOMContentLoaded", () => {
                             : `R$ ${c.valor_gasto}`;
 
                     ds.nome = c.nome;
-
                     ds.razao =
                         c.razao === "-"
                             ? ""
                             : c.razao;
-
                     ds.cnpj =
                         c.cnpj === "-"
                             ? ""
                             : c.cnpj;
-
                     ds.rg =
                         c.rg === "-"
                             ? ""
                             : c.rg;
-
                     ds.cpf =
                         c.cpf === "-"
                             ? ""
                             : c.cpf;
-
                     ds.email =
                         c.email === "-"
                             ? ""
                             : c.email;
-
                     ds.telefone =
                         c.telefone === "-"
                             ? ""
                             : c.telefone;
-
                     ds.cnh =
                         c.cnh === "-"
                             ? ""
                             : c.cnh;
-
                     ds.categoriaCnh =
                         c.categoria_cnh === "-"
                             ? ""
                             : c.categoria_cnh;
-
                     ds.emissaoCnh =
                         c.emissao_cnh_raw || "";
-
                     ds.vencimentoCnh =
                         c.vencimento_cnh_raw || "";
-
                     ds.cep =
                         c.cep === "-"
                             ? ""
                             : c.cep;
-
                     ds.estado =
                         c.estado === "-"
                             ? ""
                             : c.estado;
-
                     ds.endereco =
                         c.endereco === "-"
                             ? ""
                             : c.endereco;
-
                     ds.numero =
                         c.numero === "-"
                             ? ""
                             : c.numero;
-
                     ds.complemento =
                         c.complemento === "-"
                             ? ""
                             : c.complemento;
-
                     ds.cidade =
                         c.cidade === "-"
                             ? ""
                             : c.cidade;
-
                     ds.bairro =
                         c.bairro === "-"
                             ? ""
                             : c.bairro;
-
                     ds.status =
                         c.status;
-
                     ds.categoria =
                         c.categoria === "-"
                             ? ""
                             : c.categoria;
-
                     ds.ultimaAtualizacao =
                         c.ultima_atualizacao;
-
                     ds.modoValorGasto =
                         c.modo_valor_gasto;
-
                     ds.valorGasto =
                         c.valor_gasto;
-
                     ds.ultimaCompra =
                         c.ultima_compra;
 
@@ -1754,66 +1666,28 @@ document.addEventListener("DOMContentLoaded", () => {
                         `;
                     }
 
-                    /* =================================================
-                       RECOLOCA CHECKBOX SE ESTIVER NO MODO MARCAR
-                    ================================================= */
                     if (modoMarcarClientes) {
-                        const checkboxExistente =
-                            clienteSelecionadoTr.querySelector(
-                                ".checkbox-cliente"
+                        const td =
+                            document.createElement(
+                                "td"
                             );
 
-                        if (!checkboxExistente) {
-                            const td =
-                                document.createElement(
-                                    "td"
-                                );
+                        td.className =
+                            "coluna-selecao-cliente";
 
-                            td.className =
-                                "coluna-selecao-cliente";
+                        td.innerHTML = `
+                            <input
+                                type="checkbox"
+                                class="checkbox-cliente"
+                                data-id="${ds.id}"
+                                checked
+                            >
+                        `;
 
-                            td.innerHTML = `
-                                <input
-                                    type="checkbox"
-                                    class="checkbox-cliente"
-                                    data-id="${ds.id}"
-                                    checked
-                                >
-                            `;
-
-                            clienteSelecionadoTr.insertBefore(
-                                td,
-                                clienteSelecionadoTr.firstElementChild
-                            );
-
-                            const checkbox =
-                                td.querySelector(
-                                    ".checkbox-cliente"
-                                );
-
-                            checkbox.addEventListener(
-                                "change",
-                                () => {
-                                    const marcado =
-                                        checkbox.checked;
-
-                                    clienteSelecionadoTr.classList.toggle(
-                                        "linha-selecionada",
-                                        marcado
-                                    );
-
-                                    if (marcado) {
-                                        clientesSelecionados.add(
-                                            ds.id
-                                        );
-                                    } else {
-                                        clientesSelecionados.delete(
-                                            ds.id
-                                        );
-                                    }
-                                }
-                            );
-                        }
+                        clienteSelecionadoTr.insertBefore(
+                            td,
+                            clienteSelecionadoTr.firstElementChild
+                        );
                     }
                 }
             } else {
@@ -1837,7 +1711,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       AÇÃO 2: ATUALIZAR CLIENTE
+        BOTÃO ATUALIZAR CLIENTE
     ===================================================== */
     if (btnAtualizarCliente) {
         btnAtualizarCliente.addEventListener(
@@ -1894,9 +1768,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             "";
                     }
 
-                    if (
-                        modalSenhaSensivel
-                    ) {
+                    if (modalSenhaSensivel) {
                         modalSenhaSensivel.show();
                     }
 
@@ -1909,7 +1781,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       CONFIRMAR SENHA PARA DADOS SENSÍVEIS
+        CONFIRMAR SENHA
     ===================================================== */
     if (
         btnConfirmarAlteracaoSensivel
@@ -1928,11 +1800,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         "erro"
                     );
 
-                    if (
-                        inputSenhaConfirmacaoSensivel
-                    ) {
-                        inputSenhaConfirmacaoSensivel.focus();
-                    }
+                    inputSenhaConfirmacaoSensivel?.focus();
 
                     return;
                 }
@@ -1945,7 +1813,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       CSRF TOKEN
+        CSRF TOKEN
     ===================================================== */
     function obterCSRFToken() {
         const cookies =
@@ -1966,7 +1834,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       APLICA MÁSCARAS
+        APLICA MÁSCARAS
     ===================================================== */
     if (
         typeof aplicarMascarasFormulario ===
@@ -1976,7 +1844,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       ELEMENTOS DO MODAL: EXCLUIR CLIENTE
+        EXCLUIR CLIENTE
     ===================================================== */
     const btnExcluirCliente =
         document.querySelector(
@@ -2008,7 +1876,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let clienteParaExcluirId = null;
 
     /* =====================================================
-       ABRIR MODAL DE CONFIRMAÇÃO DE EXCLUSÃO
+        ABRIR MODAL DE EXCLUSÃO
     ===================================================== */
     if (btnExcluirCliente) {
         btnExcluirCliente.addEventListener(
@@ -2021,9 +1889,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         clientesSelecionados
                     );
 
-                /* =============================================
-                   USA CHECKBOXES COMO FONTE PRINCIPAL
-                ============================================= */
                 if (
                     clientesMarcados.length ===
                     0 &&
@@ -2037,9 +1902,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                /* =============================================
-                   VÁRIOS CLIENTES SELECIONADOS
-                ============================================= */
                 if (
                     clientesMarcados.length >
                     1
@@ -2054,16 +1916,11 @@ document.addEventListener("DOMContentLoaded", () => {
                             `${clientesMarcados.length} clientes selecionados`;
                     }
 
-                    if (modalExclusao) {
-                        modalExclusao.show();
-                    }
+                    modalExclusao?.show();
 
                     return;
                 }
 
-                /* =============================================
-                   UM CLIENTE SELECIONADO
-                ============================================= */
                 const idSelecionado =
                     clientesMarcados.length ===
                     1
@@ -2102,15 +1959,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         "Cliente selecionado";
                 }
 
-                if (modalExclusao) {
-                    modalExclusao.show();
-                }
+                modalExclusao?.show();
             }
         );
     }
 
     /* =====================================================
-       CONFIRMAR EXCLUSÃO NO SERVIDOR
+        CONFIRMAR EXCLUSÃO DO CLIENTE
     ===================================================== */
     if (btnConfirmarExcluirCliente) {
         btnConfirmarExcluirCliente.addEventListener(
@@ -2121,9 +1976,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         clientesSelecionados
                     );
 
-                /* =============================================
-                   COMPATIBILIDADE COM SELEÇÃO POR LINHA
-                ============================================= */
                 if (
                     idsParaExcluir.length ===
                     0 &&
@@ -2193,9 +2045,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                         `.linha-cliente[data-id="${clienteId}"]`
                                     );
 
-                                if (linha) {
-                                    linha.remove();
-                                }
+                                linha?.remove();
 
                                 clientesSelecionados.delete(
                                     clienteId
@@ -2209,11 +2059,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                     clienteSelecionadoTr =
                                         null;
                                 }
-                            } else {
-                                console.error(
-                                    `Erro ao excluir cliente ${clienteId}:`,
-                                    resultado.mensagem
-                                );
                             }
                         } catch (erro) {
                             console.error(
@@ -2223,9 +2068,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     }
 
-                    if (modalExclusao) {
-                        modalExclusao.hide();
-                    }
+                    modalExclusao?.hide();
 
                     if (
                         quantidadeExcluida ===
@@ -2257,9 +2100,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         null;
 
                     clientesSelecionados.clear();
-
-                    clienteSelecionadoTr =
-                        null;
+                    clienteSelecionadoTr = null;
 
                     document
                         .querySelectorAll(
@@ -2293,7 +2134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       POPOVERS
+        POPOVERS
     ===================================================== */
     const popoverTriggerList =
         document.querySelectorAll(
@@ -2312,7 +2153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     /* =====================================================
-       MODAL DE RELATÓRIO
+        MODAL DE RELATÓRIO
     ===================================================== */
     function atualizarEstadoSelecionarTodos() {
         if (
@@ -2327,48 +2168,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 'input[name="colunas"]'
             );
 
-        if (
-            checkboxes.length ===
-            0
-        ) {
-            checkSelecionarTodos.checked =
-                false;
-
-            checkSelecionarTodos.indeterminate =
-                false;
-
+        if (checkboxes.length === 0) {
+            checkSelecionarTodos.checked = false;
+            checkSelecionarTodos.indeterminate = false;
             return;
         }
-
-        const total =
-            checkboxes.length;
 
         const checados =
             containerCheckboxes.querySelectorAll(
                 'input[name="colunas"]:checked'
             ).length;
 
-        if (checados === 0) {
-            checkSelecionarTodos.checked =
-                false;
+        checkSelecionarTodos.checked =
+            checados === checkboxes.length;
 
-            checkSelecionarTodos.indeterminate =
-                false;
-        } else if (
-            checados === total
-        ) {
-            checkSelecionarTodos.checked =
-                true;
-
-            checkSelecionarTodos.indeterminate =
-                false;
-        } else {
-            checkSelecionarTodos.checked =
-                false;
-
-            checkSelecionarTodos.indeterminate =
-                true;
-        }
+        checkSelecionarTodos.indeterminate =
+            checados > 0 &&
+            checados < checkboxes.length;
     }
 
     function atualizarCheckboxesColunas() {
@@ -2426,25 +2242,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 atualizarEstadoSelecionarTodos();
 
-                if (modalRelatorio) {
-                    modalRelatorio.show();
-                }
+                modalRelatorio?.show();
             }
         );
     }
 
-    /* =====================================================
-       CHECKBOX — SELECIONAR TODOS DO RELATÓRIO
-    ===================================================== */
     if (
         checkSelecionarTodos &&
         containerCheckboxes
     ) {
         checkSelecionarTodos.addEventListener(
             "change",
-            () => {
-                atualizarCheckboxesColunas();
-            }
+            atualizarCheckboxesColunas
         );
 
         containerCheckboxes.addEventListener(
@@ -2462,7 +2271,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       BOTÃO GERAR EXCEL
+        BOTÃO GERAR EXCEL
     ===================================================== */
     const btnGerarExcel =
         document.getElementById(
@@ -2477,7 +2286,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       COOKIE CSRF
+        COOKIE CSRF
     ===================================================== */
     function getCookie(name) {
         let cookieValue = null;
@@ -2520,7 +2329,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       GERAR RELATÓRIO EXCEL
+        GERAR RELATÓRIO EXCEL
     ===================================================== */
     function gerarExcelRelatorioCliente() {
         const status =
@@ -2543,16 +2352,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 "relatorioDataAte"
             );
 
-        /* =================================================
-           1. VALIDAÇÕES DOS FILTROS
-        ================================================= */
+        if (!status || !categoria || !dataDe || !dataAte) {
+            return;
+        }
+
         if (status.value === "") {
             mostrarAlerta(
                 'Por favor, selecione o tipo de filtro correspondente ao "Status do Cliente".'
             );
 
             status.focus();
-
             return;
         }
 
@@ -2562,31 +2371,22 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             categoria.focus();
-
             return;
         }
 
-        /* =================================================
-           VALIDAÇÃO DAS DATAS
-        ================================================= */
         if (
             dataDe.value &&
             dataAte.value &&
-            dataDe.value >
-                dataAte.value
+            dataDe.value > dataAte.value
         ) {
             mostrarAlerta(
                 'A data inicial ("De") não pode ser maior do que a data final ("Até").'
             );
 
             dataDe.focus();
-
             return;
         }
 
-        /* =================================================
-           2. VALIDAÇÃO DOS CHECKBOXES DE COLUNAS
-        ================================================= */
         const colunasSelecionadas =
             document.querySelectorAll(
                 '#containerCheckboxesRelatorio input[name="colunas"]:checked'
@@ -2603,13 +2403,14 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        /* =================================================
-           3. ENVIO VIA FETCH PARA O DJANGO
-        ================================================= */
         const formElement =
             document.getElementById(
                 "formRelatorioCliente"
             );
+
+        if (!formElement) {
+            return;
+        }
 
         const formData =
             new FormData(formElement);
@@ -2633,31 +2434,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 : "fisico"
         );
 
-        const urlExportar =
-            "/clientes/relatorio/excel/";
-
         const btnGerarExcelAtual =
             document.getElementById(
                 "btnGerarExcelRelatorio"
             );
 
+        if (!btnGerarExcelAtual) {
+            return;
+        }
+
         const textoOriginal =
             btnGerarExcelAtual.innerHTML;
 
-        btnGerarExcelAtual.disabled =
-            true;
+        btnGerarExcelAtual.disabled = true;
 
         btnGerarExcelAtual.innerHTML =
             '<i class="fa-solid fa-spinner fa-spin"></i> Gerando...';
 
-        fetch(urlExportar, {
-            method: "POST",
-            headers: {
-                "X-CSRFToken":
-                    getCookie("csrftoken")
-            },
-            body: formData
-        })
+        fetch(
+            "/clientes/relatorio/excel/",
+            {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken":
+                        getCookie("csrftoken")
+                },
+                body: formData
+            }
+        )
             .then(response => {
                 if (!response.ok) {
                     return response
@@ -2710,9 +2514,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         modalElement
                     );
 
-                if (modalInstance) {
-                    modalInstance.hide();
-                }
+                modalInstance?.hide();
             })
             .catch(error => {
                 alert(error.message);
@@ -2727,7 +2529,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       OBTER TABELA DE CLIENTES ATIVA
+        OBTER TABELA ATIVA
     ===================================================== */
     function obterTabelaClientesAtiva() {
         const tabelas =
@@ -2761,7 +2563,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =====================================================
-       ATUALIZAR CHECKBOXES DOS CLIENTES
+        CHECKBOXES DOS CLIENTES
     ===================================================== */
     function atualizarCheckboxesClientes() {
         const tabela =
@@ -2786,9 +2588,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (modoMarcarClientes) {
-            /* =============================================
-               ADICIONA CHECKBOX DO CABEÇALHO
-            ============================================= */
             if (
                 !cabecalho.querySelector(
                     ".coluna-selecao-cliente"
@@ -2861,19 +2660,13 @@ document.addEventListener("DOMContentLoaded", () => {
                             }
                         );
 
-                        if (
+                        clienteSelecionadoTr =
                             checkboxTodos.checked &&
-                            checkboxes.length >
-                                0
-                        ) {
-                            clienteSelecionadoTr =
-                                checkboxes[0].closest(
+                            checkboxes.length > 0
+                                ? checkboxes[0].closest(
                                     "tr.linha-cliente"
-                                );
-                        } else {
-                            clienteSelecionadoTr =
-                                null;
-                        }
+                                )
+                                : null;
 
                         atualizarEstadoCheckboxTodos(
                             tabela
@@ -2882,9 +2675,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
             }
 
-            /* =============================================
-               ADICIONA CHECKBOXES DAS LINHAS
-            ============================================= */
             linhas.forEach(linha => {
                 if (
                     linha.querySelector(
@@ -2963,9 +2753,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 tabela
             );
         } else {
-            /* =============================================
-               DESATIVA MODO MARCAR
-            ============================================= */
             linhas.forEach(linha => {
                 clientesSelecionados.delete(
                     linha.dataset.id
@@ -2974,6 +2761,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 linha.classList.remove(
                     "linha-selecionada"
                 );
+
+                linha
+                    .querySelector(
+                        ".coluna-selecao-cliente"
+                    )
+                    ?.remove();
             });
 
             cabecalho
@@ -2982,23 +2775,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 )
                 ?.remove();
 
-            linhas.forEach(linha => {
-                linha
-                    .querySelector(
-                        ".coluna-selecao-cliente"
-                    )
-                    ?.remove();
-            });
-
-            clienteSelecionadoTr =
-                null;
-
+            clienteSelecionadoTr = null;
             clientesSelecionados.clear();
         }
     }
 
     /* =====================================================
-       BOTÃO MARCAR COMO
+        BOTÃO MARCAR CLIENTES
     ===================================================== */
     if (btnMarcarClientes) {
         btnMarcarClientes.addEventListener(
@@ -3017,21 +2800,34 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
+    /* =====================================================
+        OBTER TIPO DE CLIENTE ATIVO
+    ===================================================== */
     function obterTipoClienteAtivo() {
-        const paginaJuridicos =document.getElementById("juridicos");
+        const paginaJuridicos =
+            document.getElementById(
+                "juridicos"
+            );
 
-        const paginaFisicos = document.getElementById("fisicos");
+        const paginaFisicos =
+            document.getElementById(
+                "fisicos"
+            );
 
         if (
             paginaJuridicos &&
-            paginaJuridicos.classList.contains("ativa")
+            paginaJuridicos.classList.contains(
+                "ativa"
+            )
         ) {
             return "juridico";
         }
 
         if (
             paginaFisicos &&
-            paginaFisicos.classList.contains("ativa")
+            paginaFisicos.classList.contains(
+                "ativa"
+            )
         ) {
             return "fisico";
         }
@@ -3039,8 +2835,266 @@ document.addEventListener("DOMContentLoaded", () => {
         return null;
     }
 
-    async function carregarHistoricoClientes() {
-        const tipoCliente = obterTipoClienteAtivo();
+    /* =====================================================
+        HISTÓRICO DE CLIENTES
+    ===================================================== */
+
+    /* =====================================================
+        SINCRONIZAR SELEÇÃO DO HISTÓRICO
+    ===================================================== */
+    function sincronizarSelecaoHistorico() {
+        historicosSelecionados.clear();
+
+        if (!tbodyHistoricoClientes) {
+            return;
+        }
+
+        tbodyHistoricoClientes
+            .querySelectorAll(
+                ".checkbox-item-historico-clientes, .checkbox-item-historico-cliente"
+            )
+            .forEach(checkbox => {
+                const id =
+                    checkbox.dataset.id;
+
+                if (!id) {
+                    return;
+                }
+
+                if (checkbox.checked) {
+                    historicosSelecionados.add(id);
+                }
+
+                const tr =
+                    checkbox.closest(
+                        "tr.linha-item-historico-cliente, tr"
+                    );
+
+                if (tr) {
+                    tr.classList.toggle(
+                        "linha-selecionada-historico",
+                        checkbox.checked
+                    );
+                }
+            });
+    }
+
+    /* =====================================================
+        ATUALIZAR MASTER DO HISTÓRICO
+    ===================================================== */
+    function atualizarMasterHistorico() {
+        if (
+            !checkboxMasterHistorico ||
+            !tbodyHistoricoClientes
+        ) {
+            return;
+        }
+
+        const checkboxes =
+            tbodyHistoricoClientes.querySelectorAll(
+                ".checkbox-item-historico-clientes, .checkbox-item-historico-cliente"
+            );
+
+        const total = checkboxes.length;
+
+        const selecionados =
+            Array.from(checkboxes)
+                .filter(checkbox => checkbox.checked)
+                .length;
+
+        if (total === 0) {
+            checkboxMasterHistorico.checked = false;
+            checkboxMasterHistorico.indeterminate = false;
+            return;
+        }
+
+        if (selecionados === total) {
+            checkboxMasterHistorico.checked = true;
+            checkboxMasterHistorico.indeterminate = false;
+            return;
+        }
+
+        if (selecionados === 0) {
+            checkboxMasterHistorico.checked = false;
+            checkboxMasterHistorico.indeterminate = false;
+            return;
+        }
+
+        checkboxMasterHistorico.checked = false;
+        checkboxMasterHistorico.indeterminate = true;
+    }
+
+    /* =====================================================
+        ATUALIZAR CONTADOR DO HISTÓRICO
+    ===================================================== */
+    function atualizarContadorHistoricoClientes() {
+        if (!tbodyHistoricoClientes) {
+            return;
+        }
+
+        sincronizarSelecaoHistorico();
+
+        const selecionados =
+            tbodyHistoricoClientes.querySelectorAll(
+                ".checkbox-item-historico-clientes:checked, .checkbox-item-historico-cliente:checked"
+            ).length;
+
+        const totalLinhas =
+            tbodyHistoricoClientes.querySelectorAll(
+                "tr.linha-item-historico-cliente, tbody tr"
+            ).length;
+
+        if (contadorSelecionadosEl) {
+            if (selecionados === 0) {
+                contadorSelecionadosEl.textContent =
+                    `${totalLinhas} registro(s) no total`;
+            } else if (selecionados === 1) {
+                contadorSelecionadosEl.textContent =
+                    "1 item selecionado";
+            } else {
+                contadorSelecionadosEl.textContent =
+                    `${selecionados} itens selecionados`;
+            }
+        }
+
+        atualizarMasterHistorico();
+    }
+
+    /* =====================================================
+        OBTER IDS SELECIONADOS DO HISTÓRICO
+    ===================================================== */
+    function getIdsHistoricoClientesSelecionados() {
+        sincronizarSelecaoHistorico();
+
+        return Array.from(
+            historicosSelecionados
+        );
+    }
+
+    /* =====================================================
+        MARCAR / DESMARCAR TODOS DO HISTÓRICO
+    ===================================================== */
+    if (checkboxMasterHistorico) {
+        checkboxMasterHistorico.checked = false;
+        checkboxMasterHistorico.indeterminate = false;
+
+        checkboxMasterHistorico.addEventListener(
+            "change",
+            function () {
+                if (!tbodyHistoricoClientes) {
+                    return;
+                }
+
+                const marcar = this.checked;
+
+                tbodyHistoricoClientes
+                    .querySelectorAll(
+                        ".checkbox-item-historico-clientes, .checkbox-item-historico-cliente"
+                    )
+                    .forEach(checkbox => {
+                        checkbox.checked = marcar;
+
+                        const tr =
+                            checkbox.closest(
+                                "tr.linha-item-historico-cliente, tr"
+                            );
+
+                        if (tr) {
+                            tr.classList.toggle(
+                                "linha-selecionada-historico",
+                                marcar
+                            );
+                        }
+                    });
+
+                sincronizarSelecaoHistorico();
+                atualizarContadorHistoricoClientes();
+            }
+        );
+    }
+
+    /* =====================================================
+        CLIQUE NAS LINHAS DO HISTÓRICO
+    ===================================================== */
+    if (tbodyHistoricoClientes) {
+        tbodyHistoricoClientes.addEventListener(
+            "click",
+            function (e) {
+                const tr =
+                    e.target.closest(
+                        "tr.linha-item-historico-cliente, tbody tr"
+                    );
+
+                if (!tr) {
+                    return;
+                }
+
+                const checkbox =
+                    tr.querySelector(
+                        ".checkbox-item-historico-clientes, .checkbox-item-historico-cliente"
+                    );
+
+                if (!checkbox) {
+                    return;
+                }
+
+                if (
+                    e.target.closest(
+                        ".checkbox-item-historico-clientes, .checkbox-item-historico-cliente"
+                    )
+                ) {
+                    return;
+                }
+
+                checkbox.checked = !checkbox.checked;
+
+                tr.classList.toggle(
+                    "linha-selecionada-historico",
+                    checkbox.checked
+                );
+
+                atualizarContadorHistoricoClientes();
+            }
+        );
+
+        tbodyHistoricoClientes.addEventListener(
+            "change",
+            function (e) {
+                if (
+                    !e.target.matches(
+                        ".checkbox-item-historico-clientes, .checkbox-item-historico-cliente"
+                    )
+                ) {
+                    return;
+                }
+
+                const checkbox = e.target;
+
+                const tr =
+                    checkbox.closest(
+                        "tr.linha-item-historico-cliente, tr"
+                    );
+
+                if (tr) {
+                    tr.classList.toggle(
+                        "linha-selecionada-historico",
+                        checkbox.checked
+                    );
+                }
+
+                atualizarContadorHistoricoClientes();
+            }
+        );
+    }
+
+    /* =====================================================
+        CARREGAR HISTÓRICO
+    ===================================================== */
+    async function carregarHistoricoClientes(
+        abrirModal = true
+    ) {
+        const tipoCliente =
+            obterTipoClienteAtivo();
 
         if (!tipoCliente) {
             mostrarAlerta(
@@ -3048,19 +3102,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 "erro"
             );
 
-            return;
+            return false;
         }
 
         try {
-            const resposta = await fetch(
-                `/clientes/historico/?tipo_cliente=${tipoCliente}`
-            );
+            const resposta =
+                await fetch(
+                    `/clientes/historico/?tipo_cliente=${tipoCliente}`
+                );
 
-            const resultado = await resposta.json();
+            const resultado =
+                await resposta.json();
 
-            console.log("Resposta histórico clientes:", resultado);
-
-            if (!resposta.ok || !resultado.sucesso) {
+            if (
+                !resposta.ok ||
+                !resultado.sucesso
+            ) {
                 mostrarAlerta(
                     resultado.mensagem ||
                     resultado.erro ||
@@ -3068,7 +3125,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     "erro"
                 );
 
-                return;
+                return false;
             }
 
             const tbodyHistorico =
@@ -3081,37 +3138,40 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Tabela do histórico não encontrada."
                 );
 
-                return;
+                return false;
             }
 
-            tbodyHistorico.innerHTML =
-                resultado.html || `
-                    <tr class="linha-vazia-historico-clientes">
-                        <td colspan="6">
-                            <div class="sem-registros-content-historico-clientes">
-                                <i class="fa-solid fa-user-clock"></i>
-                                <p>Nenhum registro de histórico de clientes encontrado.</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+            historicosSelecionados.clear();
 
-            const contador = document.getElementById("contadorSelecionadosHistoricoClientes");
-
-            if (contador) {
-                contador.textContent ="0 itens selecionados";
+            if (resultado.html) {
+                tbodyHistorico.innerHTML =
+                    resultado.html;
             }
 
-            const modalElement = document.getElementById("modalHistoricoClientes");
+            if (checkboxMasterHistorico) {
+                checkboxMasterHistorico.checked = false;
+                checkboxMasterHistorico.indeterminate = false;
+            }
 
-            if (modalElement) {
-                const modal =
-                    bootstrap.Modal.getOrCreateInstance(
-                        modalElement
+            atualizarContadorHistoricoClientes();
+
+            if (abrirModal) {
+                const modalElement =
+                    document.getElementById(
+                        "modalHistoricoClientes"
                     );
 
-                modal.show();
+                if (modalElement) {
+                    const modal =
+                        bootstrap.Modal.getOrCreateInstance(
+                            modalElement
+                        );
+
+                    modal.show();
+                }
             }
+
+            return true;
 
         } catch (erro) {
             console.error(
@@ -3123,15 +3183,271 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Ocorreu um erro ao carregar o histórico.",
                 "erro"
             );
+
+            return false;
         }
     }
 
+    /* =====================================================
+        BOTÃO HISTÓRICO
+    ===================================================== */
     if (btnHistoricoClientes) {
         btnHistoricoClientes.addEventListener(
             "click",
             () => {
-                carregarHistoricoClientes();
+                carregarHistoricoClientes(true);
             }
         );
     }
+
+    /* =====================================================
+        ATUALIZAR HISTÓRICO
+    ===================================================== */
+    if (btnAtualizarHistoricoClientes) {
+        btnAtualizarHistoricoClientes.addEventListener(
+            "click",
+            async function (e) {
+                e.preventDefault();
+
+                const atualizado =
+                    await carregarHistoricoClientes(
+                        false
+                    );
+
+                if (
+                    atualizado &&
+                    typeof mostrarAlerta ===
+                        "function"
+                ) {
+                    mostrarAlerta(
+                        "Tabela de histórico atualizada com sucesso!",
+                        "sucesso"
+                    );
+                }
+            }
+        );
+    }
+
+    /* =====================================================
+        ABRIR CONFIRMAÇÃO DE EXCLUSÃO DO HISTÓRICO
+    ===================================================== */
+    if (btnApagarHistorico) {
+        btnApagarHistorico.addEventListener(
+            "click",
+            function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const selecionados =
+                    getIdsHistoricoClientesSelecionados();
+
+                if (
+                    selecionados.length === 0
+                ) {
+                    mostrarAlerta(
+                        "Selecione pelo menos um histórico para apagar.",
+                        "alerta"
+                    );
+
+                    return;
+                }
+
+                if (
+                    selecionados.length === 1
+                ) {
+                    textoConfirmacaoExclusao.innerHTML =
+                        "Deseja realmente apagar somente este histórico?";
+                } else {
+                    textoConfirmacaoExclusao.innerHTML =
+                        `Deseja realmente apagar os ${selecionados.length} históricos selecionados?`;
+                }
+
+                modalExclusaoHistorico?.show();
+            }
+        );
+    }
+
+    /* =====================================================
+        CONFIRMAR EXCLUSÃO DOS HISTÓRICOS
+    ===================================================== */
+    if (
+        btnConfirmarExclusaoHistoricoDefinitiva
+    ) {
+        btnConfirmarExclusaoHistoricoDefinitiva.addEventListener(
+            "click",
+            async function () {
+                const ids =
+                    getIdsHistoricoClientesSelecionados();
+
+                if (
+                    ids.length === 0
+                ) {
+                    mostrarAlerta(
+                        "Nenhum histórico foi selecionado para exclusão.",
+                        "erro"
+                    );
+
+                    return;
+                }
+
+                btnConfirmarExclusaoHistoricoDefinitiva.disabled =
+                    true;
+
+                try {
+                    const resposta =
+                        await fetch(
+                            "/clientes/historico/apagar/",
+                            {
+                                method: "POST",
+                                headers: {
+                                    "X-CSRFToken":
+                                        obterCSRFToken(),
+                                    "Content-Type":
+                                        "application/json"
+                                },
+                                body:
+                                    JSON.stringify({
+                                        ids: ids
+                                    })
+                            }
+                        );
+
+                    const dados =
+                        await resposta.json();
+
+                    if (
+                        !resposta.ok ||
+                        !dados.sucesso
+                    ) {
+                        throw new Error(
+                            dados.mensagem ||
+                            "Não foi possível apagar os históricos."
+                        );
+                    }
+
+                    modalExclusaoHistorico?.hide();
+
+                    historicosSelecionados.clear();
+
+                    if (
+                        checkboxMasterHistorico
+                    ) {
+                        checkboxMasterHistorico.checked =
+                            false;
+
+                        checkboxMasterHistorico.indeterminate =
+                            false;
+                    }
+
+                    mostrarAlerta(
+                        dados.mensagem ||
+                        "Histórico apagado com sucesso!",
+                        "sucesso"
+                    );
+
+                    await carregarHistoricoClientes(
+                        false
+                    );
+
+                } catch (erro) {
+                    console.error(
+                        "Erro ao apagar histórico de clientes:",
+                        erro
+                    );
+
+                    mostrarAlerta(
+                        erro.message ||
+                        "Ocorreu um erro ao apagar o histórico.",
+                        "erro"
+                    );
+
+                } finally {
+                    btnConfirmarExclusaoHistoricoDefinitiva.disabled =
+                        false;
+                }
+            }
+        );
+    }
+
+    /* =====================================================
+        DESMARCAR HISTÓRICO AO CLICAR FORA
+    ===================================================== */
+    document.addEventListener("click", function (e) {
+        if (!tbodyHistoricoClientes) {
+            return;
+        }
+
+        if (historicosSelecionados.size === 0) {
+            return;
+        }
+
+        const clicouNaLinhaHistorico =
+            e.target.closest(
+                "tr.linha-item-historico-cliente, tbody tr"
+            );
+
+        const clicouNoMaster =
+            e.target.closest(
+                "#checkboxMasterHistoricoClientes"
+            );
+
+        const clicouNoBotaoApagar =
+            e.target.closest(
+                ".btn-historico-clientes-perigo"
+            );
+
+        const clicouNoModalConfirmacao =
+            e.target.closest(
+                "#modalConfirmarExclusaoHistoricoClientes"
+            );
+
+        if (
+            clicouNaLinhaHistorico ||
+            clicouNoMaster ||
+            clicouNoBotaoApagar ||
+            clicouNoModalConfirmacao
+        ) {
+            return;
+        }
+
+        limparSelecaoHistorico();
+    });
+
+    /* =====================================================
+        LIMPAR SELEÇÃO DO HISTÓRICO
+    ===================================================== */
+    function limparSelecaoHistorico() {
+        if (!tbodyHistoricoClientes) {
+            return;
+        }
+
+        tbodyHistoricoClientes
+            .querySelectorAll(
+                ".checkbox-item-historico-clientes, .checkbox-item-historico-cliente"
+            )
+            .forEach(checkbox => {
+                checkbox.checked = false;
+
+                const tr =
+                    checkbox.closest(
+                        "tr.linha-item-historico-cliente, tr"
+                    );
+
+                if (tr) {
+                    tr.classList.remove(
+                        "linha-selecionada-historico"
+                    );
+                }
+            });
+
+        historicosSelecionados.clear();
+
+        if (checkboxMasterHistorico) {
+            checkboxMasterHistorico.checked = false;
+            checkboxMasterHistorico.indeterminate = false;
+        }
+
+        atualizarContadorHistoricoClientes();
+    }
+
 });

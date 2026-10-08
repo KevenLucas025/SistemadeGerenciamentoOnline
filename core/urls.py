@@ -40,5 +40,7 @@ urlpatterns = [
     path('clientes/excluir/<int:cliente_id>/', views.excluir_cliente, name='excluir_cliente'),
     path('clientes/', include('clientes.urls')),
     
+    path("api/chat-ia/",views.chat_ia,name="chat_ia"),
+    
     
 ]

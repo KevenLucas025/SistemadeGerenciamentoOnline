@@ -1721,10 +1721,9 @@ select.status-select-bloqueado {
     font-weight: 500;
 }
 
-.modal-historico-clientes-table tbody tr.linha-vazia-historico,
-.modal-historico-clientes-table tbody tr.linha-vazia-historico:hover,
-.modal-historico-clientes-table tbody tr:has(.sem-registros-content-historico-clientes),
-.modal-historico-clientes-table tbody tr:has(.sem-registros-content-historico-clientes):hover {
+.modal-historico-clientes-table tbody tr.linha-vazia-historico-clientes,
+.modal-historico-clientes-table tbody tr.linha-vazia-historico-clientes:hover {
+    height: calc(48vh - 50px) !important;
     background: transparent !important;
     background-color: transparent !important;
     cursor: default !important;
@@ -1735,23 +1734,19 @@ select.status-select-bloqueado {
     box-shadow: none !important;
 }
 
-.modal-historico-clientes-table tbody tr.linha-vazia-historico td,
-.modal-historico-clientes-table tbody tr.linha-vazia-historico:hover td,
-.modal-historico-clientes-table tbody tr:has(.sem-registros-content-historico-clientes) td,
-.modal-historico-clientes-table tbody tr:has(.sem-registros-content-historico-clientes):hover td {
-    background: transparent !important;
-    background-color: transparent !important;
-    color: inherit !important;
-    cursor: default !important;
-    --bs-table-hover-bg: transparent !important;
-    --bs-table-accent-bg: transparent !important;
-    border-bottom: none !important;
-    box-shadow: none !important;
-    text-align: center !important;
-    vertical-align: middle !important;
+.modal-historico-clientes-table tbody tr.linha-vazia-historico-clientes td,
+.modal-historico-clientes-table tbody tr.linha-vazia-historico-clientes:hover td {
     height: calc(48vh - 50px) !important;
     padding: 0 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    justify-content: center;
+    background: transparent !important;
+    background-color: transparent !important;
+    border-bottom: none !important;
+    color: inherit !important;
 }
+
 
 .sem-registros-content-historico-clientes {
     display: flex;
@@ -1759,12 +1754,11 @@ select.status-select-bloqueado {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%;
     color: #cecfd2;
     text-align: center;
     pointer-events: none;
     user-select: none;
-    margin: 0 auto;
+    margin: 0;
 }
 
 .sem-registros-content-historico-clientes i {
@@ -1902,4 +1896,78 @@ select.status-select-bloqueado {
 
 .popover .popover-arrow::before {
     border-top-color: #343a40;
+}
+
+
+
+/* CHECKBOXES PERSONALIZADAS COMPACTAS */
+/* CHECKBOXES PERSONALIZADAS COMPACTAS */
+
+input.col-checkbox-clientes[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    padding: 0;
+    background-color: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+input.col-checkbox-clientes[type="checkbox"]:hover {
+    border-color: #8b5cf6;
+    background-color: #171e2b;
+}
+
+input.col-checkbox-clientes[type="checkbox"]:checked {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+    box-shadow: 0 0 8px rgba(124, 58, 237, 0.4);
+}
+
+input.col-checkbox-clientes[type="checkbox"]:checked::after {
+    content: '';
+    width: 3px;
+    height: 6px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 2px;
+    left: 4px;
+}
+
+/* =====================================================
+   SELEÇÃO DAS LINHAS DO HISTÓRICO DE CLIENTES
+===================================================== */
+
+.linha-item-historico-cliente {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.linha-item-historico-cliente:hover {
+    background-color: rgba(0, 123, 255, 0.06);
+}
+
+.linha-item-historico-cliente.linha-selecionada-historico {
+    background-color: rgba(0, 123, 255, 0.12);
+}
+
+.linha-item-historico-cliente.linha-selecionada-historico:hover {
+    background-color: rgba(0, 123, 255, 0.16);
+}
+
+.linha-item-historico-cliente .checkbox-item-historico-cliente {
+    cursor: pointer;
 }

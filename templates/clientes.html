@@ -933,10 +933,28 @@
                     Campos de dados sensíveis foram alterados. Digite sua senha para prosseguir.
                 </p>
 
-                <div class="campo-senha-sensivel mt-3 text-start">
-                    <label for="senhaConfirmacaoSensivel">Senha do usuário logado</label>
-                    <input type="password" id="senhaConfirmacaoSensivel" class="input-senha-sensivel" placeholder="••••••••" autocomplete="new-password">
-                </div>
+                <form id="formConfirmacaoSenhaSensivel">
+                    <input
+                        type="text"
+                        name="username"
+                        autocomplete="username"
+                        tabindex="-1"
+                        aria-hidden="true"
+                        style="display: none;"
+                    >
+
+                    <div class="campo-senha-sensivel mt-3 text-start">
+                        <label for="senhaConfirmacaoSensivel">Senha do usuário logado</label>
+                        <input
+                            type="password"
+                            id="senhaConfirmacaoSensivel"
+                            name="password"
+                            class="input-senha-sensivel"
+                            placeholder="••••••••"
+                            autocomplete="current-password"
+                        >
+                    </div>
+                </form>
             </div>
 
             <div class="modal-dados-sensiveis-footer">
@@ -1021,7 +1039,7 @@
                         <tbody id="tbodyHistoricoClientes">
                             <!-- Linha vazia padrão para quando não houver dados -->
                             <tr class="linha-vazia-historico-clientes">
-                                <td colspan="5">
+                                <td colspan="6">
                                     <div class="sem-registros-content-historico-clientes">
                                         <i class="fa-solid fa-user-clock"></i>
                                         <p>Nenhum registro de histórico de clientes encontrado.</p>
@@ -1043,6 +1061,47 @@
                 </button>
             </div>
 
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL ESPECÍFICO — CONFIRMAR EXCLUSÃO DE HISTÓRICO DE CLIENTES
+====================================================== -->
+<div class="modal fade" id="modalConfirmarExclusaoHistoricoClientes" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-exclusao-historico-clientes-dialog">
+        <div class="modal-content modal-exclusao-historico-clientes-content">
+            <div class="modal-header modal-exclusao-historico-clientes-header">
+                <h5>
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-modal-fechar-exclusao-historico-clientes" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-exclusao-historico-clientes-body text-center">
+                <!-- Texto dinâmico alterado via JS conforme a quantidade -->
+                <p id="textoConfirmacaoExclusaoHistoricoClientes" class="modal-exclusao-historico-clientes-texto">
+                    Deseja apagar os registros do histórico de clientes selecionados?
+                </p>
+
+                <div class="alerta-aviso-exclusao-historico-clientes">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Esta ação é irreversível e os dados serão excluídos definitivamente.</span>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-exclusao-historico-clientes-footer">
+                <button type="button" class="btn-cancelar-exclusao-historico-clientes" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" id="btnConfirmarExclusaoHistoricoClientesDefinitiva" class="btn-confirmar-exclusao-historico-clientes">
+                    <i class="fa-solid fa-trash-can"></i>
+                    Confirmar Exclusão
+                </button>
+            </div>
         </div>
     </div>
 </div>

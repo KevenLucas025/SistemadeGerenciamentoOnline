@@ -4,7 +4,7 @@
             <td class="col-checkbox">
                 <input
                     type="checkbox"
-                    class="col-checkbox-clientes checkbox-item-historico-clientes"
+                    class="col-checkbox-clientes checkbox-item-historico-cliente"
                     value="{{ item.id }}"
                 >
             </td>
@@ -25,19 +25,16 @@
                         <i class="fa-solid fa-user-plus"></i>
                         Cadastro do Cliente
                     </span>
-
                 {% elif item.acao == 'Edição' %}
                     <span class="badge-historico-cliente badge-historico-edicao">
                         <i class="fa-solid fa-user-pen"></i>
                         Edição do Cliente
                     </span>
-
                 {% elif item.acao == 'Exclusão' %}
                     <span class="badge-historico-cliente badge-historico-exclusao">
                         <i class="fa-solid fa-user-minus"></i>
                         Exclusão do Cliente
                     </span>
-
                 {% else %}
                     <span class="badge-historico-cliente badge-historico-padrao">
                         <i class="fa-solid fa-circle-info"></i>
@@ -55,12 +52,4 @@
             </td>
         </tr>
     {% endfor %}
-{% else %}
-    <tr class="linha-vazia-historico">
-        <td colspan="6" class="sem-registros-content-historico-clientes">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <p>Nenhum registro de histórico encontrado.</p>
-        </td>
-    </tr>
 {% endif %}
-

@@ -13,6 +13,8 @@ load_dotenv(BASE_DIR / ".env")
 
 EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
 
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
 ANYMAIL = {
     "SENDGRID_API_KEY": os.environ.get("SENDGRID_API_KEY")
 }

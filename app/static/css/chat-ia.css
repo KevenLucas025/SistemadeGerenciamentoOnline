@@ -1,0 +1,199 @@
+/* =====================================================
+   ASSISTENTE IA
+===================================================== */
+.btn-chat-ia {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    width: 58px;
+    height: 58px;
+    border: none;
+    border-radius: 50%;
+    background: #141b27;
+    color: #cecfd2;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+    z-index: 9999;
+    transition: 0.2s ease;
+}
+
+.btn-chat-ia:hover {
+    transform: scale(1.05);
+}
+
+
+/* =====================================================
+   JANELA
+===================================================== */
+
+.chat-ia {
+    position: fixed;
+    right: 25px;
+    bottom: 95px;
+    width: 380px;
+    height: 550px;
+    background: #111827;
+    border-radius: 16px;
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.25);
+
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+.chat-ia.aberto {
+    display: flex;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+.chat-ia-header {
+    height: 70px;
+    padding: 12px 15px;
+    background: #2563eb;
+    color: #cecfd2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-ia-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-ia-icone {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-ia-titulo strong,
+.chat-ia-titulo small {
+    display: block;
+}
+
+.chat-ia-titulo small {
+    opacity: 0.8;
+    margin-top: 2px;
+}
+
+.btn-fechar-chat-ia {
+    border: none;
+    background: transparent;
+    color: #cecfd2;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   MENSAGENS
+===================================================== */
+
+.chat-ia-mensagens {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #111827;
+}
+
+.mensagem-ia,
+.mensagem-usuario {
+    max-width: 80%;
+    padding: 10px 13px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.mensagem-ia {
+    align-self: flex-start;
+    background: #1f2937;
+    color: #cecfd2;
+    border: 1px solid #374151;
+}
+
+.mensagem-usuario {
+    align-self: flex-end;
+    background: #2563eb;
+    color: #cecfd2;
+}
+
+
+/* =====================================================
+   INPUT
+===================================================== */
+
+.chat-ia-input {
+    padding: 12px;
+
+    border-top: 1px solid #374151;
+
+    background: #111827;
+
+    display: flex;
+
+    gap: 8px;
+}
+
+.chat-ia-input input {
+    flex: 1;
+
+    height: 42px;
+
+    border: 1px solid #374151;
+
+    border-radius: 8px;
+
+    padding: 0 12px;
+
+    outline: none;
+
+    background: #1f2937;
+    color: #cecfd2;
+}
+
+.chat-ia-input input::placeholder {
+    color: #9ca3af;
+}
+
+.chat-ia-input input:focus {
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+}
+
+.chat-ia-input button {
+    width: 42px;
+
+    height: 42px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #7c3aed;
+
+    color: #cecfd2;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.chat-ia-input button:hover {
+    background: #1d4ed8;
+}

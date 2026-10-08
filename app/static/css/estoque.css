@@ -766,11 +766,47 @@
     padding: 10px 8px;
 }
 
-.col-checkbox-produtos {
-    width: 16px;
-    height: 16px;
+
+
+/* CHECKBOXES PERSONALIZADAS COMPACTAS */
+input.col-checkbox-produtos[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background-color: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+    outline: none;
     cursor: pointer;
-    accent-color: #0284c7;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+input.col-checkbox-produtos:hover[type="checkbox"] {
+    border-color: #8b5cf6;
+    background-color: #171e2b;
+}
+
+input.col-checkbox-produtos[type="checkbox"]:checked {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+    box-shadow: 0 0 8px rgba(124, 58, 237, 0.4);
+}
+
+input.col-checkbox-produtos[type="checkbox"]:checked::after {
+    content: '';
+    width: 3px;
+    height: 6px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 1px;
 }
 
 .modal-historico-produtos-footer {

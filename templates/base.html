@@ -8,6 +8,7 @@
     <title>Sistema de Gerenciamento</title>
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chat-ia.css' %}">
     {% block extra_css %}{% endblock %}
 
     <link rel="icon" type="image/png" href="{% static 'img/SIstema_de_Gerenciamento.png' %}">
@@ -72,12 +73,92 @@
         </div>
     </div>
 
+<!-- =====================================================
+     ASSISTENTE IA
+====================================================== -->
+
+<!-- BOTÃO FLUTUANTE -->
+<button
+    type="button"
+    id="btnAbrirChatIA"
+    class="btn-chat-ia"
+    title="SIGO - IA"
+>
+    <i class="fa-solid fa-robot"></i>
+</button>
+
+
+<!-- JANELA DO CHAT -->
+<div id="chatIA" class="chat-ia">
+
+    <!-- CABEÇALHO -->
+    <div class="chat-ia-header">
+
+        <div class="chat-ia-titulo">
+            <div class="chat-ia-icone">
+                <i class="fa-solid fa-robot"></i>
+            </div>
+
+            <div>
+                <strong>SIGO - IA</strong>
+                <small>Como posso ajudar?</small>
+            </div>
+        </div>
+
+        <button
+            type="button"
+            id="btnFecharChatIA"
+            class="btn-fechar-chat-ia"
+            title="Fechar"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+    </div>
+
+
+    <!-- MENSAGENS -->
+    <div
+        id="chatIAMensagens"
+        class="chat-ia-mensagens"
+    >
+
+        <div class="mensagem-ia">
+            Olá! Como posso ajudar?
+        </div>
+
+    </div>
+
+
+    <!-- CAMPO DE MENSAGEM -->
+    <div class="chat-ia-input">
+
+        <input
+            type="text"
+            id="inputChatIA"
+            placeholder="Digite sua pergunta..."
+            autocomplete="off"
+        >
+
+        <button
+            type="button"
+            id="btnEnviarChatIA"
+            title="Enviar"
+        >
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+
+    </div>
+
+</div>
+
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- Scripts Globais do Sistema -->
     <script src="{% static 'js/notificacoes.js' %}"></script>
     <script src="{% static 'js/funcoes.js' %}"></script>
+    <script src="{% static 'js/chat-ia.js' %}"></script>
 
     {% if user.is_authenticated %}
         <script src="{% static 'js/menu_lateral.js' %}"></script>
