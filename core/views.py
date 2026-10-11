@@ -1527,7 +1527,95 @@ def chat_ia(request):
 
         }, status=500)
         
+import json
+import uuid
 
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_protect
+
+from .models import AvaliacaoAssistenteIA
+
+
+@require_POST
+@csrf_protect
+def avaliar_assistente_ia(request):
+
+    # Exige autenticação.
+    if not request.user.is_authenticated:
+        return JsonResponse(
+            {
+                "sucesso": False,
+                "mensagem": "É necessário estar autenticado.",
+            },
+            status=401,
+        )
+
+    # Lê o JSON enviado pelo JavaScript.
+    try:
+        dados = json.loads(request.body)
+
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return JsonResponse(
+            {
+                "sucesso": False,
+                "mensagem": "Dados inválidos.",
+            },
+            status=400,
+        )
+
+    # Valida o identificador da resposta.
+    try:
+        resposta_id = uuid.UUID(
+            str(dados.get("resposta_id", ""))
+        )
+
+    except (ValueError, TypeError, AttributeError):
+        return JsonResponse(
+            {
+                "sucesso": False,
+                "mensagem": "Identificador de resposta inválido.",
+            },
+            status=400,
+        )
+
+    # Aceita somente os dois tipos de avaliação.
+    avaliacao = dados.get("avaliacao")
+
+    if avaliacao not in ("positiva", "negativa"):
+        return JsonResponse(
+            {
+                "sucesso": False,
+                "mensagem": "Avaliação inválida.",
+            },
+            status=400,
+        )
+
+    # Cria a avaliação ou atualiza a existente.
+    registro, criado = (
+        AvaliacaoAssistenteIA.objects.update_or_create(
+            usuario=request.user,
+            resposta_id=resposta_id,
+            defaults={
+                "avaliacao": avaliacao,
+                "pergunta": str(
+                    dados.get("pergunta", "")
+                )[:10000],
+                "resposta": str(
+                    dados.get("resposta", "")
+                )[:20000],
+            },
+        )
+    )
+
+    return JsonResponse(
+        {
+            "sucesso": True,
+            "mensagem": "Avaliação registrada com sucesso.",
+            "avaliacao": registro.avaliacao,
+            "nova": criado,
+        }
+    )
 
 '''@login_required
 def listar_produtos(request):

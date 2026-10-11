@@ -1,0 +1,96 @@
+{% if historicos %}
+
+    {% for item in historicos %}
+
+        <tr
+            class="linha-item-historico"
+            data-historico-id="{{ item.id }}"
+        >
+
+            <!-- CHECKBOX -->
+            <td class="col-checkbox">
+                <input
+                    type="checkbox"
+                    class="col-checkbox-usuarios check-item-historico"
+                    value="{{ item.id }}"
+                >
+            </td>
+
+            <!-- ID -->
+            <td>
+                {{ item.id }}
+            </td>
+
+            <!-- DATA / HORA -->
+            <td>
+                {{ item.data_hora|date:"d/m/Y H:i" }}
+            </td>
+
+            <!-- USUÁRIO AFETADO -->
+            <td>
+                <strong>
+                    {{ item.nome_usuario_afetado|default:"Usuário não identificado" }}
+                </strong>
+            </td>
+
+            <!-- AÇÃO -->
+            <td>
+
+                {% if item.acao == 'saida' %}
+
+                    <span class="badge-historico-usuario badge-historico-usuario-saida">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Gerar Saída
+                    </span>
+
+                {% elif item.acao == 'cadastro' %}
+
+                    <span class="badge-historico-usuario badge-historico-usuario-cadastro">
+                        <i class="fa-solid fa-user-plus"></i>
+                        Novo Usuário
+                    </span>
+
+                {% elif item.acao == 'edicao' %}
+
+                    <span class="badge-historico-usuario badge-historico-usuario-edicao">
+                        <i class="fa-solid fa-user-pen"></i>
+                        Edição de Dados
+                    </span>
+
+                {% elif item.acao == 'perfil' %}
+
+                    <span class="badge-historico-usuario badge-historico-usuario-edicao">
+                        <i class="fa-solid fa-user-gear"></i>
+                        Alteração de Perfil
+                    </span>
+
+                {% else %}
+
+                    <span class="badge-historico-usuario badge-historico-usuario-padrao">
+                        <i class="fa-solid fa-circle-info"></i>
+                        {{ item.get_acao_display }}
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <!-- DESCRIÇÃO -->
+            <td>
+                {{ item.descricao }}
+            </td>
+
+            <!-- RESPONSÁVEL -->
+            <td>
+                {% if item.usuario_responsavel %}
+                    {{ item.usuario_responsavel.username }}
+                {% else %}
+                    Sistema
+                {% endif %}
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+{% endif %}

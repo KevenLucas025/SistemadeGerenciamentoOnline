@@ -13,9 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalCadastrarElement = document.getElementById("modalCadastrarCliente");
     const tipoCliente = document.getElementById("tipoCliente");
     const tituloModal = document.getElementById("tituloModalCliente");
-    const camposJuridicos = document.querySelectorAll(
-        "#modalCadastrarCliente .campo-juridico"
-    );
+    const camposJuridicos = document.querySelectorAll("#modalCadastrarCliente .campo-juridico");
     const btnCadastrarCliente = document.getElementById("btnCadastrarCliente");
 
     const modalCadastro = modalCadastrarElement
@@ -28,15 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnAbrirRelatorio = document.querySelector(".btn-cliente.relatorio");
     const modalRelatorioElement = document.getElementById("modalRelatorioCliente");
     const tituloModalRelatorio = document.getElementById("tituloModalRelatorio");
-    const checkSelecionarTodos = document.getElementById(
-        "checkSelecionarTodosRelatorio"
-    );
-    const containerCheckboxes = document.getElementById(
-        "containerCheckboxesRelatorio"
-    );
-    const checksColunasJuridicas = document.querySelectorAll(
-        ".check-col-juridico"
-    );
+    const checkSelecionarTodos = document.getElementById("checkSelecionarTodosRelatorio");
+    const containerCheckboxes = document.getElementById("containerCheckboxesRelatorio");
+    const checksColunasJuridicas = document.querySelectorAll(".check-col-juridico");
 
     const modalRelatorio = modalRelatorioElement
         ? bootstrap.Modal.getOrCreateInstance(modalRelatorioElement)
@@ -46,15 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
         ELEMENTOS DO MODAL 2: EDITAR
     ===================================================== */
     const btnEditarCliente = document.querySelector(".btn-cliente.editar");
-    const modalEditarElement = document.getElementById(
-        "modalEditarCadastroCliente"
-    );
-    const btnAtualizarCliente = document.getElementById(
-        "btnAtualizarCliente"
-    );
-    const camposJuridicosEditar = document.querySelectorAll(
-        ".campo-juridico-editar"
-    );
+    const modalEditarElement = document.getElementById("modalEditarCadastroCliente");
+    const btnAtualizarCliente = document.getElementById("btnAtualizarCliente");
+    const camposJuridicosEditar = document.querySelectorAll(".campo-juridico-editar");
 
     const modalEdicao = modalEditarElement
         ? bootstrap.Modal.getOrCreateInstance(modalEditarElement)
@@ -63,15 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =====================================================
         ELEMENTOS DO MODAL DE CONFIRMAÇÃO DE SENHA
     ===================================================== */
-    const modalSenhaSensivelElement = document.getElementById(
-        "modalConfirmarSenhaDadosSensiveis"
-    );
-    const btnConfirmarAlteracaoSensivel = document.getElementById(
-        "btnConfirmarAlteracaoSensivel"
-    );
-    const inputSenhaConfirmacaoSensivel = document.getElementById(
-        "senhaConfirmacaoSensivel"
-    );
+    const modalSenhaSensivelElement = document.getElementById("modalConfirmarSenhaDadosSensiveis");
+    const btnConfirmarAlteracaoSensivel = document.getElementById("btnConfirmarAlteracaoSensivel");
+    const inputSenhaConfirmacaoSensivel = document.getElementById("senhaConfirmacaoSensivel");
 
     const modalSenhaSensivel = modalSenhaSensivelElement
         ? bootstrap.Modal.getOrCreateInstance(
@@ -87,34 +67,21 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =====================================================
         HISTÓRICO CLIENTES
     ===================================================== */
-    const btnHistoricoClientes = document.getElementById(
-        "btnHistoricoClientes"
-    );
-
-    const modalHistoricoClientesEl = document.getElementById(
-        "modalHistoricoClientes"
-    );
-
+    const btnHistoricoClientes = document.getElementById("btnHistoricoClientes");
+    const modalHistoricoClientesEl = document.getElementById("modalHistoricoClientes");
     const modalHistoricoClientes = modalHistoricoClientesEl
         ? bootstrap.Modal.getOrCreateInstance(
             modalHistoricoClientesEl
         )
         : null;
+    const tbodyHistoricoClientes = document.getElementById("tbodyHistoricoClientes");
 
-    const tbodyHistoricoClientes = document.getElementById(
-        "tbodyHistoricoClientes"
-    );
-
-    const btnAtualizarHistoricoClientes = document.getElementById(
-        "btnAtualizarHistoricoClientes"
-    );
+    const btnAtualizarHistoricoClientes = document.getElementById("btnAtualizarHistoricoClientes");
 
     /* =====================================================
         MODAL DE HISTÓRICO
     ===================================================== */
-    const modalHistoricoElement = document.getElementById(
-        "modalHistoricoClientes"
-    );
+    const modalHistoricoElement = document.getElementById("modalHistoricoClientes");
 
     const modalHistorico = modalHistoricoElement
         ? bootstrap.Modal.getOrCreateInstance(
@@ -125,36 +92,53 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =====================================================
         HISTÓRICO — SELEÇÃO E EXCLUSÃO
     ===================================================== */
-    const checkboxMasterHistorico = document.getElementById(
-        "checkboxMasterHistoricoClientes"
-    );
-
-    const btnApagarHistorico = document.querySelector(
-        ".btn-historico-clientes-perigo"
-    );
-
-    const modalExclusaoHistoricoEl = document.getElementById(
-        "modalConfirmarExclusaoHistoricoClientes"
-    );
-
+    const checkboxMasterHistorico = document.getElementById("checkboxMasterHistoricoClientes");
+    const btnApagarHistorico = document.querySelector(".btn-historico-clientes-perigo");
+    const modalExclusaoHistoricoEl = document.getElementById("modalConfirmarExclusaoHistoricoClientes");
     const modalExclusaoHistorico = modalExclusaoHistoricoEl
         ? bootstrap.Modal.getOrCreateInstance(
             modalExclusaoHistoricoEl
         )
         : null;
 
-    const textoConfirmacaoExclusao = document.getElementById(
-        "textoConfirmacaoExclusaoHistoricoClientes"
-    );
+    const textoConfirmacaoExclusao = document.getElementById("textoConfirmacaoExclusaoHistoricoClientes");
+    const btnConfirmarExclusaoHistoricoDefinitiva =document.getElementById( "btnConfirmarExclusaoHistoricoClientesDefinitiva");
+    const contadorSelecionadosEl = document.querySelector(".contador-selecionados-historico-clientes");
 
-    const btnConfirmarExclusaoHistoricoDefinitiva =
-        document.getElementById(
-            "btnConfirmarExclusaoHistoricoClientesDefinitiva"
-        );
+    // Gerar Excel, CSV e PDF
+    const btnExportarHistóricoCSVClientes = document.getElementById("btnExportarCsvHistoricoClientes");
+    const btnExportarHistoricoExcelClientes = document.getElementById("btnExportarExcelHistoricoClientes");
+    const btnExportarHistoricoPDFClientes = document.getElementById("btnExportarPdfHistoricoClientes");
 
-    const contadorSelecionadosEl = document.querySelector(
-        ".contador-selecionados-historico-clientes"
-    );
+
+    // Controle de Pausa/Ativação da Gravação do Histórico de Clientes
+    const PausarHistoricoClientes = document.getElementById("btnPausarHistoricoClientes");
+    const modalPausaClientesEl = document.getElementById("modalStatusPausaHistoricoClientes");
+    const modalPausaClientes = modalPausaClientesEl ? bootstrap.Modal.getOrCreateInstance(modalPausaClientesEl) : null;
+    const badgeStatusPausaAtualClientes = document.getElementById("badgeStatusPausaAtualClientes");
+    const btnNaoPausarHistoricoClientes = document.getElementById("btnNaoPausarHistoricoClientes");
+    const btnSimAtivarHistoricoClientes = document.getElementById("btnSimAtivarHistoricoClientes");
+
+
+    /* =========================================
+       ORDENAÇÃO DO HISTÓRICO
+    ========================================= */
+    const btnAbrirModalOrdenarClientes = document.getElementById("btnOrdenarHistoricoClientes");
+    const modalOrdenarClientesEl = document.getElementById("modalOrdenarHistoricoClientes");
+    const modalOrdenarClientes = modalOrdenarClientesEl ? bootstrap.Modal.getOrCreateInstance(modalOrdenarClientesEl) : null;
+    const btnExecutarOrdenacaoClientesHistoricos = document.getElementById("btnExecutarOrdenacaoHistoricoClientes");
+    const tipoOrdenacaoHistoricoClientes = document.getElementById("tipoOrdenacaoHistoricoClientes");
+
+     /* =========================================
+       FILTRAGEM DO HISTÓRICO (DATA E HORA)
+    ========================================= */
+    const btnAbrirModalFiltroClientes = document.getElementById("btnFiltrarHistoricoClientes");
+    const modalFiltroClientesEl = document.getElementById("modalFiltrarHistoricoClientes");
+    const modalFiltroClientes = modalFiltroClientesEl ? bootstrap.Modal.getOrCreateInstance(modalFiltroClientesEl) : null;
+    const inputFiltroDataClientes = document.getElementById("filtroDataHistoricoClientes");
+    const btnAplicarFiltroClientes = document.getElementById("btnAplicarFiltroHistoricoClientes");
+
+
 
     /* =====================================================
         ESTADOS GERAIS
@@ -162,12 +146,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let modoMarcarClientes = false;
     let clienteSelecionadoTr = null;
     let clientesSelecionados = new Set();
+    let historicoClientesPausado = false;
     let clienteOriginal = {};
-
-    /* =====================================================
-        ESTADO DOS HISTÓRICOS SELECIONADOS
-    ===================================================== */
+    let ordemHistoricoAtualClientes = "desc";
+    let filtroDataAtualClientes = "";
     let historicosSelecionados = new Set();
+    
 
     /* =====================================================
         FORMATAÇÃO INICIAL DAS LINHAS
@@ -192,6 +176,15 @@ document.addEventListener("DOMContentLoaded", () => {
         FUNÇÕES AUXILIARES
     ===================================================== */
 
+    function getCSRFToken() {
+        const cookies = document.cookie.split(";");
+        for (const cookie of cookies) {
+            const [nome, valor] = cookie.trim().split("=");
+            if (nome === "csrftoken") return decodeURIComponent(valor);
+        }
+        return document.querySelector("[name=csrfmiddlewaretoken]")?.value || "";
+    }
+
     function normalizarValor(val) {
         if (val === null || val === undefined) {
             return "";
@@ -204,8 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function salvarEstadoOriginal() {
-        const formulario =
-            document.getElementById("formEditarCliente");
+        const formulario = document.getElementById("formEditarCliente");
 
         if (!formulario) {
             return;
@@ -2964,11 +2956,12 @@ document.addEventListener("DOMContentLoaded", () => {
         OBTER IDS SELECIONADOS DO HISTÓRICO
     ===================================================== */
     function getIdsHistoricoClientesSelecionados() {
-        sincronizarSelecaoHistorico();
+        if (!tbodyHistoricoClientes) return [];
+        const  checkboxes = tbodyHistoricoClientes.querySelectorAll(
+            ".checkbox-item-historico-clientes:checked, .checkbox-item-historico-cliente:checked"
+        )
 
-        return Array.from(
-            historicosSelecionados
-        );
+        return Array.from(checkboxes).map(cb => cb.dataset.id || cb.value);
     }
 
     /* =====================================================
@@ -3090,11 +3083,9 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =====================================================
         CARREGAR HISTÓRICO
     ===================================================== */
-    async function carregarHistoricoClientes(
-        abrirModal = true
-    ) {
-        const tipoCliente =
-            obterTipoClienteAtivo();
+    async function carregarHistoricoClientes(abrirModal = true,direcao = ordemHistoricoAtualClientes,filtroData = filtroDataAtualClientes
+    )  {
+        const tipoCliente =obterTipoClienteAtivo();
 
         if (!tipoCliente) {
             mostrarAlerta(
@@ -3106,13 +3097,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const resposta =
-                await fetch(
-                    `/clientes/historico/?tipo_cliente=${tipoCliente}`
-                );
+            const params = new URLSearchParams({
+                tipo_cliente: tipoCliente,
+                ordem: direcao || "desc"
+            });
 
-            const resultado =
-                await resposta.json();
+            if (filtroData) {
+                params.set("data", filtroData);
+            }
+
+            const resposta = await fetch(
+                `/clientes/historico/listar-clientes/?${params.toString()}`
+            );
+
+            const resultado = await resposta.json();
 
             if (
                 !resposta.ok ||
@@ -3448,6 +3446,283 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         atualizarContadorHistoricoClientes();
+    }
+
+    function executarDownloadHistoricoClientes(urlBase) {
+
+        const tipoCliente = obterTipoClienteAtivo();
+
+        if (!tipoCliente) {
+
+            mostrarAlerta(
+                "Não foi possível identificar o tipo de cliente da página atual.",
+                "erro"
+            );
+
+            return;
+        }
+
+        const ids =
+            getIdsHistoricoClientesSelecionados();
+
+        const parametros =
+            new URLSearchParams();
+
+        // Informa se é Jurídico ou Físico
+        parametros.append("tipo_cliente", tipoCliente);
+
+        // Adiciona os IDs selecionados, caso existam
+        if (ids.length > 0) {
+
+            parametros.append(
+                "ids",
+                ids.join(",")
+            );
+        }
+
+        const urlFinal = `${urlBase}?${parametros.toString()}`;
+
+        const link = document.createElement("a");
+        link.href = urlFinal;
+        link.setAttribute("download","");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    if (btnExportarHistóricoCSVClientes) {
+        btnExportarHistóricoCSVClientes.addEventListener("click", function () {
+            executarDownloadHistoricoClientes("/clientes/historico/exportar-csv-clientes/");
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta("Exportação CSV iniciada!", "sucesso");
+            }
+        });
+    }
+
+     if (btnExportarHistoricoExcelClientes) {
+        btnExportarHistoricoExcelClientes.addEventListener("click", function () {
+            executarDownloadHistoricoClientes("/clientes/historico/exportar-excel-clientes/");
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta("Exportação Excel iniciada!", "sucesso");
+            }
+        });
+    }
+
+    if (btnExportarHistoricoPDFClientes) {
+        btnExportarHistoricoPDFClientes.addEventListener("click", function () {
+            executarDownloadHistoricoClientes("/clientes/historico/exportar-pdf-clientes/");
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta("Exportação PDF iniciada!", "sucesso");
+            }
+        });
+    }
+
+    /* =====================================================
+       CONTROLE DE PAUSA/ATIVAÇÃO DO HISTÓRICO DE CLIENTES
+    ===================================================== */
+    const URL_STATUS_PAUSA_CLIENTES = "/clientes/historico/status-pausa-clientes/";
+
+    function atualizarBadgeStatusClientes(pausado) {
+        if (!badgeStatusPausaAtualClientes) return;
+
+        if (pausado) {
+            badgeStatusPausaAtualClientes.className = "modal-status-pausa-clientes-badge pausado";
+            badgeStatusPausaAtualClientes.innerHTML = '<i class="fa-solid fa-circle-pause"></i> Gravação pausada';
+        } else {
+            badgeStatusPausaAtualClientes.className = "modal-status-pausa-clientes-badge ativo";
+            badgeStatusPausaAtualClientes.innerHTML = '<i class="fa-solid fa-circle-check"></i> Gravando normalmente';
+        }
+
+        
+    }
+
+    async function verificarStatusPausaInicialClientes() {
+        try {
+            const resposta = await fetch(URL_STATUS_PAUSA_CLIENTES);
+            if (!resposta.ok) return;
+            const dados = await resposta.json();
+            if (dados.sucesso) {
+                historicoClientesPausado = dados.pausado;
+                atualizarBadgeStatusClientes(historicoClientesPausado);
+            }
+        } catch (erro) {
+            console.error("Erro ao verificar status do histórico:", erro);
+        }
+    }
+
+    if (PausarHistoricoClientes && modalPausaClientes) {
+        PausarHistoricoClientes.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            atualizarBadgeStatusClientes(historicoClientesPausado);
+            modalPausaClientes.show();
+        });
+    }
+
+    async function alternarPausaHistoricoClientes(pausar) {
+        const acaoDesejada = pausar ? "pausar" : "ativar";
+        const csrfToken = getCSRFToken();
+
+        try {
+            const resposta = await fetch(URL_STATUS_PAUSA_CLIENTES, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify({ acao: acaoDesejada })
+            });
+
+            const texto = await resposta.text();
+            let dados;
+            try {
+                dados = JSON.parse(texto);
+            } catch (e) {
+                console.error("Resposta inválida do servidor:", texto);
+                throw new Error("Erro de comunicação com o servidor.");
+            }
+
+            if (modalPausaClientes) {
+                modalPausaClientes.hide();
+            }
+
+            if (dados.sucesso) {
+                historicoClientesPausado = dados.pausado;
+                atualizarBadgeStatusClientes(historicoClientesPausado);
+
+                if (typeof mostrarAlerta === "function") {
+                    mostrarAlerta(dados.mensagem, "sucesso");
+                }
+            } else if (dados.ja_estava) {
+                historicoClientesPausado = dados.pausado;
+                atualizarBadgeStatusClientes(historicoClientesPausado);
+
+                if (typeof mostrarAlerta === "function") {
+                    mostrarAlerta(dados.mensagem, "alerta");
+                }
+            } else {
+                if (typeof mostrarAlerta === "function") {
+                    mostrarAlerta(dados.mensagem || "Não foi possível alterar o status.", "erro");
+                } else {
+                    alert(dados.mensagem);
+                }
+            }
+        } catch (err) {
+            console.error("Erro na requisição:", err);
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta(err.message || "Erro de comunicação.", "erro");
+            } else {
+                alert("Erro de comunicação com o servidor.");
+            }
+        }
+    }
+
+    if (btnNaoPausarHistoricoClientes) {
+        btnNaoPausarHistoricoClientes.addEventListener("click", () => alternarPausaHistoricoClientes(true));
+    }
+
+    if (btnSimAtivarHistoricoClientes) {
+        btnSimAtivarHistoricoClientes.addEventListener("click", () => alternarPausaHistoricoClientes(false));
+    }
+
+    verificarStatusPausaInicialClientes();
+
+    /* =========================================
+       12. ORDENAÇÃO DO HISTÓRICO
+    ========================================= */
+    if (btnAbrirModalOrdenarClientes && modalOrdenarClientes) {
+        btnAbrirModalOrdenarClientes.addEventListener("click", function () {
+            if (tipoOrdenacaoHistoricoClientes) {
+                tipoOrdenacaoHistoricoClientes.value = ordemHistoricoAtualClientes;
+            }
+            modalOrdenarClientes.show();
+        });
+    }
+
+    if (btnExecutarOrdenacaoClientesHistoricos) {
+        btnExecutarOrdenacaoClientesHistoricos.addEventListener(
+            "click",
+            async function () {
+                const direcao = tipoOrdenacaoHistoricoClientes
+                    ? tipoOrdenacaoHistoricoClientes.value
+                    : "desc";
+
+                const ordenado = await carregarHistoricoClientes(
+                    false,
+                    direcao,
+                    filtroDataAtualClientes
+                );
+
+                if (!ordenado) {
+                    return;
+                }
+
+                ordemHistoricoAtualClientes = direcao;
+
+                if (modalOrdenarClientes) {
+                    modalOrdenarClientes.hide();
+                }
+
+                if (typeof mostrarAlerta === "function") {
+                    const textoDirecao = direcao === "asc"
+                        ? "crescente (antigos primeiro)"
+                        : "decrescente (recentes primeiro)";
+
+                    mostrarAlerta(
+                        `Histórico ordenado em ordem ${textoDirecao}!`,
+                        "sucesso"
+                    );
+                }
+            }
+        );
+    }
+
+    /* =========================================
+       MODAL DE FILTRAGEM (DATA E HORA)
+    ========================================= */
+    if (btnAbrirModalFiltroClientes && modalFiltroClientes) {
+        btnAbrirModalFiltroClientes.addEventListener("click", function () {
+            if (inputFiltroDataClientes) inputFiltroDataClientes.value = filtroDataAtualClientes;
+
+            const radio = document.querySelector(`input[name="filtroOrdemHoraClientes"][value="${ordemHistoricoAtualClientes}"]`);
+            if (radio) radio.checked = true;
+
+            modalFiltroClientes.show();
+        });
+    }
+
+    if (btnAplicarFiltroClientes) {
+        btnAplicarFiltroClientes.addEventListener("click", async function () {
+            const dataVal = inputFiltroDataClientes ? inputFiltroDataClientes.value.trim() : "";
+            const radioChecked = document.querySelector('input[name="filtroOrdemHoraClientes"]:checked');
+            const ordemVal = radioChecked ? radioChecked.value : "desc";
+
+            if (dataVal.length > 0 && dataVal.length < 10) {
+                if (typeof mostrarAlerta === "function") {
+                    mostrarAlerta("Preencha a data completa (DD/MM/AAAA) ou deixe em branco.", "alerta");
+                } else {
+                    alert("Preencha a data completa (DD/MM/AAAA) ou deixe em branco.");
+                }
+                return;
+            }
+
+            if (modalFiltroClientes) modalFiltroClientes.hide();
+
+            await carregarHistoricoClientes(false, ordemVal, dataVal);
+        });
+    }
+
+    if (inputFiltroDataClientes) {
+        inputFiltroDataClientes.addEventListener("input", function (e) {
+            let v = e.target.value.replace(/\D/g, "");
+            if (v.length > 8) v = v.substring(0, 8);
+            if (v.length > 4) {
+                v = v.replace(/^(\d{2})(\d{2})(\d{0,4})/, "$1/$2/$3");
+            } else if (v.length > 2) {
+                v = v.replace(/^(\d{2})(\d{0,2})/, "$1/$2");
+            }
+            e.target.value = v;
+        });
     }
 
 });

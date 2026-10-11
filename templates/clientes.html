@@ -1029,6 +1029,7 @@
                                 <th class="col-checkbox">
                                     <input type="checkbox" id="checkboxMasterHistoricoClientes" class="col-checkbox-clientes">
                                 </th>
+                                <th>ID</th>
                                 <th>Data/Hora</th>
                                 <th>Cliente</th>
                                 <th>Ação</th>
@@ -1101,6 +1102,157 @@
                     <i class="fa-solid fa-trash-can"></i>
                     Confirmar Exclusão
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE CONFIRMAÇÃO — PAUSAR / ATIVAR HISTÓRICO DE CLIENTES
+====================================================== -->
+<div class="modal fade" id="modalStatusPausaHistoricoClientes" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-status-pausa-historico-clientes-dialog">
+        <div class="modal-content modal-status-pausa-historico-clientes-content">
+            <div class="modal-status-pausa-historico-clientes-header">
+                <div class="modal-status-pausa-historico-clientes-icon">
+                    <i class="fa-solid fa-circle-pause"></i>
+                </div>
+                <button type="button" class="btn-modal-fechar-pausa-historico-clientes" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-status-pausa-historico-clientes-body text-center">
+                <h4 class="modal-status-pausa-historico-clientes-titulo">Gravação do Histórico de Clientes</h4>
+                <p class="modal-status-pausa-historico-clientes-descricao">
+                    Deseja manter o registro de auditoria dos clientes <strong>ativo</strong>?
+                </p>
+
+                <div class="modal-status-pausa-historico-clientes-card-info">
+                    <span class="modal-status-pausa-historico-clientes-card-label">Status atual no sistema:</span>
+                    <span id="badgeStatusPausaAtualClientes" class="modal-status-pausa-clientes-badge ativo">
+                        <i class="fa-solid fa-circle-check"></i> Gravando normalmente
+                    </span>
+                </div>
+
+                <small class="modal-status-pausa-historico-clientes-legenda">
+                    Clique em <strong>Sim</strong> para ativar ou em <strong>Não</strong> para pausar a gravação.
+                </small>
+            </div>
+
+            <div class="modal-status-pausa-historico-clientes-footer">
+                <button type="button" id="btnNaoPausarHistoricoClientes" class="btn-status-pausa-clientes-acao btn-status-pausa-clientes-nao">
+                    <i class="fa-solid fa-pause"></i> Não (Pausar)
+                </button>
+                <button type="button" id="btnSimAtivarHistoricoClientes" class="btn-status-pausa-clientes-acao btn-status-pausa-clientes-sim">
+                    <i class="fa-solid fa-play"></i> Sim (Ativar)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE ORDENAÇÃO — HISTÓRICO DE CLIENTES
+====================================================== -->
+<div class="modal fade" id="modalOrdenarHistoricoClientes" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-ordenar-historico-clientes-dialog">
+        <div class="modal-content modal-ordenar-historico-clientes-content">
+            <div class="modal-header modal-ordenar-historico-clientes-header">
+                <h5>
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Direção da Ordenação
+                </h5>
+                <button
+                    type="button"
+                    class="btn-modal-fechar-ordenar-historico-clientes"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body modal-ordenar-historico-clientes-body">
+                <div class="campo-ordenar-historico-clientes">
+                    <label for="tipoOrdenacaoHistoricoClientes">Escolha a direção</label>
+                    <select id="tipoOrdenacaoHistoricoClientes" class="form-select-ordenar-historico-clientes">
+                        <option value="desc" selected>Decrescente (Mais recentes primeiro)</option>
+                        <option value="asc">Crescente (Mais antigos primeiro)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-ordenar-historico-clientes-footer">
+                <button
+                    type="button"
+                    class="btn-cancelar-ordenar-historico-clientes"
+                    data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button
+                    type="button"
+                    id="btnExecutarOrdenacaoHistoricoClientes"
+                    class="btn-confirmar-ordenar-historico-clientes">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    Ordenar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL DE FILTRAGEM — HISTÓRICO DE CLIENTES
+====================================================== -->
+<div class="modal fade" id="modalFiltrarHistoricoClientes" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-filtrar-historico-clientes-dialog">
+        <div class="modal-content modal-filtrar-historico-clientes-content">
+            <div class="modal-filtrar-historico-clientes-header">
+                <div class="modal-filtrar-historico-clientes-titulo">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Filtrar Histórico de Clientes</span>
+                </div>
+                <button type="button" class="btn-modal-fechar-filtrar-historico-clientes" data-bs-dismiss="modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-filtrar-historico-clientes-body">
+                <fieldset class="modal-filtrar-clientes-fieldset">
+                    <legend class="modal-filtrar-clientes-legend">Filtro por Data</legend>
+                    <div class="modal-filtrar-clientes-campo">
+                        <input 
+                            type="text" 
+                            id="filtroDataHistoricoClientes" 
+                            class="modal-filtrar-clientes-input-data" 
+                            placeholder="DD/MM/AAAA..." 
+                            maxlength="10"
+                            autocomplete="off">
+                    </div>
+                </fieldset>
+
+                <fieldset class="modal-filtrar-clientes-fieldset">
+                    <legend class="modal-filtrar-clientes-legend">Filtrar por Horário</legend>
+                    <div class="modal-filtrar-clientes-radio-group">
+                        <label class="modal-filtrar-clientes-radio-label">
+                            <input type="radio" name="filtroOrdemHoraClientes" value="desc" checked class="modal-filtrar-clientes-radio">
+                            <span class="modal-filtrar-clientes-radio-custom"></span>
+                            <span>Mais Recentes Primeiro</span>
+                        </label>
+
+                        <label class="modal-filtrar-clientes-radio-label">
+                            <input type="radio" name="filtroOrdemHoraClientes" value="asc" class="modal-filtrar-clientes-radio">
+                            <span class="modal-filtrar-clientes-radio-custom"></span>
+                            <span>Mais Antigos Primeiro</span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div class="modal-filtrar-clientes-acoes">
+                    <button type="button" id="btnAplicarFiltroHistoricoClientes" class="btn-filtrar-clientes-submit">
+                        <i class="fa-solid fa-filter"></i> Aplicar Filtro
+                    </button>
+                </div>
             </div>
         </div>
     </div>

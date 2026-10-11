@@ -1901,8 +1901,6 @@ select.status-select-bloqueado {
 
 
 /* CHECKBOXES PERSONALIZADAS COMPACTAS */
-/* CHECKBOXES PERSONALIZADAS COMPACTAS */
-
 input.col-checkbox-clientes[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
@@ -1970,4 +1968,615 @@ input.col-checkbox-clientes[type="checkbox"]:checked::after {
 
 .linha-item-historico-cliente .checkbox-item-historico-cliente {
     cursor: pointer;
+}
+
+/* =====================================================
+   MODAL ESPECÍFICO DE EXCLUSÃO DO HISTÓRICO
+===================================================== */
+#modalConfirmarExclusaoHistoricoClientes {
+    z-index: 1075 !important; /* Fica acima do modal de histórico que usa 1055/1065 */
+}
+
+.modal-exclusao-historico-clientes-dialog {
+    max-width: 400px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-exclusao-historico-clientes-content {
+    background: #111827 !important;
+    border: 1px solid #374151 !important;
+    border-radius: 14px !important;
+    color: #cecfd2;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65);
+}
+
+.modal-exclusao-historico-clientes-header {
+    background: #111827;
+    border-bottom: 1px solid #1f2937;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-exclusao-historico-clientes-header h5 {
+    color: #cecfd2;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-modal-fechar-exclusao-historico-clientes {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 50%;
+    color: #cecfd2;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-modal-fechar-exclusao-historico-clientes:hover {
+    background-color: #dc2626;
+    color: #cecfd2;
+}
+
+.modal-exclusao-historico-clientes-body {
+    padding: 22px 20px;
+    background: #111827;
+}
+
+.modal-exclusao-historico-clientes-texto {
+    margin: 0 0 16px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #e5e7eb;
+}
+
+.alerta-aviso-exclusao-historico-clientes {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #fca5a5;
+    font-size: 12px;
+    text-align: left;
+}
+
+.modal-exclusao-historico-clientes-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid #1f2937;
+    background: #111827;
+}
+
+.btn-cancelar-exclusao-historico-clientes {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-cancelar-exclusao-historico-clientes:hover {
+    background: #4b5563;
+    color: #cecfd2;
+}
+
+.btn-confirmar-exclusao-historico-clientes {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #dc2626;
+    border: 1px solid #b91c1c;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-confirmar-exclusao-historico-clientes:hover {
+    background: #b91c1c;
+    border-color: #991b1b;
+}
+
+/* =====================================================
+   ESTILOS — MODAL PAUSAR HISTÓRICO DE PRODUTOS
+===================================================== */
+.modal-status-pausa-historico-clientes-dialog {
+    max-width: 500px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-status-pausa-historico-clientes-content {
+    background: #0f172a !important;
+    border-radius: 12px !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+    color: #cecfd2;
+    overflow: hidden;
+}
+
+.modal-status-pausa-historico-clientes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px 15px;
+    background: #0f172a;
+    border-bottom: 1px solid #374151;
+}
+
+.modal-status-pausa-historico-clientes-icon i {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(217, 119, 6, 0.15);
+    color: #f59e0b;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.btn-modal-fechar-pausa-historico-clientes {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none;
+    border-radius: 50% !important;
+    color: #CECFD2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-pausa-historico-clientes:hover {
+    background-color: #dc2626 !important;
+    color: #CECFD2 !important;
+    transform: scale(1.05);
+}
+
+.modal-status-pausa-historico-clientes-body {
+    padding: 20px 24px 20px;
+    background: #0f172a;
+}
+
+.modal-status-pausa-historico-clientes-titulo{
+    margin: 0 0 10px;
+    color: #CECFD2;
+    font-size: 19px;
+    font-weight: 600;
+    
+}
+
+.modal-status-pausa-historico-clientes-descricao {
+    font-size: 13.5px;
+    color: #475569;
+    margin-bottom: 16px;
+}
+
+.modal-status-pausa-historico-clientes-card-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 16px 0 10px;
+    font-size: 13px;
+}
+
+.modal-status-pausa-historico-clientes-card-label {
+    font-size: 12.5px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.modal-status-pausa-clientes-badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    
+}
+
+.modal-status-pausa-clientes-badge.ativo {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.modal-status-pausa-clientes-badge.pausado {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.modal-status-pausa-historico-clientes-legenda {
+    font-size: 11.5px;
+    color: #CECFD2;
+    display: block;
+}
+
+.modal-status-pausa-historico-clientes-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid #374151;
+    background: #0f172a;
+}
+
+.btn-status-pausa-clientes-acao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.btn-status-pausa-clientes-nao {
+    background: #374151;
+    border-color: #4b5563;
+    color: #fca5a5;
+}
+
+.btn-status-pausa-clientes-nao:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+}
+
+.btn-status-pausa-clientes-sim {
+    background: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+}
+
+.btn-status-pausa-clientes-sim:hover {
+    background: #15803d;
+    border-color: #15803d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+}
+
+/* =====================================================
+   MODAL DE ORDENAÇÃO DO HISTÓRICO CLIENTES
+===================================================== */
+#modalOrdenarHistoricoClientes {
+    z-index: 1065 !important;
+}
+
+.modal-ordenar-historico-clientes-dialog {
+    max-width: 380px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-ordenar-historico-clientes-content {
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: #CECFD2;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+}
+
+.modal-ordenar-historico-clientes-header {
+    background: #0f172a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-ordenar-historico-clientes-header h5 {
+    color: #CECFD2;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-ordenar-historico-clientes-header h5 i {
+    color: #CECFD2;
+}
+
+.btn-modal-fechar-ordenar-historico-clientes {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: #CECFD2;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-ordenar-historico-clientes:hover {
+    background-color: #dc2626;
+    color: #CECFD2;
+    transform: scale(1.05);
+}
+
+.modal-ordenar-historico-clientes-body {
+    padding: 20px;
+    background: #0f172a;
+}
+
+.campo-ordenar-historico-clientes label {
+    font-size: 13px;
+    color: #CECFD2;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+#tipoOrdenacaoHistoricoClientes:focus,
+#tipoOrdenacaoHistoricoClientes:hover {
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+}
+
+#tipoOrdenacaoHistoricoClientes option {
+    background-color: #1b2230;
+    color: #f8fafc;
+    
+}
+#tipoOrdenacaoHistoricoClientes {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    padding: 10px;
+    background: #1b2230;
+    border: 1px solid #313b4e;
+    border-radius: 10px;
+    color: #f8fafc;
+    outline: none;
+    font-size: 14px;
+    transition: .25s;
+    box-sizing: border-box;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+}
+
+.modal-ordenar-historico-clientes-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: #0f172a !important;
+}
+
+.btn-cancelar-ordenar-historico-clientes {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #CECFD2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-cancelar-ordenar-historico-clientes:hover {
+    background: #4b5563;
+    color: #CECFD2;
+}
+
+.btn-confirmar-ordenar-historico-clientes {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #7c3aed;
+    border: 1px solid #8b5cf6;
+    color: #CECFD2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-confirmar-ordenar-historico-clientes:hover {
+    background: #6d28d9;
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+/* =====================================================
+   MODAL DE FILTRAGEM — HISTÓRICO DE PRODUTOS
+===================================================== */
+.modal-filtrar-historico-clientes-dialog {
+    max-width: 400px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-filtrar-historico-clientes-content {
+    background: #161e2b !important;
+    border-radius: 12px !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+    color: #cecfd2;
+    overflow: hidden;
+}
+
+.modal-filtrar-historico-clientes-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid #333538;
+    background: #0f172a;
+}
+.modal-filtrar-historico-clientes-titulo {
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #CECFD2;
+}
+
+.btn-modal-fechar-filtrar-historico-clientes {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none;
+    border-radius: 50% !important;
+    color: #CECFD2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-fechar-filtrar-historico-clientes:hover {
+    background-color: #dc2626 !important;
+    color: #CECFD2 !important;
+    transform: scale(1.05);
+}
+
+.modal-filtrar-historico-clientes-body {
+    background: #0f172a;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    
+}
+
+.modal-filtrar-clientes-fieldset {
+    border: 1px solid #44474c !important;
+    border-radius: 8px !important;
+    padding: 10px 12px 12px !important;
+    margin: 0 !important;
+}
+
+.modal-filtrar-clientes-legend {
+    font-size: 12px;
+    font-weight: 600;
+    color: #CECFD2;
+    float: none;
+    width: auto;
+    padding: 0 6px;
+    margin: 0;
+}
+
+.modal-filtrar-clientes-input-data {
+    width: 100%;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #CECFD2;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.modal-filtrar-clientes-input-data:focus {
+    border-color: #38bdf8;
+}
+
+.modal-filtrar-clientes-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.modal-filtrar-clientes-radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #cbd5e1;
+    cursor: pointer;
+}
+
+.modal-filtrar-clientes-radio-custom {
+    accent-color: #0284c7;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.modal-filtrar-clientes-acoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-filtrar-clientes-submit {
+    width: 100%;
+    padding: 9px;
+    background: #37393d;
+    border: 1px solid #484b50;
+    border-radius: 8px;
+    color: #cecfd2;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+    margin-top: 2px;
+}
+.btn-filtrar-clientes-submit:hover {
+    background: #0284c7;
+    border-color: #38bdf8;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+
 }

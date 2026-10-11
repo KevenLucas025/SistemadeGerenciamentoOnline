@@ -4,6 +4,9 @@
             <td class="col-checkbox">
                 <input type="checkbox" class="col-checkbox-produtos checkbox-item-historico-produtos" value="{{ item.id }}">
             </td>
+            <td>
+                {{ item.id }}
+            </td>
             <td>{{ item.data_hora|date:"d/m/Y H:i" }}</td>
             <td><strong>{{ item.nome_produto }}</strong></td>
             <td>

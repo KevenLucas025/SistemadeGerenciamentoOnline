@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
     /* =========================================
        1. ELEMENTOS PRINCIPAIS DO DOM
@@ -161,11 +162,13 @@ document.addEventListener("DOMContentLoaded", function () {
         inputFiltroData.addEventListener("input", function (e) {
             let v = e.target.value.replace(/\D/g, "");
             if (v.length > 8) v = v.substring(0, 8);
+
             if (v.length > 4) {
                 v = v.replace(/^(\d{2})(\d{2})(\d{0,4})/, "$1/$2/$3");
             } else if (v.length > 2) {
                 v = v.replace(/^(\d{2})(\d{0,2})/, "$1/$2");
             }
+
             e.target.value = v;
         });
     }
@@ -175,12 +178,15 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================================= */
     function getCSRFToken() {
         const cookies = document.cookie.split(";");
+
         for (const cookie of cookies) {
             const [nome, valor] = cookie.trim().split("=");
+
             if (nome === "csrftoken") {
                 return decodeURIComponent(valor);
             }
         }
+
         return document.querySelector("[name=csrfmiddlewaretoken]")?.value || "";
     }
 
@@ -208,6 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 tbody.innerHTML = dados.html;
 
                 const linhasVazias = tbody.querySelectorAll(".linha-vazia");
+
                 if (linhasVazias.length > 0) {
                     desmarcarLinhaAtiva();
                 }
@@ -224,9 +231,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         } catch (erro) {
             console.error(`Erro ao atualizar tabela de ${tipo}:`, erro);
+
             if (!silencioso && typeof mostrarAlerta === "function") {
                 mostrarAlerta(`Não foi possível atualizar a tabela de usuários ${tipo}.`, "erro");
             }
+
         } finally {
             if (botao) botao.disabled = false;
             if (icone) icone.classList.remove("fa-spin");
@@ -234,11 +243,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (btnAtualizarAtivos) {
-        btnAtualizarAtivos.addEventListener("click", () => atualizarTabela("ativos", btnAtualizarAtivos, tbodyAtivos, false));
+        btnAtualizarAtivos.addEventListener("click", () => {
+            atualizarTabela("ativos", btnAtualizarAtivos, tbodyAtivos, false);
+        });
     }
 
     if (btnAtualizarInativos) {
-        btnAtualizarInativos.addEventListener("click", () => atualizarTabela("inativos", btnAtualizarInativos, tbodyInativos, false));
+        btnAtualizarInativos.addEventListener("click", () => {
+            atualizarTabela("inativos", btnAtualizarInativos, tbodyInativos, false);
+        });
     }
 
     /* =========================================
@@ -246,8 +259,11 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================================= */
     function desmarcarLinhaAtiva() {
         if (tbodyAtivos) {
-            tbodyAtivos.querySelectorAll("tr").forEach(tr => tr.classList.remove("linha-selecionada"));
+            tbodyAtivos.querySelectorAll("tr").forEach(tr => {
+                tr.classList.remove("linha-selecionada");
+            });
         }
+
         linhaAtivaSelecionada = null;
     }
 
@@ -263,7 +279,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            tbodyAtivos.querySelectorAll("tr").forEach(tr => tr.classList.remove("linha-selecionada"));
+            tbodyAtivos.querySelectorAll("tr").forEach(tr => {
+                tr.classList.remove("linha-selecionada");
+            });
+
             linha.classList.add("linha-selecionada");
             linhaAtivaSelecionada = linha;
         });
@@ -275,6 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (btnGerarSaida) {
         btnGerarSaida.addEventListener("click", function () {
             const temLinhaVazia = tbodyAtivos?.querySelectorAll(".linha-vazia").length > 0;
+
             if (temLinhaVazia || !linhaAtivaSelecionada) {
                 if (typeof mostrarAlerta === "function") {
                     mostrarAlerta("Selecione um usuário para gerar a saída", "erro");
@@ -284,7 +304,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const nomeUsuario = linhaAtivaSelecionada.querySelector("td:nth-child(2)")?.textContent.trim() 
+            const nomeUsuario =
+                linhaAtivaSelecionada.querySelector("td:nth-child(2)")?.textContent.trim()
                 || linhaAtivaSelecionada.querySelector("td:first-child")?.textContent.trim();
 
             if (nomeUsuarioSaidaModal) {
@@ -319,13 +340,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const textoResposta = await resposta.text();
                 let dados;
+
                 try {
                     dados = JSON.parse(textoResposta);
                 } catch (e) {
                     console.error("Servidor não respondeu com JSON:", textoResposta);
+
                     if (typeof mostrarAlerta === "function") {
                         mostrarAlerta("Erro interno no servidor ao processar saída.", "erro");
                     }
+
                     return;
                 }
 
@@ -335,6 +359,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     } else {
                         alert(dados.mensagem || "Erro ao gerar saída do usuário.");
                     }
+
                     return;
                 }
 
@@ -351,9 +376,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             } catch (erro) {
                 console.error("Erro na requisição de saída:", erro);
+
                 if (typeof mostrarAlerta === "function") {
                     mostrarAlerta("Erro de comunicação ao processar saída.", "erro");
                 }
+
             } finally {
                 btnConfirmarSaidaDefinitiva.disabled = false;
             }
@@ -366,41 +393,55 @@ document.addEventListener("DOMContentLoaded", function () {
     function gerarBadgeAcaoUsuario(acao) {
         const acaoNormalizada = (acao || "").toUpperCase();
 
-        if (acaoNormalizada.includes("SAÍDA") || acaoNormalizada.includes("SAIDA") || acaoNormalizada.includes("INATIV")) {
+        if (
+            acaoNormalizada.includes("SAÍDA") ||
+            acaoNormalizada.includes("SAIDA") ||
+            acaoNormalizada.includes("INATIV")
+        ) {
             return `
-                <span class="badge-historico-usuario badge-historico-usuario-saida">${acao}
-                </span>
+                <span class="badge-historico-usuario badge-historico-usuario-saida">${acao}</span>
             `;
         }
 
-        if (acaoNormalizada.includes("ESTORNO") || acaoNormalizada.includes("ATIV") || acaoNormalizada.includes("REATIV")) {
+        if (
+            acaoNormalizada.includes("ESTORNO") ||
+            acaoNormalizada.includes("ATIV") ||
+            acaoNormalizada.includes("REATIV")
+        ) {
             return `
-                <span class="badge-historico-usuario badge-historico-usuario-estorno">${acao}
-                </span>
+                <span class="badge-historico-usuario badge-historico-usuario-estorno">${acao}</span>
             `;
         }
 
-        if (acaoNormalizada.includes("CADASTRO") || acaoNormalizada.includes("CRIA")) {
+        if (
+            acaoNormalizada.includes("CADASTRO") ||
+            acaoNormalizada.includes("CRIA")
+        ) {
             return `
-                <span class="badge-historico-usuario badge-historico-usuario-cadastro">${acao}
-                </span>
+                <span class="badge-historico-usuario badge-historico-usuario-cadastro">${acao}</span>
             `;
         }
 
-        if (acaoNormalizada.includes("EDIÇÃO") || acaoNormalizada.includes("EDICAO") || acaoNormalizada.includes("ALTERA")) {
+        if (
+            acaoNormalizada.includes("EDIÇÃO") ||
+            acaoNormalizada.includes("EDICAO") ||
+            acaoNormalizada.includes("ALTERA")
+        ) {
             return `
-                <span class="badge-historico-usuario badge-historico-usuario-edicao">${acao}
-                </span>
+                <span class="badge-historico-usuario badge-historico-usuario-edicao">${acao}</span>
             `;
         }
 
         return `
-            <span class="badge-historico-usuario badge-historico-usuario-padrao">${acao}
-            </span>
+            <span class="badge-historico-usuario badge-historico-usuario-padrao">${acao}</span>
         `;
     }
 
-    async function carregarHistoricoUsuarios(silencioso = false, ordem = ordemHistoricoAtual, data = filtroDataAtual) {
+    async function carregarHistoricoUsuarios(
+        silencioso = false,
+        ordem = ordemHistoricoAtual,
+        data = filtroDataAtual
+    ) {
         if (!tbodyHistorico) return;
 
         ordemHistoricoAtual = ordem;
@@ -409,82 +450,69 @@ document.addEventListener("DOMContentLoaded", function () {
         const iconeAtualizar = btnAtualizarHistorico?.querySelector("i");
 
         try {
-            if (btnAtualizarHistorico) btnAtualizarHistorico.disabled = true;
-            if (iconeAtualizar) iconeAtualizar.classList.add("fa-spin");
+            if (btnAtualizarHistorico) {
+                btnAtualizarHistorico.disabled = true;
+            }
+
+            if (iconeAtualizar) {
+                iconeAtualizar.classList.add("fa-spin");
+            }
 
             let url = `/usuarios/historico/listar/?ordem=${ordemHistoricoAtual}`;
+
             if (filtroDataAtual) {
                 url += `&data=${encodeURIComponent(filtroDataAtual)}`;
             }
 
             const resposta = await fetch(url);
-
-            if (!resposta.ok) {
-                throw new Error(`Erro HTTP: ${resposta.status}`);
-            }
-
             const dados = await resposta.json();
 
-            if (!dados.sucesso || !dados.historico || dados.historico.length === 0) {
-                tbodyHistorico.innerHTML = `
-                    <tr class="linha-vazia-historico">
-                        <td colspan="5">
-                            <div class="sem-registros-content-historico">
-                                <i class="fa-solid fa-clock-rotate-left"></i>
-                                <p>Nenhum registro de histórico encontrado.</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                if (checkAllHistorico) {
-                    checkAllHistorico.checked = false;
-                    checkAllHistorico.indeterminate = false;
+            if (!resposta.ok || !dados.sucesso) {
+                if (typeof mostrarAlerta === "function") {
+                    mostrarAlerta(
+                        dados.mensagem || "Não foi possível carregar o histórico.",
+                        "erro"
+                    );
                 }
-                atualizarContadorHistorico();
 
-                if (!silencioso && typeof mostrarAlerta === "function") {
-                    mostrarAlerta("Histórico atualizado!", "sucesso");
-                }
                 return;
             }
 
-            tbodyHistorico.innerHTML = "";
+            tbodyHistorico.innerHTML = dados.html || "";
 
-            dados.historico.forEach(item => {
-                const tr = document.createElement("tr");
-                tr.classList.add("linha-item-historico");
-                tr.setAttribute("data-historico-id", item.id);
-
-                tr.innerHTML = `
-                    <td class="col-checkbox">
-                        <input type="checkbox" class="checkbox-custom-historico check-item-historico" value="${item.id}">
-                    </td>
-                    <td>${item.data_hora}</td>
-                    <td><strong>${item.usuario_logado}</strong></td>
-                    <td>${gerarBadgeAcaoUsuario(item.acao)}</td>
-                    <td>${item.descricao}</td>
-                `;
-                tbodyHistorico.appendChild(tr);
-            });
-
+            // Reinicia a seleção após recarregar a tabela.
             if (checkAllHistorico) {
                 checkAllHistorico.checked = false;
                 checkAllHistorico.indeterminate = false;
             }
+
             atualizarContadorHistorico();
 
             if (!silencioso && typeof mostrarAlerta === "function") {
-                mostrarAlerta("Histórico de atividades atualizado com sucesso!", "sucesso");
+                mostrarAlerta(
+                    "Histórico de atividades atualizado com sucesso!",
+                    "sucesso"
+                );
             }
 
         } catch (erro) {
             console.error("Erro ao carregar histórico:", erro);
+
             if (typeof mostrarAlerta === "function") {
-                mostrarAlerta("Não foi possível atualizar o histórico de atividades.", "erro");
+                mostrarAlerta(
+                    "Não foi possível atualizar o histórico de atividades.",
+                    "erro"
+                );
             }
+
         } finally {
-            if (btnAtualizarHistorico) btnAtualizarHistorico.disabled = false;
-            if (iconeAtualizar) iconeAtualizar.classList.remove("fa-spin");
+            if (btnAtualizarHistorico) {
+                btnAtualizarHistorico.disabled = false;
+            }
+
+            if (iconeAtualizar) {
+                iconeAtualizar.classList.remove("fa-spin");
+            }
         }
     }
 
@@ -504,70 +532,133 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =========================================
        8. SELEÇÃO DE ITENS (LINHA E CHECKBOX)
     ========================================= */
+
+    function obterCheckboxesHistorico() {
+        if (!tbodyHistorico) return [];
+
+        return Array.from(
+            tbodyHistorico.querySelectorAll(".check-item-historico")
+        );
+    }
+
     function atualizarContadorHistorico() {
-        if (!tbodyHistorico || !contadorSelecionados) return;
-        const totalChecados = tbodyHistorico.querySelectorAll(".check-item-historico:checked").length;
-        contadorSelecionados.textContent = `${totalChecados} item${totalChecados === 1 ? "" : "s"} selecionado${totalChecados === 1 ? "" : "s"}`;
+        if (!contadorSelecionados) return;
+
+        const checkboxes = obterCheckboxesHistorico();
+        const selecionados = checkboxes.filter(cb => cb.checked).length;
+
+        contadorSelecionados.textContent =
+            `${selecionados} item${selecionados === 1 ? "" : "s"} selecionado${selecionados === 1 ? "" : "s"}`;
+
+        sincronizarCheckMaster();
     }
 
+    /* =========================================
+       SINCRONIZAR CHECKBOX MASTER
+    ========================================= */
     function sincronizarCheckMaster() {
-        if (!tbodyHistorico || !checkAllHistorico) return;
-        const total = tbodyHistorico.querySelectorAll(".check-item-historico").length;
-        const marcados = tbodyHistorico.querySelectorAll(".check-item-historico:checked").length;
+        if (!checkAllHistorico) return;
 
-        checkAllHistorico.checked = total > 0 && total === marcados;
-        checkAllHistorico.indeterminate = marcados > 0 && marcados < total;
+        const checkboxes = obterCheckboxesHistorico();
+        const total = checkboxes.length;
+        const selecionados = checkboxes.filter(cb => cb.checked).length;
+
+        checkAllHistorico.checked =
+            total > 0 && selecionados === total;
+
+        checkAllHistorico.indeterminate =
+            selecionados > 0 && selecionados < total;
     }
 
+    /* =========================================
+       DESMARCAR TODAS AS LINHAS
+       MANTIDA CONFORME O CÓDIGO ORIGINAL
+    ========================================= */
     function desmarcarTodasLinhasHistorico() {
         if (!tbodyHistorico) return;
+
         tbodyHistorico.querySelectorAll("tr.linha-item-historico").forEach(tr => {
             tr.classList.remove("linha-selecionada");
+
             const checkbox = tr.querySelector(".check-item-historico");
-            if (checkbox) checkbox.checked = false;
+
+            if (checkbox) {
+                checkbox.checked = false;
+            }
         });
+
         if (checkAllHistorico) {
             checkAllHistorico.checked = false;
             checkAllHistorico.indeterminate = false;
         }
+
         atualizarContadorHistorico();
     }
 
-    if (checkAllHistorico && tbodyHistorico) {
+    /* =========================================
+       CHECKBOX MASTER: MARCAR OU DESMARCAR TODOS
+    ========================================= */
+    if (checkAllHistorico) {
         checkAllHistorico.addEventListener("change", function () {
-            const linhas = tbodyHistorico.querySelectorAll("tr.linha-item-historico");
-            linhas.forEach(tr => {
-                const cb = tr.querySelector(".check-item-historico");
-                if (cb) cb.checked = checkAllHistorico.checked;
-                if (checkAllHistorico.checked) {
-                    tr.classList.add("linha-selecionada");
-                } else {
-                    tr.classList.remove("linha-selecionada");
+            const marcarTodos = checkAllHistorico.checked;
+
+            obterCheckboxesHistorico().forEach(checkbox => {
+                checkbox.checked = marcarTodos;
+
+                const linha = checkbox.closest("tr");
+                if (linha) {
+                    linha.classList.toggle(
+                        "linha-selecionada",
+                        marcarTodos
+                    );
                 }
             });
+
+            checkAllHistorico.indeterminate = false;
             atualizarContadorHistorico();
         });
     }
 
+    /* =========================================
+       EVENTOS DOS CHECKBOXES E DAS LINHAS
+    ========================================= */
     if (tbodyHistorico) {
+        tbodyHistorico.addEventListener("change", function (e) {
+            if (!e.target.matches(".check-item-historico")) return;
+
+            const checkbox = e.target;
+            const linha = checkbox.closest("tr");
+
+            if (linha) {
+                linha.classList.toggle(
+                    "linha-selecionada",
+                    checkbox.checked
+                );
+            }
+
+            atualizarContadorHistorico();
+        });
+
         tbodyHistorico.addEventListener("click", function (e) {
+            // O checkbox individual é tratado pelo evento change.
+            if (e.target.closest(".check-item-historico")) return;
+
+            // Não alterar a seleção ao clicar em controles ou links.
+            if (e.target.closest("button, a, input, label, select")) return;
+
             const linha = e.target.closest("tr.linha-item-historico");
-            if (!linha) return;
+            if (!linha || !tbodyHistorico.contains(linha)) return;
 
             const checkbox = linha.querySelector(".check-item-historico");
             if (!checkbox) return;
 
-            if (!e.target.classList.contains("check-item-historico")) {
-                checkbox.checked = !checkbox.checked;
-            }
+            checkbox.checked = !checkbox.checked;
 
-            if (checkbox.checked) {
-                linha.classList.add("linha-selecionada");
-            } else {
-                linha.classList.remove("linha-selecionada");
-            }
+            linha.classList.toggle(
+                "linha-selecionada",
+                checkbox.checked
+            );
 
-            sincronizarCheckMaster();
             atualizarContadorHistorico();
         });
     }
@@ -577,7 +668,9 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================================= */
     if (btnApagarHistorico) {
         btnApagarHistorico.addEventListener("click", function () {
-            const selecionados = tbodyHistorico?.querySelectorAll(".check-item-historico:checked");
+            const selecionados = tbodyHistorico?.querySelectorAll(
+                ".check-item-historico:checked"
+            );
 
             if (!selecionados || selecionados.length === 0) {
                 if (typeof mostrarAlerta === "function") {
@@ -585,11 +678,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     alert("Selecione pelo menos um registro para apagar.");
                 }
+
                 return;
             }
 
             if (qtdHistoricoApagarModal) {
-                qtdHistoricoApagarModal.textContent = `${selecionados.length} item${selecionados.length === 1 ? "" : "s"}`;
+                qtdHistoricoApagarModal.textContent =
+                    `${selecionados.length} item${selecionados.length === 1 ? "" : "s"}`;
             }
 
             if (modalApagarHist) {
@@ -600,10 +695,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (btnConfirmarApagarHistoricoDefinitivo) {
         btnConfirmarApagarHistoricoDefinitivo.addEventListener("click", async function () {
-            const selecionados = tbodyHistorico?.querySelectorAll(".check-item-historico:checked");
+            const selecionados = tbodyHistorico?.querySelectorAll(
+                ".check-item-historico:checked"
+            );
+
             if (!selecionados || selecionados.length === 0) return;
 
-            const ids = Array.from(selecionados).map(cb => parseInt(cb.value));
+            const ids = Array.from(selecionados).map(cb => parseInt(cb.value, 10));
             const csrfToken = getCSRFToken();
 
             try {
@@ -624,7 +722,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     throw new Error(dados.mensagem || "Erro ao apagar histórico.");
                 }
 
-                if (modalApagarHist) modalApagarHist.hide();
+                if (modalApagarHist) {
+                    modalApagarHist.hide();
+                }
 
                 if (typeof mostrarAlerta === "function") {
                     mostrarAlerta(dados.mensagem, "sucesso");
@@ -634,9 +734,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
             } catch (erro) {
                 console.error("Erro ao apagar histórico:", erro);
+
                 if (typeof mostrarAlerta === "function") {
-                    mostrarAlerta(erro.message || "Erro de comunicação ao apagar registros.", "erro");
+                    mostrarAlerta(
+                        erro.message || "Erro de comunicação ao apagar registros.",
+                        "erro"
+                    );
                 }
+
             } finally {
                 btnConfirmarApagarHistoricoDefinitivo.disabled = false;
             }
@@ -648,7 +753,11 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================================= */
     function obterIdsHistoricoSelecionados() {
         if (!tbodyHistorico) return [];
-        const selecionados = tbodyHistorico.querySelectorAll(".check-item-historico:checked");
+
+        const selecionados = tbodyHistorico.querySelectorAll(
+            ".check-item-historico:checked"
+        );
+
         return Array.from(selecionados).map(cb => cb.value);
     }
 
@@ -663,6 +772,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const link = document.createElement("a");
         link.href = urlFinal;
         link.setAttribute("download", "");
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -671,6 +781,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (btnExportarCsvHistorico) {
         btnExportarCsvHistorico.addEventListener("click", function () {
             executarDownloadHistorico("/usuarios/historico/exportar-csv/");
+
             if (typeof mostrarAlerta === "function") {
                 mostrarAlerta("Exportação CSV iniciada!", "sucesso");
             }
@@ -680,6 +791,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (btnExportarExcelHistorico) {
         btnExportarExcelHistorico.addEventListener("click", function () {
             executarDownloadHistorico("/usuarios/historico/exportar-excel/");
+
             if (typeof mostrarAlerta === "function") {
                 mostrarAlerta("Exportação Excel iniciada!", "sucesso");
             }
@@ -689,6 +801,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (btnExportarPdfHistorico) {
         btnExportarPdfHistorico.addEventListener("click", function () {
             executarDownloadHistorico("/usuarios/historico/exportar-pdf/");
+
             if (typeof mostrarAlerta === "function") {
                 mostrarAlerta("Exportação PDF iniciada!", "sucesso");
             }
@@ -700,12 +813,15 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================================= */
     function renderizarBadgeStatusPausa(estaPausado) {
         if (!badgeStatusPausaAtual) return;
+
         if (estaPausado) {
             badgeStatusPausaAtual.className = "modal-status-pausa-badge pausado";
-            badgeStatusPausaAtual.innerHTML = `<i class="fa-solid fa-circle-pause"></i> Gravação pausada`;
+            badgeStatusPausaAtual.innerHTML =
+                `<i class="fa-solid fa-circle-pause"></i> Gravação pausada`;
         } else {
             badgeStatusPausaAtual.className = "modal-status-pausa-badge ativo";
-            badgeStatusPausaAtual.innerHTML = `<i class="fa-solid fa-circle-check"></i> Gravando normalmente`;
+            badgeStatusPausaAtual.innerHTML =
+                `<i class="fa-solid fa-circle-check"></i> Gravando normalmente`;
         }
     }
 
@@ -713,6 +829,7 @@ document.addEventListener("DOMContentLoaded", function () {
         btnAbrirModalPausa.addEventListener("click", async function () {
             try {
                 const res = await fetch("/usuarios/historico/status-pausa/");
+
                 if (res.ok) {
                     const dados = await res.json();
                     renderizarBadgeStatusPausa(dados.pausado);
@@ -720,6 +837,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } catch (err) {
                 console.error("Erro ao consultar status da gravação:", err);
             }
+
             modalPausa.show();
         });
     }
@@ -749,22 +867,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     alert(dados.mensagem);
                 }
+
             } else if (dados.sucesso) {
                 if (modalPausa) modalPausa.hide();
+
                 if (typeof mostrarAlerta === "function") {
                     mostrarAlerta(dados.mensagem, "sucesso");
                 } else {
                     alert(dados.mensagem);
                 }
+
             } else {
                 throw new Error(dados.mensagem || "Erro ao atualizar status.");
             }
 
         } catch (erro) {
             console.error("Erro ao alterar pausa:", erro);
+
             if (typeof mostrarAlerta === "function") {
-                mostrarAlerta(erro.message || "Erro de comunicação com o servidor.", "erro");
+                mostrarAlerta(
+                    erro.message || "Erro de comunicação com o servidor.",
+                    "erro"
+                );
             }
+
         } finally {
             if (btnSimAtivarHistorico) btnSimAtivarHistorico.disabled = false;
             if (btnNaoPausarHistorico) btnNaoPausarHistorico.disabled = false;
@@ -772,11 +898,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (btnSimAtivarHistorico) {
-        btnSimAtivarHistorico.addEventListener("click", () => alternarStatusGravacaoHistorico("ativar"));
+        btnSimAtivarHistorico.addEventListener("click", () => {
+            alternarStatusGravacaoHistorico("ativar");
+        });
     }
 
     if (btnNaoPausarHistorico) {
-        btnNaoPausarHistorico.addEventListener("click", () => alternarStatusGravacaoHistorico("pausar"));
+        btnNaoPausarHistorico.addEventListener("click", () => {
+            alternarStatusGravacaoHistorico("pausar");
+        });
     }
 
     /* =========================================
@@ -787,21 +917,30 @@ document.addEventListener("DOMContentLoaded", function () {
             if (tipoOrdenacaoHistorico) {
                 tipoOrdenacaoHistorico.value = ordemHistoricoAtual;
             }
+
             modalOrdenar.show();
         });
     }
 
     if (btnExecutarOrdenacaoHistorico) {
         btnExecutarOrdenacaoHistorico.addEventListener("click", async function () {
-            const direcao = tipoOrdenacaoHistorico ? tipoOrdenacaoHistorico.value : "desc";
+            const direcao = tipoOrdenacaoHistorico
+                ? tipoOrdenacaoHistorico.value
+                : "desc";
 
             if (modalOrdenar) modalOrdenar.hide();
 
             await carregarHistoricoUsuarios(true, direcao, filtroDataAtual);
 
             if (typeof mostrarAlerta === "function") {
-                const textoDirecao = direcao === "asc" ? "crescente (antigos primeiro)" : "decrescente (recentes primeiro)";
-                mostrarAlerta(`Histórico ordenado em ordem ${textoDirecao}!`, "sucesso");
+                const textoDirecao = direcao === "asc"
+                    ? "crescente (antigos primeiro)"
+                    : "decrescente (recentes primeiro)";
+
+                mostrarAlerta(
+                    `Histórico ordenado em ordem ${textoDirecao}!`,
+                    "sucesso"
+                );
             }
         });
     }
@@ -811,10 +950,17 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================================= */
     if (btnAbrirModalFiltro && modalFiltro) {
         btnAbrirModalFiltro.addEventListener("click", function () {
-            if (inputFiltroData) inputFiltroData.value = filtroDataAtual;
+            if (inputFiltroData) {
+                inputFiltroData.value = filtroDataAtual;
+            }
 
-            const radio = document.querySelector(`input[name="filtroOrdemHora"][value="${ordemHistoricoAtual}"]`);
-            if (radio) radio.checked = true;
+            const radio = document.querySelector(
+                `input[name="filtroOrdemHora"][value="${ordemHistoricoAtual}"]`
+            );
+
+            if (radio) {
+                radio.checked = true;
+            }
 
             modalFiltro.show();
         });
@@ -822,14 +968,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (btnAplicarFiltro) {
         btnAplicarFiltro.addEventListener("click", async function () {
-            const dataVal = inputFiltroData ? inputFiltroData.value.trim() : "";
-            const radioChecked = document.querySelector('input[name="filtroOrdemHora"]:checked');
-            const ordemVal = radioChecked ? radioChecked.value : "desc";
+            const dataVal = inputFiltroData
+                ? inputFiltroData.value.trim()
+                : "";
+
+            const radioChecked = document.querySelector(
+                'input[name="filtroOrdemHora"]:checked'
+            );
+
+            const ordemVal = radioChecked
+                ? radioChecked.value
+                : "desc";
 
             if (dataVal.length > 0 && dataVal.length < 10) {
                 if (typeof mostrarAlerta === "function") {
-                    mostrarAlerta("Preencha a data completa (DD/MM/AAAA) ou deixe em branco.", "alerta");
+                    mostrarAlerta(
+                        "Preencha a data completa (DD/MM/AAAA) ou deixe em branco.",
+                        "alerta"
+                    );
                 }
+
                 return;
             }
 
@@ -856,7 +1014,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (modalHistoricoEl?.classList.contains("show")) {
-            const clicouNaLinhaHistorico = e.target.closest("#tbodyHistoricoUsuarios tr.linha-item-historico");
+            const clicouNaLinhaHistorico = e.target.closest(
+                "#tbodyHistoricoUsuarios tr.linha-item-historico"
+            );
+
             const clicouNoToolbar = e.target.closest(".modal-historico-toolbar");
             const clicouNoModalConfirmacao = e.target.closest("#modalConfirmarApagarHistorico");
             const clicouNoModalPausa = e.target.closest("#modalStatusPausaHistorico");
@@ -876,6 +1037,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    /* =========================================
+       LIMPAR VISUALIZAÇÃO DAS TABELAS
+    ========================================= */
     function limparVisualizacaoTabelas() {
         desmarcarLinhaAtiva();
 
@@ -889,6 +1053,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </tr>
             `;
         }
+
         if (tbodyInativos) {
             tbodyInativos.innerHTML = `
                 <tr class="linha-vazia">
@@ -910,7 +1075,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =========================================
-       PESQUISA DINÂMICA NAS TABELAS
+       15. PESQUISA DINÂMICA NAS TABELAS
     ========================================= */
     function normalizarTexto(texto) {
         return (texto || "")
@@ -922,21 +1087,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function filtrarTabela(tbody, termoPesquisa, colunasTotal, tipoNome) {
         if (!tbody) return;
+
         const termo = normalizarTexto(termoPesquisa);
-        const linhas = tbody.querySelectorAll("tr:not(.linha-vazia):not(.linha-sem-busca)");
+        const linhas = tbody.querySelectorAll(
+            "tr:not(.linha-vazia):not(.linha-sem-busca)"
+        );
+
         let encontrados = 0;
 
-        if (tbody.querySelectorAll(".linha-vazia, .sem-registros-verificar-usuarios").length > 0) {
+        if (
+            tbody.querySelectorAll(
+                ".linha-vazia, .sem-registros-verificar-usuarios"
+            ).length > 0
+        ) {
             return;
         }
 
         linhas.forEach(linha => {
             const conteudoLinha = normalizarTexto(linha.textContent);
+
             if (conteudoLinha.includes(termo)) {
                 linha.style.display = "";
                 encontrados++;
             } else {
                 linha.style.display = "none";
+
                 if (linha.classList.contains("linha-selecionada")) {
                     desmarcarLinhaAtiva();
                 }
@@ -944,16 +1119,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         const linhaExistenteAviso = tbody.querySelector(".linha-sem-busca");
+
         if (encontrados === 0 && termo !== "") {
             if (!linhaExistenteAviso) {
                 const tr = document.createElement("tr");
                 tr.className = "linha-sem-busca";
+
                 tr.innerHTML = `
                     <td colspan="${colunasTotal}" class="text-center py-4" style="color: #cbd5e1 !important;">
                         <i class="fa-solid fa-magnifying-glass fa-2x mb-2 d-block" style="color: #cbd5e1 !important;"></i>
                         <span style="color: #cbd5e1 !important;">Nenhum usuário ${tipoNome} corresponde à sua busca "${termoPesquisa}".</span>
                     </td>
                 `;
+
                 tbody.appendChild(tr);
             }
         } else if (linhaExistenteAviso) {
@@ -963,26 +1141,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (inputPesquisaAtivos) {
         inputPesquisaAtivos.addEventListener("input", () => {
-            filtrarTabela(tbodyAtivos, inputPesquisaAtivos.value, 21, "ativo");
+            filtrarTabela(
+                tbodyAtivos,
+                inputPesquisaAtivos.value,
+                21,
+                "ativo"
+            );
         });
     }
+
     if (btnPesquisarAtivos) {
         btnPesquisarAtivos.addEventListener("click", () => {
-            filtrarTabela(tbodyAtivos, inputPesquisaAtivos?.value || "", 21, "ativo");
+            filtrarTabela(
+                tbodyAtivos,
+                inputPesquisaAtivos?.value || "",
+                21,
+                "ativo"
+            );
         });
     }
 
     if (inputPesquisaInativos) {
         inputPesquisaInativos.addEventListener("input", () => {
-            filtrarTabela(tbodyInativos, inputPesquisaInativos.value, 22, "inativo");
-        });
-    }
-    if (btnPesquisarInativos) {
-        btnPesquisarInativos.addEventListener("click", () => {
-            filtrarTabela(tbodyInativos, inputPesquisaInativos?.value || "", 22, "inativo");
+            filtrarTabela(
+                tbodyInativos,
+                inputPesquisaInativos.value,
+                22,
+                "inativo"
+            );
         });
     }
 
+    if (btnPesquisarInativos) {
+        btnPesquisarInativos.addEventListener("click", () => {
+            filtrarTabela(
+                tbodyInativos,
+                inputPesquisaInativos?.value || "",
+                22,
+                "inativo"
+            );
+        });
+    }
+
+    /* =========================================
+       16. EXPORTAÇÃO DE USUÁRIOS (EXCEL)
+    ========================================= */
     if (btnAbrirModalExportarExcel && modalEscolhaExportarExcel) {
         btnAbrirModalExportarExcel.addEventListener("click", function () {
             modalEscolhaExportarExcel.show();
@@ -991,7 +1194,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (btnConfirmarExportarExcelUsuarios) {
         btnConfirmarExportarExcelUsuarios.addEventListener("click", function () {
-            const tipo = tipoExportacaoExcel ? tipoExportacaoExcel.value : "todos";
+            const tipo = tipoExportacaoExcel
+                ? tipoExportacaoExcel.value
+                : "todos";
 
             if (modalEscolhaExportarExcel) {
                 modalEscolhaExportarExcel.hide();
@@ -1000,16 +1205,23 @@ document.addEventListener("DOMContentLoaded", function () {
             const link = document.createElement("a");
             link.href = `/usuarios/exportar-excel/?tipo=${tipo}`;
             link.setAttribute("download", "");
+
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
 
             if (typeof mostrarAlerta === "function") {
-                mostrarAlerta("Exportação de usuários iniciada com sucesso!", "sucesso");
+                mostrarAlerta(
+                    "Exportação de usuários iniciada com sucesso!",
+                    "sucesso"
+                );
             }
         });
     }
 
+    /* =========================================
+       17. EXPORTAÇÃO DE USUÁRIOS (PDF)
+    ========================================= */
     if (btnAbrirModalExportarPdf && modalEscolhaExportarPdf) {
         btnAbrirModalExportarPdf.addEventListener("click", function () {
             modalEscolhaExportarPdf.show();
@@ -1018,7 +1230,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (btnConfirmarExportarPdfUsuarios) {
         btnConfirmarExportarPdfUsuarios.addEventListener("click", function () {
-            const tipo = tipoExportacaoPdf ? tipoExportacaoPdf.value : "todos";
+            const tipo = tipoExportacaoPdf
+                ? tipoExportacaoPdf.value
+                : "todos";
 
             if (modalEscolhaExportarPdf) {
                 modalEscolhaExportarPdf.hide();
@@ -1027,12 +1241,16 @@ document.addEventListener("DOMContentLoaded", function () {
             const link = document.createElement("a");
             link.href = `/usuarios/exportar-pdf/?tipo=${tipo}`;
             link.setAttribute("download", "");
+
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
 
             if (typeof mostrarAlerta === "function") {
-                mostrarAlerta("Exportação de PDF iniciada com sucesso!", "sucesso");
+                mostrarAlerta(
+                    "Exportação de PDF iniciada com sucesso!",
+                    "sucesso"
+                );
             }
         });
     }

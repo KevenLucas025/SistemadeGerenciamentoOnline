@@ -41,6 +41,7 @@ urlpatterns = [
     path('clientes/', include('clientes.urls')),
     
     path("api/chat-ia/",views.chat_ia,name="chat_ia"),
+    path("api/chat-ia/avaliar/",views.avaliar_assistente_ia,name="avaliar_assistente_ia",),
     
     
 ]

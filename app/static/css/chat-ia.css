@@ -1,99 +1,262 @@
 /* =====================================================
    ASSISTENTE IA
 ===================================================== */
+
 .btn-chat-ia {
     position: fixed;
     right: 25px;
     bottom: 25px;
+
     width: 58px;
     height: 58px;
+
     border: none;
     border-radius: 50%;
+
     background: #141b27;
     color: #cecfd2;
+
     font-size: 22px;
     cursor: pointer;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
-    z-index: 9999;
-    transition: 0.2s ease;
-}
 
-.btn-chat-ia:hover {
-    transform: scale(1.05);
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.25);
+
+    z-index: 9999;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+
+    /* Pulso contínuo */
+    animation: pulsar-chat 2.5s infinite;
 }
 
 
 /* =====================================================
-   JANELA
+   HOVER DO BOTÃO
+===================================================== */
+
+.btn-chat-ia:hover {
+    transform: scale(1.08);
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.35),
+        0 0 0 5px rgba(37, 99, 235, 0.15);
+
+    /* Para o pulso enquanto estiver sobre o botão */
+    animation-play-state: paused;
+}
+
+
+/* =====================================================
+   PULSO DO BOTÃO
+===================================================== */
+
+@keyframes pulsar-chat {
+
+    0% {
+        box-shadow:
+            0 5px 20px rgba(0, 0, 0, 0.25),
+            0 0 0 0 rgba(37, 99, 235, 0.45);
+    }
+
+    50% {
+        box-shadow:
+            0 5px 20px rgba(0, 0, 0, 0.25),
+            0 0 0 8px rgba(37, 99, 235, 0);
+    }
+
+    100% {
+        box-shadow:
+            0 5px 20px rgba(0, 0, 0, 0.25),
+            0 0 0 0 rgba(37, 99, 235, 0);
+    }
+}
+
+
+/* =====================================================
+   CLIQUE
+===================================================== */
+
+.btn-chat-ia:active {
+    transform: scale(0.88);
+}
+
+
+/* =====================================================
+   ANIMAÇÃO AO ABRIR
+===================================================== */
+
+.btn-chat-ia.animando {
+    animation: abrir-chat-botao 0.45s ease;
+}
+
+
+@keyframes abrir-chat-botao {
+
+    0% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(0.82) rotate(-8deg);
+    }
+
+    60% {
+        transform: scale(1.12) rotate(5deg);
+    }
+
+    80% {
+        transform: scale(0.97) rotate(-2deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+
+/* =====================================================
+   JANELA DO CHAT
 ===================================================== */
 
 .chat-ia {
     position: fixed;
+
     right: 25px;
     bottom: 95px;
+
     width: 380px;
     height: 550px;
+
     background: #111827;
+
     border-radius: 16px;
+
     box-shadow:
         0 10px 40px rgba(0, 0, 0, 0.25);
 
-    display: none;
+    /* Mantém o elemento na tela para permitir animação */
+    display: flex;
     flex-direction: column;
+
     overflow: hidden;
+
     z-index: 9999;
+
+    /* Estado fechado */
+    opacity: 0;
+    visibility: hidden;
+
+    transform:
+        translateY(20px)
+        scale(0.92);
+
+    transform-origin: bottom right;
+
+    /* Animação */
+    transition:
+        opacity 0.25s ease,
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0.35s ease;
 }
 
+
+/* =====================================================
+   CHAT ABERTO
+===================================================== */
+
 .chat-ia.aberto {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translateY(0)
+        scale(1);
 }
 
 
 /* =====================================================
    HEADER
 ===================================================== */
+
 .chat-ia-header {
     height: 70px;
+
     padding: 12px 15px;
+
     background: #2563eb;
+
     color: #cecfd2;
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 }
 
+
 .chat-ia-titulo {
     display: flex;
+
     align-items: center;
+
     gap: 10px;
 }
+
 
 .chat-ia-icone {
     width: 40px;
     height: 40px;
+
     border-radius: 50%;
-    background: rgba(255,255,255,0.2);
+
+    background: rgba(255, 255, 255, 0.2);
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 }
+
 
 .chat-ia-titulo strong,
 .chat-ia-titulo small {
     display: block;
 }
 
+
 .chat-ia-titulo small {
     opacity: 0.8;
+
     margin-top: 2px;
 }
 
+
 .btn-fechar-chat-ia {
     border: none;
+
     background: transparent;
+
     color: #cecfd2;
+
     font-size: 22px;
+
     cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+.btn-fechar-chat-ia:hover {
+    transform: scale(1.15) rotate(90deg);
+
+    opacity: 0.8;
 }
 
 
@@ -103,33 +266,71 @@
 
 .chat-ia-mensagens {
     flex: 1;
+
     padding: 15px;
+
     overflow-y: auto;
+
     display: flex;
+
     flex-direction: column;
+
     gap: 10px;
+
     background: #111827;
 }
+
 
 .mensagem-ia,
 .mensagem-usuario {
     max-width: 80%;
+
     padding: 10px 13px;
+
     border-radius: 12px;
+
     font-size: 14px;
+
     line-height: 1.4;
+
+    animation: mensagem-aparecer 0.25s ease;
 }
+
+
+/* =====================================================
+   ANIMAÇÃO DAS MENSAGENS
+===================================================== */
+
+@keyframes mensagem-aparecer {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
 .mensagem-ia {
     align-self: flex-start;
+
     background: #1f2937;
+
     color: #cecfd2;
+
     border: 1px solid #374151;
 }
 
+
 .mensagem-usuario {
     align-self: flex-end;
+
     background: #2563eb;
+
     color: #cecfd2;
 }
 
@@ -150,6 +351,7 @@
     gap: 8px;
 }
 
+
 .chat-ia-input input {
     flex: 1;
 
@@ -164,17 +366,27 @@
     outline: none;
 
     background: #1f2937;
+
     color: #cecfd2;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
+
 
 .chat-ia-input input::placeholder {
     color: #9ca3af;
 }
 
+
 .chat-ia-input input:focus {
     border-color: #7c3aed !important;
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+
+    box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.15) !important;
 }
+
 
 .chat-ia-input button {
     width: 42px;
@@ -191,9 +403,85 @@
 
     cursor: pointer;
 
-    transition: 0.2s ease;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
+
 
 .chat-ia-input button:hover {
     background: #1d4ed8;
+
+    transform: scale(1.05);
 }
+
+
+.chat-ia-input button:active {
+    transform: scale(0.92);
+}
+
+/* =====================================================
+   AVALIAÇÃO DAS RESPOSTAS DO ASSISTENTE IA
+===================================================== */
+.avaliacao-chat-ia {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 12px;
+    padding-top: 9px;
+    border-top: 1px solid rgba(156, 163, 175, 0.18);
+}
+
+.avaliacao-chat-ia-texto {
+    width: 100%;
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+.btn-avaliar-ia {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    background: #111827;
+    color: #cecfd2;
+    font-size: 14px;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.btn-avaliar-ia:hover:not(:disabled) {
+    background: #374151;
+    border-color: #6b7280;
+    transform: translateY(-2px);
+}
+
+.btn-avaliar-ia:active:not(:disabled) {
+    transform: scale(0.92);
+}
+
+.btn-avaliar-ia.selecionado {
+    background: #1e3a5f;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12);
+}
+
+.btn-avaliar-ia:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.avaliacao-chat-ia-status {
+    width: 100%;
+    color: #9ca3af;
+    font-size: 11px;
+    line-height: 1.4;
+}
+

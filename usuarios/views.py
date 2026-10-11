@@ -106,36 +106,86 @@ def gerar_saida_usuario(request, usuario_id):
         
         
 @login_required
+@require_GET
 def listar_historico(request):
-    ordem = request.GET.get("ordem", "desc").lower()
-    data_filtro = request.GET.get("data", "").strip()
 
-    campo_ordem = "data_hora" if ordem == "asc" else "-data_hora"
-    queryset = HistoricoUsuario.objects.all().select_related('usuario_responsavel')
+    """
+    Retorna as linhas do modal de histórico via AJAX.
+    """
 
-    # Filtra por data específica se fornecida no padrão DD/MM/AAAA
-    if data_filtro:
-        try:
-            data_obj = datetime.strptime(data_filtro, "%d/%m/%Y").date()
-            queryset = queryset.filter(data_hora__date=data_obj)
-        except ValueError:
-            pass  # Se a data estiver incompleta ou inválida, ignora o filtro
+    try:
 
-    registros = queryset.order_by(campo_ordem)
+        ordem = request.GET.get(
+            'ordem',
+            'desc'
+        )
 
-    dados = []
-    for r in registros:
-        dados.append({
-            "id": r.id,
-            "data_hora": r.data_hora.strftime("%d/%m/%Y %H:%M:%S"),
-            "usuario_logado": r.usuario_responsavel.username if r.usuario_responsavel else "Sistema",
-            "acao": r.get_acao_display() if hasattr(r, 'get_acao_display') else r.acao,
-            "descricao": r.descricao,
+        data = request.GET.get(
+            'data',
+            ''
+        ).strip()
+
+        historicos = (
+            HistoricoUsuario.objects
+            .select_related(
+                'usuario_responsavel',
+                'usuario_afetado'
+            )
+        )
+
+        # =====================================================
+        # FILTRO POR DATA
+        # =====================================================
+
+        if data:
+            historicos = historicos.filter(
+                data_hora__date=data
+            )
+
+        # =====================================================
+        # ORDENAÇÃO
+        # =====================================================
+
+        if ordem == 'asc':
+            historicos = historicos.order_by(
+                'data_hora'
+            )
+        else:
+            historicos = historicos.order_by(
+                '-data_hora'
+            )
+
+        # =====================================================
+        # LIMITE
+        # =====================================================
+
+        historicos = historicos[:100]
+
+        # =====================================================
+        # RENDERIZA HTML
+        # =====================================================
+
+        html = render_to_string(
+            'usuarios/linhas_tabela_historico_usuarios.html',
+            {
+                'historicos': historicos
+            },
+            request=request
+        )
+
+        return JsonResponse({
+            'sucesso': True,
+            'html': html,
+            'total': len(historicos)
         })
 
-    return JsonResponse({"sucesso": True, "historico": dados, "ordem": ordem})
+    except Exception as e:
 
-
+        return JsonResponse({
+            'sucesso': False,
+            'mensagem': f'Erro ao carregar histórico: {str(e)}'
+        }, status=500)
+        
 @login_required
 @require_POST
 def apagar_historico(request):

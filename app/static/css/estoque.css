@@ -1137,22 +1137,26 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
 ===================================================== */
 .modal-status-pausa-historico-produtos-dialog {
     max-width: 420px;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
 }
 
 .modal-status-pausa-historico-produtos-content {
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    background: #161e2b !important;
+    border-radius: 12px !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+    color: #cecfd2;
     overflow: hidden;
-    background: #111827;
+
 }
 
 .modal-status-pausa-historico-produtos-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 20px 0 20px;
+    padding: 20px 24px 15px;
     background: #111827;
+    border-bottom: 1px solid #374151;
 }
 
 .modal-status-pausa-historico-produtos-icon i {
@@ -1313,11 +1317,11 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
 }
 
 .modal-filtrar-historico-produtos-content {
-    background: #161e2b;
-    border: 1px solid #334155;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    color: #CECFD2;
+    background: #0f172a !important;
+    border-radius: 12px !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+    color: #cecfd2;
+    overflow: hidden;
 }
 
 .modal-filtrar-historico-produtos-header {
@@ -1338,16 +1342,24 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
 }
 
 .btn-modal-fechar-filtrar-historico-produtos {
-    background: transparent;
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
     border: none;
-    color: #CECFD2;
-    font-size: 16px;
+    border-radius: 50% !important;
+    color: #CECFD2 !important;
+    font-size: 16px !important;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: all 0.2s ease;
 }
 
 .btn-modal-fechar-filtrar-historico-produtos:hover {
-    color: #CECFD2;
+    background-color: #dc2626 !important;
+    color: #CECFD2 !important;
+    transform: scale(1.05);
 }
 
 .modal-filtrar-historico-produtos-body {
@@ -1388,7 +1400,7 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
 }
 
 .modal-filtrar-produtos-input-data:focus {
-    border-color: #38bdf8;
+    border-color: #7c3aed !important;
 }
 
 .modal-filtrar-produtos-radio-group {
@@ -1420,23 +1432,6 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
     margin-top: 10px;
 }
 
-.btn-filtrar-produtos-limpar {
-    flex: 1;
-    background: transparent;
-    border: 1px solid #475569;
-    color: #cbd5e1;
-    padding: 9px 14px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-filtrar-produtos-limpar:hover {
-    background: #1e293b;
-    color: #CECFD2;
-}
 
 .btn-filtrar-produtos-submit {
     width: 100%;
@@ -1473,20 +1468,19 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
 
 .modal-ordenar-historico-produtos-content {
     background: #161e2b !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-radius: 14px !important;
-    color: #CECFD2 !important;
-    overflow: hidden !important;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+    color: #cecfd2;
+    overflow: hidden;
 }
 
 .modal-ordenar-historico-produtos-header {
-    background: #161e2b !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-    padding: 16px 20px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
+   display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px 15px;
+    background: #0f172a;
+    border-bottom: 1px solid #374151 !important;
 }
 
 .modal-ordenar-historico-produtos-header h5 {
@@ -1526,7 +1520,7 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
 
 .modal-ordenar-historico-produtos-body {
     padding: 20px !important;
-    background: #161e2b !important;
+    background: #0f172a !important;
     border: none !important;
 }
 
@@ -1574,8 +1568,8 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
     justify-content: flex-end !important;
     gap: 10px !important;
     padding: 14px 20px !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-    background: #161e2b !important;
+    border-top: 1px solid #374151 !important;
+    background: #0f172a !important;
 }
 
 .btn-cancelar-ordenar-historico-produtos {
