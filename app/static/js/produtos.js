@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const btnAdicionar = document.getElementById("btnAdicionarProduto");
@@ -13,18 +14,31 @@ document.addEventListener("DOMContentLoaded", function () {
     const formulario = document.getElementById("formCadastroProduto");
     const modalSemImagem = document.getElementById("modalSemImagem");
 
+    // =========================================
+    // ELEMENTOS DA TABELA E SELEÇÃO
+    // Declarar ANTES da primeira chamada às funções
+    // =========================================
+    const checkboxMasterProdutos = document.getElementById("checkboxMasterProdutos");
+    const tbodyProdutos = document.getElementById("tabelaProdutosBody");
+
     // Navegação rápida
     const btnResumoClientes = document.querySelector(".btn-resumo-ver-clientes");
+
     if (btnResumoClientes) {
         btnResumoClientes.addEventListener("click", function () {
-            if (this.dataset.url) window.location.href = this.dataset.url;
+            if (this.dataset.url) {
+                window.location.href = this.dataset.url;
+            }
         });
     }
 
     const btnResumoProdutos = document.querySelector(".btn-resumo-ver-produtos");
+
     if (btnResumoProdutos) {
         btnResumoProdutos.addEventListener("click", function () {
-            if (this.dataset.url) window.location.href = this.dataset.url;
+            if (this.dataset.url) {
+                window.location.href = this.dataset.url;
+            }
         });
     }
 
@@ -32,21 +46,187 @@ document.addEventListener("DOMContentLoaded", function () {
     let dadosOriginais = {};
     let imagemOriginal = "";
     let permitirEnvioSemImagem = false;
+    let produtosParaApagar = [];
 
     let modalInstancia = null;
+
     if (modalSemImagem) {
         modalInstancia = bootstrap.Modal.getOrCreateInstance(modalSemImagem);
+    }
+
+    // =========================================
+    // FUNÇÕES DE SELEÇÃO DOS PRODUTOS
+    // =========================================
+    function getCheckboxesProdutos() {
+        return Array.from(
+            document.querySelectorAll(
+                "#tabelaProdutosBody input.checkbox-produto"
+            )
+        );
+    }
+
+    function getProdutosSelecionados() {
+        return getCheckboxesProdutos().filter(
+            checkbox => checkbox.checked
+        );
+    }
+
+    function atualizarCheckboxMasterProdutos() {
+        const checkboxes = getCheckboxesProdutos();
+        const selecionados = checkboxes.filter(
+            checkbox => checkbox.checked
+        );
+
+        if (!checkboxMasterProdutos) return;
+
+        checkboxMasterProdutos.checked =
+            checkboxes.length > 0 &&
+            selecionados.length === checkboxes.length;
+
+        checkboxMasterProdutos.indeterminate =
+            selecionados.length > 0 &&
+            selecionados.length < checkboxes.length;
+    }
+
+    function obterProdutoSelecionadoUnico(acao) {
+        const selecionados = getProdutosSelecionados();
+
+        if (selecionados.length === 0) {
+            mostrarAlerta(
+                "Selecione um produto para " + acao + ".",
+                "erro"
+            );
+            return null;
+        }
+
+        if (selecionados.length > 1) {
+            mostrarAlerta(
+                "Para " + acao + ", selecione apenas um produto.",
+                "erro"
+            );
+            return null;
+        }
+
+        return selecionados[0].closest("tr");
+    }
+
+    // =========================================
+    // INICIALIZAR E ATUALIZAR A TABELA
+    // =========================================
+    function inicializarEventosTabela() {
+        const tbody = document.getElementById("tabelaProdutosBody");
+
+        if (!tbody) return;
+
+        tbody.querySelectorAll("tr").forEach(linha => {
+            const checkbox = linha.querySelector(".checkbox-produto");
+
+            if (!checkbox) return;
+
+            linha.classList.toggle(
+                "produto-selecionado",
+                checkbox.checked
+            );
+        });
+
+        atualizarCheckboxMasterProdutos();
+    }
+
+    // =========================================
+    // CHECKBOX MASTER: SELECIONAR TODOS
+    // =========================================
+    if (checkboxMasterProdutos) {
+        checkboxMasterProdutos.addEventListener("change", function () {
+            const marcarTodos = this.checked;
+
+            getCheckboxesProdutos().forEach(checkbox => {
+                checkbox.checked = marcarTodos;
+
+                const linha = checkbox.closest("tr");
+
+                if (linha) {
+                    linha.classList.toggle(
+                        "produto-selecionado",
+                        marcarTodos
+                    );
+                }
+            });
+
+            atualizarCheckboxMasterProdutos();
+        });
+    }
+
+    // =========================================
+    // SELEÇÃO DIRETA DOS CHECKBOXES
+    // E CLIQUE NA LINHA DO PRODUTO
+    // =========================================
+    if (tbodyProdutos) {
+
+        // Quando o próprio checkbox é alterado
+        tbodyProdutos.addEventListener("change", function (e) {
+            if (!e.target.matches(".checkbox-produto")) return;
+
+            const linha = e.target.closest("tr");
+
+            if (linha) {
+                linha.classList.toggle(
+                    "produto-selecionado",
+                    e.target.checked
+                );
+            }
+
+            atualizarCheckboxMasterProdutos();
+        });
+
+        // Quando o usuário clica na linha
+        tbodyProdutos.addEventListener("click", function (e) {
+            const linha = e.target.closest("tr");
+
+            if (!linha) return;
+
+            const checkbox = linha.querySelector(".checkbox-produto");
+
+            if (!checkbox) return;
+
+            // Não alternar a seleção ao clicar em controles
+            // ou elementos interativos dentro da linha.
+            if (
+                e.target.closest(
+                    "button, a, input, select, textarea, label"
+                )
+            ) {
+                return;
+            }
+
+            checkbox.checked = !checkbox.checked;
+
+            linha.classList.toggle(
+                "produto-selecionado",
+                checkbox.checked
+            );
+
+            atualizarCheckboxMasterProdutos();
+        });
     }
 
     // =========================================
     // FUNÇÃO CENTRALIZADA DE CÁLCULO E RESUMO
     // =========================================
     function calcularResumoProduto() {
-        let quantidade = Number(document.getElementById("quantidade")?.value || 0);
-        let valorUnitarioRaw = document.getElementById("valor_unitario")?.value || "";
-        let descontoRaw = document.getElementById("desconto")?.value || "";
+        let quantidade = Number(
+            document.getElementById("quantidade")?.value || 0
+        );
 
-        let desconto = Number(descontoRaw.replace("%", "").replace(",", ".").trim()) || 0;
+        let valorUnitarioRaw =
+            document.getElementById("valor_unitario")?.value || "";
+
+        let descontoRaw =
+            document.getElementById("desconto")?.value || "";
+
+        let desconto = Number(
+            descontoRaw.replace("%", "").replace(",", ".").trim()
+        ) || 0;
+
         let valorUnitario = Number(
             valorUnitarioRaw
                 .replace("R$", "")
@@ -59,19 +239,30 @@ document.addEventListener("DOMContentLoaded", function () {
         let valorDesconto = totalSemDesconto * (desconto / 100);
         let totalComDesconto = totalSemDesconto - valorDesconto;
 
-        // Atualiza o resumo visual
         const elSem = document.getElementById("resumo-sem-desconto");
         const elDesc = document.getElementById("resumo-desconto");
         const elTotal = document.getElementById("resumo-total");
         const elQtd = document.getElementById("resumo-quantidade");
 
-        if (elSem) elSem.innerText = formatarMoeda(totalSemDesconto);
-        if (elDesc) elDesc.innerText = formatarMoeda(valorDesconto);
-        if (elTotal) elTotal.innerText = formatarMoeda(totalComDesconto);
-        if (elQtd) elQtd.innerText = quantidade;
+        if (elSem) {
+            elSem.innerText = formatarMoeda(totalSemDesconto);
+        }
+
+        if (elDesc) {
+            elDesc.innerText = formatarMoeda(valorDesconto);
+        }
+
+        if (elTotal) {
+            elTotal.innerText = formatarMoeda(totalComDesconto);
+        }
+
+        if (elQtd) {
+            elQtd.innerText = quantidade;
+        }
 
         // Gera o código automaticamente caso esteja em branco
         let campoCodigo = document.getElementById("codigo");
+
         if (campoCodigo && !campoCodigo.value && !produtoEmEdicao) {
             campoCodigo.value = gerarCodigoProduto();
         }
@@ -81,9 +272,16 @@ document.addEventListener("DOMContentLoaded", function () {
     // FUNÇÃO PARA CADASTRAR VIA AJAX
     // =========================================
     function cadastrarProdutoViaAjax() {
+        if (!formulario) return;
+
         const formData = new FormData(formulario);
-        const csrfInput = document.querySelector("[name=csrfmiddlewaretoken]");
-        const urlEnvio = formulario.getAttribute("action") || "/produtos/";
+
+        const csrfInput = document.querySelector(
+            "[name=csrfmiddlewaretoken]"
+        );
+
+        const urlEnvio =
+            formulario.getAttribute("action") || "/produtos/";
 
         fetch(urlEnvio, {
             method: "POST",
@@ -92,27 +290,59 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Erro HTTP " + response.status);
+            }
+
+            return response.json();
+        })
         .then(data => {
             if (data.status === "ok") {
-                mostrarAlerta(data.mensagem || "Produto cadastrado com sucesso!", "sucesso");
+                mostrarAlerta(
+                    data.mensagem || "Produto cadastrado com sucesso!",
+                    "sucesso"
+                );
+
                 limparFormularioProduto();
                 permitirEnvioSemImagem = false;
+
                 return fetch("/produtos/atualizar-tabela/");
-            } else {
-                mostrarAlerta(data.mensagem || "Erro ao cadastrar produto.", "erro");
             }
+
+            mostrarAlerta(
+                data.mensagem || "Erro ao cadastrar produto.",
+                "erro"
+            );
+
+            return null;
         })
-        .then(response => response ? response.text() : null)
+        .then(response => {
+            if (!response) return null;
+
+            if (!response.ok) {
+                throw new Error("Erro ao atualizar a tabela.");
+            }
+
+            return response.text();
+        })
         .then(html => {
-            if (html) {
-                document.getElementById("tabelaProdutosBody").innerHTML = html;
+            if (html === null) return;
+
+            const tbody = document.getElementById("tabelaProdutosBody");
+
+            if (tbody) {
+                tbody.innerHTML = html;
                 inicializarEventosTabela();
             }
         })
         .catch(error => {
             console.error("Erro no cadastro:", error);
-            mostrarAlerta("Erro ao processar o cadastro do produto.", "erro");
+
+            mostrarAlerta(
+                "Erro ao processar o cadastro do produto.",
+                "erro"
+            );
         });
     }
 
@@ -121,9 +351,16 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================
     if (btnAdicionar) {
         btnAdicionar.addEventListener("click", function () {
-            let nome = (document.getElementById("nome")?.value || "").trim();
-            let quantidade = Number(document.getElementById("quantidade")?.value || 0);
-            let valorUnitarioRaw = document.getElementById("valor_unitario")?.value || "";
+            let nome = (
+                document.getElementById("nome")?.value || ""
+            ).trim();
+
+            let quantidade = Number(
+                document.getElementById("quantidade")?.value || 0
+            );
+
+            let valorUnitarioRaw =
+                document.getElementById("valor_unitario")?.value || "";
 
             if (!nome) {
                 mostrarAlerta("Informe o nome do produto.", "erro");
@@ -132,7 +369,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (!quantidade || quantidade <= 0) {
-                mostrarAlerta("Informe uma quantidade válida.", "erro");
+                mostrarAlerta(
+                    "Informe uma quantidade válida.",
+                    "erro"
+                );
+
                 marcarErro(document.getElementById("quantidade"));
                 return;
             }
@@ -152,12 +393,16 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             calcularResumoProduto();
-            mostrarAlerta("Cálculo realizado com sucesso!", "sucesso");
+
+            mostrarAlerta(
+                "Cálculo realizado com sucesso!",
+                "sucesso"
+            );
         });
     }
 
     // =========================================
-    // EVENTO SUBMIT DO FORMULÁRIO (Confirmar/Salvar)
+    // SUBMIT DO FORMULÁRIO
     // =========================================
     if (formulario) {
         formulario.addEventListener("submit", function (e) {
@@ -171,18 +416,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Garante o cálculo com os dados atuais
             calcularResumoProduto();
 
-            // --- VALIDAÇÃO DOS CAMPOS OBRIGATÓRIOS ---
-            let nome = (document.getElementById("nome")?.value || "").trim();
-            let cliente = (document.getElementById("cliente")?.value || "").trim();
-            let quantidade = Number(document.getElementById("quantidade")?.value || 0);
-            let valorUnitarioRaw = document.getElementById("valor_unitario")?.value || "";
-            let dataCadastro = document.getElementById("data_cadastro")?.value || "";
-            let descricao = (document.getElementById("descricao")?.value || "").trim();
+            const nome = (
+                document.getElementById("nome")?.value || ""
+            ).trim();
 
-            let valorUnitario = Number(
+            const cliente = (
+                document.getElementById("cliente")?.value || ""
+            ).trim();
+
+            const quantidade = Number(
+                document.getElementById("quantidade")?.value || 0
+            );
+
+            const valorUnitarioRaw =
+                document.getElementById("valor_unitario")?.value || "";
+
+            const dataCadastro =
+                document.getElementById("data_cadastro")?.value || "";
+
+            const descricao = (
+                document.getElementById("descricao")?.value || ""
+            ).trim();
+
+            const valorUnitario = Number(
                 valorUnitarioRaw
                     .replace("R$", "")
                     .replace(/\./g, "")
@@ -197,13 +455,21 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (!cliente) {
-                mostrarAlerta("Selecione um cliente para o produto.", "erro");
+                mostrarAlerta(
+                    "Selecione um cliente para o produto.",
+                    "erro"
+                );
+
                 marcarErro(document.getElementById("cliente"));
                 return;
             }
 
             if (!quantidade || quantidade <= 0) {
-                mostrarAlerta("Informe uma quantidade válida.", "erro");
+                mostrarAlerta(
+                    "Informe uma quantidade válida.",
+                    "erro"
+                );
+
                 marcarErro(document.getElementById("quantidade"));
                 return;
             }
@@ -226,10 +492,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            if (inputImagem && !inputImagem.files.length && !permitirEnvioSemImagem) {
+            if (
+                inputImagem &&
+                !inputImagem.files.length &&
+                !permitirEnvioSemImagem
+            ) {
                 if (modalInstancia) {
                     modalInstancia.show();
                 }
+
                 return;
             }
 
@@ -237,47 +508,72 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const btnConfirmarSemImagem = document.getElementById("btnConfirmarSemImagem");
+    // =========================================
+    // CONFIRMAR CADASTRO SEM IMAGEM
+    // =========================================
+    const btnConfirmarSemImagem =
+        document.getElementById("btnConfirmarSemImagem");
+
     if (btnConfirmarSemImagem) {
         btnConfirmarSemImagem.addEventListener("click", function () {
             permitirEnvioSemImagem = true;
+
             if (modalInstancia) {
                 modalInstancia.hide();
             }
+
             cadastrarProdutoViaAjax();
         });
     }
 
-    // Modal de Tabela de Edição
+    // =========================================
+    // ABRIR MODAL DA TABELA DE PRODUTOS
+    // =========================================
     if (btnEditar) {
         btnEditar.addEventListener("click", function () {
-            const modalElemento = document.getElementById("modalTabelaProdutos");
+            const modalElemento =
+                document.getElementById("modalTabelaProdutos");
+
             if (modalElemento) {
-                const modal = bootstrap.Modal.getOrCreateInstance(modalElemento);
-                modal.show();
+                bootstrap.Modal
+                    .getOrCreateInstance(modalElemento)
+                    .show();
             }
         });
     }
 
-    // Máscaras de entrada
-    if (inputDesconto) aplicarMascaraPorcentagem(inputDesconto);
-    if (inputValor) aplicarMascaraMoeda(inputValor);
+    // =========================================
+    // MÁSCARAS DE ENTRADA
+    // =========================================
+    if (inputDesconto) {
+        aplicarMascaraPorcentagem(inputDesconto);
+    }
 
-    // Upload e Preview de Imagem
+    if (inputValor) {
+        aplicarMascaraMoeda(inputValor);
+    }
+
+    // =========================================
+    // UPLOAD E PREVIEW DE IMAGEM
+    // =========================================
     if (inputImagem) {
         inputImagem.addEventListener("change", function () {
             const arquivo = this.files[0];
+
             if (arquivo) {
                 const leitor = new FileReader();
+
                 leitor.onload = function (e) {
                     if (imgPreview) {
                         imgPreview.src = e.target.result;
                         imgPreview.style.display = "block";
                     }
+
                     if (previewEmpty) {
                         previewEmpty.style.display = "none";
                     }
                 };
+
                 leitor.readAsDataURL(arquivo);
             }
         });
@@ -292,62 +588,63 @@ document.addEventListener("DOMContentLoaded", function () {
     if (btnRemover && inputImagem) {
         btnRemover.addEventListener("click", function () {
             inputImagem.value = "";
+
             if (imgPreview) {
                 imgPreview.src = "";
                 imgPreview.style.display = "none";
             }
+
             if (previewEmpty) {
                 previewEmpty.style.display = "flex";
             }
         });
     }
 
-    // Eventos da Tabela de Seleção
+    // =========================================
+    // INICIALIZAR A TABELA NA ABERTURA
+    // =========================================
     inicializarEventosTabela();
 
-    document.addEventListener("click", function (e) {
-        const modal = document.getElementById("modalTabelaProdutos");
-        if (!modal) return;
-
-        const modalAberto = modal.classList.contains("show");
-        const clicouNaTabela = e.target.closest("#modalTabelaProdutos tbody tr");
-        const clicouNosBotoes = e.target.closest(".acoes-tabela-produtos");
-
-        if (modalAberto && !clicouNaTabela && !clicouNosBotoes) {
-            document
-                .querySelectorAll("#modalTabelaProdutos input[type='radio']")
-                .forEach(radio => radio.checked = false);
-
-            document
-                .querySelectorAll("#modalTabelaProdutos tbody tr")
-                .forEach(tr => tr.classList.remove("produto-selecionado"));
-        }
-    });
-
     // =========================================
-    // APAGAR PRODUTO
+    // APAGAR PRODUTOS SELECIONADOS
     // =========================================
-    const btnApagarProduto = document.getElementById("btnApagarProduto");
-    let produtoParaApagar = null;
+    const btnApagarProduto =
+        document.getElementById("btnApagarProduto");
 
     if (btnApagarProduto) {
         btnApagarProduto.addEventListener("click", function () {
-            const radioSelecionado = document.querySelector(
-                "#modalTabelaProdutos input[type='radio']:checked"
-            );
+            const selecionados = getProdutosSelecionados();
 
-            if (!radioSelecionado) {
-                mostrarAlerta("Selecione um produto para apagar.", "erro");
+            if (selecionados.length === 0) {
+                mostrarAlerta(
+                    "Selecione pelo menos um produto para apagar.",
+                    "erro"
+                );
                 return;
             }
 
-            produtoParaApagar = radioSelecionado.closest("tr");
-            const modalElemento = document.getElementById("modalApagarProduto");
+            produtosParaApagar = selecionados
+                .map(checkbox => checkbox.closest("tr"))
+                .filter(linha => linha && linha.dataset.id);
+
+            if (produtosParaApagar.length === 0) {
+                mostrarAlerta(
+                    "Não foi possível identificar os produtos.",
+                    "erro"
+                );
+                return;
+            }
+
+            const modalElemento =
+                document.getElementById("modalApagarProduto");
 
             if (modalElemento) {
-                const backdrop = document.createElement("div");
-                backdrop.className = "backdrop-confirmacao";
-                document.body.appendChild(backdrop);
+                // Evita criar vários backdrops
+                if (!document.querySelector(".backdrop-confirmacao")) {
+                    const backdrop = document.createElement("div");
+                    backdrop.className = "backdrop-confirmacao";
+                    document.body.appendChild(backdrop);
+                }
 
                 const modalApagar = bootstrap.Modal.getOrCreateInstance(
                     modalElemento,
@@ -359,68 +656,135 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const btnConfirmarApagarProduto = document.getElementById("btnConfirmarApagarProduto");
+    // =========================================
+    // CONFIRMAR EXCLUSÃO DOS PRODUTOS
+    // =========================================
+    const btnConfirmarApagarProduto =
+        document.getElementById("btnConfirmarApagarProduto");
+
     if (btnConfirmarApagarProduto) {
-        btnConfirmarApagarProduto.addEventListener("click", function () {
-            if (!produtoParaApagar) return;
+        btnConfirmarApagarProduto.addEventListener(
+            "click",
+            async function () {
+                if (produtosParaApagar.length === 0) return;
 
-            const id = produtoParaApagar.dataset.id;
-            const csrfInput = document.querySelector("[name=csrfmiddlewaretoken]");
+                const csrfInput = document.querySelector(
+                    "[name=csrfmiddlewaretoken]"
+                );
 
-            fetch(`/produtos/apagar/${id}/`, {
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": csrfInput ? csrfInput.value : "",
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "ok") {
-                    produtoParaApagar.remove();
-                    const modalElemento = document.getElementById("modalApagarProduto");
-                    if (modalElemento) {
-                        const modal = bootstrap.Modal.getInstance(modalElemento);
-                        if (modal) modal.hide();
+                const linhasApagadas = [];
+                const erros = [];
+
+                btnConfirmarApagarProduto.disabled = true;
+
+                try {
+                    for (const linha of produtosParaApagar) {
+                        const id = linha.dataset.id;
+
+                        try {
+                            const response = await fetch(
+                                `/produtos/apagar/${id}/`,
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "X-CSRFToken": csrfInput
+                                            ? csrfInput.value
+                                            : "",
+                                        "Content-Type": "application/json"
+                                    }
+                                }
+                            );
+
+                            const data = await response.json();
+
+                            if (!response.ok || data.status !== "ok") {
+                                erros.push(id);
+                                continue;
+                            }
+
+                            linhasApagadas.push(linha);
+
+                        } catch (error) {
+                            console.error(
+                                `Erro ao apagar produto ${id}:`,
+                                error
+                            );
+
+                            erros.push(id);
+                        }
                     }
-                    document.querySelector(".backdrop-confirmacao")?.remove();
-                    mostrarAlerta("Produto apagado com sucesso.", "sucesso");
-                } else {
-                    mostrarAlerta(data.mensagem || "Erro ao apagar produto.", "erro");
+
+                    linhasApagadas.forEach(linha => linha.remove());
+
+                    produtosParaApagar = [];
+
+                    atualizarCheckboxMasterProdutos();
+
+                    const modalElemento =
+                        document.getElementById("modalApagarProduto");
+
+                    if (modalElemento) {
+                        bootstrap.Modal
+                            .getInstance(modalElemento)
+                            ?.hide();
+                    }
+
+                    document
+                        .querySelector(".backdrop-confirmacao")
+                        ?.remove();
+
+                    if (erros.length === 0) {
+                        mostrarAlerta(
+                            linhasApagadas.length === 1
+                                ? "Produto apagado com sucesso."
+                                : `${linhasApagadas.length} produtos apagados com sucesso.`,
+                            "sucesso"
+                        );
+                    } else {
+                        mostrarAlerta(
+                            `${linhasApagadas.length} produto(s) apagado(s). ` +
+                            `${erros.length} não puderam ser apagados.`,
+                            "erro"
+                        );
+                    }
+
+                } finally {
+                    btnConfirmarApagarProduto.disabled = false;
                 }
-            })
-            .catch(error => {
-                console.error(error);
-                mostrarAlerta("Erro ao apagar produto.", "erro");
-            });
-        });
+            }
+        );
     }
 
-    const modalApagarElemento = document.getElementById("modalApagarProduto");
+    const modalApagarElemento =
+        document.getElementById("modalApagarProduto");
+
     if (modalApagarElemento) {
-        modalApagarElemento.addEventListener("hidden.bs.modal", function () {
-            document.querySelector(".backdrop-confirmacao")?.remove();
-        });
+        modalApagarElemento.addEventListener(
+            "hidden.bs.modal",
+            function () {
+                document
+                    .querySelector(".backdrop-confirmacao")
+                    ?.remove();
+            }
+        );
     }
 
     // =========================================
-    // CARREGAR PRODUTO PARA EDIÇÃO NO FORMULÁRIO
+    // CARREGAR PRODUTO PARA EDIÇÃO
     // =========================================
-    const btnAtualizarProduto = document.getElementById("btnAtualizarProduto");
+    const btnAtualizarProduto =
+        document.getElementById("btnAtualizarProduto");
+
     if (btnAtualizarProduto) {
         btnAtualizarProduto.addEventListener("click", function () {
-            const radioSelecionado = document.querySelector(
-                "#modalTabelaProdutos input[type='radio']:checked"
+            const linha = obterProdutoSelecionadoUnico(
+                "carregar para edição"
             );
 
-            if (!radioSelecionado) {
-                mostrarAlerta("Selecione um produto para carregar.", "erro");
-                return;
-            }
-
-            const linha = radioSelecionado.closest("tr");
+            if (!linha) return;
 
             produtoEmEdicao = linha.dataset.id;
+
             const imagem = linha.dataset.imagem || "";
             imagemOriginal = imagem ? imagem.split("/").pop() : "";
 
@@ -449,53 +813,89 @@ document.addEventListener("DOMContentLoaded", function () {
                 imagem: imagemOriginal
             };
 
-            // Preenche os campos do formulário
-            document.getElementById("nome").value = linha.dataset.nome || "";
-            
+            document.getElementById("nome").value =
+                linha.dataset.nome || "";
+
             const selectCliente = document.getElementById("cliente");
+
             if (selectCliente) {
                 selectCliente.value = clienteId;
             }
 
-            document.getElementById("quantidade").value = linha.dataset.quantidade || "";
+            document.getElementById("quantidade").value =
+                linha.dataset.quantidade || "";
 
-            let valorNum = parseFloat(linha.dataset.valor || 0);
-            document.getElementById("valor_unitario").value = formatarMoeda(valorNum);
+            const valorNum = parseFloat(
+                (linha.dataset.valor || "0")
+                    .replace("R$", "")
+                    .replace(/\./g, "")
+                    .replace(",", ".")
+            ) || 0;
 
-            let descontoNum = parseFloat(linha.dataset.desconto || 0);
-            document.getElementById("desconto").value = (descontoNum % 1 === 0 ? parseInt(descontoNum) : descontoNum.toString().replace(".", ",")) + "%";
+            document.getElementById("valor_unitario").value =
+                formatarMoeda(valorNum);
 
-            document.getElementById("codigo").value = linha.dataset.codigo || "";
-            document.getElementById("data_cadastro").value = linha.dataset.data || "";
-            document.getElementById("descricao").value = linha.dataset.descricao || "";
+            const descontoNum = parseFloat(
+                (linha.dataset.desconto || "0")
+                    .replace("%", "")
+                    .replace(",", ".")
+            ) || 0;
 
-            // Dispara o cálculo e sincroniza o resumo instantaneamente
+            document.getElementById("desconto").value =
+                (descontoNum % 1 === 0
+                    ? parseInt(descontoNum)
+                    : descontoNum.toString().replace(".", ",")) + "%";
+
+            document.getElementById("codigo").value =
+                linha.dataset.codigo || "";
+
+            document.getElementById("data_cadastro").value =
+                linha.dataset.data || "";
+
+            document.getElementById("descricao").value =
+                linha.dataset.descricao || "";
+
             calcularResumoProduto();
 
             if (imagem && imgPreview) {
                 imgPreview.src = imagem;
                 imgPreview.style.display = "block";
-                if (previewEmpty) previewEmpty.style.display = "none";
+
+                if (previewEmpty) {
+                    previewEmpty.style.display = "none";
+                }
             } else if (imgPreview) {
                 imgPreview.src = "";
                 imgPreview.style.display = "none";
-                if (previewEmpty) previewEmpty.style.display = "flex";
+
+                if (previewEmpty) {
+                    previewEmpty.style.display = "flex";
+                }
             }
 
-            const modalTabelaEl = document.getElementById("modalTabelaProdutos");
+            const modalTabelaEl =
+                document.getElementById("modalTabelaProdutos");
+
             if (modalTabelaEl) {
-                const modalTabela = bootstrap.Modal.getInstance(modalTabelaEl);
-                if (modalTabela) modalTabela.hide();
+                bootstrap.Modal
+                    .getInstance(modalTabelaEl)
+                    ?.hide();
             }
 
-            mostrarAlerta("Produto carregado para edição.", "sucesso");
+            mostrarAlerta(
+                "Produto carregado para edição.",
+                "sucesso"
+            );
         });
     }
 
     // =========================================
     // ATUALIZAR PRODUTO (SALVAR EDIÇÃO)
     // =========================================
-    const btnAtualizar = document.querySelector(".btn-cadastrar-produtos.atualizar");
+    const btnAtualizar = document.querySelector(
+        ".btn-cadastrar-produtos.atualizar"
+    );
+
     if (btnAtualizar) {
         btnAtualizar.addEventListener("click", function () {
             if (!produtoEmEdicao) {
@@ -506,13 +906,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Sincroniza os cálculos com os valores atualmente digitados
             calcularResumoProduto();
 
-            const nome = (document.getElementById("nome")?.value || "").trim();
-            const cliente = (document.getElementById("cliente")?.value || "").trim();
-            const quantidade = (document.getElementById("quantidade")?.value || "").trim();
-            const valorRaw = document.getElementById("valor_unitario")?.value || "";
+            const nome = (
+                document.getElementById("nome")?.value || ""
+            ).trim();
+
+            const cliente = (
+                document.getElementById("cliente")?.value || ""
+            ).trim();
+
+            const quantidade = (
+                document.getElementById("quantidade")?.value || ""
+            ).trim();
+
+            const valorRaw =
+                document.getElementById("valor_unitario")?.value || "";
+
             const valor = valorRaw
                 .replace("R$", "")
                 .replace(/\./g, "")
@@ -525,13 +935,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     .replace(",", ".")
             ).toString();
 
-            const data = document.getElementById("data_cadastro")?.value || "";
-            const descricao = (document.getElementById("descricao")?.value || "").trim();
+            const data =
+                document.getElementById("data_cadastro")?.value || "";
+
+            const descricao = (
+                document.getElementById("descricao")?.value || ""
+            ).trim();
 
             const inputImg = document.getElementById("imagem");
-            const imagemAtual = (inputImg && inputImg.files && inputImg.files.length > 0)
-                ? inputImg.files[0].name
-                : (typeof imagemOriginal !== "undefined" ? imagemOriginal : "");
+
+            const imagemAtual =
+                inputImg && inputImg.files && inputImg.files.length > 0
+                    ? inputImg.files[0].name
+                    : imagemOriginal;
 
             const houveAlteracao =
                 nome !== String(dadosOriginais.nome || "") ||
@@ -544,12 +960,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 imagemAtual !== String(dadosOriginais.imagem || "");
 
             if (!houveAlteracao) {
-                mostrarAlerta("Não foi feita nenhuma alteração no produto para atualizar.", "erro");
+                mostrarAlerta(
+                    "Não foi feita nenhuma alteração no produto para atualizar.",
+                    "erro"
+                );
                 return;
             }
 
             const formData = new FormData(formulario);
-            const csrfInput = document.querySelector("[name=csrfmiddlewaretoken]");
+
+            const csrfInput = document.querySelector(
+                "[name=csrfmiddlewaretoken]"
+            );
 
             fetch(`/produtos/atualizar/${produtoEmEdicao}/`, {
                 method: "POST",
@@ -561,117 +983,172 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.status === "ok") {
-                    mostrarAlerta("Produto atualizado com sucesso.", "sucesso");
+                    mostrarAlerta(
+                        "Produto atualizado com sucesso.",
+                        "sucesso"
+                    );
+
                     limparFormularioProduto();
-                } else {
-                    mostrarAlerta(data.mensagem || "Erro ao atualizar produto.", "erro");
+
+                    return fetch("/produtos/atualizar-tabela/");
+                }
+
+                mostrarAlerta(
+                    data.mensagem || "Erro ao atualizar produto.",
+                    "erro"
+                );
+
+                return null;
+            })
+            .then(response => {
+                if (!response) return null;
+                return response.text();
+            })
+            .then(html => {
+                if (html === null) return;
+
+                const tbody = document.getElementById("tabelaProdutosBody");
+
+                if (tbody) {
+                    tbody.innerHTML = html;
+                    inicializarEventosTabela();
                 }
             })
             .catch(error => {
                 console.error(error);
-                mostrarAlerta("Erro ao processar a atualização do produto.", "erro");
+
+                mostrarAlerta(
+                    "Erro ao processar a atualização do produto.",
+                    "erro"
+                );
             });
         });
     }
 
     // =========================================
-    // SAIR DO MODO EDIÇÃO E LIMPAR
+    // SAIR DO MODO EDIÇÃO
     // =========================================
-    const btnSairModoEdicao = document.getElementById("btnSairModoEdicao");
+    const btnSairModoEdicao =
+        document.getElementById("btnSairModoEdicao");
+
     if (btnSairModoEdicao) {
         btnSairModoEdicao.addEventListener("click", function () {
             if (!produtoEmEdicao) {
-                mostrarAlerta("Você não está no modo edição.", "erro");
+                mostrarAlerta(
+                    "Você não está no modo edição.",
+                    "erro"
+                );
                 return;
             }
+
             sairModoEdicaoProduto();
         });
     }
 
-    const btnApagarFormulario = document.getElementById("btnApagarFormulario");
+    // =========================================
+    // LIMPAR FORMULÁRIO
+    // =========================================
+    const btnApagarFormulario =
+        document.getElementById("btnApagarFormulario");
+
     if (btnApagarFormulario) {
         btnApagarFormulario.addEventListener("click", function () {
             const possuiDados =
-                document.getElementById("nome").value ||
-                document.getElementById("quantidade").value ||
-                document.getElementById("valor_unitario").value ||
-                document.getElementById("descricao").value ||
+                document.getElementById("nome")?.value ||
+                document.getElementById("quantidade")?.value ||
+                document.getElementById("valor_unitario")?.value ||
+                document.getElementById("descricao")?.value ||
                 produtoEmEdicao;
 
             if (!possuiDados) {
-                mostrarAlerta("O formulário já está vazio.", "erro");
+                mostrarAlerta(
+                    "O formulário já está vazio.",
+                    "erro"
+                );
                 return;
             }
 
             limparFormularioProduto();
-            mostrarAlerta("Formulário limpo com sucesso.", "sucesso");
+
+            mostrarAlerta(
+                "Formulário limpo com sucesso.",
+                "sucesso"
+            );
         });
     }
 
-    const btnAtualizarTabela = document.getElementById("btnAtualizarTabela");
+    // =========================================
+    // ATUALIZAR TABELA
+    // =========================================
+    const btnAtualizarTabela =
+        document.getElementById("btnAtualizarTabela");
+
     if (btnAtualizarTabela) {
         btnAtualizarTabela.addEventListener("click", function () {
             fetch("/produtos/atualizar-tabela/")
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro HTTP " + response.status);
+                    }
+
+                    return response.text();
+                })
                 .then(html => {
-                    document.getElementById("tabelaProdutosBody").innerHTML = html;
-                    mostrarAlerta("Tabela atualizada com sucesso.", "sucesso");
-                    inicializarEventosTabela();
+                    const tbody =
+                        document.getElementById("tabelaProdutosBody");
+
+                    if (tbody) {
+                        tbody.innerHTML = html;
+                        inicializarEventosTabela();
+                    }
+
+                    mostrarAlerta(
+                        "Tabela atualizada com sucesso.",
+                        "sucesso"
+                    );
                 })
                 .catch(error => {
                     console.error(error);
-                    mostrarAlerta("Erro ao atualizar a tabela.", "erro");
+
+                    mostrarAlerta(
+                        "Erro ao atualizar a tabela.",
+                        "erro"
+                    );
                 });
-        });
-    }
-
-    const btnVisualizarImagem = document.getElementById("btnVisualizarImagem");
-    if (btnVisualizarImagem) {
-        btnVisualizarImagem.addEventListener("click", function () {
-            const radioSelecionado = document.querySelector(
-                "#modalTabelaProdutos input[type='radio']:checked"
-            );
-
-            if (!radioSelecionado) {
-                mostrarAlerta("Selecione um produto.", "erro");
-                return;
-            }
-
-            const linha = radioSelecionado.closest("tr");
-            const imagem = linha.dataset.imagem;
-            const img = document.getElementById("imagemProdutoModal");
-            const msg = document.getElementById("mensagemSemImagem");
-
-            if (imagem) {
-                img.src = imagem;
-                img.style.display = "block";
-                msg.style.display = "none";
-            } else {
-                img.style.display = "none";
-                msg.style.display = "block";
-            }
-
-            bootstrap.Modal
-                .getOrCreateInstance(document.getElementById("modalVisualizarImagem"))
-                .show();
         });
     }
 
     // =========================================
     // FILTROS E ORDENAÇÃO
     // =========================================
-    const btnAbrirFiltro = document.getElementById("btnAbrirFiltro");
+    const btnAbrirFiltro =
+        document.getElementById("btnAbrirFiltro");
+
     if (btnAbrirFiltro) {
         btnAbrirFiltro.addEventListener("click", () => {
-            const modalElemento = document.getElementById("modalFiltrarProdutos");
+            const modalElemento =
+                document.getElementById("modalFiltrarProdutos");
+
             if (modalElemento) {
-                bootstrap.Modal.getOrCreateInstance(modalElemento, { backdrop: false }).show();
+                bootstrap.Modal
+                    .getOrCreateInstance(
+                        modalElemento,
+                        { backdrop: false }
+                    )
+                    .show();
             }
         });
     }
 
-    const btnExecutarFiltro = document.getElementById("btnExecutarFiltro");
-    if (btnExecutarFiltro) btnExecutarFiltro.addEventListener("click", filtrarProdutos);
+    const btnExecutarFiltro =
+        document.getElementById("btnExecutarFiltro");
+
+    if (btnExecutarFiltro) {
+        btnExecutarFiltro.addEventListener(
+            "click",
+            filtrarProdutos
+        );
+    }
 
     const tipoFiltro = document.getElementById("tipoFiltro");
     const labelValorFiltro = document.getElementById("labelValorFiltro");
@@ -685,83 +1162,163 @@ document.addEventListener("DOMContentLoaded", function () {
                     valorFiltro.type = "text";
                     valorFiltro.placeholder = "Digite o nome do produto";
                     break;
+
                 case "data_cadastro":
                     labelValorFiltro.textContent = "Data do Cadastro";
                     valorFiltro.type = "date";
                     valorFiltro.placeholder = "";
                     break;
+
                 case "criado_por":
                     labelValorFiltro.textContent = "Usuário";
                     valorFiltro.type = "text";
                     valorFiltro.placeholder = "Digite o nome do usuário";
                     break;
+
                 case "cliente":
                     labelValorFiltro.textContent = "Cliente";
                     valorFiltro.type = "text";
                     valorFiltro.placeholder = "Digite o nome do cliente";
                     break;
+
                 case "codigo":
                     labelValorFiltro.textContent = "Código do Produto";
                     valorFiltro.type = "text";
                     valorFiltro.placeholder = "Digite o código do produto";
                     break;
             }
+
             valorFiltro.value = "";
         });
     }
 
-    const btnAbrirOrdenacao = document.getElementById("btnAbrirOrdenacao");
+    const btnAbrirOrdenacao =
+        document.getElementById("btnAbrirOrdenacao");
+
     if (btnAbrirOrdenacao) {
         btnAbrirOrdenacao.addEventListener("click", () => {
-            bootstrap.Modal.getOrCreateInstance(document.getElementById("modalOrdenarProdutos")).show();
+            const modal = document.getElementById("modalOrdenarProdutos");
+
+            if (modal) {
+                bootstrap.Modal
+                    .getOrCreateInstance(modal)
+                    .show();
+            }
         });
     }
 
-    const btnExecutarOrdenacao = document.getElementById("btnExecutarOrdenacao");
+    const btnExecutarOrdenacao =
+        document.getElementById("btnExecutarOrdenacao");
+
     if (btnExecutarOrdenacao) {
-        btnExecutarOrdenacao.addEventListener("click", ordenarProdutos);
+        btnExecutarOrdenacao.addEventListener(
+            "click",
+            ordenarProdutos
+        );
     }
 
     async function ordenarProdutos() {
-        const direcao = document.getElementById("tipoOrdenacao").value;
-        const resposta = await fetch(`/produtos/atualizar-tabela/?ordem=${direcao}`);
-        const html = await resposta.text();
+        const tipoOrdenacao = document.getElementById("tipoOrdenacao");
 
-        document.getElementById("tabelaProdutosBody").innerHTML = html;
-        inicializarEventosTabela();
-        bootstrap.Modal.getInstance(document.getElementById("modalOrdenarProdutos")).hide();
+        if (!tipoOrdenacao) return;
+
+        const direcao = tipoOrdenacao.value;
+
+        try {
+            const resposta = await fetch(
+                `/produtos/atualizar-tabela/?ordem=${encodeURIComponent(direcao)}`
+            );
+
+            if (!resposta.ok) {
+                throw new Error("Erro HTTP " + resposta.status);
+            }
+
+            const html = await resposta.text();
+            const tbody = document.getElementById("tabelaProdutosBody");
+
+            if (tbody) {
+                tbody.innerHTML = html;
+                inicializarEventosTabela();
+            }
+
+            bootstrap.Modal
+                .getInstance(
+                    document.getElementById("modalOrdenarProdutos")
+                )
+                ?.hide();
+
+        } catch (error) {
+            console.error(error);
+            mostrarAlerta("Erro ao ordenar os produtos.", "erro");
+        }
     }
 
     async function filtrarProdutos() {
-        const tipo = document.getElementById("tipoFiltro").value;
-        const valor = document.getElementById("valorFiltro").value;
+        const tipo = document.getElementById("tipoFiltro")?.value || "";
+        const valor = document.getElementById("valorFiltro")?.value || "";
 
-        if (valor.trim() === "") return;
+        if (valor.trim() === "") {
+            mostrarAlerta("Informe um valor para filtrar.", "erro");
+            return;
+        }
 
-        const resposta = await fetch(
-            `/produtos/atualizar-tabela/?tipo=${encodeURIComponent(tipo)}&valor=${encodeURIComponent(valor)}`
-        );
-        const html = await resposta.text();
+        try {
+            const resposta = await fetch(
+                `/produtos/atualizar-tabela/?tipo=${encodeURIComponent(tipo)}&valor=${encodeURIComponent(valor)}`
+            );
 
-        document.getElementById("tabelaProdutosBody").innerHTML = html;
-        inicializarEventosTabela();
-        bootstrap.Modal.getInstance(document.getElementById("modalFiltrarProdutos")).hide();
+            if (!resposta.ok) {
+                throw new Error("Erro HTTP " + resposta.status);
+            }
+
+            const html = await resposta.text();
+            const tbody = document.getElementById("tabelaProdutosBody");
+
+            if (tbody) {
+                tbody.innerHTML = html;
+                inicializarEventosTabela();
+            }
+
+            bootstrap.Modal
+                .getInstance(
+                    document.getElementById("modalFiltrarProdutos")
+                )
+                ?.hide();
+
+        } catch (error) {
+            console.error(error);
+            mostrarAlerta("Erro ao filtrar os produtos.", "erro");
+        }
     }
 
     // =========================================
     // EXPORTAR EXCEL
     // =========================================
     const btnGerarExcel = document.getElementById("btnGerarExcel");
+
     if (btnGerarExcel) {
-        btnGerarExcel.addEventListener("click", exportarTabelaParaExcel);
+        btnGerarExcel.addEventListener(
+            "click",
+            exportarTabelaParaExcel
+        );
     }
 
     function exportarTabelaParaExcel() {
-        const tabelaBody = document.getElementById("tabelaProdutosBody");
+        const tabelaBody =
+            document.getElementById("tabelaProdutosBody");
+
+        if (!tabelaBody) return;
+
         const linhas = tabelaBody.querySelectorAll("tr");
 
-        if (linhas.length === 0 || tabelaBody.querySelector(".linha-vazia")) {
-            mostrarAlerta("Não há produtos na tabela para exportar.", "erro");
+        if (
+            linhas.length === 0 ||
+            tabelaBody.querySelector(".linha-vazia")
+        ) {
+            mostrarAlerta(
+                "Não há produtos na tabela para exportar.",
+                "erro"
+            );
             return;
         }
 
@@ -783,19 +1340,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
         linhas.forEach(linha => {
             const colunas = linha.querySelectorAll("td");
+
             if (colunas.length > 1) {
                 dadosExcel.push([
-                    colunas[1].innerText.trim(),
-                    colunas[2].innerText.trim(),
-                    colunas[3].innerText.trim(),
-                    colunas[4].innerText.trim(),
-                    colunas[5].innerText.trim(),
-                    colunas[6].innerText.trim(),
-                    colunas[7].innerText.trim(),
-                    colunas[8].innerText.trim(),
-                    colunas[9].innerText.trim(),
-                    colunas[10].innerText.trim(),
-                    colunas[11].innerText.trim()
+                    colunas[1]?.innerText.trim() || "",
+                    colunas[2]?.innerText.trim() || "",
+                    colunas[3]?.innerText.trim() || "",
+                    colunas[4]?.innerText.trim() || "",
+                    colunas[5]?.innerText.trim() || "",
+                    colunas[6]?.innerText.trim() || "",
+                    colunas[7]?.innerText.trim() || "",
+                    colunas[8]?.innerText.trim() || "",
+                    colunas[9]?.innerText.trim() || "",
+                    colunas[10]?.innerText.trim() || "",
+                    colunas[11]?.innerText.trim() || ""
                 ]);
             }
         });
@@ -803,7 +1361,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.aoa_to_sheet(dadosExcel);
 
-        ws['!cols'] = [
+        ws["!cols"] = [
             { wch: 8 },
             { wch: 25 },
             { wch: 12 },
@@ -818,30 +1376,34 @@ document.addEventListener("DOMContentLoaded", function () {
         ];
 
         XLSX.utils.book_append_sheet(wb, ws, "Produtos");
+
         const dataAtual = new Date().toISOString().slice(0, 10);
+
         XLSX.writeFile(wb, `produtos_${dataAtual}.xlsx`);
 
-        mostrarAlerta("Relatório em Excel gerado com sucesso!", "sucesso");
+        mostrarAlerta(
+            "Relatório em Excel gerado com sucesso!",
+            "sucesso"
+        );
     }
 
     // =========================================
     // DUPLICAR PRODUTO
     // =========================================
-    const duplicarProduto = document.getElementById("btnDuplicarProduto");
+    const duplicarProduto =
+        document.getElementById("btnDuplicarProduto");
+
     if (duplicarProduto) {
         duplicarProduto.addEventListener("click", function () {
-            const radioSelecionado = document.querySelector(
-                "#modalTabelaProdutos input[type='radio']:checked"
-            );
+            const linha = obterProdutoSelecionadoUnico("duplicar");
 
-            if (!radioSelecionado) {
-                mostrarAlerta("Selecione um produto na tabela para duplicar.", "erro");
-                return;
-            }
+            if (!linha) return;
 
-            const linha = radioSelecionado.closest("tr");
             const id = linha.dataset.id;
-            const csrfInput = document.querySelector("[name=csrfmiddlewaretoken]");
+
+            const csrfInput = document.querySelector(
+                "[name=csrfmiddlewaretoken]"
+            );
 
             fetch(`/produtos/duplicar/${id}/`, {
                 method: "POST",
@@ -850,61 +1412,83 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Content-Type": "application/json"
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "ok") {
-                    mostrarAlerta(data.mensagem, "sucesso");
-                    return fetch("/produtos/atualizar-tabela/");
-                } else {
-                    mostrarAlerta(data.mensagem || "Erro ao duplicar produto.", "erro");
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Erro HTTP " + response.status);
                 }
+
+                return response.json();
             })
-            .then(response => response ? response.text() : null)
+            .then(data => {
+                if (data.status !== "ok") {
+                    mostrarAlerta(
+                        data.mensagem || "Erro ao duplicar produto.",
+                        "erro"
+                    );
+                    return null;
+                }
+
+                mostrarAlerta(
+                    data.mensagem || "Produto duplicado com sucesso.",
+                    "sucesso"
+                );
+
+                return fetch("/produtos/atualizar-tabela/");
+            })
+            .then(response => {
+                if (!response) return null;
+
+                if (!response.ok) {
+                    throw new Error("Erro ao atualizar a tabela.");
+                }
+
+                return response.text();
+            })
             .then(html => {
-                if (html) {
-                    document.getElementById("tabelaProdutosBody").innerHTML = html;
+                if (html === null) return;
+
+                const tbody =
+                    document.getElementById("tabelaProdutosBody");
+
+                if (tbody) {
+                    tbody.innerHTML = html;
                     inicializarEventosTabela();
                 }
             })
             .catch(error => {
                 console.error("Erro ao duplicar produto:", error);
-                mostrarAlerta("Erro ao processar a duplicação do produto.", "erro");
+
+                mostrarAlerta(
+                    "Erro ao processar a duplicação do produto.",
+                    "erro"
+                );
             });
         });
     }
 
     // =========================================
-    // FUNÇÕES DE TABELA E CONTROLE DE FORMULÁRIO
+    // LIMPAR FORMULÁRIO
     // =========================================
-    function inicializarEventosTabela() {
-        document.querySelectorAll("#modalTabelaProdutos tbody tr").forEach(linha => {
-            linha.addEventListener("click", function () {
-                const radio = this.querySelector('input[type="radio"]');
-                if (!radio) return;
-
-                document
-                    .querySelectorAll("#modalTabelaProdutos tbody tr")
-                    .forEach(tr => tr.classList.remove("produto-selecionado"));
-
-                radio.checked = true;
-                this.classList.add("produto-selecionado");
-                radio.dispatchEvent(new Event("change"));
-            });
-        });
-    }
-
     function limparFormularioProduto() {
         produtoEmEdicao = null;
         dadosOriginais = {};
         imagemOriginal = "";
 
-        if (formulario) formulario.reset();
+        if (formulario) {
+            formulario.reset();
+        }
 
         const campoCodigo = document.getElementById("codigo");
-        if (campoCodigo) campoCodigo.value = "";
+
+        if (campoCodigo) {
+            campoCodigo.value = "";
+        }
 
         const selectCliente = document.getElementById("cliente");
-        if (selectCliente) selectCliente.value = "";
+
+        if (selectCliente) {
+            selectCliente.value = "";
+        }
 
         const resumoSem = document.getElementById("resumo-sem-desconto");
         const resumoDesc = document.getElementById("resumo-desconto");
@@ -924,48 +1508,116 @@ document.addEventListener("DOMContentLoaded", function () {
         if (previewEmpty) {
             previewEmpty.style.display = "flex";
         }
+
+        permitirEnvioSemImagem = false;
     }
 
     function sairModoEdicaoProduto() {
         limparFormularioProduto();
-        mostrarAlerta("Modo edição encerrado. Você pode cadastrar um novo produto.", "sucesso");
+
+        mostrarAlerta(
+            "Modo edição encerrado. Você pode cadastrar um novo produto.",
+            "sucesso"
+        );
+    }
+
+    // =========================================
+    // VISUALIZAR IMAGEM DO PRODUTO
+    // =========================================
+    const btnVisualizarImagem =
+        document.getElementById("btnVisualizarImagem");
+
+    if (btnVisualizarImagem) {
+        btnVisualizarImagem.addEventListener("click", function () {
+            const linha = obterProdutoSelecionadoUnico(
+                "visualizar a imagem"
+            );
+
+            if (!linha) return;
+
+            const imagem = linha.dataset.imagem || "";
+            const img = document.getElementById("imagemProdutoModal");
+            const msg = document.getElementById("mensagemSemImagem");
+
+            if (imagem) {
+                if (img) {
+                    img.src = imagem;
+                    img.style.display = "block";
+                }
+
+                if (msg) {
+                    msg.style.display = "none";
+                }
+            } else {
+                if (img) {
+                    img.style.display = "none";
+                    img.src = "";
+                }
+
+                if (msg) {
+                    msg.style.display = "block";
+                }
+            }
+
+            const modalImagem =
+                document.getElementById("modalVisualizarImagem");
+
+            if (modalImagem) {
+                bootstrap.Modal
+                    .getOrCreateInstance(modalImagem)
+                    .show();
+            }
+        });
     }
 
 });
-
+    
 // =========================================
 // HELPERS UTILITÁRIOS
 // =========================================
 function formatarMoeda(valor) {
     valor = Number(valor);
-    if (isNaN(valor)) valor = 0;
-    return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+    if (isNaN(valor)) {
+        valor = 0;
+    }
+
+    return valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
 }
 
 function gerarCodigoProduto() {
-    let numero = Math.floor(Math.random() * 999999);
+    const numero = Math.floor(Math.random() * 999999);
     return "PRD-" + numero;
 }
 
 function aplicarMascaraMoeda(input) {
     if (!input) return;
+
     input.addEventListener("input", function () {
         let valor = this.value.replace(/\D/g, "");
+
         valor = (Number(valor) / 100).toFixed(2) + "";
         valor = valor.replace(".", ",");
         valor = valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
         this.value = "R$ " + valor;
     });
 }
 
 function aplicarMascaraPorcentagem(input) {
     if (!input) return;
+
     input.addEventListener("input", function () {
         let valor = this.value.replace(/\D/g, "");
+
         if (valor === "") {
             this.value = "";
             return;
         }
+
         valor = Math.min(parseInt(valor), 100);
         this.value = valor + "%";
     });
@@ -973,9 +1625,15 @@ function aplicarMascaraPorcentagem(input) {
 
 function marcarErro(input) {
     if (!input) return;
+
     input.classList.add("input-erro");
     input.focus();
-    input.addEventListener("pointerdown", () => {
-        input.classList.remove("input-erro");
-    }, { once: true });
+
+    input.addEventListener(
+        "pointerdown",
+        () => {
+            input.classList.remove("input-erro");
+        },
+        { once: true }
+    );
 }

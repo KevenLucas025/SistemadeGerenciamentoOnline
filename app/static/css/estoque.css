@@ -672,7 +672,7 @@
     border-radius: 8px;
     color: #cecfd2;
     font-size: 12.5px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
@@ -1015,16 +1015,51 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
 
 .modal-exclusao-historico-content {
     background: #111827 !important;
-    border: 1px solid rgba(239, 68, 68, 0.3) !important;
     border-radius: 14px !important;
     color: #cecfd2;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65);
 }
 
-.modal-exclusao-historico-header {
+.modal-confirmar-apagar-historico-titulo {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 19px;
+    font-weight: 600;
+}
+.modal-exclusao-historico-texto-descricao{
+    margin: 0;
+    color: #9ca3af;
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+
+.modal-confirmar-apagar-historico-alerta{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 16px;
+    font-size: 13px;
+    text-align: left;
+}
+
+.modal-confirmar-apagar-historico-alerta-label {
+    color: #9ca3af;
+}
+
+.modal-confirmar-apagar-historico-alerta-valor {
+    color: #f87171;
+    font-weight: 600;
+}
+
+#modalConfirmarExclusaoHistorico .modal-exclusao-historico-header {
     background: #111827;
-    border-bottom: 1px solid #1f2937;
+    border-bottom: 1px solid #374151;
     padding: 16px 20px;
     display: flex;
     align-items: center;
@@ -1086,12 +1121,12 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
     text-align: left;
 }
 
-.modal-exclusao-historico-footer {
+#modalConfirmarExclusaoHistorico .modal-exclusao-historico-footer {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     padding: 14px 20px;
-    border-top: 1px solid #1f2937;
+    border-top: 1px solid #374151;
     background: #111827;
 }
 
@@ -1479,7 +1514,7 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
     justify-content: space-between;
     align-items: center;
     padding: 20px 24px 15px;
-    background: #0f172a;
+    background: #111827;
     border-bottom: 1px solid #374151 !important;
 }
 
@@ -1520,7 +1555,7 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
 
 .modal-ordenar-historico-produtos-body {
     padding: 20px !important;
-    background: #0f172a !important;
+    background: #111827;
     border: none !important;
 }
 
@@ -1569,7 +1604,7 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
     gap: 10px !important;
     padding: 14px 20px !important;
     border-top: 1px solid #374151 !important;
-    background: #0f172a !important;
+    background: #111827 !important;
 }
 
 .btn-cancelar-ordenar-historico-produtos {

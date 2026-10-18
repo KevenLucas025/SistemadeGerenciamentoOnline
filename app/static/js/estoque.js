@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
         : null;
     const tbodyyHistoricoProdutos = document.getElementById("tbodyHistoricoProdutos");
     const btnAtualizarHistorico = document.getElementById("btnAtualizarHistoricoProdutos");
+    const labelqtditens = document.getElementById("qtdHistoricoExclusaoModal");
 
     /* =====================================================
        HISTÓRICO DE PRODUTOS — SELEÇÃO E EXCLUSÃO
@@ -546,6 +547,17 @@ document.addEventListener("DOMContentLoaded", function () {
         return Array.from(checkboxes).map(cb => cb.value);
     }
 
+    // Atualiza a quantidade selecionada no modal de exclusão
+    function atualizarQuantidadeHistoricoExclusao() {
+        if (!labelqtditens) return;
+
+        const quantidade = getIdsHistoricoSelecionados().length;
+
+        labelqtditens.textContent = quantidade === 1
+            ? "1 item"
+            : `${quantidade} itens`;
+    }
+
     // Atualiza o contador de selecionados no rodapé do modal
     function atualizarContadorHistorico() {
         const totalSelecionados = getIdsHistoricoSelecionados().length;
@@ -584,6 +596,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             atualizarContadorHistorico();
+            atualizarQuantidadeHistoricoExclusao();
         });
     }
 
@@ -614,6 +627,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             atualizarContadorHistorico();
+            atualizarQuantidadeHistoricoExclusao();
         });
     }
 
@@ -634,13 +648,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            if (selecionados.length === 1) {
-                textoConfirmacaoExclusao.innerHTML = "Deseja realmente apagar somente este histórico?";
-            } else {
-                textoConfirmacaoExclusao.innerHTML = `Deseja realmente apagar os ${selecionados.length} históricos selecionados?`;
-            }
-
             if (modalExclusaoHistorico) {
+                atualizarQuantidadeHistoricoExclusao();
                 modalExclusaoHistorico.show();
             }
         });

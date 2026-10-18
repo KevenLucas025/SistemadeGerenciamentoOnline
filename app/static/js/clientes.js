@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
             modalExclusaoHistoricoEl
         )
         : null;
-
+    const qtdHistoricoApagarModalClientes = document.getElementById("qtdHistoricoApagarModalClientes");
     const textoConfirmacaoExclusao = document.getElementById("textoConfirmacaoExclusaoHistoricoClientes");
     const btnConfirmarExclusaoHistoricoDefinitiva =document.getElementById( "btnConfirmarExclusaoHistoricoClientesDefinitiva");
     const contadorSelecionadosEl = document.querySelector(".contador-selecionados-historico-clientes");
@@ -2949,6 +2949,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
+        // Atualiza a quantidade exibida no modal de exclusão.
+        if (qtdHistoricoApagarModalClientes) {
+            qtdHistoricoApagarModalClientes.textContent =
+                `${selecionados} ${selecionados === 1 ? "item" : "itens"}`;
+        }
+
         atualizarMasterHistorico();
     }
 
@@ -3250,15 +3256,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                if (
-                    selecionados.length === 1
-                ) {
-                    textoConfirmacaoExclusao.innerHTML =
-                        "Deseja realmente apagar somente este histórico?";
-                } else {
-                    textoConfirmacaoExclusao.innerHTML =
-                        `Deseja realmente apagar os ${selecionados.length} históricos selecionados?`;
-                }
+                atualizarContadorHistoricoClientes();
 
                 modalExclusaoHistorico?.show();
             }

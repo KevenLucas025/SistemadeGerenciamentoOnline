@@ -1017,7 +1017,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const clicouNaLinhaHistorico = e.target.closest(
                 "#tbodyHistoricoUsuarios tr.linha-item-historico"
             );
-
+            const clicouNoCheckMaster = e.target.closest("#checkAllHistorico");
             const clicouNoToolbar = e.target.closest(".modal-historico-toolbar");
             const clicouNoModalConfirmacao = e.target.closest("#modalConfirmarApagarHistorico");
             const clicouNoModalPausa = e.target.closest("#modalStatusPausaHistorico");
@@ -1026,6 +1026,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (
                 !clicouNaLinhaHistorico &&
+                !clicouNoCheckMaster &&
                 !clicouNoToolbar &&
                 !clicouNoModalConfirmacao &&
                 !clicouNoModalPausa &&

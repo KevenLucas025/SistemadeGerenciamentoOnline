@@ -1983,9 +1983,36 @@ input.col-checkbox-clientes[type="checkbox"]:checked::after {
     margin: 1.75rem auto !important;
 }
 
+.modal-confirmar-apagar-historico-titulo-clientes {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 19px;
+    font-weight: 600;
+}
+.modal-confirmar-apagar-historico-descricao-clientes{
+    margin: 0;
+    color: #9ca3af;
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+.modal-confirmar-apagar-historico-alerta-clientes{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 16px;
+    font-size: 13px;
+    text-align: left;
+}
+.modal-confirmar-apagar-historico-alerta-label-clientes{
+    color: #9ca3af;
+}
+
 .modal-exclusao-historico-clientes-content {
     background: #111827 !important;
-    border: 1px solid #374151 !important;
     border-radius: 14px !important;
     color: #cecfd2;
     overflow: hidden;
@@ -2030,10 +2057,13 @@ input.col-checkbox-clientes[type="checkbox"]:checked::after {
     background-color: #dc2626;
     color: #cecfd2;
 }
-
+.modal-confirmar-apagar-historico-alerta-valor-clientes{
+    color: #f87171;
+    font-weight: 600;
+}
 .modal-exclusao-historico-clientes-body {
-    padding: 22px 20px;
-    background: #111827;
+    padding: 24px 24px 20px;
+    background: #1f2937;
 }
 
 .modal-exclusao-historico-clientes-texto {
@@ -2043,18 +2073,7 @@ input.col-checkbox-clientes[type="checkbox"]:checked::after {
     color: #e5e7eb;
 }
 
-.alerta-aviso-exclusao-historico-clientes {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.25);
-    border-radius: 8px;
-    padding: 10px 12px;
-    color: #fca5a5;
-    font-size: 12px;
-    text-align: left;
-}
+
 
 .modal-exclusao-historico-clientes-footer {
     display: flex;

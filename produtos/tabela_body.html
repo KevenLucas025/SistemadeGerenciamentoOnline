@@ -16,9 +16,11 @@
 
     <td>
         <input
-            type="radio"
-            name="produtoSelecionado"
-            value="{{ produto.id }}">
+            type="checkbox"
+            class="checkbox-produto"
+            value="{{ produto.id }}"
+            aria-label="Selecionar produto {{ produto.nome }}"
+        >
     </td>
 
     <td>{{ produto.id }}</td>

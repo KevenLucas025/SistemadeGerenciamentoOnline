@@ -373,46 +373,82 @@
     </div>
 </div>
 
+
 <!-- =====================================================
      MODAL ESPECÍFICO — CONFIRMAR EXCLUSÃO DE HISTÓRICO
 ====================================================== -->
 <div class="modal fade" id="modalConfirmarExclusaoHistorico" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm modal-exclusao-historico-dialog">
         <div class="modal-content modal-exclusao-historico-content">
+
             <div class="modal-header modal-exclusao-historico-header">
                 <h5>
                     <i class="fa-solid fa-triangle-exclamation"></i>
                     Confirmar Exclusão
                 </h5>
-                <button type="button" class="btn-modal-fechar-exclusao-historico" data-bs-dismiss="modal" aria-label="Fechar">
+
+                <button
+                    type="button"
+                    class="btn-modal-fechar-exclusao-historico"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar"
+                >
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
             <div class="modal-body modal-exclusao-historico-body text-center">
-                <!-- Texto dinâmico alterado via JS conforme a quantidade -->
-                <p id="textoConfirmacaoExclusaoHistorico" class="modal-exclusao-historico-texto">
-                    Deseja apagar os registros selecionados?
+
+                <h4 class="modal-confirmar-apagar-historico-titulo">
+                    Apagar Registro(s) do Histórico?
+                </h4>
+
+                <!-- Descrição da exclusão -->
+                <p
+                    id="textoConfirmacaoExclusaoHistorico"
+                    class="modal-exclusao-historico-texto-descricao"
+                >
+                    Esta ação é <strong>irreversível</strong>. Os registros selecionados serão excluídos permanentemente da base de dados do sistema.
                 </p>
 
-                <div class="alerta-aviso-exclusao-historico">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <span>Esta ação é irreversível e os dados serão excluídos definitivamente.</span>
+                <!-- Quantidade selecionada -->
+                <div class="modal-confirmar-apagar-historico-alerta">
+                    <span class="modal-confirmar-apagar-historico-alerta-label">
+                        Quantidade selecionada:
+                    </span>
+
+                    <strong
+                        id="qtdHistoricoExclusaoModal"
+                        class="modal-confirmar-apagar-historico-alerta-valor"
+                    >0 itens</strong>
                 </div>
+
             </div>
 
             <div class="modal-footer modal-exclusao-historico-footer">
-                <button type="button" class="btn-cancelar-exclusao-historico" data-bs-dismiss="modal">
+
+                <button
+                    type="button"
+                    class="btn-cancelar-exclusao-historico"
+                    data-bs-dismiss="modal"
+                >
                     Cancelar
                 </button>
-                <button type="button" id="btnConfirmarExclusaoHistoricoDefinitiva" class="btn-confirmar-exclusao-historico">
+
+                <button
+                    type="button"
+                    id="btnConfirmarExclusaoHistoricoDefinitiva"
+                    class="btn-confirmar-exclusao-historico"
+                >
                     <i class="fa-solid fa-trash-can"></i>
                     Confirmar Exclusão
                 </button>
+
             </div>
         </div>
     </div>
 </div>
+
 
 
 

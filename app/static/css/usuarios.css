@@ -678,9 +678,6 @@
 
 
 /* CHECKBOXES PERSONALIZADAS COMPACTAS */
-
-
-
 input.col-checkbox-usuarios[type="checkbox"],
 input.checkbox-custom-historico[type="checkbox"]
  {
@@ -820,7 +817,6 @@ input.checkbox-custom-historico[type="checkbox"]:checked::after {
 
 .modal-confirmar-apagar-historico-content {
     background: #111827 !important;
-    border: 1px solid #374151 !important;
     border-radius: 16px !important;
     color: #cecfd2;
     overflow: hidden !important;
@@ -837,7 +833,7 @@ input.checkbox-custom-historico[type="checkbox"]:checked::after {
     justify-content: space-between;
     padding: 20px 24px 15px;
     border-bottom: 1px solid #374151;
-    background: #1f2937;
+    background: #111827;
 }
 
 .modal-confirmar-apagar-historico-icon {
@@ -919,7 +915,7 @@ input.checkbox-custom-historico[type="checkbox"]:checked::after {
 /* BODY */
 .modal-confirmar-apagar-historico-body {
     padding: 24px 24px 20px;
-    background: #1f2937;
+    background: #111827;
 }
 
 .modal-confirmar-apagar-historico-titulo {
@@ -940,7 +936,7 @@ input.checkbox-custom-historico[type="checkbox"]:checked::after {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #111827;
+    background: #1f2937;
     border: 1px solid #374151;
     border-radius: 8px;
     padding: 10px 14px;
@@ -965,7 +961,7 @@ input.checkbox-custom-historico[type="checkbox"]:checked::after {
     gap: 10px;
     padding: 16px 24px;
     border-top: 1px solid #374151;
-    background: #1f2937;
+    background: #111827;
 }
 
 .btn-cancelar-apagar-historico {

@@ -1066,43 +1066,87 @@
     </div>
 </div>
 
+
 <!-- =====================================================
      MODAL ESPECÍFICO — CONFIRMAR EXCLUSÃO DE HISTÓRICO DE CLIENTES
 ====================================================== -->
-<div class="modal fade" id="modalConfirmarExclusaoHistoricoClientes" tabindex="-1" aria-hidden="true">
+<div
+    class="modal fade"
+    id="modalConfirmarExclusaoHistoricoClientes"
+    tabindex="-1"
+    aria-hidden="true"
+>
     <div class="modal-dialog modal-dialog-centered modal-sm modal-exclusao-historico-clientes-dialog">
         <div class="modal-content modal-exclusao-historico-clientes-content">
+
+            <!-- CABEÇALHO -->
             <div class="modal-header modal-exclusao-historico-clientes-header">
                 <h5>
                     <i class="fa-solid fa-triangle-exclamation"></i>
                     Confirmar Exclusão
                 </h5>
-                <button type="button" class="btn-modal-fechar-exclusao-historico-clientes" data-bs-dismiss="modal" aria-label="Fechar">
+
+                <button
+                    type="button"
+                    class="btn-modal-fechar-exclusao-historico-clientes"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar"
+                >
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <div class="modal-body modal-exclusao-historico-clientes-body text-center">
-                <!-- Texto dinâmico alterado via JS conforme a quantidade -->
-                <p id="textoConfirmacaoExclusaoHistoricoClientes" class="modal-exclusao-historico-clientes-texto">
-                    Deseja apagar os registros do histórico de clientes selecionados?
+            <!-- CORPO PRINCIPAL -->
+            <div class="modal-body modal-confirmar-apagar-historico-body text-center">
+
+                <h4 class="modal-confirmar-apagar-historico-titulo-clientes">
+                    Apagar Registro(s) do Histórico?
+                </h4>
+
+                <p class="modal-confirmar-apagar-historico-descricao-clientes">
+                    Esta ação é <strong>irreversível</strong>. Os registros
+                    selecionados serão excluídos permanentemente da base de
+                    dados do sistema.
                 </p>
 
-                <div class="alerta-aviso-exclusao-historico-clientes">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <span>Esta ação é irreversível e os dados serão excluídos definitivamente.</span>
+                <!-- QUANTIDADE SELECIONADA -->
+                <div class="modal-confirmar-apagar-historico-alerta-clientes">
+                    <span class="modal-confirmar-apagar-historico-alerta-label-clientes">
+                        Quantidade selecionada:
+                    </span>
+
+                    <strong
+                        id="qtdHistoricoApagarModalClientes"
+                        class="modal-confirmar-apagar-historico-alerta-valor-clientes">
+                        0 itens
+                    </strong>
                 </div>
+
             </div>
 
+
+            <!-- RODAPÉ -->
             <div class="modal-footer modal-exclusao-historico-clientes-footer">
-                <button type="button" class="btn-cancelar-exclusao-historico-clientes" data-bs-dismiss="modal">
+
+                <button
+                    type="button"
+                    class="btn-cancelar-exclusao-historico-clientes"
+                    data-bs-dismiss="modal"
+                >
                     Cancelar
                 </button>
-                <button type="button" id="btnConfirmarExclusaoHistoricoClientesDefinitiva" class="btn-confirmar-exclusao-historico-clientes">
+
+                <button
+                    type="button"
+                    id="btnConfirmarExclusaoHistoricoClientesDefinitiva"
+                    class="btn-confirmar-exclusao-historico-clientes"
+                >
                     <i class="fa-solid fa-trash-can"></i>
                     Confirmar Exclusão
                 </button>
+
             </div>
+
         </div>
     </div>
 </div>
