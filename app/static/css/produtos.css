@@ -189,7 +189,7 @@ SCROLL
     background:#1b2230;
     border:1px solid #313b4e;
     border-radius:10px;
-    color:#f8fafc;
+    color:#cecfd2;
     outline:none;
     font-size:14px;
     transition:.25s;
@@ -1024,7 +1024,7 @@ BOTÕES DO RESUMO
 
 .modal-confirmar-apagar-historico-titulo-produtos {
     margin: 0 0 10px;
-    color: #f9fafb;
+    color: #CECFD2;
     font-size: 19px;
     font-weight: 600;
 }
@@ -1187,7 +1187,7 @@ input.checkbox-custom-tabela-produtos[type="checkbox"]:checked::after {
 
 .modal-confirmar-apagar-titulo-produtos {
     margin: 0 0 10px;
-    color: #f9fafb;
+    color: #CECFD2;
     font-size: 19px;
     font-weight: 600;
 }
@@ -1325,4 +1325,459 @@ input.checkbox-custom-tabela-produtos[type="checkbox"]:checked::after {
 .btn-confirmar-apagar-produtos:hover {
     background: #b91c1c;
     border-color: #991b1b;
+}
+
+/* =====================================================
+   MODAL FILTRAR PRODUTOS — ESTILOS CUSTOMIZADOS (SIMPLIFICADO)
+===================================================== */
+#modalFiltrarProdutos{
+    z-index: 1075 !important;
+}
+
+/* 1. ESTRUTURA PRINCIPAL DO MODAL */
+.modal-filtrar-produtos .modal-filtrar-produtos-content {
+  background-color: #111827;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  color: #cecfd2;
+  overflow: hidden;
+}
+.modal-filtrar-produtos-dialog{
+    max-width: 400px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+/* 2. CABEÇALHO */
+.modal-filtrar-produtos .modal-filtrar-produtos-header {
+  background-color: #111827;
+  border-bottom: 1px solid #334155;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-filtrar-produtos .modal-filtrar-produtos-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #cecfd2;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.modal-filtrar-produtos .modal-filtrar-produtos-titulo i {
+  color: #cecfd2;
+}
+
+.modal-filtrar-produtos .btn-modal-fechar-filtrar-produtos {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none;
+    border-radius: 50% !important;
+    color: #CECFD2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-filtrar-produtos .btn-modal-fechar-filtrar-produtos:hover {
+    background-color: #dc2626 !important;
+    color: #CECFD2 !important;
+    transform: scale(1.05);
+}
+
+/* 3. CORPO E CAMPOS */
+.modal-filtrar-produtos .modal-filtrar-produtos-body {
+  padding: 1.5rem;
+  background: #111827;
+}
+
+.modal-filtrar-produtos .campo-filtrar-produtos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-filtrar-produtos .label-tipo-filtro-produtos,
+.modal-filtrar-produtos .label-valor-filtro-produtos {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modal-filtrar-produtos .select-tipo-filtro-produtos,
+.modal-filtrar-produtos .input-valor-filtro-produtos {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  color: #cecfd2;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+
+
+.modal-filtrar-produtos .select-tipo-filtro-produtos option {
+    background-color: #0f172a;
+    color: #cecfd2;
+    
+}
+
+#tipoFiltroProdutos{
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+#tipoFiltroProdutos:hover,
+#tipoFiltroProdutos:focus{
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+/* 4. RODAPÉ E BOTÕES */
+.modal-filtrar-produtos .modal-filtrar-produtos-footer {
+  border-top: 1px solid #334155;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  background: #111827;
+}
+
+.modal-filtrar-produtos .btn-cancelar-filtrar-produtos {
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #e5e7eb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-filtrar-produtos .btn-cancelar-filtrar-produtos:hover {
+  background-color: #4b5563;
+  color: #cecfd2;
+  
+}
+
+.modal-filtrar-produtos .btn-confirmar-filtrar-produtos {
+  padding: 0.6rem 1.25rem;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  color: #cecfd2;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-filtrar-produtos .btn-confirmar-filtrar-produtos:hover {
+  background-color: #2563eb;
+}
+
+/* =====================================================
+   MODAL ORDENAR PRODUTOS — ESTILOS CUSTOMIZADOS (#111827)
+===================================================== */
+/* Z-Index e Posição do Modal */
+#modalOrdenarProdutos {
+  z-index: 1075 !important;
+}
+
+.modal-ordenar-produtos-dialog{
+    max-width: 400px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+
+/* 1. ESTRUTURA PRINCIPAL DO MODAL */
+.modal-ordenar-produtos .modal-ordenar-produtos-content {
+  background-color: #111827;
+  border: 1px solid #374151;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  color: #CECFD2;
+  overflow: hidden;
+}
+
+/* 2. CABEÇALHO */
+.modal-ordenar-produtos .modal-ordenar-produtos-header {
+  background-color: #111827;
+  border-bottom: 1px solid #1f2937;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-ordenar-produtos .modal-ordenar-produtos-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #CECFD2;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.modal-ordenar-produtos .modal-ordenar-produtos-titulo i {
+  color: #CECFD2;
+}
+
+.modal-ordenar-produtos .btn-modal-fechar-ordenar-produtos {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none;
+    border-radius: 50% !important;
+    color: #CECFD2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-ordenar-produtos .btn-modal-fechar-ordenar-produtos:hover {
+    background-color: #dc2626 !important;
+    color: #CECFD2 !important;
+    transform: scale(1.05);
+}
+
+/* 3. CORPO E CAMPOS */
+.modal-ordenar-produtos .modal-ordenar-produtos-body {
+  background-color: #111827;
+  padding: 1.5rem;
+}
+
+.modal-ordenar-produtos .campo-ordenar-produtos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-ordenar-produtos .label-ordenar-produtos {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modal-ordenar-produtos .select-ordenar-produtos {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  color: #CECFD2;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+  
+}
+
+.modal-ordenar-produtos .select-ordenar-produtos:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.modal-ordenar-produtos .select-ordenar-produtos option {
+  background-color: #1f2937;
+  color: #CECFD2;
+}
+
+/* 4. RODAPÉ E BOTÕES */
+.modal-ordenar-produtos .modal-ordenar-produtos-footer {
+  background-color: #111827;
+  border-top: 1px solid #1f2937;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.modal-ordenar-produtos .btn-cancelar-ordenar-produtos {
+  padding: 0.6rem 1.2rem;
+  background-color: transparent;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  color: #9ca3af;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-ordenar-produtos .btn-cancelar-ordenar-produtos:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #CECFD2;
+  border-color: #4b5563;
+}
+
+.modal-ordenar-produtos .btn-confirmar-ordenar-produtos {
+  padding: 0.6rem 1.25rem;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-ordenar-produtos .btn-confirmar-ordenar-produtos:hover {
+  background-color: #2563eb;
+}
+
+#tipoOrdenacaoProdutos {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+#tipoOrdenacaoProdutos:hover,
+#tipoOrdenacaoProdutos:focus{
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+/* =====================================================
+   MODAL VISUALIZAR IMAGEM DO PRODUTO — (#111827)
+===================================================== */
+
+/* 1. ESTRUTURA PRINCIPAL DO MODAL */
+.modal-visualizar-imagem-produtos .modal-visualizar-imagem-produtos-content {
+  background-color: #111827;
+  border: 1px solid #374151;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  color: #f9fafb;
+  overflow: hidden;
+}
+
+/* 2. CABEÇALHO */
+.modal-visualizar-imagem-produtos .modal-visualizar-imagem-produtos-header {
+  background-color: #111827;
+  border-bottom: 1px solid #1f2937;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-visualizar-imagem-produtos .modal-visualizar-imagem-produtos-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f9fafb;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.modal-visualizar-imagem-produtos .modal-visualizar-imagem-produtos-titulo i {
+  color: #3b82f6;
+}
+
+.modal-visualizar-imagem-produtos .btn-modal-fechar-visualizar-imagem-produtos {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.2rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-visualizar-imagem-produtos .btn-modal-fechar-visualizar-imagem-produtos:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ef4444;
+}
+
+/* 3. CORPO DO MODAL E ÁREA DA IMAGEM */
+.modal-visualizar-imagem-produtos .modal-visualizar-imagem-produtos-body {
+  background-color: #111827;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+}
+
+/* IMAGEM COM MOLDURA E BORDAS SUAVES */
+.modal-visualizar-imagem-produtos .img-preview-modal-produtos {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid #374151;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.modal-visualizar-imagem-produtos .img-preview-modal-produtos:hover {
+  transform: scale(1.01);
+}
+
+/* 4. ESTADO SEM IMAGEM */
+.modal-visualizar-imagem-produtos .mensagem-sem-imagem-produtos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+  background-color: #1f2937;
+  border: 1px dashed #374151;
+  border-radius: 12px;
+  width: 100%;
+}
+
+.modal-visualizar-imagem-produtos .icone-sem-imagem-produtos {
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+}
+
+.modal-visualizar-imagem-produtos .texto-sem-imagem-produtos {
+  color: #9ca3af;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
 }

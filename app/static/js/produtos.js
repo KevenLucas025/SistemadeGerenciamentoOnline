@@ -889,9 +889,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================
     // ATUALIZAR PRODUTO (SALVAR EDIÇÃO)
     // =========================================
-    const btnAtualizar = document.querySelector(
-        ".btn-cadastrar-produtos.atualizar"
-    );
+    const btnAtualizar = document.querySelector(".btn-side-actions.atualizar");
 
     if (btnAtualizar) {
         btnAtualizar.addEventListener("click", function () {
@@ -966,6 +964,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const formData = new FormData(formulario);
 
+            const arquivoImagem = formData.get("imagem");
+
+            console.log("Produto em edição:", produtoEmEdicao);
+            console.log("Imagem original:", imagemOriginal);
+            console.log("Arquivo selecionado:", inputImg?.files[0] || null);
+            console.log("Arquivo enviado:", arquivoImagem);
+
+            console.log("URL da requisição:", `/produtos/atualizar/${produtoEmEdicao}/`);
+
             const csrfInput = document.querySelector(
                 "[name=csrfmiddlewaretoken]"
             );
@@ -1025,8 +1032,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================
     // SAIR DO MODO EDIÇÃO
     // =========================================
-    const btnSairModoEdicao =
-        document.getElementById("btnSairModoEdicao");
+    const btnSairModoEdicao = document.getElementById("btnSairModoEdicao");
 
     if (btnSairModoEdicao) {
         btnSairModoEdicao.addEventListener("click", function () {
@@ -1521,8 +1527,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================
     // VISUALIZAR IMAGEM DO PRODUTO
     // =========================================
-    const btnVisualizarImagem =
-        document.getElementById("btnVisualizarImagem");
+    const btnVisualizarImagem = document.getElementById("btnVisualizarImagem");
 
     if (btnVisualizarImagem) {
         btnVisualizarImagem.addEventListener("click", function () {
@@ -1533,32 +1538,38 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!linha) return;
 
             const imagem = linha.dataset.imagem || "";
+
             const img = document.getElementById("imagemProdutoModal");
-            const msg = document.getElementById("mensagemSemImagem");
+            const msg = document.getElementById("mensagemSemImagemProduto");
+            const modalImagem = document.getElementById(
+                "modalVisualizarImagemProduto"
+            );
 
             if (imagem) {
+                // Exibe a imagem
                 if (img) {
                     img.src = imagem;
                     img.style.display = "block";
                 }
 
+                // Oculta a mensagem de ausência
                 if (msg) {
                     msg.style.display = "none";
                 }
             } else {
+                // Oculta a imagem
                 if (img) {
-                    img.style.display = "none";
                     img.src = "";
+                    img.style.display = "none";
                 }
 
+                // Exibe a mensagem de ausência
                 if (msg) {
                     msg.style.display = "block";
                 }
             }
 
-            const modalImagem =
-                document.getElementById("modalVisualizarImagem");
-
+            // Abre o modal
             if (modalImagem) {
                 bootstrap.Modal
                     .getOrCreateInstance(modalImagem)
@@ -1568,6 +1579,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
+
+   
     
 // =========================================
 // HELPERS UTILITÁRIOS

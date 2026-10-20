@@ -8,536 +8,162 @@
 {% endblock %}
 
 {% block content %}
-
-
 <div class="dashboard-sidebar-bar">
-    <button class="btn-menu-mobile"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#menuLateral">
-        <i class="fa-solid fa-bars"></i>
-    </button>
+    <button class="btn-menu-mobile" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral"><i class="fa-solid fa-bars"></i></button>
 </div>
 
 <div class="dashboard-page-cadastrar-produtos">
-
     <div class="dashboard-topbar-cadastrar-produtos">
-        <div>
-            <h1>Cadastro de Produtos</h1>
-            <p>Cadastre, edite e gerencie os produtos do sistema</p>
-        </div>
+        <div><h1>Cadastro de Produtos</h1><p>Cadastre, edite e gerencie os produtos do sistema</p></div>
     </div>
 
     <div class="cadastrar-produtos-grid-layout">
-
         <div class="dashboard-card-cadastrar-produtos">
-
             <div class="cadastrar-produtos-header">
-
-                <h2>
-                    <i class="fa-solid fa-box-open"></i>
-                    Dados do Produto
-                </h2>
-
+                <h2><i class="fa-solid fa-box-open"></i> Dados do Produto</h2>
                 <div class="cadastrar-produtos-acoes-topo">
-
-                    <button id="btnAdicionarProduto" type="button" class="btn-side-actions adicionar">
-                        <i class="fa-solid fa-plus"></i>
-                        Adicionar
-                    </button>
-
-                    <button class="btn-side-actions editar">
-                        <i class="fa-solid fa-pen"></i>
-                        Editar
-                    </button>
-
-                    <button class="btn-side-actions atualizar">
-                        <i class="fa-solid fa-rotate"></i>
-                        Atualizar
-                    </button>
-
-                    <button id="btnSairModoEdicao" class="btn-side-actions sair">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                        Sair do modo edição
-                    </button>
-
-                    <button id="btnApagarFormulario" type="button" class="btn-side-actions apagar">
-                        <i class="fa-solid fa-trash"></i>
-                        Apagar
-                    </button>
-
+                    <button id="btnAdicionarProduto" type="button" class="btn-side-actions adicionar"><i class="fa-solid fa-plus"></i> Adicionar</button>
+                    <button class="btn-side-actions editar"><i class="fa-solid fa-pen"></i> Editar</button>
+                    <button class="btn-side-actions atualizar"><i class="fa-solid fa-rotate"></i> Atualizar</button>
+                    <button id="btnSairModoEdicao" class="btn-side-actions sair"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair do modo edição</button>
+                    <button id="btnApagarFormulario" type="button" class="btn-side-actions apagar"><i class="fa-solid fa-trash"></i> Apagar</button>
                 </div>
-
             </div>
 
             <form method="POST" id="formCadastroProduto" enctype="multipart/form-data">
-
                 {% csrf_token %}
-
-            <div class="cadastrar-produtos-formulario">
-
-                <!-- COLUNA ESQUERDA: Dados do Produto + Descrição -->
-                <div class="coluna-esquerda-formulario">
-
-                    <div class="campo">
-                        <label>Produto</label>
-                        <input type="text"
-                            id="nome"
-                            name="nome"
-                            placeholder="Digite o nome do produto">
-                    </div>
-
-                    <div class="campo">
-                        <label>Código do Item</label>
-                        <input 
-                            type="text"
-                            id="codigo"
-                            name="codigo"
-                            placeholder="Gerado automaticamente"
-                            readonly
-                            title="O código é gerado automaticamente pelo sistema">
-                    </div>
-
-                    <div class="campo">
-                        <label>Quantidade</label>
-                        <input type="number"
-                            id="quantidade"
-                            name="quantidade"
-                            placeholder="Ex.: 10">
-                    </div>
-
-                    <div class="campo">
-                        <label for="cliente">Cliente *</label>
-                        <select id="cliente" name="cliente">
-                            <option value="" selected>Selecione um cliente</option>
-                            {% for c in clientes %}
-                                <option value="{{ c.id }}">
-                                    {{ c.nome }}{% if c.tipo_cliente == "juridico" and c.cnpj %} (CNPJ: {{ c.cnpj }}){% elif c.cpf %} (CPF: {{ c.cpf }}){% endif %}
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="campo">
-                        <label>Valor Unitário</label>
-
-                        <input
-                            type="text"
-                            id="valor_unitario"
-                            name="valor_unitario"
-                            placeholder="R$ 0,00">
-                    </div>
-
-                    <div class="campo">
-                        <label>Desconto (%)</label>
-
-                        <input
-                            type="text"
-                            id="desconto"
-                            name="desconto"
-                            placeholder="0%">
-                    </div>
-
-                    <div class="campo">
-                        <label>Data do Cadastro</label>
-                        <input type="date"
-                            id="data_cadastro"
-                            name="data_cadastro">
-                    </div>
-
-                    <div class="campo campo-descricao">
-                        <label>Descrição do Produto</label>
-                        <textarea
-                            id="descricao"
-                            name="descricao"
-                            rows="4"
-                            placeholder="Escreva os detalhes do produto..."></textarea>
-                    </div>
-
-                </div>
-
-                <!-- COLUNA DIREITA: Upload da Imagem -->
-                <div class="coluna-direita-formulario">
-
-                    <div class="campo-upload">
-
-                        <label>Imagem do Produto</label>
-
-                        <label for="imagem" class="upload-box">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                            <span>
-                                Arraste uma imagem ou clique para selecionar
-                            </span>
-                        </label>
-
-                        <input
-                            type="file"
-                            id="imagem"
-                            name="imagem"
-                            accept="image/*"
-                            hidden
-                        >
-
-                        <div class="upload-botoes">
-
-                            <button 
-                                type="button"
-                                class="btn-upload-remover"
-                                id="btnRemoverImagem">
-
-                                <i class="fa-solid fa-trash"></i>
-                                Remover
-
-                            </button>
-
-
-                            <button 
-                                type="button"
-                                class="btn-upload-carregar"
-                                id="btnCarregarImagem">
-
-                                <i class="fa-solid fa-upload"></i>
-                                Carregar
-
-                            </button>
-
+                <div class="cadastrar-produtos-formulario">
+                    <div class="coluna-esquerda-formulario">
+                        <div class="campo"><label>Produto</label><input type="text" id="nome" name="nome" placeholder="Digite o nome do produto"></div>
+                        <div class="campo"><label>Código do Item</label><input type="text" id="codigo" name="codigo" placeholder="Gerado automaticamente" readonly title="O código é gerado automaticamente pelo sistema"></div>
+                        <div class="campo"><label>Quantidade</label><input type="number" id="quantidade" name="quantidade" placeholder="Ex.: 10"></div>
+                        <div class="campo">
+                            <label for="cliente">Cliente *</label>
+                            <select id="cliente" name="cliente">
+                                <option value="" selected>Selecione um cliente</option>
+                                {% for c in clientes %}
+                                <option value="{{ c.id }}">{{ c.nome }}{% if c.tipo_cliente == "juridico" and c.cnpj %} (CNPJ: {{ c.cnpj }}){% elif c.cpf %} (CPF: {{ c.cpf }}){% endif %}</option>
+                                {% endfor %}
+                            </select>
                         </div>
-
+                        <div class="campo"><label>Valor Unitário</label><input type="text" id="valor_unitario" name="valor_unitario" placeholder="R$ 0,00"></div>
+                        <div class="campo"><label>Desconto (%)</label><input type="text" id="desconto" name="desconto" placeholder="0%"></div>
+                        <div class="campo"><label>Data do Cadastro</label><input type="date" id="data_cadastro" name="data_cadastro"></div>
+                        <div class="campo campo-descricao"><label>Descrição do Produto</label><textarea id="descricao" name="descricao" rows="4" placeholder="Escreva os detalhes do produto..."></textarea></div>
                     </div>
 
-
-                    <div class="upload-preview-container">
-
-                        <label>Pré-visualização</label>
-
-                        <div class="preview-box">
-
-                            <div class="preview-empty">
-
-                                <i class="fa-regular fa-image"></i>
-
-                                <span>
-                                    Nenhuma imagem selecionada
-                                </span>
-
+                    <div class="coluna-direita-formulario">
+                        <div class="campo-upload">
+                            <label>Imagem do Produto</label>
+                            <label for="imagem" class="upload-box"><i class="fa-solid fa-cloud-arrow-up"></i><span>Arraste uma imagem ou clique para selecionar</span></label>
+                            <input type="file" id="imagem" name="imagem" accept="image/*" hidden>
+                            <div class="upload-botoes">
+                                <button type="button" class="btn-upload-remover" id="btnRemoverImagem"><i class="fa-solid fa-trash"></i> Remover</button>
+                                <button type="button" class="btn-upload-carregar" id="btnCarregarImagem"><i class="fa-solid fa-upload"></i> Carregar</button>
                             </div>
-
-
-                            <img
-                                id="img-preview"
-                                src=""
-                                alt="Pré-visualização"
-                                style="display:none;"
-                            >
-
                         </div>
 
+                        <div class="upload-preview-container">
+                            <label>Pré-visualização</label>
+                            <div class="preview-box">
+                                <div class="preview-empty"><i class="fa-regular fa-image"></i><span>Nenhuma imagem selecionada</span></div>
+                                <img id="img-preview" src="" alt="Pré-visualização" style="display:none;">
+                            </div>
+                        </div>
                     </div>
-
                 </div>
-            </div> <!-- Fim do formulario -->
-            <button type="submit" id="btnSalvarProduto" class="btn-confirmar-produto">
-                <i class="fa-solid fa-circle-check"></i>
-                Confirmar / Salvar Produto
-            </button>
-        </form>
+                <button type="submit" id="btnSalvarProduto" class="btn-confirmar-produto"><i class="fa-solid fa-circle-check"></i> Confirmar / Salvar Produto</button>
+            </form>
         </div>
 
         <div class="dashboard-card-resumo-produtos">
             <h2>Resumo de Cálculos</h2>
-            <div class="card-resumo-produto roxo">
-                <div class="icone">
-                    <i class="fa-solid fa-dollar-sign"></i>
-                </div>
-                <div>
-                    <span>Valor total sem desconto</span>
-                    <strong id="resumo-sem-desconto">R$ 0,00</strong>
-                </div>
-            </div>
-
-            <div class="card-resumo-produto verde">
-                <div class="icone">
-                    <i class="fa-solid fa-tags"></i>
-                </div>
-                <div>
-                    <span>Valor do desconto</span>
-                    <strong id="resumo-desconto">R$ 0,00</strong>
-                </div>
-            </div>
-
-            <div class="card-resumo-produto azul">
-                <div class="icone">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-                <div>
-                    <span>Valor com desconto</span>
-                    <strong id="resumo-total">R$ 0,00</strong>
-                </div>
-            </div>
-
-            <div class="card-resumo-produto laranja">
-                <div class="icone">
-                    <i class="fa-solid fa-box"></i>
-                </div>
-                <div>
-                    <span>Quantidade total</span>
-                    <strong id="resumo-quantidade">0</strong>
-                </div>
-            </div>
-
+            <div class="card-resumo-produto roxo"><div class="icone"><i class="fa-solid fa-dollar-sign"></i></div><div><span>Valor total sem desconto</span><strong id="resumo-sem-desconto">R$ 0,00</strong></div></div>
+            <div class="card-resumo-produto verde"><div class="icone"><i class="fa-solid fa-tags"></i></div><div><span>Valor do desconto</span><strong id="resumo-desconto">R$ 0,00</strong></div></div>
+            <div class="card-resumo-produto azul"><div class="icone"><i class="fa-solid fa-cart-shopping"></i></div><div><span>Valor com desconto</span><strong id="resumo-total">R$ 0,00</strong></div></div>
+            <div class="card-resumo-produto laranja"><div class="icone"><i class="fa-solid fa-box"></i></div><div><span>Quantidade total</span><strong id="resumo-quantidade">0</strong></div></div>
             <div class="acoes-resumo-produtos">
-
-                <button
-                    class="btn-resumo-ver-clientes"
-                    data-url="{% url 'clientes' %}">
-                    <i class="fa-solid fa-users"></i>
-                    Ver Clientes
-                </button>
-
-                <button
-                    class="btn-resumo-ver-produtos"
-                    data-url="{% url 'estoque' %}">
-                    <i class="fa-solid fa-boxes-stacked"></i>
-                    Ver Produtos
-                </button>
+                <button class="btn-resumo-ver-clientes" data-url="{% url 'clientes' %}"><i class="fa-solid fa-users"></i> Ver Clientes</button>
+                <button class="btn-resumo-ver-produtos" data-url="{% url 'estoque' %}"><i class="fa-solid fa-boxes-stacked"></i> Ver Produtos</button>
             </div>
         </div>
-
     </div>
-
 </div>
-<!-- =====================================================
-     MODAL SEM IMAGEM
-===================================================== -->
-<div class="modal fade"
-     id="modalSemImagem"
-     tabindex="-1"
-     aria-hidden="true">
 
+<!-- MODAL SEM IMAGEM -->
+<div class="modal fade" id="modalSemImagem" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-
         <div class="modal-content modal-logout-content">
-
-            <!-- CABEÇALHO -->
             <div class="modal-header">
-
-                <div class="modal-logout-icon modal-warning-icon">
-                    <i class="fa-solid fa-image"></i>
-                </div>
-
-                <button type="button"
-                        class="btn-modal-fechar"
-                        data-bs-dismiss="modal"
-                        aria-label="Fechar">
-
-                    <i class="fa-solid fa-xmark"></i>
-
-                </button>
-
+                <div class="modal-logout-icon modal-warning-icon"><i class="fa-solid fa-image"></i></div>
+                <button type="button" class="btn-modal-fechar" data-bs-dismiss="modal" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
-            <!-- CORPO -->
             <div class="modal-body text-center">
-
-                <h4>
-                    Continuar sem imagem?
-                </h4>
-
-                <p>
-                    Nenhuma imagem foi selecionada para este produto.
-                    <br>
-                    Você poderá adicioná-la posteriormente, caso deseje.
-                </p>
-
+                <h4>Continuar sem imagem?</h4>
+                <p>Nenhuma imagem foi selecionada para este produto.<br>Você poderá adicioná-la posteriormente, caso deseje.</p>
             </div>
-
-            <!-- RODAPÉ -->
             <div class="modal-footer">
-
-                <button type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal">
-
-                    Cancelar
-
-                </button>
-
-                <button type="button"
-                        id="btnConfirmarSemImagem"
-                        class="btn btn-continuar">
-
-                    <i class="fa-solid fa-circle-check"></i>
-                    Continuar
-
-                </button>
-
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnConfirmarSemImagem" class="btn btn-continuar"><i class="fa-solid fa-circle-check"></i> Continuar</button>
             </div>
-
         </div>
-
     </div>
-
 </div>
 
-
-<!-- =====================================================
-     MODAL APAGAR PRODUTO(S)
-===================================================== -->
-<div
-    class="modal fade modal-confirmacao-apagar-produtos"
-    id="modalApagarProduto"
-    tabindex="-1"
-    aria-hidden="true"
->
+<!-- MODAL APAGAR PRODUTO(S) -->
+<div class="modal fade modal-confirmacao-apagar-produtos" id="modalApagarProduto" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-apagar-produtos-dialog">
         <div class="modal-content modal-apagar-produtos-content">
-
-            <!-- CABEÇALHO -->
             <div class="modal-header modal-apagar-produtos-header">
-                <div class="modal-apagar-produtos-icon modal-apagar-produtos-warning-icon">
-                    <i class="fa-solid fa-trash"></i>
-                </div>
-
-                <button
-                    type="button"
-                    class="btn-modal-fechar-apagar-produtos"
-                    data-bs-dismiss="modal"
-                    aria-label="Fechar"
-                >
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <div class="modal-apagar-produtos-icon modal-apagar-produtos-warning-icon"><i class="fa-solid fa-trash"></i></div>
+                <button type="button" class="btn-modal-fechar-apagar-produtos" data-bs-dismiss="modal" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
-            <!-- CORPO -->
             <div class="modal-body modal-apagar-produtos-body text-center">
-
-                <h4 id="tituloApagarProduto" class="modal-confirmar-apagar-titulo-produtos">
-                    Apagar produto(s)?
-                </h4>
-
-                <p class="modal-confirmar-apagar-descricao-produtos">
-                    Esta ação é <strong>irreversível</strong>. Os registros selecionados serão excluídos permanentemente da base de dados do sistema.
-                    <br>
-                    Deseja continuar?
-                </p>
-
-                <!-- QUANTIDADE SELECIONADA -->
+                <h4 id="tituloApagarProduto" class="modal-confirmar-apagar-titulo-produtos">Apagar produto(s)?</h4>
+                <p class="modal-confirmar-apagar-descricao-produtos">Esta ação é <strong>irreversível</strong>. Os registros selecionados serão excluídos permanentemente da base de dados do sistema.<br>Deseja continuar?</p>
                 <div class="modal-apagar-produtos-quantidade">
-                    <span class="modal-apagar-produtos-quantidade-label">
-                        Quantidade selecionada:
-                    </span>
-
-                    <strong
-                        id="qtdProdutosApagarModal"
-                        class="modal-apagar-produtos-quantidade-valor"
-                    >
-                        0 produtos
-                    </strong>
+                    <span class="modal-apagar-produtos-quantidade-label">Quantidade selecionada:</span>
+                    <strong id="qtdProdutosApagarModal" class="modal-apagar-produtos-quantidade-valor">0 produtos</strong>
                 </div>
-
             </div>
-
-            <!-- RODAPÉ -->
             <div class="modal-footer modal-apagar-produtos-footer">
-
-                <button
-                    type="button"
-                    class="btn-cancelar-apagar-produtos"
-                    data-bs-dismiss="modal"
-                >
-                    Cancelar
-                </button>
-
-                <button
-                    type="button"
-                    id="btnConfirmarApagarProduto"
-                    class="btn-confirmar-apagar-produtos"
-                >
-                    <i class="fa-solid fa-trash"></i>
-                    Apagar
-                </button>
-
+                <button type="button" class="btn-cancelar-apagar-produtos" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnConfirmarApagarProduto" class="btn-confirmar-apagar-produtos"><i class="fa-solid fa-trash"></i> Apagar</button>
             </div>
-
         </div>
     </div>
 </div>
 
-
-<div class="modal fade"
-     id="modalTabelaProdutos"
-     tabindex="-1"
-     aria-hidden="true">
-
+<!-- MODAL TABELA PRODUTOS -->
+<div class="modal fade" id="modalTabelaProdutos" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
-
         <div class="modal-content">
-
             <div class="modal-header">
-                <h4>
-                    <i class="fa-solid fa-boxes-stacked"></i>
-                    Tabela de Produtos
-                </h4>
-                <button type="button"
-                        class="btn-modal-fechar"
-                        data-bs-dismiss="modal">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <h4><i class="fa-solid fa-boxes-stacked"></i> Tabela de Produtos</h4>
+                <button type="button" class="btn-modal-fechar" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
             <div class="modal-body">
-
-                <!-- Botões com btn-side-action -->
                 <div class="acoes-tabela-produtos">
-
-                    <button class="btn-side-action atualizar" id="btnAtualizarProduto">
-                        <i class="fa-solid fa-pen"></i> Atualizar Produto
-                    </button>
-
-                    <button class="btn-side-action apagar" id="btnApagarProduto">
-                        <i class="fa-solid fa-trash"></i> Apagar Produto
-                    </button>
-
-                    <button class="btn-side-action atualizar-tabela" id="btnAtualizarTabela">
-                        <i class="fa-solid fa-rotate"></i> Atualizar Tabela
-                    </button>
-
-                    <button class="btn-side-action filtrar" id="btnAbrirFiltro">
-                        <i class="fa-solid fa-filter"></i> Filtrar Produtos
-                    </button>
-
-                    <button class="btn-side-action ordenar" id="btnAbrirOrdenacao">
-                        <i class="fa-solid fa-arrow-down-a-z"></i> Ordenar Produtos
-                    </button>
-
-                    <button class="btn-side-action visualizar-imagem" id="btnVisualizarImagem">
-                        <i class="fa-solid fa-image"></i> Visualizar Imagem
-                    </button>
-
-                    <button class="btn-side-action gerar-arquivo-excel" id="btnGerarExcel">
-                        <i class="fa-regular fa-file-excel"></i> Gerar Excel
-                    </button>
-
-                    <button class="btn-side-action duplicar-produto" id="btnDuplicarProduto">
-                        <i class="fa-regular fa-copy"></i> Duplicar Produto
-                    </button>
-
+                    <button class="btn-side-action atualizar" id="btnAtualizarProduto"><i class="fa-solid fa-pen"></i> Atualizar Produto</button>
+                    <button class="btn-side-action apagar" id="btnApagarProduto"><i class="fa-solid fa-trash"></i> Apagar Produto</button>
+                    <button class="btn-side-action atualizar-tabela" id="btnAtualizarTabela"><i class="fa-solid fa-rotate"></i> Atualizar Tabela</button>
+                    <button class="btn-side-action filtrar" id="btnAbrirFiltro"><i class="fa-solid fa-filter"></i> Filtrar Produtos</button>
+                    <button class="btn-side-action ordenar" id="btnAbrirOrdenacao"><i class="fa-solid fa-arrow-down-a-z"></i> Ordenar Produtos</button>
+                    <button class="btn-side-action visualizar-imagem" id="btnVisualizarImagem"><i class="fa-solid fa-image"></i> Visualizar Imagem</button>
+                    <button class="btn-side-action gerar-arquivo-excel" id="btnGerarExcel"><i class="fa-regular fa-file-excel"></i> Gerar Excel</button>
+                    <button class="btn-side-action duplicar-produto" id="btnDuplicarProduto"><i class="fa-regular fa-copy"></i> Duplicar Produto</button>
                 </div>
 
-                <!-- Tabela (agora corretamente dentro de modal-body) -->
                 <div class="table-responsive mt-3">
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th width="50">
-                                    <input
-                                        type="checkbox"
-                                        id="checkboxMasterProdutos"
-                                        class="checkbox-custom-tabela-produtos"
-                                        aria-label="Selecionar todos os produtos"
-                                        title="Selecionar todos os produtos"
-                                    >
-                                </th>
+                                <th width="50"><input type="checkbox" 
+                                    id="checkboxMasterProdutos" 
+                                    class="checkbox-custom-tabela-produtos" 
+                                    aria-label="Selecionar todos os produtos" 
+                                    title="Selecionar todos os produtos"></th>
+                                    
                                 <th>ID</th>
                                 <th>Produto</th>
                                 <th>Quantidade</th>
@@ -546,9 +172,11 @@
                                 <th>Total sem desconto</th>
                                 <th>Total com desconto</th>
                                 <th>Cliente</th>
-                                <th>Código</th>
+                                <th>Código</th><
+                                <th>Descrição do Produto</th>
                                 <th>Data Cadastro</th>
                                 <th>Usuário</th>
+
                             </tr>
                         </thead>
                         <tbody id="tabelaProdutosBody">
@@ -556,189 +184,85 @@
                         </tbody>
                     </table>
                 </div>
-
-            </div> <!-- Fim de modal-body -->
-
+            </div>
         </div>
     </div>
 </div>
 
-<!-- =====================================================
-     MODAL FILTRAR PRODUTOS
-===================================================== -->
-<div class="modal fade"
-     id="modalFiltrarProdutos"
-     tabindex="-1"
-     aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-
-        <div class="modal-content modal-logout-content">
-
-            <div class="modal-header">
-
-                <h5>
-                    <i class="fa-solid fa-filter"></i>
-                    Filtrar Produtos
-                </h5>
-
-                <button
-                    type="button"
-                    class="btn-modal-fechar"
-                    data-bs-dismiss="modal">
-
-                    <i class="fa-solid fa-xmark"></i>
-
-                </button>
-
+<!-- MODAL FILTRAR PRODUTOS -->
+<div class="modal fade modal-filtrar-produtos" id="modalFiltrarProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-filtrar-produtos-dialog">
+        <div class="modal-content modal-filtrar-produtos-content">
+            <div class="modal-header modal-filtrar-produtos-header">
+                <h5 class="modal-filtrar-produtos-titulo"><i class="fa-solid fa-filter"></i> Filtrar Produtos</h5>
+                <button type="button" class="btn-modal-fechar-filtrar-produtos" data-bs-dismiss="modal" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
-            <div class="modal-body">
-
-                <div class="campo">
-
-                    <label>Escolha o tipo de filtro</label>
-
-                    <select id="tipoFiltro">
-
-                        <option value="nome">
-                            Filtrar por Produto
-                        </option>
-
-                        <option value="data_cadastro">
-                            Filtrar por Data do Cadastro
-                        </option>
-
-                        <option value="criado_por">
-                            Filtrar por Usuário
-                        </option>
-
-                        <option value="cliente">
-                            Filtrar por Cliente
-                        </option>
-
-                        <option value="codigo">
-                            Filtrar por Código do Produto
-                        </option>
+            <div class="modal-body modal-filtrar-produtos-body">
+                <div class="campo-filtrar-produtos">
+                    <label for="tipoFiltroProdutos" class="label-tipo-filtro-produtos">Escolha o tipo de filtro</label>
+                    <select id="tipoFiltroProdutos" class="select-tipo-filtro-produtos">
+                        <option value="nome">Filtrar por Produto</option>
+                        <option value="data_cadastro">Filtrar por Data do Cadastro</option>
+                        <option value="criado_por">Filtrar por Usuário</option>
+                        <option value="cliente">Filtrar por Cliente</option>
+                        <option value="codigo">Filtrar por Código do Produto</option>
                     </select>
                 </div>
-
-                <div class="campo mt-3">
-
-                    <label id="labelValorFiltro">
-                        Nome do Produto
-                    </label>
-
-                    <input
-                        type="text"
-                        id="valorFiltro"
-                        placeholder="Digite o nome do produto">
-
+                <div class="campo-filtrar-produtos mt-3">
+                    <label id="labelValorFiltroProdutos" for="valorFiltroProdutos" class="label-valor-filtro-produtos">Nome do Produto</label>
+                    <input type="text" id="valorFiltroProdutos" class="input-valor-filtro-produtos" placeholder="Digite o nome do produto">
                 </div>
             </div>
-            <div class="modal-footer">
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
-                    Cancelar
-                </button>
-                <button
-                    type="button"
-                    id="btnExecutarFiltro"
-                    class="btn btn-primary">
-                    <i class="fa-solid fa-filter"></i>
-                    Filtrar
-                </button>
+            <div class="modal-footer modal-filtrar-produtos-footer">
+                <button type="button" class="btn-cancelar-filtrar-produtos" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnExecutarFiltroProdutos" class="btn-confirmar-filtrar-produtos"><i class="fa-solid fa-filter"></i> Filtrar</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="modalOrdenarProdutos" tabindex="-1" aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content modal-logout-content">
-            <div class="modal-header">
-                <h5>
-                    <i class="fa-solid fa-arrow-down-a-z"></i>
-                    Direção da Ordenação
-                </h5>
-                <button
-                    type="button"
-                    class="btn-modal-fechar"
-                    data-bs-dismiss="modal">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+<!-- MODAL ORDENAR PRODUTOS -->
+<div class="modal fade modal-ordenar-produtos" id="modalOrdenarProdutos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-ordenar-produtos-dialog">
+        <div class="modal-content modal-ordenar-produtos-content">
+            <div class="modal-header modal-ordenar-produtos-header">
+                <h5 class="modal-ordenar-produtos-titulo"><i class="fa-solid fa-arrow-down-a-z"></i> Direção da Ordenação</h5>
+                <button type="button" class="btn-modal-fechar-ordenar-produtos" data-bs-dismiss="modal" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
-            <div class="modal-body">
-                <div class="campo">
-                    <label>Escolha a direção</label>
-                    <select id="tipoOrdenacao">
-                        <option value="asc">
-                            Crescente
-                        </option>
-                        <option value="desc">
-                            Decrescente
-                        </option>
+            <div class="modal-body modal-ordenar-produtos-body">
+                <div class="campo-ordenar-produtos">
+                    <label for="tipoOrdenacaoProdutos" class="label-ordenar-produtos">Escolha a direção</label>
+                    <select id="tipoOrdenacaoProdutos" class="select-ordenar-produtos">
+                        <option value="asc">Crescente</option>
+                        <option value="desc">Decrescente</option>
                     </select>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
-                    Cancelar
-                </button>
-                <button
-                    id="btnExecutarOrdenacao"
-                    class="btn btn-primary">
-                    <i class="fa-solid fa-arrow-down-a-z"></i>
-                    Ordenar
-                </button>
+            <div class="modal-footer modal-ordenar-produtos-footer">
+                <button type="button" class="btn-cancelar-ordenar-produtos" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnExecutarOrdenacaoProdutos" class="btn-confirmar-ordenar-produtos"><i class="fa-solid fa-arrow-down-a-z"></i> Ordenar</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade"
-     id="modalVisualizarImagem"
-     tabindex="-1"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content modal-logout-content">
-            <div class="modal-header">
-                <h5>
-                    <i class="fa-solid fa-image"></i>
-                    Imagem do Produto
-                </h5>
-                <button
-                    type="button"
-                    class="btn-modal-fechar"
-                    data-bs-dismiss="modal">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+<!-- MODAL VISUALIZAR IMAGEM -->
+<div class="modal fade modal-visualizar-imagem-produtos" id="modalVisualizarImagemProduto" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-visualizar-imagem-produtos-dialog">
+        <div class="modal-content modal-visualizar-imagem-produtos-content">
+            <div class="modal-header modal-visualizar-imagem-produtos-header">
+                <h5 class="modal-visualizar-imagem-produtos-titulo"><i class="fa-solid fa-image"></i> Imagem do Produto</h5>
+                <button type="button" class="btn-modal-fechar-visualizar-imagem-produtos" data-bs-dismiss="modal" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
-            <div class="modal-body text-center">
-                <img
-                    id="imagemProdutoModal"
-                    src=""
-                    class="img-fluid rounded"
-                    style="max-height:500px; display:none;">
-
-                <div id="mensagemSemImagem">
-                    <i class="fa-regular fa-image fa-3x mb-3"></i>
-                    <p>
-                        Este produto não possui imagem cadastrada.
-                    </p>
+            <div class="modal-body modal-visualizar-imagem-produtos-body text-center">
+                <img id="imagemProdutoModal" src="" class="img-fluid rounded img-preview-modal-produtos" style="max-height:500px; display:none;">
+                <div id="mensagemSemImagemProduto" class="mensagem-sem-imagem-produtos">
+                    <i class="fa-regular fa-image fa-3x mb-3 icone-sem-imagem-produtos"></i>
+                    <p class="texto-sem-imagem-produtos">Este produto não possui imagem cadastrada.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
 
 {% endblock %}

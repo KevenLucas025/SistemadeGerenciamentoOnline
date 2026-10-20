@@ -11,7 +11,7 @@
     data-codigo="{{ produto.codigo }}"
     data-data="{{ produto.data_cadastro|date:'Y-m-d' }}"
     data-descricao="{{ produto.descricao }}"
-    data-imagem="{% if usuario.perfil and usuario.perfil.imagem %}{{ usuario.perfil.imagem.url }}{% endif %}"
+    data-imagem="{% if produto.imagem %}{{ produto.imagem.url }}{% endif %}"
     data-cliente-id="{{ produto.cliente.id }}">
 
     <td>
@@ -32,6 +32,7 @@
     <td>{{ produto.total_com_desconto_formatado }}</td>
     <td>{{ produto.cliente }}</td>
     <td>{{ produto.codigo }}</td>
+    <td>{{ produto.descricao }}</td>
     <td>{{ produto.data_cadastro }}</td>
     <td>{{ produto.criado_por.username }}</td>
 
@@ -41,7 +42,7 @@
 
 <!-- Adicionada a classe linha-vazia aqui -->
 <tr class="linha-vazia">
-    <td colspan="12" class="text-center py-4">
+    <td colspan="13" class="text-center py-4">
         <i class="fa-solid fa-box-open fa-2x mb-2"></i>
         <br>
         Produtos cadastrados serão exibidos aqui.
