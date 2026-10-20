@@ -379,64 +379,90 @@
 
 </div>
 
+
 <!-- =====================================================
-     MODAL APAGAR PRODUTO
+     MODAL APAGAR PRODUTO(S)
 ===================================================== -->
+<div
+    class="modal fade modal-confirmacao-apagar-produtos"
+    id="modalApagarProduto"
+    tabindex="-1"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered modal-apagar-produtos-dialog">
+        <div class="modal-content modal-apagar-produtos-content">
 
-<div class="modal fade modal-confirmacao-apagar"
-     id="modalApagarProduto"
-     tabindex="-1"
-     aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-logout-content">
-
-            <div class="modal-header">
-                <div class="modal-logout-icon modal-warning-icon">
+            <!-- CABEÇALHO -->
+            <div class="modal-header modal-apagar-produtos-header">
+                <div class="modal-apagar-produtos-icon modal-apagar-produtos-warning-icon">
                     <i class="fa-solid fa-trash"></i>
                 </div>
 
-
-                <button type="button"
-                        class="btn-modal-fechar"
-                        data-bs-dismiss="modal">
+                <button
+                    type="button"
+                    class="btn-modal-fechar-apagar-produtos"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar"
+                >
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <div class="modal-body text-center">
+            <!-- CORPO -->
+            <div class="modal-body modal-apagar-produtos-body text-center">
 
-                <h4>
-                    Apagar produto?
+                <h4 id="tituloApagarProduto" class="modal-confirmar-apagar-titulo-produtos">
+                    Apagar produto(s)?
                 </h4>
 
-                <p>
-                    Essa ação removerá o produto permanentemente.
+                <p class="modal-confirmar-apagar-descricao-produtos">
+                    Esta ação é <strong>irreversível</strong>. Os registros selecionados serão excluídos permanentemente da base de dados do sistema.
                     <br>
                     Deseja continuar?
                 </p>
 
+                <!-- QUANTIDADE SELECIONADA -->
+                <div class="modal-apagar-produtos-quantidade">
+                    <span class="modal-apagar-produtos-quantidade-label">
+                        Quantidade selecionada:
+                    </span>
+
+                    <strong
+                        id="qtdProdutosApagarModal"
+                        class="modal-apagar-produtos-quantidade-valor"
+                    >
+                        0 produtos
+                    </strong>
+                </div>
+
             </div>
 
+            <!-- RODAPÉ -->
+            <div class="modal-footer modal-apagar-produtos-footer">
 
-
-            <div class="modal-footer">
-                <button type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal">
+                <button
+                    type="button"
+                    class="btn-cancelar-apagar-produtos"
+                    data-bs-dismiss="modal"
+                >
                     Cancelar
                 </button>
 
-                <button type="button"
-                        id="btnConfirmarApagarProduto"
-                        class="btn btn-danger">
+                <button
+                    type="button"
+                    id="btnConfirmarApagarProduto"
+                    class="btn-confirmar-apagar-produtos"
+                >
                     <i class="fa-solid fa-trash"></i>
                     Apagar
                 </button>
+
             </div>
+
         </div>
     </div>
 </div>
+
 
 <div class="modal fade"
      id="modalTabelaProdutos"

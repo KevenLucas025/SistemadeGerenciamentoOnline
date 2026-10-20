@@ -1022,10 +1022,44 @@ BOTÕES DO RESUMO
     background: #ea580c !important;
 }
 
+.modal-confirmar-apagar-historico-titulo-produtos {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.modal-confirmar-apagar-historico-descricao-produtos{
+    margin: 0;
+    color: #9ca3af;
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+.modal-apagar-produtos-quantidade{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 16px;
+    font-size: 13px;
+    text-align: left;
+}
+.modal-apagar-produtos-quantidade-label{
+    color: #9ca3af;
+}
+
+.modal-apagar-produtos-quantidade-valor{
+    color: #f87171;
+    font-weight: 600;
+}
+
 /* =========================================
    MODAL APAGAR PRODUTO SOBRE OUTROS MODAIS
 ========================================= */
-
 .modal-confirmacao-apagar {
     z-index: 1060 !important;
 }
@@ -1136,4 +1170,159 @@ input.checkbox-custom-tabela-produtos[type="checkbox"]:checked::after {
     position: absolute;
     top: 2px;
     left: 4px;
+}
+
+/* =====================================================
+   MODAL APAGAR PRODUTOS
+===================================================== */
+#modalApagarProduto {
+    z-index: 1075 !important; /* Fica acima do modal de histórico que usa 1055/1065 */
+}
+
+.modal-apagar-produtos-dialog {
+    max-width: 440px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+.modal-confirmar-apagar-titulo-produtos {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 19px;
+    font-weight: 600;
+}
+.modal-confirmar-apagar-descricao-produtos{
+    margin: 0;
+    color: #9ca3af;
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+.modal-apagar-produtos-quantidade {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 16px;
+    font-size: 13px;
+    text-align: left;
+}
+.modal-apagar-produtos-quantidade-label{
+    color: #9ca3af;
+}
+
+.modal-apagar-produtos-content {
+    background: #111827 !important;
+    border-radius: 14px !important;
+    color: #cecfd2;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65);
+}
+
+.modal-apagar-produtos-header {
+    background: #111827;
+    border-bottom: 1px solid #374151 !important;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-apagar-produtos-header h5 {
+    color: #cecfd2;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-apagar-produtos-warning-icon i{
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    font-size: 21px;
+    flex-shrink: 0;
+}
+
+.btn-modal-fechar-apagar-produtos {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 50%;
+    color: #cecfd2;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-modal-fechar-apagar-produtos:hover {
+    background-color: #dc2626;
+    color: #cecfd2;
+}
+.modal-apagar-produtos-quantidade-valor{
+    color: #f87171;
+    font-weight: 600;
+}
+.modal-apagar-produtos-body {
+    padding: 24px 24px 20px;
+    background: #111827;
+}
+
+.modal-apagar-produtos-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid #374151 !important;
+    background: #111827;
+}
+
+.btn-cancelar-apagar-produtos {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-cancelar-apagar-produtos:hover {
+    background: #4b5563;
+    color: #cecfd2;
+}
+
+.btn-confirmar-apagar-produtos {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #dc2626;
+    border: 1px solid #b91c1c;
+    color: #cecfd2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-confirmar-apagar-produtos:hover {
+    background: #b91c1c;
+    border-color: #991b1b;
 }

@@ -608,8 +608,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================
     // APAGAR PRODUTOS SELECIONADOS
     // =========================================
-    const btnApagarProduto =
-        document.getElementById("btnApagarProduto");
+    const btnApagarProduto = document.getElementById("btnApagarProduto");
 
     if (btnApagarProduto) {
         btnApagarProduto.addEventListener("click", function () {
@@ -635,8 +634,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const modalElemento =
-                document.getElementById("modalApagarProduto");
+            const modalElemento = document.getElementById("modalApagarProduto");
 
             if (modalElemento) {
                 // Evita criar vários backdrops
@@ -659,8 +657,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================
     // CONFIRMAR EXCLUSÃO DOS PRODUTOS
     // =========================================
-    const btnConfirmarApagarProduto =
-        document.getElementById("btnConfirmarApagarProduto");
+    const btnConfirmarApagarProduto = document.getElementById("btnConfirmarApagarProduto");
 
     if (btnConfirmarApagarProduto) {
         btnConfirmarApagarProduto.addEventListener(

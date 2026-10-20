@@ -3232,36 +3232,65 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
+    
     /* =====================================================
-        ABRIR CONFIRMAÇÃO DE EXCLUSÃO DO HISTÓRICO
+    ABRIR CONFIRMAÇÃO DE EXCLUSÃO DO HISTÓRICO
     ===================================================== */
     if (btnApagarHistorico) {
-        btnApagarHistorico.addEventListener(
-            "click",
-            function (e) {
-                e.preventDefault();
-                e.stopPropagation();
+        btnApagarHistorico.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
 
-                const selecionados =
-                    getIdsHistoricoClientesSelecionados();
+            const selecionados = getIdsHistoricoClientesSelecionados();
 
-                if (
-                    selecionados.length === 0
-                ) {
-                    mostrarAlerta(
-                        "Selecione pelo menos um histórico para apagar.",
-                        "alerta"
-                    );
-
-                    return;
-                }
-
-                atualizarContadorHistoricoClientes();
-
-                modalExclusaoHistorico?.show();
+            if (selecionados.length === 0) {
+                mostrarAlerta(
+                    "Selecione pelo menos um histórico para apagar.",
+                    "alerta"
+                );
+                return;
             }
-        );
+
+            atualizarContadorHistoricoClientes();
+
+            const modalElemento = document.getElementById(
+                "modalConfirmarExclusaoHistoricoClientes"
+            );
+
+            if (!modalElemento) {
+                console.error("Modal de exclusão do histórico não encontrado.");
+                return;
+            }
+
+            // Cria um backdrop exclusivo para a confirmação do histórico
+            if (!document.querySelector(".backdrop-exclusao-historico-clientes")) {
+                const backdrop = document.createElement("div");
+                backdrop.className = "backdrop-exclusao-historico-clientes";
+                document.body.appendChild(backdrop);
+            }
+
+            // Desativa o backdrop automático do Bootstrap
+            const modal = bootstrap.Modal.getOrCreateInstance(
+                modalElemento,
+                { backdrop: false }
+            );
+
+            modal.show();
+        });
     }
+
+    const modalHistoricoElemento = document.getElementById(
+        "modalConfirmarExclusaoHistoricoClientes"
+    );
+
+    if (modalHistoricoElemento) {
+        modalHistoricoElemento.addEventListener("hidden.bs.modal", function () {
+            document
+                .querySelector(".backdrop-exclusao-historico-clientes")
+                ?.remove();
+        });
+    }
+
 
     /* =====================================================
         CONFIRMAR EXCLUSÃO DOS HISTÓRICOS

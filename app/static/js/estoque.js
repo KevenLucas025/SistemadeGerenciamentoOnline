@@ -631,29 +631,55 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 3. Clique no Botão "Apagar" da Barra de Ferramentas
-    if (btnApagarHistorico) {
-        btnApagarHistorico.addEventListener("click", function (e) {
+    
+    
+    /* =====================================================
+    ABRIR MODAL DE PAUSA DO HISTÓRICO DE PRODUTOS
+    ===================================================== */
+    if (btnPausarHistoricoProdutos && modalPausaProdutos) {
+        btnPausarHistoricoProdutos.addEventListener("click", function (e) {
             e.preventDefault();
             e.stopPropagation();
 
-            const selecionados = getIdsHistoricoSelecionados();
+            atualizarBadgeStatusProdutos(historicoProdutosPausado);
 
-            if (selecionados.length === 0) {
-                if (typeof mostrarAlerta === "function") {
-                    mostrarAlerta("Selecione pelo menos um histórico para apagar.", "alerta");
-                } else {
-                    alert("Selecione pelo menos um histórico clicando na linha ou marcando a caixa de seleção.");
-                }
+            const modalElemento = modalPausaProdutos._element;
+
+            if (!modalElemento) {
+                console.error("Elemento do modal de pausa não encontrado.");
                 return;
             }
 
-            if (modalExclusaoHistorico) {
-                atualizarQuantidadeHistoricoExclusao();
-                modalExclusaoHistorico.show();
+            // Cria um backdrop exclusivo para a pausa do histórico
+            if (!document.querySelector(".backdrop-pausa-historico-produtos")) {
+                const backdrop = document.createElement("div");
+                backdrop.className = "backdrop-pausa-historico-produtos";
+                document.body.appendChild(backdrop);
             }
+
+            // Impede que o Bootstrap crie outro backdrop
+            const modal = bootstrap.Modal.getOrCreateInstance(
+                modalElemento,
+                { backdrop: false }
+            );
+
+            modal.show();
         });
     }
+
+    // Remove o backdrop personalizado quando o modal for fechado
+    if (modalPausaProdutos) {
+        modalPausaProdutos._element?.addEventListener(
+            "hidden.bs.modal",
+            function () {
+                document
+                    .querySelector(".backdrop-pausa-historico-produtos")
+                    ?.remove();
+            }
+        );
+    }
+
+
 
     // 4. Confirmação Definitiva da Exclusão
     if (btnConfirmarExclusaoHistoricoDefinitiva) {
@@ -884,20 +910,63 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     verificarStatusPausaInicial();
-
+    
     /* =========================================
-       MODAL DE FILTRAGEM (DATA E HORA)
+    MODAL DE FILTRAGEM (DATA E HORA)
     ========================================= */
     if (btnAbrirModalFiltroProdutos && modalFiltroProdutos) {
-        btnAbrirModalFiltroProdutos.addEventListener("click", function () {
-            if (inputFiltroDataProdutos) inputFiltroDataProdutos.value = filtroDataAtualProdutos;
+        btnAbrirModalFiltroProdutos.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
 
-            const radio = document.querySelector(`input[name="filtroOrdemHoraProdutos"][value="${ordemHistoricoAtualProdutos}"]`);
-            if (radio) radio.checked = true;
+            if (inputFiltroDataProdutos) {
+                inputFiltroDataProdutos.value = filtroDataAtualProdutos;
+            }
 
-            modalFiltroProdutos.show();
+            const radio = document.querySelector(
+                `input[name="filtroOrdemHoraProdutos"][value="${ordemHistoricoAtualProdutos}"]`
+            );
+
+            if (radio) {
+                radio.checked = true;
+            }
+
+            const modalElemento = modalFiltroProdutos._element;
+
+            if (!modalElemento) {
+                console.error("Elemento do modal de filtragem não encontrado.");
+                return;
+            }
+
+            // Cria um backdrop exclusivo para a filtragem
+            if (!document.querySelector(".backdrop-filtro-historico-produtos")) {
+                const backdrop = document.createElement("div");
+                backdrop.className = "backdrop-filtro-historico-produtos";
+                document.body.appendChild(backdrop);
+            }
+
+            // Impede a criação de outro backdrop pelo Bootstrap
+            const modal = bootstrap.Modal.getOrCreateInstance(
+                modalElemento,
+                { backdrop: false }
+            );
+
+            modal.show();
         });
     }
+
+    // Remove o backdrop quando o modal de filtragem for fechado
+    if (modalFiltroProdutos) {
+        modalFiltroProdutos._element?.addEventListener(
+            "hidden.bs.modal",
+            function () {
+                document
+                    .querySelector(".backdrop-filtro-historico-produtos")
+                    ?.remove();
+            }
+        );
+    }
+
 
     if (btnAplicarFiltroprodutos) {
         btnAplicarFiltroprodutos.addEventListener("click", async function () {
@@ -933,17 +1002,55 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    
     /* =========================================
-       12. ORDENAÇÃO DO HISTÓRICO
+    12. ORDENAÇÃO DO HISTÓRICO
     ========================================= */
     if (btnAbrirModalOrdenarProdutos && modalOrdenarProdutos) {
-        btnAbrirModalOrdenarProdutos.addEventListener("click", function () {
+        btnAbrirModalOrdenarProdutos.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
             if (tipoOrdenacaoHistoricoProdutos) {
                 tipoOrdenacaoHistoricoProdutos.value = ordemHistoricoAtualProdutos;
             }
-            modalOrdenarProdutos.show();
+
+            const modalElemento = modalOrdenarProdutos._element;
+
+            if (!modalElemento) {
+                console.error("Elemento do modal de ordenação não encontrado.");
+                return;
+            }
+
+            // Cria um backdrop exclusivo para a ordenação
+            if (!document.querySelector(".backdrop-ordenacao-historico-produtos")) {
+                const backdrop = document.createElement("div");
+                backdrop.className = "backdrop-ordenacao-historico-produtos";
+                document.body.appendChild(backdrop);
+            }
+
+            // Impede a criação de outro backdrop pelo Bootstrap
+            const modal = bootstrap.Modal.getOrCreateInstance(
+                modalElemento,
+                { backdrop: false }
+            );
+
+            modal.show();
         });
     }
+
+    // Remove o backdrop quando o modal de ordenação for fechado
+    if (modalOrdenarProdutos) {
+        modalOrdenarProdutos._element?.addEventListener(
+            "hidden.bs.modal",
+            function () {
+                document
+                    .querySelector(".backdrop-ordenacao-historico-produtos")
+                    ?.remove();
+            }
+        );
+    }
+
 
     if (btnExecutarOrdenacaoProdutosHistoricos) {
         btnExecutarOrdenacaoProdutosHistoricos.addEventListener("click", async function () {

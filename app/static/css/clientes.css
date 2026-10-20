@@ -1978,7 +1978,7 @@ input.col-checkbox-clientes[type="checkbox"]:checked::after {
 }
 
 .modal-exclusao-historico-clientes-dialog {
-    max-width: 400px !important;
+    max-width: 440px !important;
     width: 90% !important;
     margin: 1.75rem auto !important;
 }
@@ -2066,14 +2066,6 @@ input.col-checkbox-clientes[type="checkbox"]:checked::after {
     background: #1f2937;
 }
 
-.modal-exclusao-historico-clientes-texto {
-    margin: 0 0 16px 0;
-    font-size: 14px;
-    line-height: 1.5;
-    color: #e5e7eb;
-}
-
-
 
 .modal-exclusao-historico-clientes-footer {
     display: flex;
@@ -2121,9 +2113,18 @@ input.col-checkbox-clientes[type="checkbox"]:checked::after {
     border-color: #991b1b;
 }
 
+/* Fundo escuro exclusivo da confirmação do histórico */
+.backdrop-exclusao-historico-clientes {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
+}
+
 /* =====================================================
    ESTILOS — MODAL PAUSAR HISTÓRICO DE PRODUTOS
 ===================================================== */
+
 .modal-status-pausa-historico-clientes-dialog {
     max-width: 500px !important;
     width: 90% !important;

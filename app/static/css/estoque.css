@@ -1007,6 +1007,15 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
     z-index: 1075 !important; /* Fica acima do modal de histórico que usa 1055/1065 */
 }
 
+/* Backdrop exclusivo do histórico de produtos */
+.backdrop-exclusao-historico-produtos {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
+}
+
+
 .modal-exclusao-historico-dialog {
     max-width: 400px !important;
     width: 90% !important;
@@ -1170,11 +1179,25 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
 /* =====================================================
    ESTILOS — MODAL PAUSAR HISTÓRICO DE PRODUTOS
 ===================================================== */
+#modalStatusPausaHistoricoProdutos{
+    z-index: 1075 !important;
+}
+
 .modal-status-pausa-historico-produtos-dialog {
     max-width: 420px;
     width: 90% !important;
     margin: 1.75rem auto !important;
 }
+
+
+/* Backdrop exclusivo da pausa do histórico de produtos */
+.backdrop-pausa-historico-produtos {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
+}
+
 
 .modal-status-pausa-historico-produtos-content {
     background: #161e2b !important;
@@ -1345,10 +1368,21 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
 /* =====================================================
    MODAL DE FILTRAGEM — HISTÓRICO DE PRODUTOS
 ===================================================== */
+#modalFiltrarHistoricoProdutos{
+    z-index: 1075 !important;
+}
 .modal-filtrar-historico-produtos-dialog {
     max-width: 400px !important;
     width: 90% !important;
     margin: 1.75rem auto !important;
+}
+
+/* Backdrop exclusivo da filtragem do histórico de produtos */
+.backdrop-filtro-historico-produtos {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
 }
 
 .modal-filtrar-historico-produtos-content {
@@ -1492,13 +1526,21 @@ input.col-checkbox-produtos[type="checkbox"]:checked::after {
    MODAL DE ORDENAÇÃO DO HISTÓRICO — PRODUTOS
 ===================================================== */
 #modalOrdenarHistoricoProdutos {
-    z-index: 1065 !important;
+    z-index: 1075 !important;
 }
 
 .modal-ordenar-historico-produtos-dialog {
     max-width: 380px !important;
     width: 90% !important;
     margin: 1.75rem auto !important;
+}
+
+/* Backdrop exclusivo da ordenação do histórico de produtos */
+.backdrop-ordenacao-historico-produtos {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
 }
 
 .modal-ordenar-historico-produtos-content {

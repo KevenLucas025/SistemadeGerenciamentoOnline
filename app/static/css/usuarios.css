@@ -806,7 +806,15 @@ input.checkbox-custom-historico[type="checkbox"]:checked::after {
    MODAL CONFIRMAR APAGAR HISTÓRICO 
 ===================================================== */
 #modalConfirmarApagarHistorico {
-    z-index: 1065 !important;
+    z-index: 1075 !important;
+}
+
+/* Backdrop exclusivo do histórico de produtos */
+.backdrop-apagar-historico {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
 }
 
 .modal-confirmar-apagar-historico-dialog {
@@ -1012,13 +1020,21 @@ input.checkbox-custom-historico[type="checkbox"]:checked::after {
    MODAL PAUSAR / ATIVAR HISTÓRICO 
 ===================================================== */
 #modalStatusPausaHistorico {
-    z-index: 1065 !important;
+    z-index: 1075 !important;
 }
 
 .modal-status-pausa-historico-dialog {
     max-width: 500px !important;
     width: 90% !important;
     margin: 1.75rem auto !important;
+}
+
+/* Backdrop exclusivo da pausa do histórico de usuários */
+.backdrop-pausa-historico-usuarios {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
 }
 
 .modal-status-pausa-historico-content {
@@ -1200,13 +1216,21 @@ input.checkbox-custom-historico[type="checkbox"]:checked::after {
    MODAL DE ORDENAÇÃO DO HISTÓRICO (CLASSES EXCLUSIVAS)
 ===================================================== */
 #modalOrdenarHistoricoUsuarios {
-    z-index: 1065 !important;
+    z-index: 1075 !important;
 }
 
 .modal-ordenar-historico-dialog {
     max-width: 380px !important;
     width: 90% !important;
     margin: 1.75rem auto !important;
+}
+
+/* Backdrop exclusivo da ordenação do histórico de usuários */
+.backdrop-ordenacao-historico-usuarios {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
 }
 
 .modal-ordenar-historico-content {
@@ -1357,13 +1381,21 @@ input.checkbox-custom-historico[type="checkbox"]:checked::after {
    MODAL DE FILTRAGEM DO HISTÓRICO (CLASSES EXCLUSIVAS)
 ===================================================== */
 #modalFiltrarHistoricoUsuarios {
-    z-index: 1065 !important;
+    z-index: 1075 !important;
 }
 
 .modal-filtrar-historico-dialog {
     max-width: 400px !important;
     width: 90% !important;
     margin: 1.75rem auto !important;
+}
+
+/* Backdrop exclusivo da filtragem do histórico de usuários */
+.backdrop-filtro-historico-usuarios {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
 }
 
 .modal-filtrar-historico-content {

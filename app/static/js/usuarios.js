@@ -664,17 +664,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =========================================
-       9. APAGAR HISTÓRICO SELECIONADO
+    9. APAGAR HISTÓRICO SELECIONADO
     ========================================= */
     if (btnApagarHistorico) {
-        btnApagarHistorico.addEventListener("click", function () {
+        btnApagarHistorico.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
             const selecionados = tbodyHistorico?.querySelectorAll(
                 ".check-item-historico:checked"
             );
 
             if (!selecionados || selecionados.length === 0) {
                 if (typeof mostrarAlerta === "function") {
-                    mostrarAlerta("Selecione pelo menos um registro para apagar.", "erro");
+                    mostrarAlerta(
+                        "Selecione pelo menos um registro para apagar.",
+                        "erro"
+                    );
                 } else {
                     alert("Selecione pelo menos um registro para apagar.");
                 }
@@ -687,10 +693,46 @@ document.addEventListener("DOMContentLoaded", function () {
                     `${selecionados.length} item${selecionados.length === 1 ? "" : "s"}`;
             }
 
-            if (modalApagarHist) {
-                modalApagarHist.show();
+            const modalElemento = document.getElementById("modalConfirmarApagarHistorico");
+
+            if (!modalElemento) {
+                console.error("Modal de exclusão do histórico não encontrado.");
+                return;
             }
+
+            // Cria um backdrop exclusivo para a confirmação de exclusão
+            if (!document.querySelector(".backdrop-apagar-historico")) {
+                const backdrop = document.createElement("div");
+                backdrop.className = "backdrop-apagar-historico";
+                document.body.appendChild(backdrop);
+            }
+
+            // Desativa o backdrop automático do Bootstrap
+            const modal = bootstrap.Modal.getOrCreateInstance(
+                modalElemento,
+                { backdrop: false }
+            );
+
+            modal.show();
         });
+    }
+
+    /* =========================================
+    REMOVER BACKDROP AO FECHAR O MODAL
+    ========================================= */
+    const modalApagarHistoricoElemento = document.getElementById(
+        "modalConfirmarApagarHistorico"
+    );
+
+    if (modalApagarHistoricoElemento) {
+        modalApagarHistoricoElemento.addEventListener(
+            "hidden.bs.modal",
+            function () {
+                document
+                    .querySelector(".backdrop-apagar-historico")
+                    ?.remove();
+            }
+        );
     }
 
     if (btnConfirmarApagarHistoricoDefinitivo) {
@@ -825,8 +867,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    
+    /* =========================================
+    MODAL DE PAUSA DO HISTÓRICO DE USUÁRIOS
+    ========================================= */
     if (btnAbrirModalPausa && modalPausa) {
-        btnAbrirModalPausa.addEventListener("click", async function () {
+        btnAbrirModalPausa.addEventListener("click", async function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
             try {
                 const res = await fetch("/usuarios/historico/status-pausa/");
 
@@ -838,9 +887,42 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("Erro ao consultar status da gravação:", err);
             }
 
-            modalPausa.show();
+            const modalElemento = modalPausa._element;
+
+            if (!modalElemento) {
+                console.error("Elemento do modal de pausa não encontrado.");
+                return;
+            }
+
+            // Cria um backdrop exclusivo para a pausa dos usuários
+            if (!document.querySelector(".backdrop-pausa-historico-usuarios")) {
+                const backdrop = document.createElement("div");
+                backdrop.className = "backdrop-pausa-historico-usuarios";
+                document.body.appendChild(backdrop);
+            }
+
+            // Impede que o Bootstrap crie outro backdrop
+            const modal = bootstrap.Modal.getOrCreateInstance(
+                modalElemento,
+                { backdrop: false }
+            );
+
+            modal.show();
         });
     }
+
+    // Remove o backdrop quando o modal de pausa for fechado
+    if (modalPausa) {
+        modalPausa._element?.addEventListener(
+            "hidden.bs.modal",
+            function () {
+                document
+                    .querySelector(".backdrop-pausa-historico-usuarios")
+                    ?.remove();
+            }
+        );
+    }
+
 
     async function alternarStatusGravacaoHistorico(acao) {
         const csrfToken = getCSRFToken();
@@ -910,18 +992,52 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =========================================
-       12. ORDENAÇÃO DO HISTÓRICO
+        12. ORDENAÇÃO DO HISTÓRICO
     ========================================= */
     if (btnAbrirModalOrdenar && modalOrdenar) {
-        btnAbrirModalOrdenar.addEventListener("click", function () {
+        btnAbrirModalOrdenar.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
             if (tipoOrdenacaoHistorico) {
                 tipoOrdenacaoHistorico.value = ordemHistoricoAtual;
             }
 
-            modalOrdenar.show();
+            const modalElemento = modalOrdenar._element;
+
+            if (!modalElemento) {
+                console.error("Elemento do modal de ordenação não encontrado.");
+                return;
+            }
+
+            // Cria um backdrop exclusivo para a ordenação dos usuários
+            if (!document.querySelector(".backdrop-ordenacao-historico-usuarios")) {
+                const backdrop = document.createElement("div");
+                backdrop.className = "backdrop-ordenacao-historico-usuarios";
+                document.body.appendChild(backdrop);
+            }
+
+            // Impede que o Bootstrap crie outro backdrop
+            const modal = bootstrap.Modal.getOrCreateInstance(
+                modalElemento,
+                { backdrop: false }
+            );
+
+            modal.show();
         });
     }
 
+    // Remove o backdrop quando o modal de ordenação for fechado
+    if (modalOrdenar) {
+        modalOrdenar._element?.addEventListener(
+            "hidden.bs.modal",
+            function () {
+                document
+                    .querySelector(".backdrop-ordenacao-historico-usuarios")
+                    ?.remove();
+            }
+        );
+    }
     if (btnExecutarOrdenacaoHistorico) {
         btnExecutarOrdenacaoHistorico.addEventListener("click", async function () {
             const direcao = tipoOrdenacaoHistorico
@@ -946,10 +1062,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =========================================
-       13. FILTRAGEM DO HISTÓRICO (DATA E HORA)
+    13. FILTRAGEM DO HISTÓRICO (DATA E HORA)
     ========================================= */
     if (btnAbrirModalFiltro && modalFiltro) {
-        btnAbrirModalFiltro.addEventListener("click", function () {
+        btnAbrirModalFiltro.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
             if (inputFiltroData) {
                 inputFiltroData.value = filtroDataAtual;
             }
@@ -962,8 +1081,40 @@ document.addEventListener("DOMContentLoaded", function () {
                 radio.checked = true;
             }
 
-            modalFiltro.show();
+            const modalElemento = modalFiltro._element;
+
+            if (!modalElemento) {
+                console.error("Elemento do modal de filtragem não encontrado.");
+                return;
+            }
+
+            // Cria um backdrop exclusivo para a filtragem dos usuários
+            if (!document.querySelector(".backdrop-filtro-historico-usuarios")) {
+                const backdrop = document.createElement("div");
+                backdrop.className = "backdrop-filtro-historico-usuarios";
+                document.body.appendChild(backdrop);
+            }
+
+            // Impede que o Bootstrap crie outro backdrop
+            const modal = bootstrap.Modal.getOrCreateInstance(
+                modalElemento,
+                { backdrop: false }
+            );
+
+            modal.show();
         });
+    }
+
+    // Remove o backdrop quando o modal de filtragem for fechado
+    if (modalFiltro) {
+        modalFiltro._element?.addEventListener(
+            "hidden.bs.modal",
+            function () {
+                document
+                    .querySelector(".backdrop-filtro-historico-usuarios")
+                    ?.remove();
+            }
+        );
     }
 
     if (btnAplicarFiltro) {
