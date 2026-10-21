@@ -2163,11 +2163,7 @@ LINK VOLTAR
    MODAL DE ALERTA GLOBAL (QMessageBox Style)
 ===================================================== */
 #modalAlertaGlobal {
-    z-index: 1080 !important; /* Fica acima de qualquer modal (que costuma ser 1050-1065) */
-}
-
-#modalAlertaGlobal + .modal-backdrop {
-    z-index: 1075 !important;
+    z-index: 1075 !important; /* Fica acima de qualquer modal (que costuma ser 1050-1065) */
 }
 
 .modal-alerta-dialog {
@@ -2175,6 +2171,16 @@ LINK VOLTAR
     width: 90% !important;
     margin: 1.75rem auto !important;
 }
+
+
+/* Backdrop exclusivo do alerta global */
+.backdrop-alerta-global {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
+}
+
 
 .modal-alerta-content {
     background: #161e2b !important;

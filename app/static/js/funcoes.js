@@ -47,12 +47,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+
 // =========================
-// FUNÇÃO DOS ALERTAS
+// FUNÇÃO GLOBAL DOS ALERTAS
 // =========================
 
 function mostrarAlerta(msg, tipo = "error") {
     const modalEl = document.getElementById("modalAlertaGlobal");
+
     if (!modalEl) {
         // Fallback para caso o modal ainda não esteja no HTML
         alert(msg);
@@ -64,10 +66,16 @@ function mostrarAlerta(msg, tipo = "error") {
     const icone = document.getElementById("modalAlertaIcone");
     const corpoMsg = document.getElementById("modalAlertaMensagem");
 
+    if (!modalContent || !tituloTexto || !icone || !corpoMsg) {
+        console.error("Elementos internos do modal de alerta não encontrados.");
+        alert(msg);
+        return;
+    }
+
     // Reseta classes de estado
     modalContent.classList.remove("sucesso", "erro", "alerta");
 
-    // Configura ícone, título e estilo estilo QMessageBox
+    // Configura ícone, título e estilo
     const tipoNormalizado = (tipo || "").toLowerCase();
 
     if (tipoNormalizado === "success" || tipoNormalizado === "sucesso") {
@@ -86,14 +94,41 @@ function mostrarAlerta(msg, tipo = "error") {
 
     corpoMsg.textContent = msg;
 
-    const modalInstancia = bootstrap.Modal.getOrCreateInstance(modalEl);
+    // Cria um backdrop exclusivo para o alerta global
+    if (!document.querySelector(".backdrop-alerta-global")) {
+        const backdrop = document.createElement("div");
+        backdrop.className = "backdrop-alerta-global";
+        document.body.appendChild(backdrop);
+    }
+
+    // Impede que o Bootstrap crie outro backdrop
+    const modalInstancia = bootstrap.Modal.getOrCreateInstance(
+        modalEl,
+        { backdrop: false }
+    );
+
     modalInstancia.show();
 
-    // Foca automaticamente no botão OK para fechar ao apertar Enter/Espaço
+    // Foca automaticamente no botão OK
     setTimeout(() => {
         document.getElementById("btnAlertaOk")?.focus();
     }, 150);
 }
+
+// Remove o backdrop quando o alerta for fechado
+const modalAlertaGlobal = document.getElementById("modalAlertaGlobal");
+
+if (modalAlertaGlobal) {
+    modalAlertaGlobal.addEventListener(
+        "hidden.bs.modal",
+        function () {
+            document
+                .querySelector(".backdrop-alerta-global")
+                ?.remove();
+        }
+    );
+}
+
 
 function abrirModalLogout(event) {
 

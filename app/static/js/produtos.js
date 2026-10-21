@@ -1121,30 +1121,55 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // =========================================
-    // FILTROS E ORDENAÇÃO
-    // =========================================
-    const btnAbrirFiltro =
-        document.getElementById("btnAbrirFiltro");
+    /* =========================================
+    ABRIR MODAL DE FILTRAGEM DE PRODUTOS
+    ========================================= */
+    const btnAbrirFiltro = document.getElementById("btnAbrirFiltro");
 
     if (btnAbrirFiltro) {
-        btnAbrirFiltro.addEventListener("click", () => {
-            const modalElemento =
-                document.getElementById("modalFiltrarProdutos");
+        btnAbrirFiltro.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
 
-            if (modalElemento) {
-                bootstrap.Modal
-                    .getOrCreateInstance(
-                        modalElemento,
-                        { backdrop: false }
-                    )
-                    .show();
+            const modalElemento = document.getElementById("modalFiltrarProdutos");
+
+            if (!modalElemento) {
+                console.error("Modal de filtragem de produtos não encontrado.");
+                return;
             }
+
+            // Cria um backdrop exclusivo para a filtragem
+            if (!document.querySelector(".backdrop-filtro-produtos")) {
+                const backdrop = document.createElement("div");
+                backdrop.className = "backdrop-filtro-produtos";
+                document.body.appendChild(backdrop);
+            }
+
+            // Impede a criação de outro backdrop pelo Bootstrap
+            const modal = bootstrap.Modal.getOrCreateInstance(
+                modalElemento,
+                { backdrop: false }
+            );
+
+            modal.show();
         });
     }
 
-    const btnExecutarFiltro =
-        document.getElementById("btnExecutarFiltro");
+    // Remove o backdrop quando o modal de filtragem for fechado
+    const modalFiltrarProdutos = document.getElementById("modalFiltrarProdutos");
+
+    if (modalFiltrarProdutos) {
+        modalFiltrarProdutos.addEventListener(
+            "hidden.bs.modal",
+            function () {
+                document
+                    .querySelector(".backdrop-filtro-produtos")
+                    ?.remove();
+            }
+        );
+    }
+
+    const btnExecutarFiltro = document.getElementById("btnExecutarFiltro");
 
     if (btnExecutarFiltro) {
         btnExecutarFiltro.addEventListener(
@@ -1195,23 +1220,57 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const btnAbrirOrdenacao =
-        document.getElementById("btnAbrirOrdenacao");
+    
+    /* =========================================
+    ABRIR MODAL DE ORDENAÇÃO DE PRODUTOS
+    ========================================= */
+    const btnAbrirOrdenacao = document.getElementById("btnAbrirOrdenacao");
 
     if (btnAbrirOrdenacao) {
-        btnAbrirOrdenacao.addEventListener("click", () => {
-            const modal = document.getElementById("modalOrdenarProdutos");
+        btnAbrirOrdenacao.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
 
-            if (modal) {
-                bootstrap.Modal
-                    .getOrCreateInstance(modal)
-                    .show();
+            const modalElemento = document.getElementById("modalOrdenarProdutos");
+
+            if (!modalElemento) {
+                console.error("Modal de ordenação de produtos não encontrado.");
+                return;
             }
+
+            // Cria um backdrop exclusivo para a ordenação
+            if (!document.querySelector(".backdrop-ordenacao-produtos")) {
+                const backdrop = document.createElement("div");
+                backdrop.className = "backdrop-ordenacao-produtos";
+                document.body.appendChild(backdrop);
+            }
+
+            // Impede a criação de outro backdrop pelo Bootstrap
+            const modal = bootstrap.Modal.getOrCreateInstance(
+                modalElemento,
+                { backdrop: false }
+            );
+
+            modal.show();
         });
     }
 
-    const btnExecutarOrdenacao =
-        document.getElementById("btnExecutarOrdenacao");
+    // Remove o backdrop quando o modal de ordenação for fechado
+    const modalOrdenarProdutos = document.getElementById("modalOrdenarProdutos");
+
+    if (modalOrdenarProdutos) {
+        modalOrdenarProdutos.addEventListener(
+            "hidden.bs.modal",
+            function () {
+                document
+                    .querySelector(".backdrop-ordenacao-produtos")
+                    ?.remove();
+            }
+        );
+    }
+
+
+    const btnExecutarOrdenacao = document.getElementById("btnExecutarOrdenacao");
 
     if (btnExecutarOrdenacao) {
         btnExecutarOrdenacao.addEventListener(
@@ -1524,13 +1583,17 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
+    
     // =========================================
     // VISUALIZAR IMAGEM DO PRODUTO
     // =========================================
     const btnVisualizarImagem = document.getElementById("btnVisualizarImagem");
 
     if (btnVisualizarImagem) {
-        btnVisualizarImagem.addEventListener("click", function () {
+        btnVisualizarImagem.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
             const linha = obterProdutoSelecionadoUnico(
                 "visualizar a imagem"
             );
@@ -1569,16 +1632,46 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
 
-            // Abre o modal
+            // Abre o modal com backdrop personalizado
             if (modalImagem) {
-                bootstrap.Modal
-                    .getOrCreateInstance(modalImagem)
-                    .show();
+                // Cria um backdrop exclusivo para a visualização da imagem
+                if (!document.querySelector(".backdrop-visualizar-imagem-produto")) {
+                    const backdrop = document.createElement("div");
+                    backdrop.className = "backdrop-visualizar-imagem-produto";
+                    document.body.appendChild(backdrop);
+                }
+
+                // Impede que o Bootstrap crie outro backdrop
+                const modal = bootstrap.Modal.getOrCreateInstance(
+                    modalImagem,
+                    { backdrop: false }
+                );
+
+                modal.show();
+            } else {
+                console.error("Modal de visualização da imagem não encontrado.");
             }
         });
     }
 
-});
+    // Remove o backdrop quando o modal de imagem for fechado
+    const modalVisualizarImagemProduto = document.getElementById(
+        "modalVisualizarImagemProduto"
+    );
+
+    if (modalVisualizarImagemProduto) {
+        modalVisualizarImagemProduto.addEventListener(
+            "hidden.bs.modal",
+            function () {
+                document
+                    .querySelector(".backdrop-visualizar-imagem-produto")
+                    ?.remove();
+            }
+        );
+    }
+
+    });
+
 
    
     

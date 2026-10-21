@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnAtualizar = document.getElementById("btnAtualizarUsuario");
     const btnAtualizarUsuarioModal = document.getElementById("btnAtualizarUsuarioModal");
     const tabelaUsuarios = document.getElementById("tabelaModalUsuarios");
+    const checkboxMasterUsuarios = document.getElementById("checkboxMasterUsuarios");
     const btnAtualizarTabela = document.getElementById("btnAtualizarTabelaModal");
     const tabela = document.getElementById("tabelaModalUsuarios");
     const btnApagarModal = document.getElementById("btnApagarUsuarioModal");
@@ -274,42 +275,111 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    
     /* =========================================
-       SELEÇÃO DAS LINHAS
+       SELEÇÃO DAS LINHAS E CHECKBOX MASTER
     ========================================= */
+
     function obterLinhasUsuarios() {
-        return document.querySelectorAll("#tabelaModalUsuarios tr");
+        return tabelaUsuarios
+            ? tabelaUsuarios.querySelectorAll("tr[data-usuario-id]")
+            : [];
     }
 
+    // Retorna somente os checkboxes dos usuários
+    function obterCheckboxesUsuarios() {
+        return tabelaUsuarios
+            ? tabelaUsuarios.querySelectorAll(
+                'input[name="usuario_selecionado"]'
+            )
+            : [];
+    }
+
+    // Sincroniza o checkbox master com as seleções individuais
+    function atualizarCheckboxMasterUsuarios() {
+        if (!checkboxMasterUsuarios) return;
+
+        const checkboxes = Array.from(obterCheckboxesUsuarios());
+
+        const total = checkboxes.length;
+        const selecionados = checkboxes.filter(
+            checkbox => checkbox.checked
+        ).length;
+
+        checkboxMasterUsuarios.checked =
+            total > 0 && selecionados === total;
+
+        checkboxMasterUsuarios.indeterminate =
+            selecionados > 0 && selecionados < total;
+    }
+
+    // Selecionar ou desmarcar todos os usuários
+    if (checkboxMasterUsuarios) {
+        checkboxMasterUsuarios.addEventListener("change", function () {
+            const checkboxes = obterCheckboxesUsuarios();
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = checkboxMasterUsuarios.checked;
+
+                const linha = checkbox.closest("tr");
+
+                if (linha) {
+                    linha.classList.toggle(
+                        "usuario-selecionado",
+                        checkbox.checked
+                    );
+                }
+            });
+
+            checkboxMasterUsuarios.indeterminate = false;
+        });
+    }
+
+    // Eventos individuais das linhas
     function registrarEventosLinhas() {
         obterLinhasUsuarios().forEach(function (linha) {
-            linha.addEventListener("click", function (event) {
-                if (event.target.type === "checkbox") {
-                    if (event.target.checked) {
-                        linha.classList.add("usuario-selecionado");
-                    } else {
-                        linha.classList.remove("usuario-selecionado");
-                    }
-                    return;
-                }
+            const checkbox = linha.querySelector(
+                'input[name="usuario_selecionado"]'
+            );
 
-                const checkbox = linha.querySelector('input[name="usuario_selecionado"]');
-                if (!checkbox) {
+            if (!checkbox || linha.dataset.eventoSelecaoRegistrado === "true") {
+                return;
+            }
+
+            linha.dataset.eventoSelecaoRegistrado = "true";
+
+            // Clique diretamente no checkbox
+            checkbox.addEventListener("change", function () {
+                linha.classList.toggle(
+                    "usuario-selecionado",
+                    checkbox.checked
+                );
+
+                atualizarCheckboxMasterUsuarios();
+            });
+
+            // Clique no restante da linha
+            linha.addEventListener("click", function (event) {
+                if (event.target.closest("input, button, a, label")) {
                     return;
                 }
 
                 checkbox.checked = !checkbox.checked;
 
-                if (checkbox.checked) {
-                    linha.classList.add("usuario-selecionado");
-                } else {
-                    linha.classList.remove("usuario-selecionado");
-                }
+                linha.classList.toggle(
+                    "usuario-selecionado",
+                    checkbox.checked
+                );
+
+                atualizarCheckboxMasterUsuarios();
             });
         });
+
+        atualizarCheckboxMasterUsuarios();
     }
 
     registrarEventosLinhas();
+
 
     /* =======================================================
        1. CARREGAR DADOS DO MODAL PARA O FORMULÁRIO (VIA API)

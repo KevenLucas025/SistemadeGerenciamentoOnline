@@ -24,7 +24,15 @@
 
 
 
-    <td class="col-selecao"><input type="checkbox" name="usuario_selecionado" value="{{ usuario.id }}"></td>
+    <td class="col-selecao">
+        <input
+            type="checkbox"
+            class="checkbox-usuario"
+            name="usuario_selecionado"
+            value="{{ usuario.id }}"
+            aria-label="Selecionar usuário {{ usuario.username }}"
+        >
+    </td>
     <td>{{ usuario.id }}</td>
     <td><strong>{{ usuario.get_full_name|default:usuario.username }}</strong></td>
     <td>{{ usuario.username }}</td>

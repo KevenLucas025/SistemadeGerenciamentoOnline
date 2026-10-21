@@ -736,14 +736,11 @@ BOTÕES DO RESUMO
     transform: translateY(-2px);
 }
 
-/* ===========================================
-   MODAL TABELA DE PRODUTOS
-=========================================== */
+
 /* ===========================================
    MODAL TABELA DE PRODUTOS
    LAYOUT PADRONIZADO COM O HISTÓRICO
 =========================================== */
-
 #modalTabelaProdutos .modal-dialog {
     max-width: 1100px;
     width: 92% !important;
@@ -767,7 +764,6 @@ BOTÕES DO RESUMO
 }
 
 /* CABEÇALHO DO MODAL */
-
 #modalTabelaProdutos .modal-header {
     flex: 0 0 auto;
     background: #111827 !important;
@@ -786,7 +782,6 @@ BOTÕES DO RESUMO
 }
 
 /* CORPO DO MODAL */
-
 #modalTabelaProdutos .modal-body {
     display: flex;
     flex-direction: column;
@@ -798,7 +793,6 @@ BOTÕES DO RESUMO
 }
 
 /* BOTÕES DE AÇÃO */
-
 #modalTabelaProdutos .acoes-tabela-produtos {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -808,7 +802,6 @@ BOTÕES DO RESUMO
 }
 
 /* CONTÊINER DA TABELA */
-
 #modalTabelaProdutos .table-responsive {
     position: relative;
     width: 100% !important;
@@ -824,7 +817,6 @@ BOTÕES DO RESUMO
 }
 
 /* TABELA */
-
 #modalTabelaProdutos .table-responsive table {
     width: 100% !important;
     min-width: max-content;
@@ -875,7 +867,6 @@ BOTÕES DO RESUMO
 }
 
 /* CÉLULAS DO CORPO */
-
 #modalTabelaProdutos .table-responsive tbody td {
     padding: 12px 14px !important;
     background: transparent !important;
@@ -887,7 +878,6 @@ BOTÕES DO RESUMO
 }
 
 /* HOVER SOMENTE NAS LINHAS COM PRODUTOS */
-
 #modalTabelaProdutos .table-responsive tbody tr:not(.linha-vazia) {
     cursor: pointer;
     transition: background-color 0.2s ease;
@@ -899,21 +889,18 @@ BOTÕES DO RESUMO
 }
 
 /* PRODUTO SELECIONADO */
-
 #modalTabelaProdutos .table-responsive tbody tr.produto-selecionado td {
     background-color: #374151 !important;
     color: #fff !important;
 }
 
 /* RADIO BUTTONS */
-
 #modalTabelaProdutos input[type="radio"] {
     transform: scale(1.15);
     cursor: pointer;
 }
 
 /* LINHA VAZIA: SEM HOVER OU FUNDO */
-
 #modalTabelaProdutos .table-responsive tbody tr.linha-vazia,
 #modalTabelaProdutos .table-responsive tbody tr.linha-vazia:hover,
 #modalTabelaProdutos .table-responsive tbody tr.linha-vazia td,
@@ -931,7 +918,6 @@ BOTÕES DO RESUMO
 }
 
 /* CONTEÚDO DA LINHA VAZIA */
-
 #modalTabelaProdutos .table-responsive tbody tr.linha-vazia td {
     height: calc(48vh - 50px);
     text-align: center !important;
@@ -976,17 +962,8 @@ BOTÕES DO RESUMO
     transform: scale(1.05);
 }
 
-#modalTabelaProdutos .acoes-tabela-produtos .btn-side-action:hover {
-    transform: scale(1.05);
-}
-
 #modalTabelaProdutos .acoes-tabela-produtos .btn-side-action i {
     font-size: 15px;
-}
-
-#modalTabelaProdutos .acoes-tabela-produtos .btn-side-action:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.08);
 }
 
 /* Cores específicas de cada botão */
@@ -1122,6 +1099,7 @@ BOTÕES DO RESUMO
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.3);
 }
+
 /* CHECKBOXES PERSONALIZADAS COMPACTAS */
 input.checkbox-produto[type="checkbox"],
 input.checkbox-custom-tabela-produtos[type="checkbox"]
@@ -1342,6 +1320,15 @@ input.checkbox-custom-tabela-produtos[type="checkbox"]:checked::after {
   color: #cecfd2;
   overflow: hidden;
 }
+
+/* Backdrop exclusivo da filtragem de produtos */
+.backdrop-filtro-produtos {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
+}
+
 .modal-filtrar-produtos-dialog{
     max-width: 400px !important;
     width: 90% !important;
@@ -1513,6 +1500,14 @@ input.checkbox-custom-tabela-produtos[type="checkbox"]:checked::after {
 }
 
 
+/* Backdrop exclusivo da ordenação de produtos */
+.backdrop-ordenacao-produtos {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
+}
+
 /* 1. ESTRUTURA PRINCIPAL DO MODAL */
 .modal-ordenar-produtos .modal-ordenar-produtos-content {
   background-color: #111827;
@@ -1677,6 +1672,9 @@ input.checkbox-custom-tabela-produtos[type="checkbox"]:checked::after {
 /* =====================================================
    MODAL VISUALIZAR IMAGEM DO PRODUTO — (#111827)
 ===================================================== */
+#modalVisualizarImagemProduto{
+    z-index: 1075 !important;
+}
 
 /* 1. ESTRUTURA PRINCIPAL DO MODAL */
 .modal-visualizar-imagem-produtos .modal-visualizar-imagem-produtos-content {
@@ -1687,6 +1685,16 @@ input.checkbox-custom-tabela-produtos[type="checkbox"]:checked::after {
   color: #f9fafb;
   overflow: hidden;
 }
+
+
+/* Backdrop exclusivo da visualização da imagem do produto */
+.backdrop-visualizar-imagem-produto {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
+}
+
 
 /* 2. CABEÇALHO */
 .modal-visualizar-imagem-produtos .modal-visualizar-imagem-produtos-header {

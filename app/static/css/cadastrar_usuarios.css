@@ -311,48 +311,49 @@
    MODAL — TABELA DE USUÁRIOS
 ===================================================== */
 
-#modalTabelaUsuarios {
-    z-index: 99999;
-}
-
 /* Fundo do modal */
 #modalTabelaUsuarios .modal-dialog {
-    max-width: 1200px;
-    width: 95%;
-    height: calc(100vh - 80px); /* Ocupa quase a tela inteira */
-    margin: 40px auto;
+    max-width: 1100px;
+    width: 92% !important;
+    height: 85vh !important;
+    margin: 1.75rem auto !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 /* Conteúdo principal */
 #modalTabelaUsuarios .modal-content {
-    background: #111827 !important;
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100% !important;
+    min-height: 0 !important;
     overflow: hidden;
-    color: #CECFD2;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.55);
-    height: 100%;
+    border: 1px solid #374151 !important;
+    border-radius: 12px !important;
+    background: #111827 !important;
+    box-sizing: border-box;
 }
 
 /* =====================================================
    CABEÇALHO
 ===================================================== */
-
 #modalTabelaUsuarios .modal-header {
+    flex: 0 0 auto;
     background: #111827 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-    padding: 20px 24px !important;
-    color: #CECFD2 !important;
+    color: #cbd5e1 !important;
+    padding: 18px 24px;
+    border-bottom: 1px solid #374151 !important;
 }
 
 #modalTabelaUsuarios .modal-header h4,
 #modalTabelaUsuarios .modal-header .modal-title {
-    color: #CECFD2 !important;
     margin: 0;
-    font-size: 19px;
-    font-weight: 600;
     display: flex;
     align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 600;
 }
 
 #modalTabelaUsuarios .modal-header h4 i,
@@ -366,7 +367,6 @@
 }
 
 /* Botão fechar */
-
 #modalTabelaUsuarios .btn-close {
     opacity: 1;
     filter: brightness(0) invert(1);
@@ -381,14 +381,14 @@
 /* =====================================================
    CORPO
 ===================================================== */
-
 #modalTabelaUsuarios .modal-body {
-    background: #111827;
-    padding: 20px 24px;
     display: flex;
     flex-direction: column;
-    flex: 1; /* Ocupa todo o espaço vertical livre */
-    min-height: 0; /* Permite scroll interno nos filhos */
+    flex: 1 1 0%;
+    min-height: 0;
+    padding: 24px;
+    overflow: hidden;
+    background: #111827 !important;
 }
 
 /* =====================================================
@@ -442,22 +442,22 @@
 /* =====================================================
    TABELA — CONTAINER
 ===================================================== */
-
 #modalTabelaUsuarios .table-responsive {
-    width: 100%;
-    flex: 1;
+    position: relative;
+    width: 100% !important;
+    flex: 1 1 0%;
+    min-width: 0;
     min-height: 0;
-    overflow-x: auto;
-    overflow-y: auto;
-    border: 1px solid #475569;
-    border-radius: 12px;
-    background: #1e293b;
-    scrollbar-width: thin;
-    scrollbar-color: #475569 #18202c;
+    margin: 0 !important;
+    overflow: auto;
+    border: 1px solid #374151 !important;
+    border-radius: 12px !important;
+    background: #111827 !important;
+    box-sizing: border-box;
 }
 
-/* Scrollbar Chrome / Edge */
 
+/* Scrollbar Chrome / Edge */
 #modalTabelaUsuarios .table-responsive::-webkit-scrollbar {
     width: 9px;
     height: 9px;
@@ -479,16 +479,17 @@
 /* =====================================================
    TABELA
 ===================================================== */
-
-#modalTabelaUsuarios table {
-    width: max-content;
-    min-width: 100%;
+#modalTabelaUsuarios .table-responsive table {
+    width: 100% !important;
+    min-width: max-content;
     margin: 0 !important;
-    border-collapse: separate;
-    border-spacing: 0;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
     table-layout: auto;
-    background: #1e293b !important;
-    color: #CECFD2 !important;
+    white-space: nowrap;
+    background: #111827 !important;
+    color: #cecfd2 !important;
+
     --bs-table-bg: #1e293b;
     --bs-table-color: #CECFD2;
     --bs-table-hover-bg: #273449;
@@ -497,7 +498,6 @@
 /* =====================================================
    CABEÇALHO DA TABELA
 ===================================================== */
-
 #modalTabelaUsuarios thead {
     background: #202b3b !important;
 }
@@ -505,20 +505,29 @@
 #modalTabelaUsuarios thead th {
     position: sticky;
     top: 0;
-    z-index: 10;
-    height: 48px;
-    padding: 12px 16px !important;
-    background: #202b3b !important;
-    border-bottom: 1px solid #64748b !important;
-    color: #cecfd2 !important;
-    font-size: 12px;
+    z-index: 5;
+    height: 46px;
+    padding: 10px 14px !important;
+    background: #111827 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid #374151 !important;
+    color: #9ca3af !important;
+    font-size: 11.5px;
     font-weight: 600;
     text-align: center;
     vertical-align: middle;
+    text-transform: uppercase;
     white-space: nowrap;
 }
 
 #modalTabelaUsuarios tbody td {
+    padding: 12px 14px !important;
+    background: transparent !important;
+    border-bottom: 1px solid #1f2937 !important;
+    color: #e5e7eb !important;
+    font-size: 13px;
     text-align: center;
     vertical-align: middle;
 }
@@ -531,30 +540,11 @@
 /* =====================================================
    LINHAS
 ===================================================== */
-
-#modalTabelaUsuarios tbody tr {
-    background: #1e293b !important;
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-
+#modalTabelaUsuarios tbody tr:hover {
+    background: #273449 !important;
     cursor: pointer;
 }
 
-#modalTabelaUsuarios tbody tr:hover {
-    background: #273449 !important;
-}
-
-#modalTabelaUsuarios tbody td {
-    padding: 12px 14px !important;
-    background: transparent !important;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.10) !important;
-    color: #cecfd2 !important;
-    font-size: 13px;
-    vertical-align: middle;
-    white-space: nowrap;
-}
 
 #modalTabelaUsuarios tbody tr:last-child td {
     border-bottom: none !important;
@@ -564,7 +554,6 @@
 /* =====================================================
    AVATAR
 ===================================================== */
-
 #modalTabelaUsuarios .avatar-modal {
     width: 36px !important;
     height: 36px !important;
@@ -602,7 +591,6 @@
 /* =====================================================
    BOTÕES DE AÇÃO POR USUÁRIO
 ===================================================== */
-
 #modalTabelaUsuarios .acoes-usuario-modal {
     display: flex;
     align-items: center;
@@ -612,31 +600,26 @@
 }
 
 /* Botão individual */
-
 #modalTabelaUsuarios .btn-acao-modal {
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
-    min-height: 34px !important;
-    padding: 0 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border: 1px solid transparent !important;
-    border-radius: 7px !important;
-    color: #CECFD2 !important;
-    font-size: 13px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #1f2937;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #CECFD2;
+    padding: 11px 14px;
+    border-radius: 8px;
+    font-size: 13px;
     cursor: pointer;
-    opacity: 1 !important;
-    visibility: visible !important;
-    transition:
-        transform 0.2s ease,
-        filter 0.2s ease,
-        background 0.2s ease;
+    transition: all 0.2s ease;
+    width: 100%;
+    flex-shrink: 0;
+    text-decoration: none;
+    font-weight: 600;
 }
 
 /* Ícone */
-
 #modalTabelaUsuarios .btn-acao-modal i {
     display: inline-block !important;
     visibility: visible !important;
@@ -645,16 +628,15 @@
 }
 
 /* Hover */
-
 #modalTabelaUsuarios .btn-acao-modal:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.15);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
 }
 
 /* =====================================================
    CORES DOS BOTÕES
 ===================================================== */
-
 /* Visualizar */
 
 #modalTabelaUsuarios .btn-acao-modal.visualizar {
@@ -664,7 +646,6 @@
 }
 
 /* Editar */
-
 #modalTabelaUsuarios .btn-acao-modal.editar {
     background: #2563eb !important;
 
@@ -672,7 +653,6 @@
 }
 
 /* Excluir */
-
 #modalTabelaUsuarios .btn-acao-modal.excluir {
     background: #dc2626 !important;
     border-color: #ef4444 !important;
@@ -681,7 +661,6 @@
 /* =====================================================
    LINHA VAZIA
 ===================================================== */
-
 #modalTabelaUsuarios tbody tr.linha-vazia,
 #modalTabelaUsuarios tbody tr.linha-vazia:hover,
 #modalTabelaUsuarios tbody tr.linha-vazia td,
@@ -700,7 +679,6 @@
 /* =====================================================
    RODAPÉ
 ===================================================== */
-
 #modalTabelaUsuarios .modal-footer {
     background: #161e2b !important;
 
@@ -716,6 +694,58 @@
 #modalTabelaUsuarios .modal-footer strong {
     color: #CECFD2 !important;
 }
+
+/* CHECKBOXES PERSONALIZADAS COMPACTAS */
+#modalTabelaUsuarios .col-selecao{
+    width: 45px;
+    min-width: 45px;
+    text-align: center;
+    vertical-align: middle;
+}
+#modalTabelaUsuarios .checkbox-usuario{
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    padding: 0;
+    background-color: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+#modalTabelaUsuarios .checkbox-usuario:hover {
+    border-color: #8b5cf6;
+    background-color: #171e2b;
+}
+
+#modalTabelaUsuarios .checkbox-usuario:checked {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+    box-shadow: 0 0 8px rgba(124, 58, 237, 0.4);
+}
+
+#modalTabelaUsuarios .checkbox-usuario:checked::after {
+    content: '';
+    width: 3px;
+    height: 6px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 2px;
+    left: 4px;
+}
+
 /* ===========================================
    BARRA DE BOTÕES DA TABELA DO MODAL
 =========================================== */
