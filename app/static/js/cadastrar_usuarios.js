@@ -4,9 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
        ELEMENTOS E INSTÂNCIA DO BOOTSTRAP
     ========================================= */
     const LIMITE_CARACTERES_USERNAME = 11;
-
     const modalElement = document.getElementById("modalTabelaUsuarios");
-
     const btnEditar = document.getElementById("btnEditarUsuario");
     const btnFecharModal = document.getElementById("fecharModalUsuarios");
     const btnLimparCampos = document.getElementById("btnApagarUsuario");
@@ -16,8 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const checkboxMasterUsuarios = document.getElementById("checkboxMasterUsuarios");
     const btnAtualizarTabela = document.getElementById("btnAtualizarTabelaModal");
     const tabela = document.getElementById("tabelaModalUsuarios");
-    const btnApagarModal = document.getElementById("btnApagarUsuarioModal");
-    const modalApagarElement = document.getElementById("modalApagarUsuario");
     const btnConfirmarApagar = document.getElementById("btnConfirmarApagarUsuario");
     const btnSairEdicao = document.getElementById("btnSairEdicao");
 
@@ -26,11 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let dadosOriginais = {};
     let imagemOriginal = "";
     let permitirEnvioSemImagem = false;
-
-    // Instância do modal Bootstrap de apagar
-    const instanceModalApagar = modalApagarElement
-        ? bootstrap.Modal.getOrCreateInstance(modalApagarElement)
-        : null;
 
     const modalUsuarios = modalElement
         ? bootstrap.Modal.getOrCreateInstance(modalElement)
@@ -332,6 +323,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             checkboxMasterUsuarios.indeterminate = false;
+            atualizarQuantidadeUsuariosApagar();
         });
     }
 
@@ -356,6 +348,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
                 atualizarCheckboxMasterUsuarios();
+                atualizarQuantidadeUsuariosApagar();
             });
 
             // Clique no restante da linha
@@ -928,22 +921,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (btnApagarUsuarioModal) {
         btnApagarUsuarioModal.addEventListener("click", function () {
-            const checkboxSelecionado = document.querySelector(
-                "#tabelaModalUsuarios input[name='usuario_selecionado']:checked"
-            );
+            const selecionados = tabelaUsuarios
+                ? tabelaUsuarios.querySelectorAll(
+                    'input[name="usuario_selecionado"]:checked'
+                )
+                : [];
 
-            if (!checkboxSelecionado) {
+            if (selecionados.length === 0) {
                 mostrarAlerta("Selecione um usuário para apagar.", "erro");
                 return;
             }
 
-            usuarioParaApagar = checkboxSelecionado.closest("tr");
+            // Mantém a referência ao primeiro usuário,
+            // conforme a lógica de exclusão atual.
+            usuarioParaApagar = selecionados[0].closest("tr");
+
+            // Atualiza a quantidade antes de abrir o modal.
+            atualizarQuantidadeUsuariosApagar();
+
             const modalElemento = document.getElementById("modalApagarUsuario");
 
             if (modalElemento) {
-                const backdrop = document.createElement("div");
-                backdrop.className = "backdrop-confirmacao";
-                document.body.appendChild(backdrop);
+                const backdropExistente = document.querySelector(
+                    ".backdrop-confirmacao"
+                );
+
+                if (!backdropExistente) {
+                    const backdrop = document.createElement("div");
+                    backdrop.className = "backdrop-confirmacao";
+                    document.body.appendChild(backdrop);
+                }
 
                 const modalApagar = bootstrap.Modal.getOrCreateInstance(
                     modalElemento,
@@ -954,6 +961,25 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    
+    /* =========================================
+    QUANTIDADE DE USUÁRIOS PARA EXCLUSÃO
+    ========================================= */
+
+    const qtdUsuariosApagarModal = document.getElementById("qtdUsuariosApagarModal");
+
+    function atualizarQuantidadeUsuariosApagar() {
+        if (!qtdUsuariosApagarModal || !tabelaUsuarios) return;
+
+        const quantidade = tabelaUsuarios.querySelectorAll(
+            'input[name="usuario_selecionado"]:checked'
+        ).length;
+
+        qtdUsuariosApagarModal.textContent =
+            `${quantidade} ${quantidade === 1 ? "usuário" : "usuários"}`;
+    }
+
 
     if (btnConfirmarApagar) {
         btnConfirmarApagar.addEventListener("click", function () {
@@ -1049,20 +1075,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const btnAbrirFiltroUsuarios = document.getElementById("btnAbrirFiltroUsuariosModal");
 
-    if (btnAbrirFiltroUsuarios) {
-        btnAbrirFiltroUsuarios.addEventListener("click", () => {
-            const modalElemento = document.getElementById("modalFiltrarUsuarios");
-            if (!modalElemento) return;
+        if (btnAbrirFiltroUsuarios) {
+            btnAbrirFiltroUsuarios.addEventListener("click", () => {
+                const modalElemento = document.getElementById("modalFiltrarUsuarios");
+                if (!modalElemento) return;
 
-            bootstrap.Modal
-                .getOrCreateInstance(modalElemento, { backdrop: false })
-                .show();
+                // Cria o backdrop personalizado
+                const backdropExistente = document.querySelector(".backdrop-filtro-usuarios");
 
-            inicializarEventosTabelaUsuarios();
-        });
-    }
+                if (!backdropExistente) {
+                    const backdrop = document.createElement("div");
+                    backdrop.className = "backdrop-filtro-usuarios";
+                    document.body.appendChild(backdrop);
+                }
 
-    const btnExecutarFiltroUsuarios = document.getElementById("btnExecutarFiltro");
+                // Abre o modal sem o backdrop padrão do Bootstrap
+                bootstrap.Modal
+                    .getOrCreateInstance(modalElemento, { backdrop: false })
+                    .show();
+
+                inicializarEventosTabelaUsuarios();
+            });
+        }
+
+        // Remove o backdrop ao fechar o modal
+        const modalFiltroUsuarios = document.getElementById("modalFiltrarUsuarios");
+
+        if (modalFiltroUsuarios) {
+            modalFiltroUsuarios.addEventListener("hidden.bs.modal", () => {
+                document.querySelector(".backdrop-filtro-usuarios")?.remove();
+            });
+        }
+
+    const btnExecutarFiltroUsuarios = document.getElementById("btnExecutarFiltroUsuarios");
 
     if (btnExecutarFiltroUsuarios) {
         btnExecutarFiltroUsuarios.addEventListener("click", function (event) {
@@ -1071,9 +1116,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const tipoFiltro = document.getElementById("tipoFiltro");
-    const labelValorFiltro = document.getElementById("labelValorFiltro");
-    const valorFiltro = document.getElementById("valorFiltro");
+    const tipoFiltro = document.getElementById("tipoFiltroUsuarios");
+    const labelValorFiltro = document.getElementById("labelValorFiltroUsuarios");
+    const valorFiltro = document.getElementById("valorFiltroUsuarios");
 
     if (tipoFiltro) {
         tipoFiltro.addEventListener("change", () => {
@@ -1124,8 +1169,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     async function filtrarUsuarios() {
-        const tipo = document.getElementById("tipoFiltro")?.value;
-        const valor = document.getElementById("valorFiltro")?.value.trim();
+        const tipo = document.getElementById("tipoFiltroUsuarios")?.value;
+        const valor = document.getElementById("valorFiltroUsuarios")?.value.trim();
 
         if (!tipo) {
             mostrarAlerta("Selecione um tipo de filtro.", "erro");
@@ -1210,6 +1255,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 linha.classList.remove("usuario-selecionado");
             }
         });
+
+        atualizarCheckboxMasterUsuarios();
+        atualizarQuantidadeUsuariosApagar();
     }
 
     document.addEventListener("click", function (event) {
@@ -1230,16 +1278,41 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const btnAbrirOrdenacaoUsuarios = document.getElementById("btnAbrirOrdenacaoUsuariosModal");
-    if (btnAbrirOrdenacaoUsuarios) {
-        btnAbrirOrdenacaoUsuarios.addEventListener("click", () => {
-            bootstrap.Modal.getOrCreateInstance(document.getElementById("modalOrdenarUsuarios")).show();
-        });
-    }
+
+        if (btnAbrirOrdenacaoUsuarios) {
+            btnAbrirOrdenacaoUsuarios.addEventListener("click", () => {
+                const modalElemento = document.getElementById("modalOrdenarUsuarios");
+                if (!modalElemento) return;
+
+                // Cria o backdrop personalizado
+                const backdropExistente = document.querySelector(".backdrop-ordenacao-usuarios");
+
+                if (!backdropExistente) {
+                    const backdrop = document.createElement("div");
+                    backdrop.className = "backdrop-ordenacao-usuarios";
+                    document.body.appendChild(backdrop);
+                }
+
+                // Abre o modal sem o backdrop padrão do Bootstrap
+                bootstrap.Modal
+                    .getOrCreateInstance(modalElemento, { backdrop: false })
+                    .show();
+            });
+        }
+
+        // Remove o backdrop ao fechar o modal
+        const modalOrdenarUsuarios = document.getElementById("modalOrdenarUsuarios");
+
+        if (modalOrdenarUsuarios) {
+            modalOrdenarUsuarios.addEventListener("hidden.bs.modal", () => {
+                document.querySelector(".backdrop-ordenacao-usuarios")?.remove();
+            });
+        }
 
     const btnExecutarOrdenacao = document.getElementById("btnExecutarOrdenacao");
-    if (btnExecutarOrdenacao) {
-        btnExecutarOrdenacao.addEventListener("click", ordenarUsuarios);
-    }
+        if (btnExecutarOrdenacao) {
+            btnExecutarOrdenacao.addEventListener("click", ordenarUsuarios);
+        }
 
     async function ordenarUsuarios() {
         const direcao = document.getElementById("tipoOrdenacaoUsuario").value;
@@ -1262,27 +1335,27 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const btnVisualizarImagemUsuario = document.getElementById("btnVisualizarFotoModal");
+    const modalEl = document.getElementById("modalVisualizarImagemUsuario");
 
-    if (btnVisualizarImagemUsuario) {
+    if (btnVisualizarImagemUsuario && modalEl) {
         btnVisualizarImagemUsuario.addEventListener("click", function () {
             const selecionados = document.querySelectorAll(
-                "#modalTabelaUsuarios input[type='checkbox']:checked, #modalTabelaUsuarios input[type='radio']:checked"
+                "#modalTabelaUsuarios input[type='checkbox']:checked, " +
+                "#modalTabelaUsuarios input[type='radio']:checked"
             );
 
-            if (selecionados.length === 0) {
-                mostrarAlerta("Selecione um usuário para visualizar a imagem.", "erro");
+            if (selecionados.length !== 1) {
+                mostrarAlerta(
+                    selecionados.length === 0
+                        ? "Selecione um usuário para visualizar a imagem."
+                        : "Selecione apenas 1 usuário por vez para visualizar a imagem.",
+                    "erro"
+                );
                 return;
             }
 
-            if (selecionados.length > 1) {
-                mostrarAlerta("Selecione apenas 1 usuário por vez para visualizar a imagem.", "erro");
-                return;
-            }
-
-            const inputSelecionado = selecionados[0];
-            const linha = inputSelecionado.closest("tr");
-            const imagem = linha ? linha.dataset.imagem : null;
-
+            const linha = selecionados[0].closest("tr");
+            const imagem = linha?.dataset.imagem;
             const img = document.getElementById("imagemUsuarioModal");
             const msg = document.getElementById("mensagemSemImagemUsuario");
 
@@ -1296,9 +1369,28 @@ document.addEventListener("DOMContentLoaded", function () {
                 msg.style.display = "block";
             }
 
+            if (!document.querySelector(".backdrop-imagem-usuario")) {
+                const backdrop = document.createElement("div");
+                backdrop.className = "backdrop-imagem-usuario";
+                document.body.appendChild(backdrop);
+            }
+
             bootstrap.Modal
-                .getOrCreateInstance(document.getElementById("modalVisualizarImagemUsuario"))
+                .getOrCreateInstance(modalEl, { backdrop: false })
                 .show();
+        });
+
+        modalEl.addEventListener("hidden.bs.modal", () => {
+            document.querySelector(".backdrop-imagem-usuario")?.remove();
+        });
+    }
+
+    // Remove o backdrop ao fechar o modal
+    const modalVisualizarImagemUsuario = document.getElementById("modalVisualizarImagemUsuario");
+
+    if (modalVisualizarImagemUsuario) {
+        modalVisualizarImagemUsuario.addEventListener("hidden.bs.modal", () => {
+            document.querySelector(".backdrop-imagem-usuario")?.remove();
         });
     }
 

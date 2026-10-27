@@ -1486,7 +1486,7 @@ input.checkbox-custom-tabela-produtos[type="checkbox"]:checked::after {
 }
 
 /* =====================================================
-   MODAL ORDENAR PRODUTOS — ESTILOS CUSTOMIZADOS (#111827)
+   MODAL ORDENAR PRODUTOS 
 ===================================================== */
 /* Z-Index e Posição do Modal */
 #modalOrdenarProdutos {

@@ -166,7 +166,7 @@
 /* Grid Ajustado para não estourar telas pequenas */
 .news-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
     width: 100%;
 }
@@ -221,4 +221,19 @@
     font-size: 13px;
     color: #cecfd2;
     line-height: 1.5;
+}
+
+.news-grid.is-animating .news-card {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.news-grid.is-animating .news-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.news-grid.is-animating .news-card.is-visible:hover {
+    transform: translateY(-2px);
 }

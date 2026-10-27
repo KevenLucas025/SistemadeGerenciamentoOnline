@@ -67,9 +67,18 @@
                     <h4>Nova Interface do Menu</h4>
                     <p>Agora a navegação está mais fluida com o menu lateral redesenhado e atalhos rápidos.</p>
                 </div>
+
+                <!-- Card de Notícia 3 -->
+                <div class="news-card">
+                    <span class="news-badge update">Melhoria</span>
+                    <span class="news-date">Implementado em 26/10/2026</span>
+                    <h4>Upgrade</h4>
+                    <p>Melhoramos as tabelas de produto e tabela de usuários. Com um layout moderno e simples</p>
+                </div>
+                
             </div>
         </div>
-
+        
     </div>
 </div>
 
@@ -98,6 +107,20 @@
             // Salva a preferência no navegador do usuário
             localStorage.setItem("bannerDismissed", "true");
         }
+    }
+
+    const newsGrid = document.querySelector(".news-grid");
+
+    if (newsGrid) {
+        const cards = newsGrid.querySelectorAll(".news-card");
+
+        newsGrid.classList.add("is-animating");
+
+        cards.forEach((card, index) => {
+            setTimeout(() => {
+                card.classList.add("is-visible");
+            }, index * 3000);
+        });
     }
 </script>
 {% endblock %}

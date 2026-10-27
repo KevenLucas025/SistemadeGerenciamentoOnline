@@ -286,6 +286,51 @@ O sistema permite escolher entre dois tipos de cliente:
 Após a conclusão do procedimento, o cliente será
 cadastrado e exibido na tabela correspondente.
 
+# 6. SEGREDO
+
+## 6.1. Segredo
+
+### Em desenvolvimento
+
+Essa informação ainda está sendo desenvolvimento, pelo time de Desenvolvimento.
+Mas será um implementação com token usando autenticadores para uma segurança maior.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### Limites das informações disponíveis
 
 Esta base não especifica todos os campos do cadastro,
@@ -362,6 +407,9 @@ Priorize sempre:
 
 É melhor informar que uma informação não está disponível
 do que fornecer uma orientação incorreta.
+
+
+
 
 """
 

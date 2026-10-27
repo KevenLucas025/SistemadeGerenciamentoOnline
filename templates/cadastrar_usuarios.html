@@ -26,11 +26,9 @@
 
 
 <div class="dashboard-page-cadastrar-usuarios">
-
     <!-- =========================================
          TOPO
     ========================================== -->
-
     <div class="dashboard-topbar-cadastrar-usuarios">
         <div>
             <h1>
@@ -41,24 +39,18 @@
             </p>
         </div>
     </div>
-
-
     <!-- =========================================
          GRID PRINCIPAL
     ========================================== -->
-
     <div class="cadastrar-usuarios-grid-layout">
-
         <!-- =====================================
              CARD PRINCIPAL
         ====================================== -->
-
         <div class="dashboard-card-cadastrar-usuarios">
 
             <!-- =================================
                  CABEÇALHO
             ================================== -->
-
             <div class="cadastrar-usuarios-header">
 
                 <h2>
@@ -113,13 +105,11 @@
             <!-- =================================
                  FORMULÁRIO
             ================================== -->
-
+            <form id="formCadastrarUsuario">
             <div class="cadastrar-usuarios-formulario">
-
                 <!-- ==============================
                      COLUNA ESQUERDA
                 =============================== -->
-
                 <div class="coluna-esquerda-formulario-cadastrar-usuarios">
 
                     <!-- NOME / USUÁRIO -->
@@ -176,8 +166,6 @@
                         </div>
                     </div>
 
-
-
                     <!-- CEP / ENDEREÇO / NÚMERO -->
                     <div class="campo-grupo-triplo">
                         <div class="campo">
@@ -225,10 +213,8 @@
 
                         <div class="campo">
                             <label for="usuarioEstado">Estado</label>
-
                             <select id="usuarioEstado" name="estado">
                                 <option value="">Selecione o estado</option>
-
                                 <option value="AC">AC</option>
                                 <option value="AL">AL</option>
                                 <option value="AP">AP</option>
@@ -426,7 +412,7 @@
                 <i class="fa-solid fa-circle-check"></i>
                 Confirmar / Salvar Usuário
             </button>
-
+            </form>
         </div>
 
     </div>
@@ -576,19 +562,22 @@
     </div>
 </div>
 
+
 <!-- =====================================================
      MODAL APAGAR USUÁRIO
 ====================================================== -->
-<div class="modal fade"
-     id="modalApagarUsuario"
-     tabindex="-1"
-     aria-labelledby="modalApagarUsuarioLabel"
-     aria-hidden="true">
-
+<div
+    class="modal fade"
+    id="modalApagarUsuario"
+    tabindex="-1"
+    aria-labelledby="modalApagarUsuarioLabel"
+    aria-hidden="true"
+>
     <div class="modal-dialog modal-dialog-centered">
 
         <div class="modal-content modal-logout-content">
 
+            <!-- CABEÇALHO -->
             <div class="modal-header">
 
                 <div class="modal-logout-icon modal-warning-icon">
@@ -599,47 +588,62 @@
                     type="button"
                     class="btn-modal-fechar"
                     data-bs-dismiss="modal"
-                    aria-label="Fechar">
-
+                    aria-label="Fechar"
+                >
                     <i class="fa-solid fa-xmark"></i>
-
                 </button>
 
             </div>
 
+            <!-- CORPO -->
             <div class="modal-body text-center">
 
-                <h4 id="modalApagarUsuarioLabel">
-                    Apagar usuário?
+                <h4 id="modalApagarUsuarioLabel" class="modal-confirmar-apagar-usuarios-titulo">
+                    Apagar usuário(s)?
                 </h4>
 
-                <p>
-                    Esta ação removerá o usuário permanentemente.
+                <p class="modal-confirmar-apagar-usuarios-descricao">
+                    Esta ação é <strong>irreversível</strong>. Os usuários selecionados
+                    serão removidos permanentemente da base de dados do sistema.
                     <br>
-                    Deseja continuar?
                 </p>
+
+                <!-- QUANTIDADE SELECIONADA -->
+                <div class="modal-apagar-usuario-quantidade">
+
+                    <span class="modal-apagar-usuario-quantidade-label">
+                        Quantidade selecionada:
+                    </span>
+
+                    <strong
+                        id="qtdUsuariosApagarModal"
+                        class="modal-apagar-usuario-quantidade-valor"
+                    >
+                        0 usuários
+                    </strong>
+
+                </div>
 
             </div>
 
+            <!-- RODAPÉ -->
             <div class="modal-footer">
 
                 <button
                     type="button"
                     class="btn btn-secondary"
-                    data-bs-dismiss="modal">
-
+                    data-bs-dismiss="modal"
+                >
                     Cancelar
-
                 </button>
 
                 <button
                     type="button"
                     id="btnConfirmarApagarUsuario"
-                    class="btn btn-danger">
-
+                    class="btn btn-danger"
+                >
                     <i class="fa-solid fa-trash"></i>
                     Apagar
-
                 </button>
 
             </div>
@@ -647,105 +651,51 @@
         </div>
 
     </div>
-
 </div>
 
+
 <!-- =====================================================
-     MODAL FILTRAR PRODUTOS
+     MODAL FILTRAR USUÁRIOS
 ===================================================== -->
-<div class="modal fade"
-     id="modalFiltrarUsuarios"
-     tabindex="-1"
-     aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-
-        <div class="modal-content modal-logout-content">
-
-            <div class="modal-header">
-
-                <h5>
+<div class="modal fade modal-filtrar-usuarios" id="modalFiltrarUsuarios" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-filtrar-usuarios-dialog">
+        <div class="modal-content modal-filtrar-usuarios-content">
+            <div class="modal-header modal-filtrar-usuarios-header">
+                <h5 class="modal-filtrar-usuarios-titulo">
                     <i class="fa-solid fa-filter"></i>
                     Filtrar Usuários
                 </h5>
-
-                <button
-                    type="button"
-                    class="btn-modal-fechar"
-                    data-bs-dismiss="modal">
-
+                <button type="button" class="btn-modal-fechar-filtrar-usuarios" data-bs-dismiss="modal" aria-label="Fechar">
                     <i class="fa-solid fa-xmark"></i>
-
                 </button>
-
             </div>
 
-            <div class="modal-body">
-
-                <div class="campo">
-
-                    <label>Escolha o tipo de filtro</label>
-
-                    <select id="tipoFiltro">
-
-                        <option value="nome">
-                            Filtrar por Nome
-                        </option>
-
-                        <option value="usuario">
-                            Filtrar por Usuário
-                        </option>
-
-                        <option value="acesso">
-                            Filtrar por Acesso
-                        </option>
-
-                        <option value="telefone">
-                            Filtrar por Telefone
-                        </option>
-
-                        <option value="email">
-                            Filtrar por E-mail
-                        </option>
-
-                        <option value="rg">
-                            Filtrar por RG
-                        </option>
-
-                        <option value="cpf">
-                            Filtrar por CPF
-                        </option>
-
-                        <option value="cnpj">
-                            Filtrar por CNPJ
-                        </option>
+            <div class="modal-body modal-filtrar-usuarios-body">
+                <div class="campo-filtrar-usuarios">
+                    <label for="tipoFiltroUsuarios" class="label-tipo-filtro-usuarios">Escolha o tipo de filtro</label>
+                    <select id="tipoFiltroUsuarios" class="select-tipo-filtro-usuarios">
+                        <option value="nome">Filtrar por Nome</option>
+                        <option value="usuario">Filtrar por Usuário</option>
+                        <option value="acesso">Filtrar por Acesso</option>
+                        <option value="telefone">Filtrar por Telefone</option>
+                        <option value="email">Filtrar por E-mail</option>
+                        <option value="rg">Filtrar por RG</option>
+                        <option value="cpf">Filtrar por CPF</option>
+                        <option value="cnpj">Filtrar por CNPJ</option>
                     </select>
                 </div>
 
-                <div class="campo mt-3">
-
-                    <label id="labelValorFiltro">
-                        Nome do Usuário
-                    </label>
-
-                    <input
-                        type="text"
-                        id="valorFiltro"
-                        placeholder="Digite o nome do usuário">
-
+                <div class="campo-filtrar-usuarios mt-3">
+                    <label id="labelValorFiltroUsuarios" for="valorFiltroUsuarios" class="label-valor-filtro-usuarios">Nome do Usuário</label>
+                    <input type="text" id="valorFiltroUsuarios" class="input-valor-filtro-usuarios" placeholder="Digite o nome do usuário">
                 </div>
             </div>
-            <div class="modal-footer">
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
+
+            <div class="modal-footer modal-filtrar-usuarios-footer">
+                <button type="button" class="btn-cancelar-filtrar-usuarios" data-bs-dismiss="modal">
                     Cancelar
                 </button>
-                <button
-                    type="button"
-                    id="btnExecutarFiltro"
-                    class="btn btn-primary">
+                <button type="button" id="btnExecutarFiltroUsuarios" class="btn-confirmar-filtrar-usuarios">
                     <i class="fa-solid fa-filter"></i>
                     Filtrar
                 </button>
@@ -754,131 +704,65 @@
     </div>
 </div>
 
-<div class="modal fade"
-     id="modalOrdenarUsuarios"
-     tabindex="-1"
-     aria-hidden="true"
-     data-bs-backdrop="false">
-
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-
-        <div class="modal-content modal-logout-content">
-
-            <div class="modal-header">
-
-                <h5>
+<!-- =====================================================
+     MODAL ORDENAR USUÁRIOS
+===================================================== -->
+<div class="modal fade modal-ordenar-usuarios" id="modalOrdenarUsuarios" tabindex="-1" aria-hidden="true" data-bs-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm modal-ordenar-usuarios-dialog">
+        <div class="modal-content modal-ordenar-usuarios-content">
+            <div class="modal-header modal-ordenar-usuarios-header">
+                <h5 class="modal-ordenar-usuarios-titulo">
                     <i class="fa-solid fa-arrow-down-a-z"></i>
                     Direção da Ordenação
                 </h5>
-
-                <button
-                    type="button"
-                    class="btn-modal-fechar"
-                    data-bs-dismiss="modal">
-
+                <button type="button" class="btn-modal-fechar-ordenar-usuarios" data-bs-dismiss="modal" aria-label="Fechar">
                     <i class="fa-solid fa-xmark"></i>
-
                 </button>
-
             </div>
 
-            <div class="modal-body">
-
-                <div class="campo">
-
-                    <label>Escolha a direção</label>
-
-                    <select id="tipoOrdenacaoUsuario">
-
-                        <option value="asc">
-                            Crescente
-                        </option>
-
-                        <option value="desc">
-                            Decrescente
-                        </option>
-
+            <div class="modal-body modal-ordenar-usuarios-body">
+                <div class="campo-ordenar-usuarios">
+                    <label for="tipoOrdenacaoUsuarios" class="label-ordenar-usuarios">Escolha a direção</label>
+                    <select id="tipoOrdenacaoUsuarios" class="select-ordenar-usuarios">
+                        <option value="asc">Crescente</option>
+                        <option value="desc">Decrescente</option>
                     </select>
-
                 </div>
-
             </div>
 
-            <div class="modal-footer">
-
-                <button
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
-
+            <div class="modal-footer modal-ordenar-usuarios-footer">
+                <button type="button" class="btn-cancelar-ordenar-usuarios" data-bs-dismiss="modal">
                     Cancelar
-
                 </button>
-
-                <button
-                    id="btnExecutarOrdenacao"
-                    class="btn btn-primary">
-
+                <button type="button" id="btnExecutarOrdenacaoUsuarios" class="btn-confirmar-ordenar-usuarios">
                     <i class="fa-solid fa-arrow-down-a-z"></i>
                     Ordenar
-
                 </button>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 
-<div class="modal fade"
-     id="modalVisualizarImagemUsuario"
-     tabindex="-1"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content modal-logout-content">
-            <div class="modal-header">
-                <h5>
-                    <i class="fa-solid fa-image"></i>
-                    Imagem do Usuário
-                </h5>
-                <button
-                    type="button"
-                    class="btn-modal-fechar"
-                    data-bs-dismiss="modal">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+<!-- MODAL VISUALIZAR IMAGEM DO USUÁRIO -->
+<div class="modal fade modal-visualizar-imagem-usuarios" id="modalVisualizarImagemUsuario" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-visualizar-imagem-usuarios-dialog">
+        <div class="modal-content modal-visualizar-imagem-usuarios-content">
+            <div class="modal-header modal-visualizar-imagem-usuarios-header">
+                <h5 class="modal-visualizar-imagem-usuarios-titulo"><i class="fa-solid fa-image"></i> Imagem do Usuário</h5>
+                <button type="button" class="btn-modal-fechar-visualizar-imagem-usuarios" data-bs-dismiss="modal" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
-            <div class="modal-body text-center">
-                <img
-                    id="imagemUsuarioModal"
-                    src=""
-                    class="img-fluid rounded"
-                    style="max-height:500px; display:none;">
-
-                <div id="mensagemSemImagemUsuario">
-                    <i class="fa-regular fa-image fa-3x mb-3"></i>
-                    <p>
-                        Este usuário não possui imagem cadastrada.
-                    </p>
+            <div class="modal-body modal-visualizar-imagem-usuarios-body text-center">
+                <img id="imagemUsuarioModal" src="" class="img-fluid rounded img-preview-modal-usuarios" style="max-height:500px; display:none;">
+                <div id="mensagemSemImagemUsuario" class="mensagem-sem-imagem-usuarios">
+                    <i class="fa-regular fa-image fa-3x mb-3 icone-sem-imagem-usuarios"></i>
+                    <p class="texto-sem-imagem-usuarios">Este usuário não possui imagem cadastrada.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- CONTAINER DOS INPUTS DE SENHA (CADASTRO) -->
-<div id="containerCamposSenha" class="campos-grid-senha">
-    <div class="campo">
-        <label for="usuarioSenha">Senha *</label>
-        <div class="input-com-icone">
-            <input type="password" id="usuarioSenha" name="senha" placeholder="Digite a senha">
-            <button type="button" id="btnToggleSenha" class="btn-olho-senha">
-                <i class="fa-solid fa-eye"></i>
-            </button>
-        </div>
-    </div>
+
 
     
 

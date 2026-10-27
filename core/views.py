@@ -166,6 +166,8 @@ def cadastrar_produtos(request):
             "clientes": clientes
         }
     )
+
+# LEVA ATÉ A PÁGINA DE CADASTRAR USUÁRIOS
 @login_required
 def cadastrar_usuarios(request):
     usuarios = User.objects.select_related("perfil").all().order_by("-date_joined")

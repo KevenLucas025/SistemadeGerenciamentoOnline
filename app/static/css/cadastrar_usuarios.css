@@ -171,7 +171,40 @@
 .campo input:focus,
 .campo select:focus {
     border-color: #7c3aed;
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.20);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.35);
+}
+
+#usuarioEstado {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+#usuarioEstado:hover,
+#usuarioEstado:focus{
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+#usuarioPerfil{
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+#usuarioPerfil:hover,
+#usuarioPerfil:focus{
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
 }
 
 /* =====================================================
@@ -945,75 +978,67 @@
 /* =====================================================
    MODAL DE CONFIRMAÇÃO — APAGAR USUÁRIO
 ===================================================== */
-
-/*
-   Modal da tabela permanece abaixo
-   do modal de confirmação.
-*/
-#modalTabelaUsuarios {
-    z-index: 1050 !important;
-}
-
-
-/*
-   Modal de confirmação fica acima
-   da tabela.
-*/
 #modalApagarUsuario {
     z-index: 1070 !important;
 }
 
 
-/*
-   Backdrop criado pelo Bootstrap para
-   o modal da tabela.
-*/
-.modal-backdrop {
-    z-index: 1040 !important;
-}
-
-
-/*
-   Quando o modal de confirmação estiver aberto,
-   o segundo backdrop precisa ficar entre
-   a tabela e o modal de confirmação.
-*/
-.modal-backdrop + .modal-backdrop {
-    z-index: 1060 !important;
-}
-
-
-/*
-   Garante que o conteúdo do modal de confirmação
-   fique acima do próprio backdrop.
-*/
 #modalApagarUsuario .modal-dialog {
-    position: relative;
-    z-index: 1071;
+    max-width: 440px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
 }
 
+.modal-confirmar-apagar-usuarios-titulo {
+    margin: 0 0 10px;
+    color: #f9fafb;
+    font-size: 19px;
+    font-weight: 600;
+}
 
-/*
-   Conteúdo do modal.
-*/
+.modal-confirmar-apagar-usuarios-descricao {
+    margin: 0;
+    color: #9ca3af !important;
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+.modal-apagar-usuario-quantidade {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 16px;
+    font-size: 13px;
+    text-align: left;
+}
+
+.modal-apagar-usuario-quantidade-label {
+    color: #9ca3af;
+}
+
 #modalApagarUsuario .modal-content {
-    position: relative;
-    z-index: 1072;
+    background: #111827 !important;
+    border-radius: 14px !important;
+    color: #cecfd2;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65);
 }
 
-.backdrop-confirmacao {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.65);
-    z-index: 1060;
-    pointer-events: auto;
-}
 #modalFiltrarUsuarios .modal-header h5{
     color: #cecfd2;
 
 }
+
+.modal-apagar-usuario-quantidade-valor{
+    color: #f87171;
+    font-weight: 600;
+}
+
+
 #modalFiltrarUsuarios .modal-content.modal-logout-content {
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -1112,54 +1137,82 @@
 /* =====================================================
    MODAL DE VISUALIZAR IMAGEM DO USUÁRIO
 ===================================================== */
-#modalVisualizarImagemUsuario .modal-body {
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center;     /* Centraliza verticalmente */
-    min-height: 300px;
-    padding: 24px;
-}
-#modalVisualizarImagemUsuario h5 {
-    color: #cecfd2;
-}
-/* Define que o modal de imagem fique com z-index superior à tabela (que é 1050) */
-#modalVisualizarImagemUsuario {
-    z-index: 1080 !important;
+#modalVisualizarImagemUsuario{
+    z-index: 1075 !important;
 }
 
-/* Garante que o diálogo e conteúdo do modal fiquem visíveis à frente do backdrop */
-#modalVisualizarImagemUsuario .modal-dialog {
-    position: relative;
-    z-index: 1082 !important;
+/* 2. CABEÇALHO */
+.modal-visualizar-imagem-usuarios .modal-visualizar-imagem-usuarios-header {
+  background-color: #111827;
+  border-bottom: 1px solid #1f2937;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-#modalVisualizarImagemUsuario .modal-content {
-    position: relative;
-    z-index: 1083 !important;
+/* Backdrop exclusivo da visualização da imagem do produto */
+.backdrop-imagem-usuario {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
 }
-#mensagemSemImagemUsuario i {
-    color: #cecfd2; /* Cor do ícone (exemplo em roxo do seu tema) */
-    margin-bottom: 16px !important;
-    transition: transform 0.2s ease, color 0.2s ease;
+
+.modal-visualizar-imagem-usuarios .modal-visualizar-imagem-usuarios-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f9fafb;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
-/* Estilização do texto da mensagem */
-#mensagemSemImagemUsuario p {
-    color: #94a3b8;
-    font-size: 14px;
-    font-weight: 500;
-    margin: 0;
+
+.modal-visualizar-imagem-usuarios .modal-visualizar-imagem-usuarios-titulo i {
+  color: #3b82f6;
 }
-/* Estilo do elemento da imagem */
-#imagemUsuarioModal {
-    max-width: 100%;
-    max-height: 450px;       /* Limita a altura para não quebrar a tela */
-    width: auto;
-    height: auto;
-    object-fit: contain;     /* Mantém as proporções da foto sem distorcer */
-    margin: 0 auto;          /* Garante a centralização */
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Sombra suave para destacar a foto */
+
+.modal-visualizar-imagem-usuarios .btn-modal-fechar-visualizar-imagem-usuarios {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.2rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-visualizar-imagem-usuarios .btn-modal-fechar-visualizar-imagem-usuarios:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ef4444;
+}
+
+/* 3. CORPO DO MODAL E ÁREA DA IMAGEM */
+.modal-visualizar-imagem-usuarios .modal-visualizar-imagem-usuarios-body {
+  background-color: #111827;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+}
+
+
+/* 1. ESTRUTURA PRINCIPAL DO MODAL */
+.modal-visualizar-imagem-usuarios .modal-visualizar-imagem-usuarios-content {
+  background-color: #111827;
+  border: 1px solid #374151;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  color: #f9fafb;
+  overflow: hidden;
 }
 
 .aviso-senha-bloqueada {
@@ -1192,4 +1245,365 @@
     font-size: 12px;
     color: #94a3b8;
     line-height: 1.4;
+}
+
+/* =====================================================
+   MODAL FILTRAR USUÁRIOS
+===================================================== */
+#modalFiltrarUsuarios{
+    z-index: 1075 !important;
+}
+
+/* 1. ESTRUTURA PRINCIPAL DO MODAL */
+.modal-filtrar-usuarios .modal-filtrar-usuarios-content {
+  background-color: #111827;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  color: #cecfd2;
+  overflow: hidden;
+}
+
+/* Backdrop exclusivo da filtragem de usuarios */
+.backdrop-filtro-usuarios {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
+}
+
+.modal-filtrar-usuarios-dialog{
+    max-width: 400px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+/* 2. CABEÇALHO */
+.modal-filtrar-usuarios .modal-filtrar-usuarios-header {
+  background-color: #111827;
+  border-bottom: 1px solid #334155;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-filtrar-usuarios .modal-filtrar-usuarios-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #cecfd2;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.modal-filtrar-usuarios .modal-filtrar-usuarios-titulo i {
+  color: #cecfd2;
+}
+.modal-filtrar-usuarios .btn-modal-fechar-filtrar-usuarios {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none;
+    border-radius: 50% !important;
+    color: #CECFD2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-filtrar-usuarios .btn-modal-fechar-filtrar-usuarios:hover {
+    background-color: #dc2626 !important;
+    color: #CECFD2 !important;
+    transform: scale(1.05);
+}
+
+/* 3. CORPO E CAMPOS */
+.modal-filtrar-usuarios .modal-filtrar-usuarios-body {
+  padding: 1.5rem;
+  background: #111827;
+}
+
+.modal-filtrar-usuarios .campo-filtrar-usuarios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-filtrar-usuarios .label-tipo-filtro-usuarios,
+.modal-filtrar-usuarios .label-valor-filtro-usuarios {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modal-filtrar-usuarios .select-tipo-filtro-usuarios,
+.modal-filtrar-usuarios .input-valor-filtro-usuarios {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  color: #cecfd2;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.modal-filtrar-usuarios .select-tipo-filtro-usuarios option {
+    background-color: #0f172a;
+    color: #cecfd2;
+    
+}
+
+#tipoFiltroUsuarios{
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+#tipoFiltroUsuarios:hover,
+#tipoFiltroUsuarios:focus{
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+/* 4. RODAPÉ E BOTÕES */
+.modal-filtrar-usuarios .modal-filtrar-usuarios-footer {
+  border-top: 1px solid #334155;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  background: #111827;
+}
+
+.modal-filtrar-usuarios .btn-cancelar-filtrar-usuarios {
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #e5e7eb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-filtrar-usuarios .btn-cancelar-filtrar-usuarios:hover {
+  background-color: #4b5563;
+  color: #cecfd2;
+  
+}
+
+.modal-filtrar-usuarios .btn-confirmar-filtrar-usuarios {
+  padding: 0.6rem 1.25rem;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  color: #cecfd2;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-filtrar-usuarios .btn-confirmar-filtrar-usuarios:hover {
+  background-color: #2563eb;
+}
+
+/* =====================================================
+   MODAL ORDENAR USUÁRIOS 
+===================================================== */
+/* Z-Index e Posição do Modal */
+#modalOrdenarUsuarios {
+  z-index: 1075 !important;
+}
+
+.modal-ordenar-usuarios-dialog {
+    max-width: 400px !important;
+    width: 90% !important;
+    margin: 1.75rem auto !important;
+}
+
+
+/* Backdrop exclusivo da ordenação de usuarios */
+.backdrop-ordenacao-usuarios {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
+}
+
+/* 1. ESTRUTURA PRINCIPAL DO MODAL */
+.modal-ordenar-usuarios .modal-ordenar-usuarios-content {
+  background-color: #111827;
+  border: 1px solid #374151;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  color: #CECFD2;
+  overflow: hidden;
+}
+
+/* 2. CABEÇALHO */
+.modal-ordenar-usuarios .modal-ordenar-usuarios-header {
+  background-color: #111827;
+  border-bottom: 1px solid #1f2937;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-ordenar-usuarios .modal-ordenar-usuarios-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #CECFD2;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.modal-ordenar-usuarios .modal-ordenar-usuarios-titulo i {
+  color: #CECFD2;
+}
+
+.modal-ordenar-usuarios .btn-modal-fechar-ordenar-usuarios {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none;
+    border-radius: 50% !important;
+    color: #CECFD2 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-ordenar-usuarios .btn-modal-fechar-ordenar-usuarios:hover {
+    background-color: #dc2626 !important;
+    color: #CECFD2 !important;
+    transform: scale(1.05);
+}
+
+/* 3. CORPO E CAMPOS */
+.modal-ordenar-usuarios .modal-ordenar-usuarios-body {
+  background-color: #111827;
+  padding: 1.5rem;
+}
+
+.modal-ordenar-usuarios .campo-ordenar-usuarios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-ordenar-usuarios .label-ordenar-usuarios {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modal-ordenar-usuarios .select-ordenar-usuarios {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  color: #CECFD2;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+  
+}
+
+.modal-ordenar-usuarios .select-ordenar-usuarios:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.modal-ordenar-usuarios .select-ordenar-usuarios option {
+  background-color: #1f2937;
+  color: #CECFD2;
+}
+
+/* 4. RODAPÉ E BOTÕES */
+.modal-ordenar-usuarios .modal-ordenar-usuarios-footer {
+  background-color: #111827;
+  border-top: 1px solid #1f2937;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.modal-ordenar-usuarios .btn-cancelar-ordenar-usuarios {
+  padding: 0.6rem 1.2rem;
+  background-color: transparent;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  color: #9ca3af;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-ordenar-usuarios .btn-cancelar-ordenar-usuarios:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #CECFD2;
+  border-color: #4b5563;
+}
+
+.modal-ordenar-usuarios .btn-confirmar-ordenar-usuarios {
+  padding: 0.6rem 1.25rem;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-ordenar-usuarios .btn-confirmar-ordenar-usuarios:hover {
+  background-color: #2563eb;
+}
+
+#tipoOrdenacaoUsuarios {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+#tipoOrdenacaoUsuarios:hover,
+#tipoOrdenacaoUsuarios:focus{
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
 }
