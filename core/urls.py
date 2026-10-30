@@ -43,5 +43,8 @@ urlpatterns = [
     path("api/chat-ia/",views.chat_ia,name="chat_ia"),
     path("api/chat-ia/avaliar/",views.avaliar_assistente_ia,name="avaliar_assistente_ia",),
     
+    path('cadastrar_produtos_massa/',include('cadastrar_produtos_massa.urls')),
+    path("cadastrar_produtos_massa/processar/",views.processar_cadastro_produtos_massa,name="processar_cadastro_produtos_massa"),
+    
     
 ]

@@ -1,0 +1,436 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cadastrar_produtos_massa.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="{% static 'js/cadastrar_produtos_massa.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- MENU MOBILE -->
+<div class="dashboard-sidebar-bar">
+    <button
+        class="btn-menu-mobile"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#menuLateral"
+        aria-label="Abrir menu lateral"
+    >
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</div>
+
+<main class="gerenciamento-container">
+
+    <!-- CABEÇALHO -->
+    <header class="page-header">
+        <h2 class="page-title">Cadastro em Massa de Produtos</h2>
+
+        <p class="page-description">
+            Cadastre em massa com a quantidade que você definir.
+        </p>
+    </header>
+
+    <!-- AÇÕES -->
+    <section class="actions-card" aria-label="Ações de gerenciamento">
+
+        <div class="actions-header">
+            <h3 class="actions-title">Ações rápidas</h3>
+
+            <p class="actions-description">
+                Selecione uma operação para continuar.
+            </p>
+        </div>
+
+        <div class="actions-group">
+
+            <button type="button" class="btn-action btn-primary-action" id="btnCadastroMassa" data-url="{% url 'processar_cadastro_produtos_massa' %}">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Fazer o cadastro em massa</span>
+            </button>
+
+            <button type="button" class="btn-action btn-secondary-action" id="btnAbrirPlanilha">
+                <i class="fa-solid fa-file-excel"></i>
+                <span>Abrir planilha</span>
+                <input
+                    type="file"
+                    id="inputPlanilhaProdutos"
+                    accept=".xlsx"
+                    hidden
+                >
+            </button>
+
+            <button
+                type="button"
+                class="btn-action btn-secondary-action"
+                data-bs-toggle="modal"
+                data-bs-target="#modalAjudaPlanilha"
+            >
+                <i class="fa-solid fa-circle-question"></i>
+                <span>Ajuda sobre a planilha</span>
+            </button>
+
+            <button
+                type="button"
+                class="btn-action btn-secondary-action"
+                id="btnEditarProduto"
+            >
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>Editar produto</span>
+            </button>
+
+        </div>
+    </section>
+
+    <!-- PROGRESSO DO CADASTRO -->
+    <section class="progress-section" aria-label="Progresso do cadastro">
+        <!-- PROGRESSO DA IMPORTAÇÃO -->
+        <div id="progressoImportacao" class="progresso-importacao" hidden>
+            <div class="progresso-importacao-cabecalho">
+                <span id="textoProgressoImportacao">
+                    Preparando arquivo...
+                </span>
+
+                <span id="percentualProgressoImportacao">0%</span>
+            </div>
+
+            <div
+                class="progresso-importacao-trilho"
+                role="progressbar"
+                aria-label="Progresso da importação da planilha"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                id="barraProgressoImportacao"
+            >
+                <div
+                    id="preenchimentoProgressoImportacao"
+                    class="progresso-importacao-preenchimento"
+                ></div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- TABELA DE PRODUTOS -->
+    <section
+        class="produtos-card"
+        aria-label="Produtos cadastrados"
+    >
+
+        <!-- CONTAINER COM ROLAGEM -->
+        <div class="produtos-table-container">
+
+            <table class="produtos-table">
+
+                <thead>
+                    <tr>
+                        <th scope="col">Produto</th>
+                        <th scope="col">Quantidade</th>
+                        <th scope="col">Valor do Produto</th>
+                        <th scope="col">Desconto</th>
+                        <th scope="col">Valor Total</th>
+                        <th scope="col">Data do Cadastro</th>
+                        <th scope="col">Código do Item</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Descrição do Produto</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for produto in produtos %}
+
+                    <tr>
+                        <td>
+                            {{ produto.nome|default:"—" }}
+                        </td>
+
+                        <td>
+                            {{ produto.quantidade|default:"—" }}
+                        </td>
+
+                        <td>
+                            R$ {{ produto.valor|floatformat:2 }}
+                        </td>
+
+                        <td>
+                            R$ {{ produto.desconto|floatformat:2 }}
+                        </td>
+
+                        <td class="col-valor-total">
+                            R$ {{ produto.valor_total|floatformat:2 }}
+                        </td>
+
+                        <td>
+                            {{ produto.data_cadastro|date:"d/m/Y"|default:"—" }}
+                        </td>
+
+                        <td>
+                            {{ produto.codigo|default:"—" }}
+                        </td>
+
+                        <td>
+                            {{ produto.cliente|default:"—" }}
+                        </td>
+
+                        <td>
+                            {{ produto.descricao|default:"—" }}
+                        </td>
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="9" class="sem-registros-produtos">
+
+                            <div class="sem-registros-content">
+                                <i class="fa-solid fa-box-open"></i>
+
+                                <p>Nenhum produto cadastrado.</p>
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- MODAL: PLANILHAS DE EXEMPLO -->
+<div class="modal fade" id="modalPlanilhasExemplo" tabindex="-1"
+     aria-labelledby="tituloModalPlanilhasExemplo" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-planilhas-exemplo">
+
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="tituloModalPlanilhasExemplo">
+                        <i class="fa-solid fa-file-excel"></i>
+                        Planilhas de Exemplo
+                    </h5>
+                    <p class="modal-planilhas-descricao">
+                        Escolha o modelo que deseja baixar.
+                    </p>
+                </div>
+
+                <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="opcoes-planilhas">
+
+                    <button type="button" class="opcao-planilha" data-tipo="usuarios" data-url="{% url 'baixar_planilha_exemplo' tipo='usuarios' %}">
+                        <span class="opcao-planilha-icone">
+                            <i class="fa-solid fa-users"></i>
+                        </span>
+
+                        <span class="opcao-planilha-texto">
+                            <strong>Usuários</strong>
+                            <small>Modelo para cadastro em massa de usuários.</small>
+                        </span>
+
+                        <i class="fa-solid fa-download opcao-planilha-download"></i>
+                    </button>
+
+                    <button type="button" class="opcao-planilha" data-tipo="produtos" data-url="{% url 'baixar_planilha_exemplo' tipo='produtos' %}">
+                        <span class="opcao-planilha-icone">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                        </span>
+
+                        <span class="opcao-planilha-texto">
+                            <strong>Produtos</strong>
+                            <small>Modelo para cadastro em massa de produtos.</small>
+                        </span>
+
+                        <i class="fa-solid fa-download opcao-planilha-download"></i>
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL: AJUDA SOBRE A PLANILHA -->
+<div class="modal fade" id="modalAjudaPlanilha" tabindex="-1"
+     aria-labelledby="tituloModalAjudaPlanilha" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content modal-ajuda-planilha">
+
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="tituloModalAjudaPlanilha">
+                        <i class="fa-solid fa-circle-question"></i>
+                        Ajuda sobre a planilha
+                    </h5>
+
+                    <p class="modal-planilhas-descricao">
+                        Confira as orientações antes de realizar o cadastro em massa.
+                    </p>
+                </div>
+
+                <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <section class="ajuda-planilha-secao">
+                    <h6><i class="fa-solid fa-file-excel"></i> 1. Formato da planilha</h6>
+
+                    <ul>
+                        <li>O arquivo deve estar no formato <strong>.xlsx</strong>.</li>
+                        <li>Utilize a primeira aba da planilha para inserir os produtos.</li>
+                        <li>A primeira linha deve conter os nomes das colunas.</li>
+                        <li>Não altere os nomes dos cabeçalhos nem duplique colunas.</li>
+                        <li>Cada linha deve representar um produto.</li>
+                    </ul>
+
+                    <p>
+                        Para evitar problemas, recomendamos baixar e utilizar
+                        o modelo de planilha disponibilizado pelo sistema.
+                    </p>
+                </section>
+
+                <section class="ajuda-planilha-secao">
+                    <h6><i class="fa-solid fa-table-columns"></i> 2. Colunas da planilha</h6>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Produto</strong>
+                        <p>Informe o nome do produto. Este campo é obrigatório e aceita até <strong>150 caracteres</strong></p>
+                        <small>Não deixe o campo em branco nem ultrapasse o limite de caracteres.</small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Quantidade</strong>
+                        <p>Informe um número inteiro igual ou superior a zero.</p>
+                        <small>Exemplo: 1, 10 ou 250.</small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Valor Unitário</strong>
+                        <p>Informe o valor unitário do produto em formato numérico.</p>
+                        <small>Exemplo: 150 ou 150,50.</small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Desconto</strong>
+                        <p>
+                            Informe um número entre <strong>0 e 100</strong>
+                            representando a porcentagem de desconto.
+                        </p>
+                        <small>
+                            Exemplos: 5 (5%), 10 (10%) ou 0 (sem desconto).
+                            <strong>Caso não exista desconto, deixe a célula em branco.</strong> 
+                        </small>
+                        <p class="ajuda-planilha-alerta">
+                            <strong>Não utilize textos como "Sem desconto", símbolos
+                            de porcentagem ou valores negativos.</strong>
+                        </p>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Data do Cadastro</strong>
+                        <p>Informe uma data válida.</p>
+                        <small>Exemplo: 29/10/2026.</small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Código do Item</strong>
+                        <p>
+                            O código é gerado automaticamente pelo sistema.
+                            Não é necessário preencher essa coluna.
+                            Caso preenchido o sistema irá ignorar e seguir gerando o código.
+                        </p>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Cliente</strong>
+                        <p>Informe o nome de um cliente já cadastrado no sistema. Este campo é obrigatório e não pode ficar em branco.</p>
+                        <small>O nome deve corresponder a um cadastro existente.</small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Descrição</strong>
+                        <p>Informe os detalhes ou características do produto.</p>
+                        <small>O limite máximo é de 5.000 caracteres.</small>
+                    </div>
+
+                </section>
+
+                <section class="ajuda-planilha-secao">
+                    <h6><i class="fa-solid fa-triangle-exclamation"></i> 3. Cuidados importantes</h6>
+
+                    <ul>
+                        <li>Confira se os valores numéricos estão preenchidos corretamente.</li>
+                        <li>Não utilize textos em campos que exigem números.</li>
+                        <li>Verifique se os clientes informados já estão cadastrados.</li>
+                        <li>Confira as datas antes de iniciar a importação.</li>
+                        <li>Não altere a estrutura ou os nomes das colunas.</li>
+                    </ul>
+                </section>
+
+                <section class="ajuda-planilha-secao">
+                    <h6><i class="fa-solid fa-cloud-arrow-up"></i> 4. Como realizar o cadastro</h6>
+
+                    <ol>
+                        <li>Baixe o modelo de planilha de produtos.</li>
+                        <li>Preencha os dados seguindo as orientações acima.</li>
+                        <li>Clique em <strong>Abrir planilha</strong> e selecione o arquivo.</li>
+                        <li>Confira os produtos apresentados na tabela.</li>
+                        <li>Clique em <strong>Fazer o cadastro em massa</strong>.</li>
+                        <li>Aguarde o processamento e confira o relatório final.</li>
+                    </ol>
+
+                    <p>
+                        Produtos com dados inválidos serão rejeitados individualmente.
+                        O relatório apresentará as linhas que precisam de correção.
+                        <strong>E não tente criar uma planilha do zero, baixe e utilize a planilha disponibilizada pelo próprio sistema.</strong>
+                    </p>
+
+                    <p class="ajuda-planilha-alerta">
+                        <i class="fa-solid fa-circle-info"></i>
+                        O cadastro em massa permite importar até 500 produtos por vez.
+                        Caso tenha mais produtos, divida os dados em várias planilhas.
+                    </p>
+                </section>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Entendi
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

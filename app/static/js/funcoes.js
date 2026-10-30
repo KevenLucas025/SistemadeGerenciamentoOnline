@@ -45,6 +45,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+    // =========================
+    // ABAS DE CLIENTES
+    // =========================
+    const botoes = document.querySelectorAll(".btn-tab-cliente");
+    const paginas = document.querySelectorAll(".clientes-pagina");
+
+    botoes.forEach((botao, indice) => {
+        botao.addEventListener("click", () => {
+            botoes.forEach(btn => btn.classList.remove("ativo"));
+            paginas.forEach(pagina => pagina.classList.remove("ativa"));
+            botao.classList.add("ativo");
+            paginas[indice].classList.add("ativa");
+
+        });
+    });
+
 });
 
 
@@ -130,6 +146,65 @@ if (modalAlertaGlobal) {
 }
 
 
+// =========================
+// FUNÇÃO CONFIRMAR AÇÃO (PROMISE SIM/NÃO)
+// =========================
+function confirmarAcao(mensagem, titulo = "Confirmação") {
+    return new Promise((resolve) => {
+        const modalEl = document.getElementById("modalConfirmacaoGlobal");
+
+        if (!modalEl) {
+            // Fallback nativo do navegador caso o modal não esteja no HTML
+            const resposta = confirm(mensagem);
+            resolve(resposta);
+            return;
+        }
+
+        const tituloEl = document.getElementById("modalConfirmacaoTitulo");
+        const mensagemEl = document.getElementById("modalConfirmacaoMensagem");
+        const btnSim = document.getElementById("btnConfirmarSim");
+        const btnNao = document.getElementById("btnConfirmarNao");
+
+        if (tituloEl) tituloEl.textContent = titulo;
+        if (mensagemEl) mensagemEl.textContent = mensagem;
+
+        const modalInstancia = bootstrap.Modal.getOrCreateInstance(modalEl);
+
+        const handleSim = () => {
+            limparEventos();
+            modalInstancia.hide();
+            resolve(true);
+        };
+
+        const handleNao = () => {
+            limparEventos();
+            modalInstancia.hide();
+            resolve(false);
+        };
+
+        const handleDismiss = () => {
+            limparEventos();
+            resolve(false);
+        };
+
+        const limparEventos = () => {
+            btnSim?.removeEventListener("click", handleSim);
+            btnNao?.removeEventListener("click", handleNao);
+            modalEl.removeEventListener("hidden.bs.modal", handleDismiss);
+        };
+
+        btnSim?.addEventListener("click", handleSim);
+        btnNao?.addEventListener("click", handleNao);
+        modalEl.addEventListener("hidden.bs.modal", handleDismiss);
+
+        modalInstancia.show();
+    });
+}
+
+
+// =========================
+// MODAL DE LOGOUT
+// =========================
 function abrirModalLogout(event) {
 
     event.preventDefault();
@@ -146,7 +221,6 @@ function abrirModalLogout(event) {
     }
 
     // Abre o modal depois que o menu começar a fechar
-
     const modalElement =
         document.getElementById("modalLogout");
 
@@ -156,20 +230,3 @@ function abrirModalLogout(event) {
     modal.show();
 
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const botoes = document.querySelectorAll(".btn-tab-cliente");
-    const paginas = document.querySelectorAll(".clientes-pagina");
-
-    botoes.forEach((botao, indice) => {
-        botao.addEventListener("click", () => {
-            botoes.forEach(btn => btn.classList.remove("ativo"));
-            paginas.forEach(pagina => pagina.classList.remove("ativa"));
-            botao.classList.add("ativo");
-            paginas[indice].classList.add("ativa");
-
-        });
-    });
-});
-

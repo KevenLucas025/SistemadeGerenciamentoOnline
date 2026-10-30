@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from produtos.models import Produto
-from decimal import Decimal
+from decimal import Decimal,InvalidOperation
 from django.http import JsonResponse
 import random
 from django.shortcuts import get_object_or_404
@@ -20,6 +20,20 @@ from groq import Groq
 from django.conf import settings
 import json
 from .ia.conhecimento import CONHECIMENTO_SISTEMA
+from django.core.exceptions import ValidationError
+from django.db import transaction
+from django.http import JsonResponse
+from django.utils.dateparse import parse_date
+from django.views.decorators.http import require_POST
+from datetime import datetime, date
+import logging
+import uuid
+from django.views.decorators.csrf import csrf_protect
+
+from .models import AvaliacaoAssistenteIA
+
+logger = logging.getLogger(__name__)
+
 
 
 
@@ -69,6 +83,7 @@ def cadastrar_produtos(request):
                     "status":"erro",
                     "mensagem":"Selecione um cliente para vincular o produto"
                 },status=400)
+                
             cliente_obj = get_object_or_404(Cliente, id=cliente_id)
                 
             quantidade = int(request.POST.get("quantidade"))
@@ -155,8 +170,14 @@ def cadastrar_produtos(request):
                 "mensagem": f"Erro ao cadastrar produto: {str(e)}"
             }, status=400)
 
-    produtos = Produto.objects.all().order_by("-id")
-    clientes = Cliente.objects.all().order_by("nome")
+    produtos = (
+        Produto.objects
+        .select_related("cliente", "criado_por")
+        .order_by("-id")
+    )
+    clientes = Cliente.objects.only(
+        "id", "nome"
+    ).order_by("nome")
 
     return render(
         request,
@@ -1529,14 +1550,8 @@ def chat_ia(request):
 
         }, status=500)
         
-import json
-import uuid
 
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_protect
 
-from .models import AvaliacaoAssistenteIA
 
 
 @require_POST
@@ -1618,6 +1633,314 @@ def avaliar_assistente_ia(request):
             "nova": criado,
         }
     )
+    
+
+
+@login_required
+@require_POST
+def processar_cadastro_produtos_massa(request):
+    """
+    Cadastra produtos em massa com validação individual.
+    Produtos inválidos não impedem o processamento das demais linhas.
+    """
+    logger = logging.getLogger(__name__)
+
+    try:
+        payload = json.loads(request.body or "{}")
+        produtos_recebidos = payload.get("produtos", [])
+
+        if not isinstance(produtos_recebidos, list) or not produtos_recebidos:
+            return JsonResponse({
+                "status": "erro",
+                "mensagem": "Nenhum produto foi enviado para cadastro."
+            }, status=400)
+
+        if len(produtos_recebidos) > 10000:
+            return JsonResponse({
+                "status": "erro",
+                "mensagem": "O limite é de 10.000 produtos por operação."
+            }, status=400)
+
+    except (json.JSONDecodeError, TypeError):
+        return JsonResponse({
+            "status": "erro",
+            "mensagem": "Os dados enviados são inválidos."
+        }, status=400)
+
+    resultados = []
+    cadastrados = 0
+    rejeitados = 0
+
+    def converter_data(valor):
+        if not valor:
+            raise ValueError("A data de cadastro é obrigatória.")
+
+        if isinstance(valor, datetime):
+            return valor.date()
+
+        if isinstance(valor, date):
+            return valor
+
+        valor = str(valor).strip()
+
+        formatos = [
+            "%Y-%m-%d",
+            "%d/%m/%Y",
+            "%d-%m-%Y",
+            "%Y/%m/%d",
+            "%m/%d/%y",
+            "%m/%d/%Y",
+        ]
+
+        for formato in formatos:
+            try:
+                return datetime.strptime(valor, formato).date()
+            except ValueError:
+                continue
+
+        raise ValueError(
+            f"Data inválida: '{valor}'. "
+            "Use DD/MM/AAAA ou uma data válida do Excel."
+        )
+
+    def converter_inteiro(valor, campo):
+        texto = str(valor if valor is not None else "").strip()
+
+        if not texto:
+            raise ValueError(f"O campo {campo} é obrigatório.")
+
+        try:
+            numero_decimal = Decimal(texto)
+        except (InvalidOperation, TypeError, ValueError):
+            raise ValueError(
+                f"O campo {campo} deve conter um número inteiro válido."
+            )
+
+        if not numero_decimal.is_finite():
+            raise ValueError(
+                f"O campo {campo} deve conter um número inteiro válido."
+            )
+
+        if numero_decimal != numero_decimal.to_integral_value():
+            raise ValueError(
+                f"O campo {campo} deve conter um número inteiro."
+            )
+
+        numero = int(numero_decimal)
+
+        if numero < 0:
+            raise ValueError(f"O campo {campo} não pode ser negativo.")
+
+        return numero
+
+    # Pré-carrega os clientes para não consultar o banco a cada produto.
+    clientes_por_nome = {}
+
+    clientes = Cliente.objects.only("id", "nome").iterator(chunk_size=1000)
+
+    for cliente in clientes:
+        chave = (cliente.nome or "").strip().casefold()
+
+        if chave:
+            clientes_por_nome.setdefault(chave, []).append(cliente)
+
+    def processar_produto(item):
+        if not isinstance(item, dict):
+            raise ValueError("Os dados da linha estão em formato inválido.")
+
+        nome = str(item.get("nome") or "").strip()
+        descricao = str(item.get("descricao") or "").strip()
+        nome_cliente = str(item.get("cliente") or "").strip()
+
+        if not nome:
+            raise ValueError("O nome do produto é obrigatório.")
+
+        if len(nome) > 150:
+            raise ValueError("O nome do produto excede 150 caracteres.")
+
+        if len(descricao) > 65535:
+            raise ValueError("A descrição do produto é muito extensa.")
+
+        if not nome_cliente:
+            raise ValueError("A coluna Cliente não foi preenchida.")
+
+        clientes_encontrados = clientes_por_nome.get(
+            nome_cliente.casefold(), []
+        )
+
+        if not clientes_encontrados:
+            raise ValueError(
+                f"O cliente '{nome_cliente}' não está cadastrado no sistema."
+            )
+
+        if len(clientes_encontrados) > 1:
+            raise ValueError(
+                f"Mais de um cliente possui o nome '{nome_cliente}'. "
+                "Informe um identificador único para evitar vínculo incorreto."
+            )
+
+        cliente_obj = clientes_encontrados[0]
+        
+        logger.warning(
+                "IMPORTAÇÃO | Produto: %s | Valor unitário: %r | Desconto: %r",
+                nome,
+                item.get("valor_unitario"),
+                item.get("desconto")
+            )
+
+        quantidade = converter_inteiro(
+            item.get("quantidade"),
+            "Quantidade"
+        )
+
+        valor_unitario = moeda_para_decimal(
+            str(item.get("valor_unitario") or "").strip()
+        )
+
+        desconto_texto = str(item.get("desconto") or "").strip()
+
+        if not desconto_texto:
+            desconto = Decimal("0")
+        else:
+            try:
+                desconto = porcentagem_para_decimal(desconto_texto)
+            except (InvalidOperation, ValueError):
+                raise ValueError(
+                    "Desconto inválido. Informe um número entre 0 e 100 ou deixe a célula em branco."
+                )
+
+        if desconto < 0 or desconto > 100:
+            raise ValueError(
+                "Desconto inválido. Informe um número entre 0 e 100 ou deixe a célula em branco."
+            )
+        
+        data_cadastro = converter_data(item.get("data_cadastro"))
+
+        if valor_unitario < Decimal("0"):
+            raise ValueError("O valor unitário não pode ser negativo.")
+
+        if desconto < Decimal("0") or desconto > Decimal("100"):
+            raise ValueError("O desconto deve estar entre 0% e 100%.")
+
+        total_sem_desconto = quantidade * valor_unitario
+        valor_desconto = (
+            total_sem_desconto * (desconto / Decimal("100"))
+        )
+        total_com_desconto = total_sem_desconto - valor_desconto
+
+        # UUID completo: evita a consulta ao banco para verificar
+        # previamente cada código gerado.
+        codigo = f"PROD-{uuid.uuid4().hex.upper()}"
+
+        produto = Produto(
+            nome=nome,
+            codigo=codigo,
+            descricao=descricao,
+            cliente=cliente_obj,
+            quantidade=quantidade,
+            valor_unitario=valor_unitario,
+            desconto=desconto,
+            valor_total=total_com_desconto,
+            total_sem_desconto=total_sem_desconto,
+            total_com_desconto=total_com_desconto,
+            data_cadastro=data_cadastro,
+            criado_por=request.user,
+            status_saida=0,
+        )
+
+        # O código é gerado com UUID. A restrição de unicidade do banco
+        # continua ativa durante o salvamento.
+        produto.full_clean(validate_unique=False)
+
+        with transaction.atomic():
+            produto.save()
+
+        return produto
+
+    for indice, item in enumerate(produtos_recebidos, start=1):
+        nome_produto = (
+            str(item.get("nome") or "").strip()
+            if isinstance(item, dict)
+            else ""
+        )
+
+        codigo_planilha = (
+            str(item.get("codigo") or "").strip()
+            if isinstance(item, dict)
+            else ""
+        )
+
+        try:
+            produto = processar_produto(item)
+
+            cadastrados += 1
+
+            resultados.append({
+                "linha": indice + 1,
+                "status": "sucesso",
+                "produto": produto.nome,
+                "codigo": produto.codigo,
+                "cliente": produto.cliente.nome,
+                "mensagem": "Produto cadastrado com sucesso."
+            })
+
+        except (ValueError, InvalidOperation, ValidationError) as erro:
+            rejeitados += 1
+
+            if isinstance(erro, ValidationError):
+                if hasattr(erro, "message_dict"):
+                    detalhes = []
+
+                    for campo, mensagens in erro.message_dict.items():
+                        detalhes.extend(
+                            f"{campo}: {mensagem}"
+                            for mensagem in mensagens
+                        )
+
+                    mensagem_erro = "; ".join(detalhes)
+                else:
+                    mensagem_erro = "; ".join(erro.messages)
+            else:
+                mensagem_erro = str(erro)
+
+            resultados.append({
+                "linha": indice + 1,
+                "status": "erro",
+                "produto": nome_produto,
+                "codigo": codigo_planilha,
+                "mensagem": mensagem_erro
+            })
+
+        except Exception:
+            rejeitados += 1
+
+            logger.exception(
+                "Erro inesperado no cadastro em massa. Linha: %s | Produto: %s",
+                indice + 1,
+                nome_produto or "Sem nome"
+            )
+
+            resultados.append({
+                "linha": indice + 1,
+                "status": "erro",
+                "produto": nome_produto or "Produto sem nome",
+                "codigo": codigo_planilha,
+                "mensagem": (
+                    "Erro interno ao cadastrar o produto. "
+                    "Consulte os logs do servidor."
+                )
+            })
+
+    return JsonResponse({
+        "status": "ok",
+        "mensagem": "Processamento concluído.",
+        "total_recebido": len(produtos_recebidos),
+        "cadastrados": cadastrados,
+        "rejeitados": rejeitados,
+        "resultados": resultados
+    })
+
+
 
 '''@login_required
 def listar_produtos(request):

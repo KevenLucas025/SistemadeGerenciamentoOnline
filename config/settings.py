@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'clientes',
     'notificacoes',
     'usuarios',
+    'cadastrar_produtos_massa',
+    'cadastrar_usuarios_massa',
 ]
 
 MIDDLEWARE = [
