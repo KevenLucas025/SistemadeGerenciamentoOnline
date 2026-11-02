@@ -3,18 +3,15 @@ import pandas as pd
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
-from clientes.models import Cliente
-from produtos.models import Produto
-from datetime import datetime
-from decimal import Decimal, InvalidOperation
-from django.core.exceptions import ValidationError
-from django.db import transaction
-from django.http import JsonResponse
-from django.utils.dateparse import parse_date
-from django.views.decorators.http import require_POST
+from openpyxl.styles import Protection
+from accounts.tokens import gerar_token_planilha
+from accounts.tokens import localizar_token_planilha
+from openpyxl import load_workbook
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 # LEVA ATÉ A PÁGINA DE CADASTRAR PRODUTOS EM MASSA
@@ -84,23 +81,11 @@ def baixar_planilha_exemplo(request, tipo):
                 "Exemplo 3",
                 "Exemplo 4",
             ],
-            "Senha": [
-                "senha123",
-                "senha456",
-                "senha789",
-                "senha101",
-            ],
-            "Confirmar Senha": [
-                "senha123",
-                "senha456",
-                "senha789",
-                "senha101",
-            ],
             "CEP": [
-                "00000-0001",
-                "00000-0002",
-                "00000-0003",
-                "00000-0004",
+                "00000-001",
+                "00000-002",
+                "00000-003",
+                "00000-004",
             ],
             "Endereço": [
                 "Rua A",
@@ -153,22 +138,16 @@ def baixar_planilha_exemplo(request, tipo):
                 "00.000.000-4",
             ],
             "CPF": [
-                "000.000.000-01",
-                "000.000.000-02",
-                "000.000.000-03",
-                "000.000.000-04",
+                "529.982.247-25",
+                "111.444.777-35",
+                "935.411.347-80",
+                "168.995.350-09",
             ],
             "CNPJ": [
-                "00.000.000/0001-01",
-                "00.000.000/0001-02",
-                "00.000.000/0001-03",
-                "00.000.000/0001-04",
-            ],
-            "Acesso": [
-                "Convidado",
-                "Usuário",
-                "Usuário",
-                "Convidado",
+                "11.222.333/0001-81",
+                "12.345.678/0001-95",
+                "45.723.174/0001-10",
+                "61.234.567/0001-15",
             ],
         }
     else:
@@ -201,6 +180,37 @@ def baixar_planilha_exemplo(request, tipo):
             horizontal="center",
             vertical="center",
         )
+        
+    # =========================================
+    # PROTEÇÃO DOS CABEÇALHOS
+    # =========================================
+
+    # DESBLOQUEIA TODAS AS CÉLULAS UTILIZADAS
+    for linha in worksheet.iter_rows():
+        for cell in linha:
+            cell.protection = Protection(locked=False)
+
+    # DESBLOQUEIA AS CÉLULAS VAZIAS ATÉ A LINHA 501
+    for linha in range(worksheet.max_row + 1, 502):
+        for coluna in range(1, len(df.columns) + 1):
+            worksheet.cell(
+                row=linha,
+                column=coluna
+            ).protection = Protection(locked=False)
+
+    # BLOQUEIA SOMENTE OS CABEÇALHOS
+    for cell in worksheet[1]:
+        cell.protection = Protection(locked=True)
+
+    # ATIVA A PROTEÇÃO
+    worksheet.protection.password = "1234"
+    worksheet.protection.sheet = True
+    
+    # DIAGNÓSTICO DA PROTEÇÃO
+    """print("A1 bloqueada:", worksheet["A1"].protection.locked)
+    print("A2 bloqueada:", worksheet["A2"].protection.locked)
+    print("B2 bloqueada:", worksheet["B2"].protection.locked)
+    print("Proteção ativa:", worksheet.protection.sheet)"""
 
     # AJUSTA A LARGURA DAS COLUNAS
     for coluna in worksheet.columns:
@@ -226,6 +236,36 @@ def baixar_planilha_exemplo(request, tipo):
 
     worksheet.freeze_panes = "A2"
     worksheet.auto_filter.ref = worksheet.dimensions
+    
+    # =========================================
+    # IDENTIFICAÇÃO DA PLANILHA
+    # =========================================
+    # Converte o tipo recebido pela URL
+    tipos_planilha = {
+        "produtos": "produto",
+        "usuarios": "usuario",
+    }
+
+    tipo_token = tipos_planilha.get(tipo)
+
+    if not tipo_token:
+        raise Http404("Tipo de planilha não encontrado.")
+
+    # Gera token individual para o usuário autenticado
+    token = gerar_token_planilha(
+        usuario=request.user.perfil,
+        tipo=tipo_token
+    )
+
+    # Cria a aba exclusiva de identificação
+    aba_validacao = workbook.create_sheet("_VALIDACAO")
+
+    aba_validacao["A1"] = f"PLANILHA_{tipo.upper()}"
+    aba_validacao["A2"] = "1.0"
+    aba_validacao["A3"] = token
+
+    # Oculta completamente a aba na interface normal do Excel
+    aba_validacao.sheet_state = "veryHidden"
 
     # SALVA A FORMATAÇÃO NO ARQUIVO EM MEMÓRIA
     arquivo_formatado = BytesIO()
@@ -247,3 +287,50 @@ def baixar_planilha_exemplo(request, tipo):
 
     return response
 
+def validar_planilha_produtos(arquivo, usuario):
+    """
+    Valida a identificação da planilha de produtos
+    utilizando o token individual registrado no banco.
+    """
+
+    workbook = None
+
+    try:
+        arquivo.seek(0)
+
+        workbook = load_workbook(
+            arquivo,
+            read_only=True,
+            data_only=True
+        )
+
+        if "_VALIDACAO" not in workbook.sheetnames:
+            return None
+
+        aba = workbook["_VALIDACAO"]
+
+        identificador = aba["A1"].value
+        versao = aba["A2"].value
+        token = aba["A3"].value
+
+        if identificador != "PLANILHA_PRODUTOS":
+            return None
+
+        if versao != "1.0":
+            return None
+
+        return localizar_token_planilha(
+            token=token,
+            tipo="produto",
+            usuario=usuario.perfil
+        )
+
+    except Exception:
+        logger.exception("Erro ao validar a planilha de produtos.")
+        return None
+
+    finally:
+        if workbook:
+            workbook.close()
+
+        arquivo.seek(0)

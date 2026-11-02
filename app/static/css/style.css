@@ -2274,3 +2274,268 @@ LINK VOLTAR
 .modal-alerta-content.alerta .modal-alerta-titulo i { color: #f59e0b; }
 .modal-alerta-content.alerta .btn-alerta-ok { background: #374151; }
 .modal-alerta-content.alerta .btn-alerta-ok:hover { background: #4b5563; }
+
+
+/* =========================================
+   MODAL DE PLANILHAS DE EXEMPLO
+========================================= */
+.modal-planilhas-exemplo {
+    background: #0f172a !important;
+    color: #cecfd2;
+    border: 1px solid #333538;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.modal-planilhas-exemplo .modal-header,
+.modal-planilhas-exemplo .modal-footer {
+    border-color: #333538;
+    padding: 18px 22px;
+}
+
+.modal-planilhas-exemplo .modal-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #cecfd2;
+}
+
+.modal-planilhas-exemplo .modal-title i {
+    color: #cecfd2;
+    margin-right: 8px;
+}
+
+.modal-planilhas-descricao {
+    margin: 6px 0 0;
+    color: #cecfd2;
+    font-size: 13px;
+}
+
+.modal-planilhas-exemplo .modal-body {
+    padding: 20px 22px;
+}
+
+.modal-planilhas-exemplo .btn-close {
+    filter: invert(1) grayscale(100%);
+}
+
+.opcoes-planilhas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.opcao-planilha {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    width: 100%;
+    padding: 16px;
+
+    text-align: left;
+    color: #cecfd2;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid #333538;
+    border-radius: 12px;
+
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.opcao-planilha:hover {
+    background: rgba(99, 102, 241, 0.10);
+    border-color: #6366f1;
+}
+
+.opcao-planilha:focus-visible {
+    outline: 2px solid #818cf8;
+    outline-offset: 3px;
+}
+
+.opcao-planilha-icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    width: 44px;
+    height: 44px;
+
+    color: #818cf8;
+    background: rgba(99, 102, 241, 0.12);
+    border-radius: 10px;
+    font-size: 19px;
+}
+
+.opcao-planilha-texto {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.opcao-planilha-texto strong {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.opcao-planilha-texto small {
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.opcao-planilha-download {
+    flex-shrink: 0;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.opcao-planilha:hover .opcao-planilha-download {
+    color: #818cf8;
+}
+
+.relatorio-cadastro-massa {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #e2e8f0;
+    overflow-wrap: anywhere;
+}
+
+.relatorio-cadastro-massa[hidden] {
+    display: none;
+}
+
+.relatorio-cadastro-massa h3 {
+    margin: 0 0 12px;
+    font-size: 18px;
+}
+
+.relatorio-cadastro-massa ul {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-left: 22px;
+    margin: 16px 0 0;
+}
+
+.relatorio-cadastro-massa .resultado-sucesso {
+    color: #86efac;
+}
+
+.relatorio-cadastro-massa .resultado-erro {
+    color: #fca5a5;
+}
+
+
+
+/* =========================================
+   MODAL DE CONFIRMAÇÃO GLOBAL
+========================================= */
+
+#modalConfirmacaoGlobal {
+    z-index: 1070;
+}
+
+#modalConfirmacaoGlobal .modal-dialog {
+    max-width: 420px;
+    width: calc(100% - 30px);
+}
+
+/* CONTEÚDO */
+#modalConfirmacaoGlobal .modal-content {
+    background: #161e2b;
+    border: 1px solid #374151;
+    border-radius: 14px;
+    overflow: hidden;
+    color: #cecfd2;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.45);
+}
+
+/* CABEÇALHO */
+#modalConfirmacaoGlobal .modal-header {
+    background: #0f172a;
+    border-bottom: 1px solid #374151;
+    padding: 18px 22px;
+}
+
+#modalConfirmacaoGlobal .modal-title {
+    color: #cecfd2;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+/* BOTÃO FECHAR */
+#modalConfirmacaoGlobal .btn-close {
+    filter: invert(1) grayscale(100%);
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+#modalConfirmacaoGlobal .btn-close:hover {
+    opacity: 1;
+}
+
+/* CORPO */
+#modalConfirmacaoGlobal .modal-body {
+    background: #0f172a;
+    color: #cecfd2;
+    padding: 25px 22px;
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: pre-line;
+}
+
+/* RODAPÉ */
+#modalConfirmacaoGlobal .modal-footer {
+    background: #0f172a;
+    border-top: 1px solid #374151;
+    padding: 15px 22px;
+    gap: 10px;
+}
+
+/* BOTÕES GERAIS */
+#modalConfirmacaoGlobal .modal-footer .btn {
+    min-width: 90px;
+    padding: 8px 18px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+/* BOTÃO NÃO */
+#btnConfirmarNao {
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #cecfd2;
+}
+
+#btnConfirmarNao:hover {
+    background: #4b5563;
+    border-color: #6b7280;
+    color: #cecfd2;
+}
+
+/* BOTÃO SIM */
+#btnConfirmarSim {
+    background: #2563eb;
+    border: 1px solid #2563eb;
+    color: #cecfd2;
+}
+
+#btnConfirmarSim:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+/* FOCO DOS BOTÕES */
+#modalConfirmacaoGlobal .modal-footer .btn:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+

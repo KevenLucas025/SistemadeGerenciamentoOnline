@@ -119,7 +119,7 @@
 
             </a>
 
-            <a href="#"
+            <a href="{% url 'cadastrar_usuarios_massa' %}"
                 class="sidebar-link">
                 
                 <i class="fa-solid fa-user-plus"></i>
@@ -180,27 +180,31 @@
 
             </a>
 
-        </div>
-
-        <!-- RODAPÉ -->
-        <div class="sidebar-footer">
-
             <a href="#"
-               class="sidebar-link sidebar-logout"
-               onclick="abrirModalLogout(event)">
+               class="sidebar-link">
 
-                <i class="fa-solid fa-right-from-bracket"></i>
+                <i class="fa-solid fa-gear"></i>
 
                 <span>
-                    Sair
+                    Configurações
                 </span>
 
             </a>
 
         </div>
 
+        <!-- RODAPÉ -->
+        <div class="sidebar-footer">
+            <a href="#"
+               class="sidebar-link sidebar-logout"
+               onclick="abrirModalLogout(event)">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>
+                    Sair
+                </span>
+            </a>
+        </div>
     </div>
-
 </div>
 
 <!-- =====================================================
@@ -210,7 +214,6 @@
      id="modalLogout"
      tabindex="-1"
      aria-hidden="true">
-
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-logout-content">
             <!-- CABEÇALHO DO MODAL -->

@@ -914,13 +914,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =========================================
-       APAGAR USUÁRIO (LÓGICA CUSTOM BACKDROP)
+    APAGAR USUÁRIOS SELECIONADOS
+    LÓGICA CUSTOM BACKDROP
     ========================================= */
+
     const btnApagarUsuarioModal = document.getElementById("btnApagarUsuarioModal");
-    let usuarioParaApagar = null;
 
     if (btnApagarUsuarioModal) {
         btnApagarUsuarioModal.addEventListener("click", function () {
+
             const selecionados = tabelaUsuarios
                 ? tabelaUsuarios.querySelectorAll(
                     'input[name="usuario_selecionado"]:checked'
@@ -928,20 +930,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 : [];
 
             if (selecionados.length === 0) {
-                mostrarAlerta("Selecione um usuário para apagar.", "erro");
+                mostrarAlerta("Selecione pelo menos um usuário para apagar.", "erro");
                 return;
             }
 
-            // Mantém a referência ao primeiro usuário,
-            // conforme a lógica de exclusão atual.
-            usuarioParaApagar = selecionados[0].closest("tr");
-
-            // Atualiza a quantidade antes de abrir o modal.
             atualizarQuantidadeUsuariosApagar();
 
             const modalElemento = document.getElementById("modalApagarUsuario");
 
             if (modalElemento) {
+
                 const backdropExistente = document.querySelector(
                     ".backdrop-confirmacao"
                 );
@@ -962,14 +960,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    
+
     /* =========================================
     QUANTIDADE DE USUÁRIOS PARA EXCLUSÃO
     ========================================= */
 
-    const qtdUsuariosApagarModal = document.getElementById("qtdUsuariosApagarModal");
+    const qtdUsuariosApagarModal = document.getElementById(
+        "qtdUsuariosApagarModal"
+    );
 
     function atualizarQuantidadeUsuariosApagar() {
+
         if (!qtdUsuariosApagarModal || !tabelaUsuarios) return;
 
         const quantidade = tabelaUsuarios.querySelectorAll(
@@ -981,52 +982,177 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    /* =========================================
+    CONFIRMAR EXCLUSÃO DOS USUÁRIOS
+    ========================================= */
+
     if (btnConfirmarApagar) {
-        btnConfirmarApagar.addEventListener("click", function () {
-            if (!usuarioParaApagar) return;
 
-            const id = usuarioParaApagar.dataset.usuarioId ||
-                usuarioParaApagar.querySelector("input[type='checkbox']").value;
+        btnConfirmarApagar.addEventListener("click", async function () {
 
-            const csrfInput = document.querySelector("[name=csrfmiddlewaretoken]");
+            const selecionados = tabelaUsuarios
+                ? Array.from(
+                    tabelaUsuarios.querySelectorAll(
+                        'input[name="usuario_selecionado"]:checked'
+                    )
+                )
+                : [];
 
-            fetch(`/usuarios/apagar/${id}/`, {
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": csrfInput ? csrfInput.value : "",
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.sucesso || data.status === "ok") {
-                    usuarioParaApagar.remove();
-                    usuarioParaApagar = null;
+            if (selecionados.length === 0) {
+                mostrarAlerta("Nenhum usuário selecionado para apagar.", "erro");
+                return;
+            }
 
-                    const modalElemento = document.getElementById("modalApagarUsuario");
-                    if (modalElemento) {
-                        const modal = bootstrap.Modal.getInstance(modalElemento);
-                        if (modal) modal.hide();
+            const csrfInput = document.querySelector(
+                "[name=csrfmiddlewaretoken]"
+            );
+
+            const csrfToken = csrfInput ? csrfInput.value : "";
+
+            // Guarda os dados de todos os usuários selecionados.
+            const usuariosParaApagar = selecionados.map(checkbox => ({
+                id: checkbox.closest("tr")?.dataset.usuarioId || checkbox.value,
+                linha: checkbox.closest("tr")
+            }));
+
+            // Impede cliques duplicados durante o processamento.
+            btnConfirmarApagar.disabled = true;
+
+            try {
+
+                const resultados = await Promise.all(
+                    usuariosParaApagar.map(async usuario => {
+
+                        try {
+
+                            const response = await fetch(
+                                `/usuarios/apagar/${usuario.id}/`,
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "X-CSRFToken": csrfToken,
+                                        "Content-Type": "application/json"
+                                    }
+                                }
+                            );
+
+                            const data = await response.json();
+
+                            if (!response.ok || !data.sucesso) {
+                                return {
+                                    sucesso: false,
+                                    id: usuario.id,
+                                    mensagem: data.mensagem || "Erro ao apagar usuário."
+                                };
+                            }
+
+                            return {
+                                sucesso: true,
+                                id: usuario.id,
+                                linha: usuario.linha
+                            };
+
+                        } catch (error) {
+
+                            console.error(
+                                `Erro ao apagar usuário ${usuario.id}:`,
+                                error
+                            );
+
+                            return {
+                                sucesso: false,
+                                id: usuario.id,
+                                mensagem: "Falha na comunicação com o servidor."
+                            };
+                        }
+                    })
+                );
+
+                // Separa os usuários excluídos dos que apresentaram erro.
+                const excluidos = resultados.filter(item => item.sucesso);
+                const erros = resultados.filter(item => !item.sucesso);
+
+                // Remove somente as linhas dos usuários excluídos.
+                excluidos.forEach(usuario => {
+                    usuario.linha?.remove();
+                });
+
+                // Fecha o modal.
+                const modalElemento = document.getElementById(
+                    "modalApagarUsuario"
+                );
+
+                if (modalElemento) {
+                    const modal = bootstrap.Modal.getInstance(modalElemento);
+
+                    if (modal) {
+                        modal.hide();
                     }
-
-                    document.querySelector(".backdrop-confirmacao")?.remove();
-                    mostrarAlerta("Usuário apagado com sucesso.", "sucesso");
-                } else {
-                    mostrarAlerta(data.mensagem || "Erro ao apagar usuário.", "erro");
                 }
-            })
-            .catch(error => {
-                console.error(error);
-                mostrarAlerta("Erro ao apagar usuário.", "erro");
-            });
+
+                document.querySelector(".backdrop-confirmacao")?.remove();
+
+                // Apresenta o resultado da operação.
+                if (excluidos.length > 0 && erros.length === 0) {
+
+                    mostrarAlerta(
+                        `${excluidos.length} ${excluidos.length === 1 ? "usuário apagado" : "usuários apagados"} com sucesso.`,
+                        "sucesso"
+                    );
+
+                } else if (excluidos.length > 0 && erros.length > 0) {
+
+                    console.table(erros);
+
+                    mostrarAlerta(
+                        `${excluidos.length} usuário(s) apagado(s) e ${erros.length} não puderam ser excluídos.`,
+                        "erro"
+                    );
+
+                } else {
+
+                    console.table(erros);
+
+                    mostrarAlerta(
+                        erros[0]?.mensagem || "Não foi possível apagar os usuários selecionados.",
+                        "erro"
+                    );
+                }
+
+            } catch (error) {
+
+                console.error("Erro durante a exclusão:", error);
+
+                mostrarAlerta(
+                    "Ocorreu um erro ao processar a exclusão dos usuários.",
+                    "erro"
+                );
+
+            } finally {
+
+                btnConfirmarApagar.disabled = false;
+
+            }
         });
     }
 
-    const modalApagarUsuarioElemento = document.getElementById("modalApagarUsuario");
+
+    /* =========================================
+    REMOVER BACKDROP AO FECHAR O MODAL
+    ========================================= */
+
+    const modalApagarUsuarioElemento = document.getElementById(
+        "modalApagarUsuario"
+    );
+
     if (modalApagarUsuarioElemento) {
-        modalApagarUsuarioElemento.addEventListener("hidden.bs.modal", function () {
-            document.querySelector(".backdrop-confirmacao")?.remove();
-        });
+
+        modalApagarUsuarioElemento.addEventListener(
+            "hidden.bs.modal",
+            function () {
+                document.querySelector(".backdrop-confirmacao")?.remove();
+            }
+        );
     }
 
     /* =========================================

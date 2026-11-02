@@ -93,6 +93,95 @@
 </div>
 
 <!-- =====================================================
+     MODAL GLOBAL - PLANILHAS DE EXEMPLO
+====================================================== -->
+
+<div class="modal fade"
+     id="modalPlanilhasExemplo"
+     tabindex="-1"
+     aria-labelledby="tituloModalPlanilhasExemplo"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-planilhas-exemplo">
+
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="tituloModalPlanilhasExemplo">
+                        <i class="fa-solid fa-file-excel"></i>
+                        Planilhas de Exemplo
+                    </h5>
+
+                    <p class="modal-planilhas-descricao">
+                        Escolha o modelo que deseja baixar.
+                    </p>
+                </div>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Fechar">
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="opcoes-planilhas">
+
+                    <!-- PLANILHA DE USUÁRIOS -->
+                    <button
+                        type="button"
+                        class="opcao-planilha"
+                        data-tipo="usuarios"
+                        data-url="{% url 'baixar_planilha_exemplo' tipo='usuarios' %}"
+                    >
+                        <span class="opcao-planilha-icone">
+                            <i class="fa-solid fa-users"></i>
+                        </span>
+
+                        <span class="opcao-planilha-texto">
+                            <strong>Usuários</strong>
+                            <small>Modelo para cadastro em massa de usuários.</small>
+                        </span>
+
+                        <i class="fa-solid fa-download opcao-planilha-download"></i>
+                    </button>
+
+                    <!-- PLANILHA DE PRODUTOS -->
+                    <button
+                        type="button"
+                        class="opcao-planilha"
+                        data-tipo="produtos"
+                        data-url="{% url 'baixar_planilha_exemplo' tipo='produtos' %}"
+                    >
+                        <span class="opcao-planilha-icone">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                        </span>
+
+                        <span class="opcao-planilha-texto">
+                            <strong>Produtos</strong>
+                            <small>Modelo para cadastro em massa de produtos.</small>
+                        </span>
+
+                        <i class="fa-solid fa-download opcao-planilha-download"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- =====================================================
      ASSISTENTE IA
 ====================================================== -->
 
@@ -178,6 +267,7 @@
     <script src="{% static 'js/notificacoes.js' %}"></script>
     <script src="{% static 'js/funcoes.js' %}"></script>
     <script src="{% static 'js/chat-ia.js' %}"></script>
+    <script src="{% static 'js/planilhas_exemplo.js' %}"></script>
 
     {% if user.is_authenticated %}
         <script src="{% static 'js/menu_lateral.js' %}"></script>

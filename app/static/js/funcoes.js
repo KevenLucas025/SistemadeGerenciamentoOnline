@@ -202,31 +202,61 @@ function confirmarAcao(mensagem, titulo = "Confirmação") {
 }
 
 
-// =========================
-// MODAL DE LOGOUT
-// =========================
-function abrirModalLogout(event) {
+    // =========================
+    // MODAL DE LOGOUT
+    // =========================
 
-    event.preventDefault();
+    function abrirModalLogout(event) {
 
-    // Fecha o menu lateral do Bootstrap
-    const menuLateral =
-        document.getElementById("menuLateral");
+        event.preventDefault();
 
-    const offcanvas =
-        bootstrap.Offcanvas.getInstance(menuLateral);
+        // Fecha o menu lateral do Bootstrap
+        const menuLateral =
+            document.getElementById("menuLateral");
 
-    if (offcanvas) {
-        offcanvas.hide();
+        const offcanvas =
+            bootstrap.Offcanvas.getInstance(menuLateral);
+
+        if (offcanvas) {
+            offcanvas.hide();
+        }
+
+        // Abre o modal depois que o menu começar a fechar
+        const modalElement =
+            document.getElementById("modalLogout");
+
+        const modal =
+            new bootstrap.Modal(modalElement);
+
+        modal.show();
     }
 
-    // Abre o modal depois que o menu começar a fechar
-    const modalElement =
-        document.getElementById("modalLogout");
 
-    const modal =
-        new bootstrap.Modal(modalElement);
+    // =========================
+    // TESTE VISUAL — MODAL DE CONFIRMAÇÃO GLOBAL
+    // =========================
 
-    modal.show();
+    window.testarModalConfirmacaoGlobal = function () {
 
-}
+        if (typeof confirmarAcao !== "function") {
+            console.error("A função confirmarAcao não está disponível.");
+            return;
+        }
+
+        confirmarAcao(
+            "Esta é uma mensagem de teste do modal de confirmação global. Deseja realmente continuar?",
+            "Confirmar operação"
+        ).then((confirmado) => {
+
+            console.log(
+                confirmado
+                    ? "Teste: botão SIM selecionado."
+                    : "Teste: botão NÃO ou fechamento selecionado."
+            );
+
+        });
+
+    };
+
+    console.log("Teste do modal global registrado.");
+

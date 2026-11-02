@@ -309,7 +309,7 @@
     width: 100%;
     max-width: 100%;
     min-width: 0;
-    height: 100vh;
+    flex: 1;
     min-height: 0;
     overflow-x: auto;
     overflow-y: auto;
@@ -411,17 +411,18 @@
    ESTADO VAZIO
 ===================================================== */
 .produtos-table tbody td.sem-registros-produtos {
-    padding: 0;
+    padding: 0 !important;
+    height: 250px;
     background: #0f172a;
     border-bottom: none;
     text-align: center;
+    vertical-align: middle;
     white-space: normal;
 }
 
 .produtos-table tbody tr:hover td.sem-registros-produtos {
     background: #0f172a;
 }
-
 .sem-registros-content {
     display: flex;
     flex-direction: column;
@@ -429,9 +430,10 @@
     justify-content: center;
     gap: 10px;
 
-    min-height: 180px;
-    padding: 24px;
+    width: 100%;
+    height: 250px;
 
+    padding: 24px;
     box-sizing: border-box;
 }
 
@@ -442,7 +444,6 @@
 
 .sem-registros-content p {
     margin: 0;
-
     color: #94a3b8;
     font-size: 13px;
 }
@@ -469,161 +470,6 @@
 .produtos-table-container::-webkit-scrollbar-thumb:hover {
     background: #475569;
 }
-/* =========================================
-   MODAL DE PLANILHAS DE EXEMPLO
-========================================= */
-.modal-planilhas-exemplo {
-    background: #0f172a !important;
-    color: #cecfd2;
-    border: 1px solid #333538;
-    border-radius: 16px;
-    overflow: hidden;
-}
-
-.modal-planilhas-exemplo .modal-header,
-.modal-planilhas-exemplo .modal-footer {
-    border-color: #333538;
-    padding: 18px 22px;
-}
-
-.modal-planilhas-exemplo .modal-title {
-    font-size: 17px;
-    font-weight: 600;
-    color: #cecfd2;
-}
-
-.modal-planilhas-exemplo .modal-title i {
-    color: #cecfd2;
-    margin-right: 8px;
-}
-
-.modal-planilhas-descricao {
-    margin: 6px 0 0;
-    color: #cecfd2;
-    font-size: 13px;
-}
-
-.modal-planilhas-exemplo .modal-body {
-    padding: 20px 22px;
-}
-
-.modal-planilhas-exemplo .btn-close {
-    filter: invert(1) grayscale(100%);
-}
-
-.opcoes-planilhas {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.opcao-planilha {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-
-    width: 100%;
-    padding: 16px;
-
-    text-align: left;
-    color: #cecfd2;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid #333538;
-    border-radius: 12px;
-
-    cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
-}
-
-.opcao-planilha:hover {
-    background: rgba(99, 102, 241, 0.10);
-    border-color: #6366f1;
-}
-
-.opcao-planilha:focus-visible {
-    outline: 2px solid #818cf8;
-    outline-offset: 3px;
-}
-
-.opcao-planilha-icone {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-
-    width: 44px;
-    height: 44px;
-
-    color: #818cf8;
-    background: rgba(99, 102, 241, 0.12);
-    border-radius: 10px;
-    font-size: 19px;
-}
-
-.opcao-planilha-texto {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 5px;
-    min-width: 0;
-}
-
-.opcao-planilha-texto strong {
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.opcao-planilha-texto small {
-    color: #94a3b8;
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-.opcao-planilha-download {
-    flex-shrink: 0;
-    color: #94a3b8;
-    font-size: 14px;
-}
-
-.opcao-planilha:hover .opcao-planilha-download {
-    color: #818cf8;
-}
-
-.relatorio-cadastro-massa {
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.03);
-    color: #e2e8f0;
-    overflow-wrap: anywhere;
-}
-
-.relatorio-cadastro-massa[hidden] {
-    display: none;
-}
-
-.relatorio-cadastro-massa h3 {
-    margin: 0 0 12px;
-    font-size: 18px;
-}
-
-.relatorio-cadastro-massa ul {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding-left: 22px;
-    margin: 16px 0 0;
-}
-
-.relatorio-cadastro-massa .resultado-sucesso {
-    color: #86efac;
-}
-
-.relatorio-cadastro-massa .resultado-erro {
-    color: #fca5a5;
-}
-
 
 /* =========================================
    MODAL DE AJUDA DA PLANILHA
@@ -719,3 +565,4 @@
     font-weight: 600;
     color: #cecfd2;
 }
+

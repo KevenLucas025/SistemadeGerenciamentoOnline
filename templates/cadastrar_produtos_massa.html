@@ -52,15 +52,29 @@
                 <span>Fazer o cadastro em massa</span>
             </button>
 
-            <button type="button" class="btn-action btn-secondary-action" id="btnAbrirPlanilha">
+            <button
+                type="button"
+                class="btn-action btn-secondary-action"
+                id="btnAbrirPlanilha"
+            >
                 <i class="fa-solid fa-file-excel"></i>
                 <span>Abrir planilha</span>
-                <input
-                    type="file"
-                    id="inputPlanilhaProdutos"
-                    accept=".xlsx"
-                    hidden
-                >
+            </button>
+
+            <input
+                type="file"
+                id="inputPlanilhaProdutos"
+                accept=".xlsx"
+                hidden
+            >
+
+            <button
+                type="button"
+                class="btn-action btn-secondary-action"
+                id="btnLimparTabela"
+            >
+                <i class="fa-solid fa-broom"></i>
+                <span>Limpar tabela</span>
             </button>
 
             <button
@@ -77,7 +91,8 @@
                 type="button"
                 class="btn-action btn-secondary-action"
                 id="btnEditarProduto"
-            >
+                data-url="{% url 'produtos' %}"
+                >
                 <i class="fa-solid fa-pen-to-square"></i>
                 <span>Editar produto</span>
             </button>
@@ -190,7 +205,7 @@
                             <div class="sem-registros-content">
                                 <i class="fa-solid fa-box-open"></i>
 
-                                <p>Nenhum produto cadastrado.</p>
+                                <p>Produtos importados serão exibidos aqui.</p>
                             </div>
 
                         </td>
@@ -207,71 +222,6 @@
     </section>
 
 </main>
-
-<!-- MODAL: PLANILHAS DE EXEMPLO -->
-<div class="modal fade" id="modalPlanilhasExemplo" tabindex="-1"
-     aria-labelledby="tituloModalPlanilhasExemplo" aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-planilhas-exemplo">
-
-            <div class="modal-header">
-                <div>
-                    <h5 class="modal-title" id="tituloModalPlanilhasExemplo">
-                        <i class="fa-solid fa-file-excel"></i>
-                        Planilhas de Exemplo
-                    </h5>
-                    <p class="modal-planilhas-descricao">
-                        Escolha o modelo que deseja baixar.
-                    </p>
-                </div>
-
-                <button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Fechar"></button>
-            </div>
-
-            <div class="modal-body">
-                <div class="opcoes-planilhas">
-
-                    <button type="button" class="opcao-planilha" data-tipo="usuarios" data-url="{% url 'baixar_planilha_exemplo' tipo='usuarios' %}">
-                        <span class="opcao-planilha-icone">
-                            <i class="fa-solid fa-users"></i>
-                        </span>
-
-                        <span class="opcao-planilha-texto">
-                            <strong>Usuários</strong>
-                            <small>Modelo para cadastro em massa de usuários.</small>
-                        </span>
-
-                        <i class="fa-solid fa-download opcao-planilha-download"></i>
-                    </button>
-
-                    <button type="button" class="opcao-planilha" data-tipo="produtos" data-url="{% url 'baixar_planilha_exemplo' tipo='produtos' %}">
-                        <span class="opcao-planilha-icone">
-                            <i class="fa-solid fa-boxes-stacked"></i>
-                        </span>
-
-                        <span class="opcao-planilha-texto">
-                            <strong>Produtos</strong>
-                            <small>Modelo para cadastro em massa de produtos.</small>
-                        </span>
-
-                        <i class="fa-solid fa-download opcao-planilha-download"></i>
-                    </button>
-
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">
-                    Cancelar
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
 
 
 <!-- MODAL: AJUDA SOBRE A PLANILHA -->
@@ -305,10 +255,18 @@
                     <ul>
                         <li>O arquivo deve estar no formato <strong>.xlsx</strong>.</li>
                         <li>Utilize a primeira aba da planilha para inserir os produtos.</li>
-                        <li>A primeira linha deve conter os nomes das colunas.</li>
-                        <li>Não altere os nomes dos cabeçalhos nem duplique colunas.</li>
+                        <li>A primeira linha contém os nomes das colunas.</li>
+                        <li>Não altere os nomes dos cabeçalhos, pois eles são protegidos por senha para evitar modificações acidentais e preservar a estrutura de importação.</li>
                         <li>Cada linha deve representar um produto.</li>
+                        <li>Por segurança e padronização, a planilha disponibiliza até <strong>500 linhas para preenchimento</strong> por importação.</li>
+                        <li>Não tente inserir produtos além do limite disponibilizado no modelo.</li>
                     </ul>
+                    <p class="ajuda-planilha-alerta">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        A proteção dos cabeçalhos e o limite de 500 linhas ajudam a
+                        preservar a estrutura da planilha e evitar problemas durante
+                        a importação dos produtos.
+                    </p>
 
                     <p>
                         Para evitar problemas, recomendamos baixar e utilizar
@@ -417,6 +375,50 @@
                         O cadastro em massa permite importar até 500 produtos por vez.
                         Caso tenha mais produtos, divida os dados em várias planilhas.
                     </p>
+
+                    <class="ajuda-planilha-secao">
+                        <h6>
+                            <i class="fa-solid fa-clipboard-check"></i>
+                            5. Conferência antes de importar
+                        </h6>
+
+                        <p>Antes de iniciar o cadastro em massa, confira os seguintes pontos:</p>
+
+                        <ul>
+                            <li>Verifique se todos os produtos possuem nome preenchido.</li>
+                            <li>Confira se os nomes dos produtos não ultrapassam 150 caracteres.</li>
+                            <li>Certifique-se de que os clientes informados já existem no sistema.</li>
+                            <li>Confira se as quantidades são números inteiros e não negativos.</li>
+                            <li>Verifique se os valores unitários foram preenchidos corretamente.</li>
+                            <li>Confira se os descontos estão entre 0 e 100.</li>
+                            <li>Verifique se as datas estão corretas e são válidas.</li>
+                            <li>Certifique-se de que a descrição não ultrapassa 65.535 caracteres.</li>
+                            <li>Não altere os nomes dos cabeçalhos da planilha.</li>
+                            <li>Confira se existem no máximo 500 produtos para importar.</li>
+                        </ul>
+
+                        <class="ajuda-planilha-secao">
+                            <h6>
+                                <i class="fa-solid fa-chart-column"></i>
+                                6. Resultado da importação
+                            </h6>
+
+                            <p>
+                                Após o processamento, o sistema apresentará um relatório
+                                com o resultado do cadastro dos produtos.
+                            </p>
+
+                            <ul>
+                                <li><strong>Produtos cadastrados:</strong> quantidade de produtos importados com sucesso.</li>
+                                <li><strong>Produtos rejeitados:</strong> quantidade de produtos que apresentaram algum erro.</li>
+                                <li><strong>Identificação dos erros:</strong> indicação das linhas que precisam de correção e o motivo da rejeição.</li>
+                            </ul>
+
+                            <p>
+                                Os produtos rejeitados poderão ser corrigidos na planilha
+                                e enviados novamente em outra importação.
+                            </p>
+
                 </section>
 
             </div>

@@ -13,9 +13,9 @@ from django.utils import timezone
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from accounts.models import PerfilUsuario
+from accounts.tokens import localizar_token_planilha
 from datetime import datetime
 from notificacoes.models import Notificacao
-from django.utils.dateparse import parse_datetime
 from groq import Groq
 from django.conf import settings
 import json
@@ -23,18 +23,53 @@ from .ia.conhecimento import CONHECIMENTO_SISTEMA
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.http import JsonResponse
-from django.utils.dateparse import parse_date
 from django.views.decorators.http import require_POST
 from datetime import datetime, date
 import logging
 import uuid
 from django.views.decorators.csrf import csrf_protect
-
+from accounts.models import TokenPlanilha
+from cadastrar_produtos_massa.views import validar_planilha_produtos
+from openpyxl import load_workbook
 from .models import AvaliacaoAssistenteIA
+from django.contrib.auth.password_validation import validate_password
+from django.utils.crypto import get_random_string
+from cadastrar_usuarios_massa.views import (
+    carregar_dados_existentes,
+    verificar_duplicidade,
+    formatar_cpf,
+    formatar_cnpj,
+    formatar_rg,
+    formatar_telefone,
+    formatar_cep,
+    validar_email,
+    somente_numeros,
+    
+)
+
+
 
 logger = logging.getLogger(__name__)
 
-
+CABECALHOS_USUARIOS = [
+    "Nome",
+    "Usuário",
+    "Senha",
+    "Confirmar Senha",
+    "CEP",
+    "Endereço",
+    "Número",
+    "Cidade",
+    "Bairro",
+    "Estado",
+    "Complemento",
+    "Telefone",
+    "E-mail",
+    "Data de Nascimento",
+    "RG",
+    "CPF",
+    "CNPJ",
+]
 
 
 def moeda_para_decimal(valor):
@@ -1636,44 +1671,219 @@ def avaliar_assistente_ia(request):
     
 
 
+
 @login_required
 @require_POST
 def processar_cadastro_produtos_massa(request):
     """
     Cadastra produtos em massa com validação individual.
+    Os dados são lidos diretamente do Excel original.
     Produtos inválidos não impedem o processamento das demais linhas.
     """
     logger = logging.getLogger(__name__)
 
-    try:
-        payload = json.loads(request.body or "{}")
-        produtos_recebidos = payload.get("produtos", [])
+    # =========================================
+    # RECEBE E VALIDA O ARQUIVO ORIGINAL
+    # =========================================
 
-        if not isinstance(produtos_recebidos, list) or not produtos_recebidos:
-            return JsonResponse({
-                "status": "erro",
-                "mensagem": "Nenhum produto foi enviado para cadastro."
-            }, status=400)
+    arquivo_planilha = request.FILES.get("arquivo_planilha")
 
-        if len(produtos_recebidos) > 10000:
-            return JsonResponse({
-                "status": "erro",
-                "mensagem": "O limite é de 10.000 produtos por operação."
-            }, status=400)
-
-    except (json.JSONDecodeError, TypeError):
+    if not arquivo_planilha:
         return JsonResponse({
             "status": "erro",
-            "mensagem": "Os dados enviados são inválidos."
+            "mensagem": "O arquivo original da planilha não foi enviado."
         }, status=400)
+
+    try:
+        token_planilha = validar_planilha_produtos(
+            arquivo_planilha,
+            request.user
+        )
+
+        if not token_planilha:
+            return JsonResponse({
+                "status": "erro",
+                "mensagem": (
+                    "Planilha não reconhecida, expirada ou já utilizada. "
+                    "Baixe um novo modelo oficial."
+                )
+            }, status=400)
+
+        # =========================================
+        # CONSOME O TOKEN DE FORMA ATÔMICA
+        # =========================================
+
+        agora = timezone.now()
+
+        token_consumido = TokenPlanilha.objects.filter(
+            pk=token_planilha.pk,
+            usuario=request.user.perfil,
+            tipo="produto",
+            utilizado=False,
+            expira_em__gt=agora
+        ).update(
+            utilizado=True,
+            utilizado_em=agora
+        )
+
+        if token_consumido != 1:
+            return JsonResponse({
+                "status": "erro",
+                "mensagem": (
+                    "Esta planilha já foi utilizada ou seu token expirou. "
+                    "Baixe um novo modelo oficial."
+                )
+            }, status=400)
+
+        # =========================================
+        # LÊ E VALIDA O EXCEL
+        # =========================================
+
+        arquivo_planilha.seek(0)
+
+        workbook = load_workbook(
+            arquivo_planilha,
+            read_only=True,
+            data_only=True
+        )
+
+        try:
+            aba = workbook[workbook.sheetnames[0]]
+
+            cabecalhos_esperados = [
+                "Produto",
+                "Quantidade",
+                "Valor Unitário",
+                "Desconto",
+                "Data do Cadastro",
+                "Código do Item",
+                "Cliente",
+                "Descrição"
+            ]
+
+            cabecalhos_planilha = next(
+                aba.iter_rows(
+                    min_row=1,
+                    max_row=1,
+                    values_only=True
+                ),
+                None
+            )
+
+            if not cabecalhos_planilha:
+                raise ValueError(
+                    "A planilha não possui cabeçalhos."
+                )
+
+            cabecalhos_planilha = [
+                str(valor or "").strip()
+                for valor in cabecalhos_planilha[:8]
+            ]
+
+            if cabecalhos_planilha != cabecalhos_esperados:
+                raise ValueError(
+                    "Os cabeçalhos da planilha foram alterados ou "
+                    "não correspondem ao modelo oficial de produtos."
+                )
+
+            # Verifica se existem colunas adicionais preenchidas.
+            if len(cabecalhos_planilha) != 8:
+                raise ValueError(
+                    "A estrutura de colunas da planilha é inválida."
+                )
+
+            linhas = aba.iter_rows(
+                min_row=2,
+                values_only=True
+            )
+
+            produtos_recebidos = []
+
+            for numero_linha, linha in enumerate(linhas, start=2):
+
+                if not any(
+                    str(valor or "").strip()
+                    for valor in linha
+                ):
+                    continue
+
+                if len(linha) < 8:
+                    raise ValueError(
+                        f"A linha {numero_linha} possui colunas incompletas."
+                    )
+
+                # Impede dados preenchidos fora das oito colunas oficiais.
+                if any(
+                    str(valor or "").strip()
+                    for valor in linha[8:]
+                ):
+                    raise ValueError(
+                        f"A linha {numero_linha} possui dados em "
+                        "colunas não permitidas."
+                    )
+
+                produtos_recebidos.append({
+                    "nome": linha[0],
+                    "quantidade": linha[1],
+                    "valor_unitario": linha[2],
+                    "desconto": linha[3],
+                    "data_cadastro": linha[4],
+                    "codigo": linha[5],
+                    "cliente": linha[6],
+                    "descricao": linha[7],
+                })
+
+                if len(produtos_recebidos) > 500:
+                    raise ValueError(
+                        "O limite é de 500 produtos por importação."
+                    )
+
+        finally:
+            workbook.close()
+            arquivo_planilha.seek(0)
+
+        if not produtos_recebidos:
+            return JsonResponse({
+                "status": "erro",
+                "mensagem": "A planilha não contém produtos para cadastro."
+            }, status=400)
+
+    except ValueError as erro:
+        return JsonResponse({
+            "status": "erro",
+            "mensagem": str(erro)
+        }, status=400)
+
+    except Exception:
+        logger.exception(
+            "Erro ao ler a planilha de cadastro em massa."
+        )
+
+        return JsonResponse({
+            "status": "erro",
+            "mensagem": (
+                "Não foi possível ler a planilha. "
+                "Verifique se o arquivo está íntegro."
+            )
+        }, status=400)
+
+    # =========================================
+    # INICIALIZA RESULTADOS
+    # =========================================
 
     resultados = []
     cadastrados = 0
     rejeitados = 0
 
+    # =========================================
+    # CONVERSÃO DE DATA
+    # =========================================
+
     def converter_data(valor):
         if not valor:
-            raise ValueError("A data de cadastro é obrigatória.")
+            raise ValueError(
+                "A data de cadastro é obrigatória."
+            )
 
         if isinstance(valor, datetime):
             return valor.date()
@@ -1694,7 +1904,10 @@ def processar_cadastro_produtos_massa(request):
 
         for formato in formatos:
             try:
-                return datetime.strptime(valor, formato).date()
+                return datetime.strptime(
+                    valor,
+                    formato
+                ).date()
             except ValueError:
                 continue
 
@@ -1703,11 +1916,19 @@ def processar_cadastro_produtos_massa(request):
             "Use DD/MM/AAAA ou uma data válida do Excel."
         )
 
+    # =========================================
+    # CONVERSÃO DE INTEIRO
+    # =========================================
+
     def converter_inteiro(valor, campo):
-        texto = str(valor if valor is not None else "").strip()
+        texto = str(
+            valor if valor is not None else ""
+        ).strip()
 
         if not texto:
-            raise ValueError(f"O campo {campo} é obrigatório.")
+            raise ValueError(
+                f"O campo {campo} é obrigatório."
+            )
 
         try:
             numero_decimal = Decimal(texto)
@@ -1729,43 +1950,75 @@ def processar_cadastro_produtos_massa(request):
         numero = int(numero_decimal)
 
         if numero < 0:
-            raise ValueError(f"O campo {campo} não pode ser negativo.")
+            raise ValueError(
+                f"O campo {campo} não pode ser negativo."
+            )
 
         return numero
 
-    # Pré-carrega os clientes para não consultar o banco a cada produto.
+    # =========================================
+    # PRÉ-CARREGA CLIENTES
+    # =========================================
+
     clientes_por_nome = {}
 
-    clientes = Cliente.objects.only("id", "nome").iterator(chunk_size=1000)
+    clientes = Cliente.objects.only(
+        "id",
+        "nome"
+    ).iterator(chunk_size=1000)
 
     for cliente in clientes:
-        chave = (cliente.nome or "").strip().casefold()
+        chave = (
+            cliente.nome or ""
+        ).strip().casefold()
 
         if chave:
-            clientes_por_nome.setdefault(chave, []).append(cliente)
+            clientes_por_nome.setdefault(
+                chave,
+                []
+            ).append(cliente)
+
+    # =========================================
+    # PROCESSAR PRODUTO INDIVIDUALMENTE
+    # =========================================
 
     def processar_produto(item):
-        if not isinstance(item, dict):
-            raise ValueError("Os dados da linha estão em formato inválido.")
 
-        nome = str(item.get("nome") or "").strip()
-        descricao = str(item.get("descricao") or "").strip()
-        nome_cliente = str(item.get("cliente") or "").strip()
+        nome = str(
+            item.get("nome") or ""
+        ).strip()
+
+        descricao = str(
+            item.get("descricao") or ""
+        ).strip()
+
+        nome_cliente = str(
+            item.get("cliente") or ""
+        ).strip()
 
         if not nome:
-            raise ValueError("O nome do produto é obrigatório.")
+            raise ValueError(
+                "O nome do produto é obrigatório."
+            )
 
         if len(nome) > 150:
-            raise ValueError("O nome do produto excede 150 caracteres.")
+            raise ValueError(
+                "O nome do produto excede 150 caracteres."
+            )
 
         if len(descricao) > 65535:
-            raise ValueError("A descrição do produto é muito extensa.")
+            raise ValueError(
+                "A descrição do produto é muito extensa."
+            )
 
         if not nome_cliente:
-            raise ValueError("A coluna Cliente não foi preenchida.")
+            raise ValueError(
+                "A coluna Cliente não foi preenchida."
+            )
 
         clientes_encontrados = clientes_por_nome.get(
-            nome_cliente.casefold(), []
+            nome_cliente.casefold(),
+            []
         )
 
         if not clientes_encontrados:
@@ -1780,13 +2033,6 @@ def processar_cadastro_produtos_massa(request):
             )
 
         cliente_obj = clientes_encontrados[0]
-        
-        logger.warning(
-                "IMPORTAÇÃO | Produto: %s | Valor unitário: %r | Desconto: %r",
-                nome,
-                item.get("valor_unitario"),
-                item.get("desconto")
-            )
 
         quantidade = converter_inteiro(
             item.get("quantidade"),
@@ -1794,43 +2040,58 @@ def processar_cadastro_produtos_massa(request):
         )
 
         valor_unitario = moeda_para_decimal(
-            str(item.get("valor_unitario") or "").strip()
+            str(
+                item.get("valor_unitario") or ""
+            ).strip()
         )
 
-        desconto_texto = str(item.get("desconto") or "").strip()
+        desconto_texto = str(
+            item.get("desconto") or ""
+        ).strip()
 
         if not desconto_texto:
             desconto = Decimal("0")
         else:
             try:
-                desconto = porcentagem_para_decimal(desconto_texto)
+                desconto = porcentagem_para_decimal(
+                    desconto_texto
+                )
             except (InvalidOperation, ValueError):
                 raise ValueError(
-                    "Desconto inválido. Informe um número entre 0 e 100 ou deixe a célula em branco."
+                    "Desconto inválido. Informe um número entre 0 e 100 "
+                    "ou deixe a célula em branco."
                 )
 
         if desconto < 0 or desconto > 100:
             raise ValueError(
-                "Desconto inválido. Informe um número entre 0 e 100 ou deixe a célula em branco."
+                "Desconto inválido. Informe um número entre 0 e 100."
             )
-        
-        data_cadastro = converter_data(item.get("data_cadastro"))
+
+        data_cadastro = converter_data(
+            item.get("data_cadastro")
+        )
 
         if valor_unitario < Decimal("0"):
-            raise ValueError("O valor unitário não pode ser negativo.")
+            raise ValueError(
+                "O valor unitário não pode ser negativo."
+            )
 
-        if desconto < Decimal("0") or desconto > Decimal("100"):
-            raise ValueError("O desconto deve estar entre 0% e 100%.")
-
-        total_sem_desconto = quantidade * valor_unitario
-        valor_desconto = (
-            total_sem_desconto * (desconto / Decimal("100"))
+        total_sem_desconto = (
+            quantidade * valor_unitario
         )
-        total_com_desconto = total_sem_desconto - valor_desconto
 
-        # UUID completo: evita a consulta ao banco para verificar
-        # previamente cada código gerado.
-        codigo = f"PROD-{uuid.uuid4().hex.upper()}"
+        valor_desconto = (
+            total_sem_desconto *
+            (desconto / Decimal("100"))
+        )
+
+        total_com_desconto = (
+            total_sem_desconto - valor_desconto
+        )
+
+        codigo = (
+            f"PROD-{uuid.uuid4().hex.upper()}"
+        )
 
         produto = Produto(
             nome=nome,
@@ -1848,27 +2109,31 @@ def processar_cadastro_produtos_massa(request):
             status_saida=0,
         )
 
-        # O código é gerado com UUID. A restrição de unicidade do banco
-        # continua ativa durante o salvamento.
-        produto.full_clean(validate_unique=False)
+        produto.full_clean(
+            validate_unique=False
+        )
 
         with transaction.atomic():
             produto.save()
 
         return produto
 
-    for indice, item in enumerate(produtos_recebidos, start=1):
-        nome_produto = (
-            str(item.get("nome") or "").strip()
-            if isinstance(item, dict)
-            else ""
-        )
+    # =========================================
+    # PROCESSAMENTO INDIVIDUAL DAS LINHAS
+    # =========================================
 
-        codigo_planilha = (
-            str(item.get("codigo") or "").strip()
-            if isinstance(item, dict)
-            else ""
-        )
+    for indice, item in enumerate(
+        produtos_recebidos,
+        start=1
+    ):
+
+        nome_produto = str(
+            item.get("nome") or ""
+        ).strip()
+
+        codigo_planilha = str(
+            item.get("codigo") or ""
+        ).strip()
 
         try:
             produto = processar_produto(item)
@@ -1884,10 +2149,16 @@ def processar_cadastro_produtos_massa(request):
                 "mensagem": "Produto cadastrado com sucesso."
             })
 
-        except (ValueError, InvalidOperation, ValidationError) as erro:
+        except (
+            ValueError,
+            InvalidOperation,
+            ValidationError
+        ) as erro:
+
             rejeitados += 1
 
             if isinstance(erro, ValidationError):
+
                 if hasattr(erro, "message_dict"):
                     detalhes = []
 
@@ -1898,8 +2169,12 @@ def processar_cadastro_produtos_massa(request):
                         )
 
                     mensagem_erro = "; ".join(detalhes)
+
                 else:
-                    mensagem_erro = "; ".join(erro.messages)
+                    mensagem_erro = "; ".join(
+                        erro.messages
+                    )
+
             else:
                 mensagem_erro = str(erro)
 
@@ -1912,10 +2187,12 @@ def processar_cadastro_produtos_massa(request):
             })
 
         except Exception:
+
             rejeitados += 1
 
             logger.exception(
-                "Erro inesperado no cadastro em massa. Linha: %s | Produto: %s",
+                "Erro inesperado no cadastro em massa. "
+                "Linha: %s | Produto: %s",
                 indice + 1,
                 nome_produto or "Sem nome"
             )
@@ -1931,6 +2208,9 @@ def processar_cadastro_produtos_massa(request):
                 )
             })
 
+    # =========================================
+    # RETORNA RESULTADO DO PROCESSAMENTO
+    # =========================================
     return JsonResponse({
         "status": "ok",
         "mensagem": "Processamento concluído.",
@@ -1939,8 +2219,410 @@ def processar_cadastro_produtos_massa(request):
         "rejeitados": rejeitados,
         "resultados": resultados
     })
+    
+def validar_planilha_usuarios(arquivo, usuario):
+    """
+    Confere se a planilha é uma planilha oficial de usuários
+    e localiza o token correspondente ao usuário logado.
+    """
 
+    if not arquivo:
+        raise ValueError("Nenhuma planilha foi enviada.")
 
+    try:
+        arquivo.seek(0)
+
+        workbook = load_workbook(
+            arquivo,
+            read_only=True,
+            data_only=True
+        )
+
+        if "_VALIDACAO" not in workbook.sheetnames:
+            workbook.close()
+            raise ValueError("Planilha sem identificação de segurança.")
+
+        planilha_validacao = workbook["_VALIDACAO"]
+
+        identificador = planilha_validacao["A1"].value
+        versao = planilha_validacao["A2"].value
+        token = planilha_validacao["A3"].value
+
+        workbook.close()
+
+        if identificador != "PLANILHA_USUARIOS":
+            raise ValueError("Esta não é uma planilha de usuários válida.")
+
+        if str(versao) != "1.0":
+            raise ValueError("Versão da planilha não suportada.")
+
+        if not token:
+            raise ValueError("Token de segurança não encontrado.")
+
+        arquivo.seek(0)
+
+        token_planilha = localizar_token_planilha(
+            token=token,
+            tipo="usuario",
+            usuario=usuario.perfil
+        )
+
+        if not token_planilha:
+            raise ValueError("Token inválido ou não pertence a este usuário.")
+
+        return token_planilha
+
+    except ValueError:
+        raise
+
+    except Exception:
+        raise ValueError("Não foi possível validar a planilha enviada.")
+
+    finally:
+        arquivo.seek(0)
+
+@login_required
+@require_POST
+def processar_cadastro_usuarios_massa(request):
+
+    arquivo = request.FILES.get("arquivo_planilha")
+
+    if not arquivo:
+        return JsonResponse({
+            "sucesso": False,
+            "mensagem": "Selecione uma planilha para importar."
+        }, status=400)
+
+    if not arquivo.name.lower().endswith(".xlsx"):
+        return JsonResponse({
+            "sucesso": False,
+            "mensagem": "Envie uma planilha no formato .xlsx."
+        }, status=400)
+
+    try:
+        token_planilha = validar_planilha_usuarios(
+            arquivo,
+            request.user
+        )
+
+    except ValueError as erro:
+        return JsonResponse({
+            "sucesso": False,
+            "mensagem": str(erro)
+        }, status=400)
+
+    # Consome o token atomicamente para impedir reutilização.
+    agora = timezone.now()
+
+    token_consumido = TokenPlanilha.objects.filter(
+        pk=token_planilha.pk,
+        usuario=request.user.perfil,
+        tipo="usuario",
+        utilizado=False,
+        expira_em__gt=agora
+    ).update(
+        utilizado=True,
+        utilizado_em=agora
+    )
+
+    if token_consumido != 1:
+        return JsonResponse({
+            "sucesso": False,
+            "mensagem": "Token expirado ou já utilizado. Baixe uma nova planilha."
+        }, status=400)
+
+    try:
+        arquivo.seek(0)
+
+        workbook = load_workbook(
+            arquivo,
+            read_only=True,
+            data_only=True
+        )
+
+        planilha = workbook.active
+
+        cabecalhos_esperados = [
+            "Nome",
+            "Usuário",
+            "CEP",
+            "Endereço",
+            "Número",
+            "Cidade",
+            "Bairro",
+            "Estado",
+            "Complemento",
+            "Telefone",
+            "E-mail",
+            "Data de Nascimento",
+            "RG",
+            "CPF",
+            "CNPJ",
+        ]
+
+        cabecalhos_recebidos = [
+            str(celula or "").strip()
+            for celula in next(
+                planilha.iter_rows(min_row=1, max_row=1, values_only=True)
+            )
+        ]
+
+        if cabecalhos_recebidos != cabecalhos_esperados:
+            workbook.close()
+
+            return JsonResponse({
+                "sucesso": False,
+                "mensagem": (
+                    "Os cabeçalhos da planilha não correspondem "
+                    "ao modelo oficial de cadastro de usuários."
+                )
+            }, status=400)
+
+        # Verifica se existem dados fora das 17 colunas esperadas.
+        linhas = list(
+            planilha.iter_rows(
+                min_row=2,
+                max_col=16,
+                values_only=True
+            )
+        )
+
+        if any(
+            any(valor is not None for valor in linha[15:])
+            for linha in linhas
+        ):
+            workbook.close()
+
+            return JsonResponse({
+                "sucesso": False,
+                "mensagem": "A planilha contém dados fora das colunas permitidas."
+            }, status=400)
+
+        linhas_com_dados = [
+            linha[:15]
+            for linha in linhas
+            if any(
+                valor is not None and str(valor).strip()
+                for valor in linha[:15]
+            )
+        ]
+
+        if len(linhas_com_dados) > 500:
+            workbook.close()
+
+            return JsonResponse({
+                "sucesso": False,
+                "mensagem": "O limite máximo é de 500 usuários por importação."
+            }, status=400)
+
+        workbook.close()
+
+    except Exception:
+        return JsonResponse({
+            "sucesso": False,
+            "mensagem": "Não foi possível ler a planilha. Verifique o arquivo."
+        }, status=400)
+
+    dados_existentes = carregar_dados_existentes()
+
+    cadastrados = []
+    rejeitados = []
+
+    for numero_linha, linha in enumerate(linhas_com_dados, start=2):
+
+        dados_linha = dados_existentes.copy()
+
+        try:
+            (
+                nome,
+                username,
+                cep,
+                endereco,
+                numero,
+                cidade,
+                bairro,
+                estado,
+                complemento,
+                telefone,
+                email,
+                data_nascimento,
+                rg,
+                cpf,
+                cnpj,
+            ) = linha
+
+            # Normalização dos campos textuais.
+            nome = str(nome or "").strip()
+            username = str(username or "").strip()
+            endereco = str(endereco or "").strip()
+            numero = str(numero or "").strip()
+            cidade = str(cidade or "").strip()
+            bairro = str(bairro or "").strip()
+            estado = str(estado or "").strip().upper()
+            complemento = str(complemento or "").strip()
+
+            if not nome:
+                raise ValueError("Nome não informado.")
+
+            if not username:
+                raise ValueError("Nome de usuário não informado.")
+
+            if not email:
+                raise ValueError("E-mail não informado.")
+
+            email = validar_email(email)
+
+            telefone = formatar_telefone(telefone)
+            cep = formatar_cep(cep)
+
+            cpf = formatar_cpf(cpf)
+            cnpj = formatar_cnpj(cnpj)
+            rg = formatar_rg(rg)
+
+            # Verifica duplicidades no banco e na própria planilha.
+            verificar_duplicidade("username", username, dados_linha)
+            verificar_duplicidade("email", email, dados_linha)
+            verificar_duplicidade("telefone", telefone, dados_linha)
+            verificar_duplicidade("rg", rg, dados_linha)
+            verificar_duplicidade("cpf", cpf, dados_linha)
+            verificar_duplicidade("cnpj", cnpj, dados_linha)
+
+            # Valida a senha conforme AUTH_PASSWORD_VALIDATORS.
+            usuario_validacao = User(
+                username=username,
+                email=email,
+                first_name=nome
+            )
+
+            senha_temporaria = gerar_senha_temporaria(
+                usuario_validacao
+            )
+
+            # Validação dos demais campos.
+            if estado and len(estado) != 2:
+                raise ValueError("Estado deve possuir 2 caracteres.")
+
+            if data_nascimento:
+                if isinstance(data_nascimento, datetime):
+                    data_nascimento = data_nascimento.date()
+
+                elif isinstance(data_nascimento, date):
+                    pass
+
+                else:
+                    data_nascimento = datetime.strptime(
+                        str(data_nascimento).strip(),
+                        "%d/%m/%Y"
+                    ).date()
+
+            # Criação do usuário e perfil em uma única transação.
+            with transaction.atomic():
+
+                usuario = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    password=senha_temporaria,
+                    first_name=nome
+                )
+
+                perfil = usuario.perfil
+
+                perfil.cep = cep
+                perfil.endereco = endereco
+                perfil.numero = numero
+                perfil.cidade = cidade
+                perfil.bairro = bairro
+                perfil.estado = estado
+                perfil.complemento = complemento
+                perfil.telefone = telefone
+                perfil.data_nascimento = data_nascimento
+                perfil.rg = rg
+                perfil.cpf = cpf
+                perfil.cnpj = cnpj
+
+                # Todos começam com acesso de usuário comum.
+                perfil.acesso = "Usuário"
+
+                perfil.save()
+
+            # Reserva os valores somente após o cadastro concluído.
+            dados_existentes["username"].add(username.casefold())
+            dados_existentes["email"].add(email.casefold())
+            dados_existentes["telefone"].add(somente_numeros(telefone))
+
+            if rg:
+                dados_existentes["rg"].add(somente_numeros(rg))
+
+            if cpf:
+                dados_existentes["cpf"].add(somente_numeros(cpf))
+
+            if cnpj:
+                dados_existentes["cnpj"].add(somente_numeros(cnpj))
+
+            cadastrados.append({
+                "linha": numero_linha,
+                "nome": nome,
+                "username": username,
+                "senha": senha_temporaria,
+                "status": "Cadastrado"
+            })
+
+        except ValueError as erro:
+            rejeitados.append({
+                "linha": numero_linha,
+                "nome": str(linha[0] or ""),
+                "motivo": str(erro)
+            })
+
+        except Exception as erro:
+            logger.exception(
+                "Erro ao cadastrar usuário na linha %s",
+                numero_linha
+            )
+
+            rejeitados.append({
+                "linha": numero_linha,
+                "nome": str(linha[0] or ""),
+                "motivo": "Erro interno ao cadastrar este usuário."
+            })
+
+    resposta = JsonResponse({
+        "sucesso": True,
+        "total_recebido": len(linhas_com_dados),
+        "cadastrados": len(cadastrados),
+        "rejeitados": len(rejeitados),
+        "resultados": cadastrados,
+        "erros": rejeitados,
+    })
+
+    resposta["Cache-Control"] = "no-store, private"
+
+    return resposta
+    
+def gerar_senha_temporaria(usuario):
+    caracteres = (
+        "abcdefghijkmnopqrstuvwxyz"
+        "ABCDEFGHJKLMNPQRSTUVWXYZ"
+        "23456789"
+        "!@#$%&*"
+    )
+
+    for _ in range(10):
+        senha = get_random_string(
+            length=24,
+            allowed_chars=caracteres
+        )
+
+        try:
+            validate_password(senha, user=usuario)
+            return senha
+
+        except ValidationError:
+            continue
+
+    raise RuntimeError(
+        "Não foi possível gerar uma senha válida."
+    )
 
 '''@login_required
 def listar_produtos(request):

@@ -45,6 +45,7 @@ urlpatterns = [
     
     path('cadastrar_produtos_massa/',include('cadastrar_produtos_massa.urls')),
     path("cadastrar_produtos_massa/processar/",views.processar_cadastro_produtos_massa,name="processar_cadastro_produtos_massa"),
-    
+    path('cadastrar_usuarios_massa/',include('cadastrar_usuarios_massa.urls')),
+    path("cadastrar_usuarios_massa/processar/",views.processar_cadastro_usuarios_massa,name="processar_cadastro_usuarios_massa"),
     
 ]
