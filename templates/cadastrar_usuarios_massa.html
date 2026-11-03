@@ -231,13 +231,19 @@
 
 
 
-<!-- MODAL: AJUDA SOBRE A PLANILHA -->
-<div class="modal fade" id="modalAjudaPlanilha" tabindex="-1"
-     aria-labelledby="tituloModalAjudaPlanilha" aria-hidden="true">
 
+<!-- MODAL: AJUDA SOBRE A PLANILHA -->
+<div
+    class="modal fade"
+    id="modalAjudaPlanilha"
+    tabindex="-1"
+    aria-labelledby="tituloModalAjudaPlanilha"
+    aria-hidden="true"
+>
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content modal-ajuda-planilha">
 
+            <!-- CABEÇALHO -->
             <div class="modal-header">
                 <div>
                     <h5 class="modal-title" id="tituloModalAjudaPlanilha">
@@ -250,202 +256,416 @@
                     </p>
                 </div>
 
-                <button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <button
+                    type="button"
+                    class="btn-fechar-modal-ajuda-planilha-usuarios"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar"
+                >
+                <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
 
+            <!-- CONTEÚDO -->
             <div class="modal-body">
 
+                <!-- 1. FORMATO -->
                 <section class="ajuda-planilha-secao">
-                    <h6><i class="fa-solid fa-file-excel"></i> 1. Formato da planilha</h6>
+
+                    <h6>
+                        <i class="fa-solid fa-file-excel"></i>
+                        1. Formato da planilha
+                    </h6>
 
                     <ul>
                         <li>O arquivo deve estar no formato <strong>.xlsx</strong>.</li>
+
                         <li>Utilize a primeira aba da planilha para inserir os usuários.</li>
-                        <li>A primeira linha contém os nomes das colunas.</li>
-                        <li>Não altere os nomes dos cabeçalhos, pois eles são protegidos por senha para evitar modificações acidentais e preservar a estrutura de importação.</li>
-                        <li>Cada linha deve representar um usuario.</li>
-                        <li>Por segurança e padronização, a planilha disponibiliza até <strong>500 linhas para preenchimento</strong> por importação.</li>
-                        <li>Não tente inserir usuários além do limite disponibilizado no modelo.</li>
-                        <li>A senha será gerada automaticamente pelo sistema.Não é necessário informar senha na planilha.</li>
+
+                        <li>A primeira linha deve conter os nomes das colunas.</li>
+
+                        <li>
+                            Não altere os nomes dos cabeçalhos.
+                            O modelo disponibilizado pelo sistema possui proteção
+                            para evitar modificações acidentais.
+                        </li>
+
+                        <li>Cada linha deve representar um usuário.</li>
+
+                        <li>
+                            O limite máximo é de <strong>500 usuários por importação</strong>.
+                        </li>
+
+                        <li>
+                            Não insira usuários além do limite disponibilizado no modelo.
+                        </li>
+
+                        <li>
+                            A senha será gerada automaticamente pelo sistema.
+                            Não é necessário informar uma senha na planilha.
+                        </li>
                     </ul>
+
                     <p class="ajuda-planilha-alerta">
                         <i class="fa-solid fa-shield-halved"></i>
-                        A proteção dos cabeçalhos e o limite de 500 linhas ajudam a
-                        preservar a estrutura da planilha e evitar problemas durante
-                        a importação dos usuários.
+
+                        A proteção dos cabeçalhos e o limite de registros ajudam
+                        a preservar a estrutura da planilha e evitar problemas
+                        durante a importação.
                     </p>
 
                     <p>
-                        Para evitar problemas, recomendamos baixar e utilizar
-                        o modelo de planilha disponibilizado pelo sistema.
+                        Para evitar incompatibilidades, baixe e utilize sempre
+                        o modelo de planilha disponibilizado pelo próprio sistema.
                     </p>
+
                 </section>
 
+                <!-- 2. COLUNAS -->
                 <section class="ajuda-planilha-secao">
-                    <h6><i class="fa-solid fa-table-columns"></i> 2. Colunas da planilha</h6>
+
+                    <h6>
+                        <i class="fa-solid fa-table-columns"></i>
+                        2. Colunas da planilha
+                    </h6>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Nome</strong>
+                        <p>
+                            Informe o nome completo do usuário que utilizará o sistema.
+                        </p>
+                    </div>
 
                     <div class="ajuda-planilha-campo">
                         <strong>Usuário</strong>
-                        <p>Informe o nome do usuário. Este campo é obrigatório e aceita até <strong>150 caracteres</strong></p>
-                        <small>Não deixe o campo em branco nem ultrapasse o limite de caracteres.</small>
-                    </div>
-
-                    <div class="ajuda-planilha-campo">
-                        <strong>Quantidade</strong>
-                        <p>Informe um número inteiro igual ou superior a zero.</p>
-                        <small>Exemplo: 1, 10 ou 250.</small>
-                    </div>
-
-                    <div class="ajuda-planilha-campo">
-                        <strong>Valor Unitário</strong>
-                        <p>Informe o valor unitário do usuário em formato numérico.</p>
-                        <small>Exemplo: 150 ou 150,50.</small>
-                    </div>
-
-                    <div class="ajuda-planilha-campo">
-                        <strong>Desconto</strong>
                         <p>
-                            Informe um número entre <strong>0 e 100</strong>
-                            representando a porcentagem de desconto.
+                            Informe o nome de usuário utilizado para acessar o sistema. O campo aceita até <strong>11 caracteres</strong>
                         </p>
-
                         <small>
-                            Exemplos: 5 (5%), 10 (10%) ou 0 (sem desconto).
-                            <strong>Caso não exista desconto, deixe a célula em branco.</strong> 
+                            Não deixe o campo em branco e respeite o limite de caracteres.
                         </small>
-
-                        <p class="ajuda-planilha-alerta">
-                            <strong>Não utilize textos como "Sem desconto", símbolos
-                            de porcentagem ou valores negativos.</strong>
-                        </p>
-
                     </div>
 
                     <div class="ajuda-planilha-campo">
-                        <strong>Data do Cadastro</strong>
-                        <p>Informe uma data válida.</p>
-                        <small>Exemplo: 29/10/2026.</small>
-                    </div>
-
-                    <div class="ajuda-planilha-campo">
-                        <strong>Código do Item</strong>
+                        <strong>CEP</strong>
                         <p>
-                            O código é gerado automaticamente pelo sistema.
-                            Não é necessário preencher essa coluna.
-                            Caso preenchido o sistema irá ignorar e seguir gerando o código.
+                            Informe um CEP válido, com ou sem formatação.
                         </p>
+                        <small>
+                            Exemplos: 00000-001 ou 00000001.
+                            Deve conter exatamente 8 dígitos.
+                        </small>
                     </div>
 
                     <div class="ajuda-planilha-campo">
-                        <strong>Cliente</strong>
-                        <p>Informe o nome de um cliente já cadastrado no sistema. Este campo é obrigatório e não pode ficar em branco.</p>
-                        <small>O nome deve corresponder a um cadastro existente.</small>
+                        <strong>Endereço</strong>
+                        <p>
+                            Informe o logradouro do endereço do usuário.
+                        </p>
+                        <small>
+                            Exemplo: Rua Antônio Lucas.
+                        </small>
                     </div>
 
                     <div class="ajuda-planilha-campo">
-                        <strong>Descrição</strong>
-                        <p>Informe os detalhes ou características do usuario.</p>
-                        <small>O limite máximo é de 5.000 caracteres.</small>
+                        <strong>Número</strong>
+                        <p>
+                            Informe o número do endereço utilizando um número inteiro.
+                        </p>
+                        <small>
+                            Exemplos: 105, 400 ou 35.
+                            Caso não exista número, deixe a célula em branco.
+                        </small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Cidade</strong>
+                        <p>
+                            Informe a cidade de residência do usuário.
+                        </p>
+                        <small>
+                            Exemplo: Campinas.
+                        </small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Bairro</strong>
+                        <p>
+                            Informe o bairro do endereço.
+                        </p>
+                        <small>
+                            Exemplo: Centro, Jardim São Domingos.
+                        </small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Estado</strong>
+                        <p>
+                            Informe apenas a sigla do estado.
+                        </p>
+                        <small>
+                            Exemplos: SP, MG ou RJ.
+                        </small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Complemento</strong>
+                        <p>
+                            Informe o complemento do endereço, caso exista.
+                        </p>
+                        <small>
+                            Exemplos: Bloco A, Apartamento 31 ou Casa 2.
+                            Caso não exista, deixe a célula em branco.
+                        </small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Telefone</strong>
+                        <p>
+                            Informe um número de telefone ou WhatsApp válido.
+                        </p>
+                        <small>
+                            Exemplos: (11) 00000-0001 ou (19) 00000-0002.
+                            Utilize um número exclusivo, conforme as regras de cadastro do sistema.
+                        </small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>E-mail</strong>
+                        <p>
+                            Informe um endereço de e-mail válido e exclusivo.
+                            E-mails já utilizados em outros cadastros não serão aceitos.
+                        </p>
+                        <small>
+                            Exemplos: usuario1@exemplo.com ou usuario2@exemplo.com.
+                        </small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>Data de Nascimento</strong>
+                        <p>
+                            Informe uma data de nascimento válida.
+                        </p>
+                        <small>
+                            Exemplos: 29/10/2000, 26/01/2000 ou 09/09/2002.
+                            Utilize o formato de data aceito pelo modelo.
+                        </small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>RG</strong>
+                        <p>
+                            Informe um RG válido, com exatamente
+                            <strong>9 dígitos</strong> conforme a validação
+                            utilizada pelo sistema.
+                        </p>
+                        <small>
+                            Exemplos: 00.000.000-1 ou 000000001.
+                            O documento deve ser exclusivo.
+                        </small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>CPF</strong>
+                        <p>
+                            Informe um CPF válido, com exatamente
+                            <strong>11 dígitos</strong>
+                            O documento deve ser exclusivo.
+                        </p>
+                        <small>
+                            Exemplos: 529.982.247-25 ou 52998224725.
+                        </small>
+                    </div>
+
+                    <div class="ajuda-planilha-campo">
+                        <strong>CNPJ</strong>
+                        <p>
+                            Informe um CNPJ válido, com exatamente
+                            <strong>14 dígitos</strong>
+                            O documento deve respeitar as regras de validação do sistema.
+                        </p>
+                        <small>
+                            Exemplos: 11.222.333/0001-81 ou 11222333000181.
+                        </small>
                     </div>
 
                 </section>
 
+                <!-- 3. CUIDADOS -->
                 <section class="ajuda-planilha-secao">
-                    <h6><i class="fa-solid fa-triangle-exclamation"></i> 3. Cuidados importantes</h6>
+
+                    <h6>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        3. Cuidados importantes
+                    </h6>
 
                     <ul>
-                        <li>Confira se os valores numéricos estão preenchidos corretamente.</li>
+                        <li>Confira se todos os campos obrigatórios foram preenchidos.</li>
                         <li>Não utilize textos em campos que exigem números.</li>
-                        <li>Verifique se os clientes informados já estão cadastrados.</li>
+                        <li>Verifique se os documentos informados são válidos.</li>
+                        <li>Confira se não existem documentos ou e-mails duplicados.</li>
                         <li>Confira as datas antes de iniciar a importação.</li>
                         <li>Não altere a estrutura ou os nomes das colunas.</li>
+                        <li>
+                            Verifique se os dados não possuem espaços desnecessários
+                            ou informações incompletas.
+                        </li>
                     </ul>
+
                 </section>
 
+                <!-- 4. COMO CADASTRAR -->
                 <section class="ajuda-planilha-secao">
-                    <h6><i class="fa-solid fa-cloud-arrow-up"></i> 4. Como realizar o cadastro</h6>
+
+                    <h6>
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        4. Como realizar o cadastro
+                    </h6>
 
                     <ol>
                         <li>Baixe o modelo de planilha de usuários.</li>
-                        <li>Preencha os dados seguindo as orientações acima.</li>
-                        <li>Clique em <strong>Abrir planilha</strong> e selecione o arquivo.</li>
+
+                        <li>Preencha os dados seguindo as orientações apresentadas.</li>
+
+                        <li>
+                            Clique em <strong>Abrir planilha</strong> e selecione
+                            o arquivo preenchido.
+                        </li>
+
                         <li>Confira os usuários apresentados na tabela.</li>
-                        <li>Clique em <strong>Fazer o cadastro em massa</strong>.</li>
+
+                        <li>
+                            Clique em <strong>Fazer o cadastro em massa</strong>.
+                        </li>
+
                         <li>Aguarde o processamento e confira o relatório final.</li>
+
+                        <li>
+                            Consulte as credenciais geradas pelo sistema após
+                            a conclusão do cadastro.
+                        </li>
                     </ol>
 
                     <p>
-                        usuários com dados inválidos serão rejeitados individualmente.
-                        O relatório apresentará as linhas que precisam de correção.
-                        <strong>E não tente criar uma planilha do zero, baixe e utilize a planilha disponibilizada pelo próprio sistema.</strong>
+                        Usuários com dados inválidos serão rejeitados individualmente.
+                        Isso significa que um registro com erro não impede o cadastro
+                        dos demais usuários válidos.
+                    </p>
+
+                    <p>
+                        Utilize sempre o modelo disponibilizado pelo sistema,
+                        evitando criar uma planilha do zero.
                     </p>
 
                     <p class="ajuda-planilha-alerta">
                         <i class="fa-solid fa-circle-info"></i>
-                        O cadastro em massa permite importar até 500 usuários por vez.
-                        Caso tenha mais usuários, divida os dados em várias planilhas.
+
+                        O cadastro em massa permite importar até
+                        <strong>500 usuários por vez</strong>.
+                        Caso tenha mais registros, divida os dados em várias importações.
                     </p>
 
-                    <class="ajuda-planilha-secao">
-                        <h6>
-                            <i class="fa-solid fa-clipboard-check"></i>
-                            5. Conferência antes de importar
-                        </h6>
+                </section>
 
-                        <p>Antes de iniciar o cadastro em massa, confira os seguintes pontos:</p>
+                <!-- 5. CONFERÊNCIA -->
+                <section class="ajuda-planilha-secao">
 
-                        <ul>
-                            <li>Verifique se todos os usuários possuem nome preenchido.</li>
-                            <li>Confira se os nomes dos usuários não ultrapassam 150 caracteres.</li>
-                            <li>Certifique-se de que os clientes informados já existem no sistema.</li>
-                            <li>Confira se as quantidades são números inteiros e não negativos.</li>
-                            <li>Verifique se os valores unitários foram preenchidos corretamente.</li>
-                            <li>Confira se os descontos estão entre 0 e 100.</li>
-                            <li>Verifique se as datas estão corretas e são válidas.</li>
-                            <li>Certifique-se de que a descrição não ultrapassa 65.535 caracteres.</li>
-                            <li>Não altere os nomes dos cabeçalhos da planilha.</li>
-                            <li>Confira se existem no máximo 500 usuários para importar.</li>
-                        </ul>
+                    <h6>
+                        <i class="fa-solid fa-clipboard-check"></i>
+                        5. Conferência antes de importar
+                    </h6>
 
-                        <class="ajuda-planilha-secao">
-                            <h6>
-                                <i class="fa-solid fa-chart-column"></i>
-                                6. Resultado da importação
-                            </h6>
+                    <p>
+                        Antes de iniciar o cadastro em massa, confira os seguintes pontos:
+                    </p>
 
-                            <p>
-                                Após o processamento, o sistema apresentará um relatório
-                                com o resultado do cadastro dos usuários.
-                            </p>
+                    <ul>
+                        <li>Todos os usuários possuem nome preenchido.</li>
 
-                            <ul>
-                                <li><strong>usuários cadastrados:</strong> quantidade de usuários importados com sucesso.</li>
-                                <li><strong>usuários rejeitados:</strong> quantidade de usuários que apresentaram algum erro.</li>
-                                <li><strong>Identificação dos erros:</strong> indicação das linhas que precisam de correção e o motivo da rejeição.</li>
-                            </ul>
+                        <li>Os nomes de usuário respeitam o limite de 11 caracteres.</li>
 
-                            <p>
-                                Os usuários rejeitados poderão ser corrigidos na planilha
-                                e enviados novamente em outra importação.
-                            </p>
+                        <li>Os CEPs possuem exatamente 8 dígitos.</li>
+
+                        <li>Os telefones e e-mails estão preenchidos corretamente.</li>
+
+                        <li>As datas de nascimento são válidas.</li>
+
+                        <li>Os documentos informados possuem a quantidade correta de dígitos.</li>
+
+                        <li>Os documentos e e-mails não estão duplicados.</li>
+
+                        <li>Os cabeçalhos permanecem iguais aos do modelo original.</li>
+
+                        <li>Existem no máximo 500 usuários para importar.</li>
+                    </ul>
+
+                </section>
+
+                <!-- 6. RESULTADO -->
+                <section class="ajuda-planilha-secao">
+
+                    <h6>
+                        <i class="fa-solid fa-chart-column"></i>
+                        6. Resultado da importação
+                    </h6>
+
+                    <p>
+                        Após o processamento, o sistema apresentará um relatório
+                        com o resultado do cadastro dos usuários.
+                    </p>
+
+                    <ul>
+                        <li>
+                            <strong>Usuários cadastrados:</strong>
+                            quantidade de usuários importados com sucesso.
+                        </li>
+
+                        <li>
+                            <strong>Usuários rejeitados:</strong>
+                            quantidade de usuários que apresentaram algum erro.
+                        </li>
+
+                        <li>
+                            <strong>Identificação dos erros:</strong>
+                            indicação das linhas que precisam de correção
+                            e o motivo da rejeição.
+                        </li>
+                    </ul>
+
+                    <p>
+                        Os usuários rejeitados poderão ter seus dados corrigidos
+                        na planilha e ser enviados novamente em outra importação.
+                    </p>
+
+                    <p class="ajuda-planilha-alerta">
+                        <i class="fa-solid fa-lock"></i>
+
+                        As senhas são geradas automaticamente pelo sistema.
+                        Consulte e guarde as credenciais apresentadas após
+                        a conclusão do cadastro.
+                    </p>
 
                 </section>
 
             </div>
 
-            
-
+            <!-- RODAPÉ -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
                     Entendi
                 </button>
+
             </div>
 
         </div>
     </div>
 </div>
+
 
 <!-- =====================================================
      MODAL DE CREDENCIAIS — USUÁRIOS IMPORTADOS

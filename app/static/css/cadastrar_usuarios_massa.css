@@ -574,6 +574,12 @@
     color: #cecfd2;
 }
 
+/* Destaques dentro dos parágrafos permanecem na mesma linha */
+.ajuda-planilha-campo p strong {
+    display: inline;
+    margin-bottom: 0;
+}
+
 .ajuda-planilha-campo p {
     margin: 0;
     color: #cecfd2;
@@ -590,6 +596,25 @@
 .ajuda-planilha-alerta {
     margin-top: 7px !important;
     font-weight: 600;
+    color: #cecfd2;
+}
+
+.btn-fechar-modal-ajuda-planilha-usuarios {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 50%;
+    color: #cecfd2 !important;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+.btn-fechar-modal-ajuda-planilha-usuarios:hover {
+    background-color: #dc2626;
     color: #cecfd2;
 }
 

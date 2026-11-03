@@ -4,6 +4,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/relatorios.css' %}">
+<script src="{% static 'js/relatorios.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -16,20 +17,41 @@
 
 <div class="dashboard-page-relatorio">
 
-    <!-- TOPBAR -->
-    <div class="dashboard-topbar-relatorio">
-        <div class="relatorio-titulo">
-            <div class="icone-relatorio">
-                <i class="fa-solid fa-file-lines"></i>
-            </div>
-            <div>
-                <h1>Relatórios de Clientes</h1>
-                <p>Gere relatórios personalizados dos clientes cadastrados.</p>
-            </div>
-        </div>
-    </div>
+    <!-- CARD PRINCIPAL -->
+    <div class="relatorio-card-principal">
 
-    <!-- SEÇÃO DE FILTROS PRINCIPAIS -->
+        <!-- ABAS -->
+        <div class="relatorio-tabs">
+
+            <button type="button"
+                    class="btn-tab-relatorio ativo"
+                    data-aba="clientes">
+                <i class="fa-solid fa-users"></i>
+                Relatórios de Clientes
+            </button>
+
+            <button type="button"
+                    class="btn-tab-relatorio"
+                    data-aba="usuarios">
+                <i class="fa-solid fa-user-gear"></i>
+                Relatórios de Usuários
+            </button>
+
+            <button type="button"
+                    class="btn-tab-relatorio"
+                    data-aba="bi">
+                <i class="fa-solid fa-chart-pie"></i>
+                BI - Relatórios
+            </button>
+
+        </div>
+
+        <!-- CONTEÚDO DAS ABAS -->
+
+        <!-- ABA 1: CLIENTES -->
+        <div id="abaRelatorioClientes" class="relatorio-pagina ativa">
+
+            <!-- SEÇÃO DE FILTROS PRINCIPAIS -->
     <section class="relatorio-card-secao">
         <div class="secao-header">
             <i class="fa-solid fa-filter"></i>
@@ -44,16 +66,6 @@
                     <input type="date" placeholder="Data inicial">
                     <span>até</span>
                     <input type="date" placeholder="Data final">
-                </div>
-            </div>
-
-            <!-- Tipo de Cliente -->
-            <div class="campo-filtro">
-                <label>Tipo de Cliente</label>
-                <div class="radio-grupo">
-                    <label><input type="radio" name="tipo" checked> Todos</label>
-                    <label><input type="radio" name="tipo"> Jurídicos</label>
-                    <label><input type="radio" name="tipo"> Físicos</label>
                 </div>
             </div>
 
@@ -106,21 +118,62 @@
     <!-- GRID DE OPCIONAIS DE CONFIGURAÇÃO DO RELATÓRIO (3 CARDS) -->
     <div class="relatorio-config-grid">
         
+      
         <!-- 1. Informações que deseja incluir -->
         <div class="relatorio-card-secao">
             <div class="secao-header">
                 <i class="fa-solid fa-circle-info"></i>
                 <span>Informações que deseja incluir</span>
             </div>
-            <div class="checkbox-grid">
-                <label class="custom-checkbox"><input type="checkbox" checked> <span>Dados pessoais</span></label>
-                <label class="custom-checkbox"><input type="checkbox" checked> <span>Histórico de compras</span></label>
-                <label class="custom-checkbox"><input type="checkbox" checked> <span>Endereço</span></label>
-                <label class="custom-checkbox"><input type="checkbox" checked> <span>Valor gasto</span></label>
-                <label class="custom-checkbox"><input type="checkbox" checked> <span>Contatos</span></label>
-                <label class="custom-checkbox"><input type="checkbox" checked> <span>Última compra</span></label>
-                <label class="custom-checkbox"><input type="checkbox" checked> <span>Documentos</span></label>
-                <label class="custom-checkbox"><input type="checkbox" checked> <span>Situação do cliente</span></label>
+
+            <!-- Checkbox Master -->
+            <div class="checkbox-master-container">
+                <label class="custom-checkbox">
+                    <input type="checkbox" id="masterInformacoesRelatorio" checked>
+                    <span>Selecionar todas</span>
+                </label>
+            </div>
+
+            <div class="checkbox-grid" id="checkboxGridInformacoes">
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes[]" value="dados_pessoais" checked>
+                    <span>Dados pessoais</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes[]" value="historico_compras" checked>
+                    <span>Histórico de compras</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes[]" value="endereco" checked>
+                    <span>Endereço</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes[]" value="valor_gasto" checked>
+                    <span>Valor gasto</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes[]" value="contatos" checked>
+                    <span>Contatos</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes[]" value="ultima_compra" checked>
+                    <span>Última compra</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes[]" value="documentos" checked>
+                    <span>Documentos</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes[]" value="situacao_cliente" checked>
+                    <span>Situação do cliente</span>
+                </label>
             </div>
         </div>
 
@@ -185,14 +238,7 @@
             </div>
         </div>
 
-        <div class="card-resumo card-fisica">
-            <div class="icone-card"><i class="fa-solid fa-user"></i></div>
-            <div>
-                <span>Pessoa Física</span>
-                <strong>58</strong>
-                <small>40,00% do total</small>
-            </div>
-        </div>
+        
 
         <div class="card-resumo card-valor">
             <div class="icone-card"><i class="fa-solid fa-dollar-sign"></i></div>
@@ -227,81 +273,145 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for cliente in clientes %}
                     <tr>
-                        <td>João Silva</td>
-                        <td><span class="badge-tipo fisico">Físico</span></td>
-                        <td>123.456.789-00</td>
-                        <td>joao.silva@email.com</td>
-                        <td>(19) 99999-9999</td>
-                        <td>Campinas / SP</td>
-                        <td><span class="badge-status ativo">Ativo</span></td>
-                        <td>14/03/2026</td>
-                        <td>R$ 4.520,00</td>
-                        <td>14/07/2026</td>
+                        <!-- NOME / RAZÃO SOCIAL -->
+                        <td>
+                            {% if cliente.tipo_cliente == 'juridico' %}
+                                {{ cliente.razao_social|default:cliente.nome }}
+                            {% else %}
+                                {{ cliente.nome }}
+                            {% endif %}
+                        </td>
+
+                        <!-- TIPO -->
+                        <td>
+                            {% if cliente.tipo_cliente == 'juridico' %}
+                                <span class="badge-tipo juridico">Jurídico</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- CPF / CNPJ -->
+                        <td>
+                            {% if cliente.tipo_cliente == 'juridico' %}
+                                {{ cliente.cnpj|default:"-" }}
+                            {% else %}
+                                {{ cliente.cpf|default:"-" }}
+                            {% endif %}
+                        </td>
+
+                        <!-- E-MAIL -->
+                        <td>{{ cliente.email|default:"-" }}</td>
+
+                        <!-- TELEFONE -->
+                        <td>{{ cliente.telefone|default:"-" }}</td>
+
+                        <!-- CIDADE / ESTADO -->
+                        <td>
+                            {% if cliente.cidade or cliente.estado %}
+                                {{ cliente.cidade|default:"-" }} / {{ cliente.estado|default:"-" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <!-- STATUS -->
+                        <td>
+                            {% if cliente.status|lower == 'ativo' %}
+                                <span class="badge-status ativo">
+                                    {{ cliente.status }}
+                                </span>
+                            {% else %}
+                                <span class="badge-status inativo">
+                                    {{ cliente.status }}
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <!-- DATA CADASTRO -->
+                        <td>
+                            {{ cliente.data_inclusao|date:"d/m/Y" }}
+                        </td>
+
+                        <!-- VALOR GASTO -->
+                        <td>
+                            R$ {{ cliente.valor_gasto|floatformat:2 }}
+                        </td>
+
+                        <!-- ÚLTIMA COMPRA -->
+                        <td>
+                            {% if cliente.ultima_compra %}
+                                {{ cliente.ultima_compra|date:"d/m/Y" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
                     </tr>
+
+                    {% empty %}
                     <tr>
-                        <td>Empresa ABC Ltda</td>
-                        <td><span class="badge-tipo juridico">Jurídico</span></td>
-                        <td>12.345.678/0001-90</td>
-                        <td>contato@abc.com.br</td>
-                        <td>(11) 3333-4444</td>
-                        <td>São Paulo / SP</td>
-                        <td><span class="badge-status ativo">Ativo</span></td>
-                        <td>10/02/2026</td>
-                        <td>R$ 18.750,00</td>
-                        <td>12/07/2026</td>
+                        <td colspan="10" style="text-align: center; padding: 20px;">
+                            Nenhum cliente cadastrado.
+                        </td>
                     </tr>
-                    <tr>
-                        <td>Maria Oliveira</td>
-                        <td><span class="badge-tipo fisico">Físico</span></td>
-                        <td>987.654.321-00</td>
-                        <td>maria.oliveira@email.com</td>
-                        <td>(19) 98888-7777</td>
-                        <td>Valinhos / SP</td>
-                        <td><span class="badge-status ativo">Ativo</span></td>
-                        <td>22/04/2026</td>
-                        <td>R$ 2.180,00</td>
-                        <td>08/07/2026</td>
-                    </tr>
-                    <tr>
-                        <td>Comércio XYZ S.A.</td>
-                        <td><span class="badge-tipo juridico">Jurídico</span></td>
-                        <td>98.765.432/0001-10</td>
-                        <td>financeiro@xyz.com.br</td>
-                        <td>(21) 2222-3333</td>
-                        <td>Rio de Janeiro / RJ</td>
-                        <td><span class="badge-status inativo">Inativo</span></td>
-                        <td>05/01/2026</td>
-                        <td>R$ 32.600,00</td>
-                        <td>01/06/2026</td>
-                    </tr>
-                    <tr>
-                        <td>Carlos Pereira</td>
-                        <td><span class="badge-tipo fisico">Físico</span></td>
-                        <td>456.123.789-00</td>
-                        <td>carlos.pereira@email.com</td>
-                        <td>(19) 97777-6666</td>
-                        <td>Paulínia / SP</td>
-                        <td><span class="badge-status ativo">Ativo</span></td>
-                        <td>18/05/2026</td>
-                        <td>R$ 950,00</td>
-                        <td>03/07/2026</td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
 
+
         <!-- RODAPÉ DA TABELA E PAGINAÇÃO -->
         <div class="tabela-rodape">
-            <span>Mostrando 1 a 5 de 145 registros</span>
+
+            <span>
+                {% if clientes.paginator.count > 0 %}
+                    Mostrando {{ clientes.start_index }} a {{ clientes.end_index }}
+                    de {{ clientes.paginator.count }} registros
+                {% else %}
+                    Nenhum registro encontrado
+                {% endif %}
+            </span>
+
             <div class="paginacao">
-                <button class="btn-paginacao" disabled><i class="fa-solid fa-chevron-left"></i></button>
-                <button class="btn-paginacao ativo">1</button>
-                <button class="btn-paginacao">2</button>
-                <button class="btn-paginacao">3</button>
-                <span class="paginacao-poicagens">...</span>
-                <button class="btn-paginacao">29</button>
-                <button class="btn-paginacao"><i class="fa-solid fa-chevron-right"></i></button>
+
+                <!-- PÁGINA ANTERIOR -->
+                {% if clientes.has_previous %}
+                    <a href="?page={{ clientes.previous_page_number }}"
+                    class="btn-paginacao">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                {% else %}
+                    <button class="btn-paginacao" disabled>
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                {% endif %}
+
+                <!-- NÚMEROS DAS PÁGINAS -->
+                {% for numero in clientes.paginator.page_range %}
+
+                    {% if numero == clientes.number %}
+                        <span class="btn-paginacao ativo">{{ numero }}</span>
+
+                    {% elif numero > clientes.number|add:"-3" and numero < clientes.number|add:"3" %}
+                        <a href="?page={{ numero }}" class="btn-paginacao">
+                            {{ numero }}
+                        </a>
+                    {% endif %}
+
+                {% endfor %}
+
+                <!-- PÁGINA SEGUINTE -->
+                {% if clientes.has_next %}
+                    <a href="?page={{ clientes.next_page_number }}"
+                    class="btn-paginacao">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                {% else %}
+                    <button class="btn-paginacao" disabled>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                {% endif %}
+
             </div>
         </div>
     </section>
@@ -326,4 +436,52 @@
     </div>
 
 </div>
+
+        </div>
+
+        <!-- ABA 2: USUÁRIOS -->
+        <div id="abaRelatorioUsuarios" class="relatorio-pagina">
+
+            <div class="relatorio-card-secao">
+                <div class="secao-header">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>Relatórios de Usuários</span>
+                </div>
+
+                <p>Configure e gere relatórios dos usuários cadastrados no sistema.</p>
+            </div>
+
+            <div class="card-resumo card-fisica">
+                <div class="icone-card"><i class="fa-solid fa-user"></i></div>
+                <div>
+                    <span>Pessoa Física</span>
+                    <strong>58</strong>
+                    <small>40,00% do total</small>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ABA 3: BI -->
+        <div id="abaRelatorioBI" class="relatorio-pagina">
+
+            <div class="relatorio-card-secao">
+                <div class="secao-header">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Business Intelligence</span>
+                </div>
+
+                <p>
+                    Visualize indicadores, métricas e análises gerais
+                    do sistema.
+                </p>
+            </div>
+
+            <!-- Aqui serão adicionados os gráficos e indicadores do BI. -->
+
+        </div>
+
+    </div>
+
+    
 {% endblock %}

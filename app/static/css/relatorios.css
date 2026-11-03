@@ -3,82 +3,96 @@
    PÁGINA RELATÓRIOS (COM SCROLL AUTOMÁTICO)
 ========================================= */
 .dashboard-page-relatorio {
-    margin-left: 70px;
-    width: calc(100% - 70px);
-    
-    /* Trava a altura na tela e ativa a rolagem interna se o conteúdo estourar */
-    height: 100vh;
-    max-height: 100vh;
-    overflow-y: auto; 
-    overflow-x: hidden;
-    
-    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    color: #e2e8f0;
+    gap: 8px;
+    margin-left: 70px;
+    width: calc(100% - 70px);
+    min-height: 0;
+    height: 100%;
+    padding: 4px 16px 10px;
     box-sizing: border-box;
+    overflow: visible;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-.dashboard-page-relatorio::-webkit-scrollbar{
-    width:8px;
-    height:8px;
+/* Personalização da barra de rolagem */
+.dashboard-page-relatorio::-webkit-scrollbar {
+    width: 8px;
 }
 
-.dashboard-page-relatorio::-webkit-scrollbar-thumb{
-    background:#4b5563;
-    border-radius:20px;
+.dashboard-page-relatorio::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 20px;
 }
 
-.dashboard-page-relatorio::-webkit-scrollbar-track{
-    background:#141b27;
+.dashboard-page-relatorio::-webkit-scrollbar-track {
+    background: #141b27;
 }
 
-/* TOPBAR COMPACTA */
-.dashboard-topbar-relatorio {
+/* CARD PRINCIPAL */
+.relatorio-card-principal {
+    display: flex;
+    flex-direction: column;
+    flex: none;
+    min-height: auto;
     width: 100%;
-    padding: 8px 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #111827;
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 10px;
-    box-sizing: border-box;
-    font-weight: 600;
+    overflow: visible;
 }
 
-.relatorio-titulo {
+/* NAVEGAÇÃO DAS ABAS */
+.relatorio-tabs {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
 }
 
-.icone-relatorio {
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
-    background: rgba(124, 58, 237, 0.18);
+/* BOTÕES */
+.btn-tab-relatorio {
+    padding:12px 18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#1f2937;
+    color:#cbd5e1;
+    font-size:14px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transition:.25s;
+}
+
+.btn-tab-relatorio:hover {
+    background:#273449;
+}
+
+.btn-tab-relatorio.ativo {
+    background:#7c3aed;
+    color:#cecfd2;
+}
+
+/* CONTEÚDO DAS ABAS */
+.relatorio-pagina {
+    display: none;
+    flex-direction: column;
+    flex: none;
+    min-height: auto;
+    padding: 16px;
+    gap: 12px;
+    overflow: visible;
+}
+
+.relatorio-pagina.ativa {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #8b5cf6;
-    font-size: 16px;
 }
-
-.relatorio-titulo h1 {
-    margin: 0;
-    font-size: 17px;
-    font-weight: 700;
-    color: #f8fafc;
-}
-
-.relatorio-titulo p {
-    margin: 1px 0 0;
-    color: #94a3b8;
-    font-size: 11px;
-}
-
 
 /* CARDS PADRÃO COMPACTOS */
 .relatorio-card-secao {
@@ -92,7 +106,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    color: #e2e8f0;
+    color: #cecfd2;
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 8px;
@@ -121,7 +135,7 @@
 
 .campo-filtro label {
     font-size: 11px;
-    color: #94a3b8;
+    color: #cecfd2;
     font-weight: 600;
 }
 
@@ -132,7 +146,7 @@
     background: #0f172a;
     border: 1px solid rgba(255, 255, 255, 0.10);
     border-radius: 6px;
-    color: #e2e8f0;
+    color: #cecfd2;
     padding: 0 8px;
     font-size: 14px;
     outline: none;
@@ -256,7 +270,7 @@
 .card-resumo span {
     display: block;
     font-size: 14px;
-    color: #94a3b8;
+    color: #cecfd2;
 }
 
 .card-resumo strong {
@@ -354,7 +368,7 @@
     background: #0f172a;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 4px;
-    color: #94a3b8;
+    color: #cecfd2;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -379,20 +393,26 @@
     cursor: not-allowed;
 }
 
-/* BARRA DE AÇÕES INFERIOR - VISÍVEL SEM CORTAR */
+/* BARRA DE AÇÕES INFERIOR */
 .relatorio-acoes-bottom {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 10px;
+    width: 100%;
+    flex-shrink: 0;
     margin-top: 2px;
     background: #111827;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 10px;
     padding: 10px 14px;
+    box-sizing: border-box;
 }
 
 .btn-relatorio {
-    height: 36px;
+    min-width: 0;
+    min-height: 36px;
+    height: auto;
+    padding: 8px 5px;
     border: none;
     border-radius: 8px;
     color: #ffffff;
@@ -404,6 +424,7 @@
     gap: 6px;
     cursor: pointer;
     transition: 0.2s ease;
+    white-space: nowrap;
 }
 
 .btn-relatorio:hover {
@@ -427,6 +448,12 @@
     color: #cbd5e1;
     user-select: none;
     position: relative;
+}
+
+.checkbox-master-container {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .custom-checkbox input[type="checkbox"] {
@@ -468,3 +495,4 @@
     position: absolute;
     top: 1px;
 }
+
