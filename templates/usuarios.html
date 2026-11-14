@@ -379,7 +379,7 @@
             <!-- BODY COM TABELA E CHECKBOXES -->
             <div class="modal-body modal-historico-body">
                 <div class="modal-historico-table-container">
-                    <table class="verificar-usuarios-table modal-historico-table">
+                    <table class="table table-hover verificar-usuarios-table modal-historico-table">
                         <thead>
                             <tr>
                                 <th class="col-checkbox">
@@ -562,7 +562,7 @@
             <div class="modal-filtrar-historico-header">
                 <div class="modal-filtrar-historico-titulo">
                     <i class="fa-solid fa-user-gear"></i>
-                    <span>Filtrar Histórico</span>
+                    <span>Filtrar Histórico de Usuários</span>
                 </div>
                 <button type="button" class="btn-modal-fechar-filtrar-historico" data-bs-dismiss="modal" aria-label="Fechar">
                     <i class="fa-solid fa-xmark"></i>
@@ -577,7 +577,7 @@
                             type="text" 
                             id="filtroDataHistorico" 
                             class="modal-filtrar-input-data" 
-                            placeholder="formato DD/MM/AAAA..." 
+                            placeholder="DD/MM/AAAA..." 
                             maxlength="10"
                             autocomplete="off">
                     </div>
@@ -589,13 +589,13 @@
                         <label class="modal-filtrar-radio-label">
                             <input type="radio" name="filtroOrdemHora" value="desc" checked class="modal-filtrar-radio">
                             <span class="modal-filtrar-radio-custom"></span>
-                            <span>Mais Recente</span>
+                            <span>Mais Recentes Primeiro</span>
                         </label>
 
                         <label class="modal-filtrar-radio-label">
                             <input type="radio" name="filtroOrdemHora" value="asc" class="modal-filtrar-radio">
                             <span class="modal-filtrar-radio-custom"></span>
-                            <span>Mais Antigo</span>
+                            <span>Mais Antigo Primeiro</span>
                         </label>
                     </div>
                 </fieldset>

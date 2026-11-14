@@ -54,7 +54,6 @@
 /* =====================================================
    CARDS
 ===================================================== */
-
 .dashboard-card-cadastrar-produtos,
 .dashboard-card-resumo-produtos{
     background:#121824;
@@ -80,7 +79,6 @@
 /*=====================================================
 SCROLL
 =====================================================*/
-
 /* Largura da barra */
 .dashboard-card-cadastrar-produtos::-webkit-scrollbar,
 .dashboard-card-resumo-produtos::-webkit-scrollbar{
@@ -182,8 +180,6 @@ SCROLL
 .campo input,
 .campo select,
 .campo textarea{
-
-    
     width:100%;
     padding:10px;
     background:#1b2230;
@@ -194,7 +190,6 @@ SCROLL
     font-size:14px;
     transition:.25s;
     box-sizing:border-box;
-    
 }
 
 .campo select{
@@ -291,7 +286,6 @@ SCROLL
 /* =====================================================
    BOTÕES SUPERIORES
 ===================================================== */
-
 .cadastrar-produtos-acoes-topo{
     display:flex;
     flex-wrap:wrap;
@@ -315,29 +309,39 @@ SCROLL
 }
 
 
-.btn-side-actions:hover{
-    transform:scale(1.05);
-    
+/* BORDA ORIGINAL */
+.btn-side-actions {
+    border: 1px solid transparent;
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease;
 }
+
 
 .btn-side-actions.adicionar:hover{
     background:#22c55e;
+    transform: scale(1.05);
 }
 
 .btn-side-actions.editar:hover{
     background:#3b82f6;
+    transform: scale(1.05);
 }
 
 .btn-side-actions.atualizar:hover{
     background:#8b5cf6;
+    transform: scale(1.05);
 }
 
 .btn-side-actions.sair:hover{
     background:#f59e0b;
+    transform: scale(1.05);
 }
 
 .btn-side-actions.apagar:hover{
     background:#ef4444;
+    transform: scale(1.05);
+    
 }
 
 /* =====================================================
@@ -835,7 +839,6 @@ BOTÕES DO RESUMO
 }
 
 /* CABEÇALHO DA TABELA */
-
 #modalTabelaProdutos .table-responsive thead th {
     position: sticky;
     top: 0;
@@ -857,7 +860,6 @@ BOTÕES DO RESUMO
 }
 
 /* CÉLULAS DO CABEÇALHO */
-
 #modalTabelaProdutos .table-responsive thead th:first-child {
     border-top-left-radius: 11px !important;
 }

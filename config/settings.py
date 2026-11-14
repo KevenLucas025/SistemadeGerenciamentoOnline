@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'usuarios',
     'cadastrar_produtos_massa',
     'cadastrar_usuarios_massa',
+    'configuracoes',
 ]
 
 MIDDLEWARE = [
@@ -90,6 +91,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "configuracoes.context_processors.preferencias_usuario",
             ],
         },
     },

@@ -1347,6 +1347,7 @@ LINK VOLTAR
     align-items: center;
     padding-top: 20px;            /* Espaçamento do botão no topo */
     z-index: 100;
+    
 }
 /* Botão do Menu Mobile */
 .btn-menu-mobile {
@@ -2539,3 +2540,1413 @@ LINK VOLTAR
 }
 
 
+/* =====================================================
+   UPGRADE PRO - MENU LATERAL
+===================================================== */
+
+.sidebar-upgrade-container {
+    padding: 16px 14px 5px;
+}
+
+.sidebar-upgrade {
+    position: relative;
+    padding: 16px;
+    overflow: hidden;
+
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(79, 70, 229, 0.20),
+            rgba(147, 51, 234, 0.12)
+        );
+}
+
+/* Efeito decorativo */
+.sidebar-upgrade::after {
+    content: "";
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    right: -35px;
+    top: -40px;
+
+    border-radius: 50%;
+
+    background: rgba(139, 92, 246, 0.15);
+    filter: blur(25px);
+
+    pointer-events: none;
+}
+
+/* PARTE SUPERIOR */
+.sidebar-upgrade-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 13px;
+}
+
+.sidebar-upgrade-icon {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        #7c3aed,
+        #4f46e5
+    );
+
+    color: #fff;
+    font-size: 15px;
+}
+
+/* BADGE PRO */
+.sidebar-upgrade-badge {
+    padding: 4px 9px;
+
+    border-radius: 6px;
+
+    background: rgba(168, 85, 247, 0.18);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+
+    color: #c4b5fd;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+/* TÍTULO */
+.sidebar-upgrade h6 {
+    margin: 0 0 7px;
+
+    color: #f3f4f6;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* DESCRIÇÃO */
+.sidebar-upgrade p {
+    margin: 0 0 14px;
+
+    color: #9ca3af;
+
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* BOTÃO */
+.btn-sidebar-upgrade {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    padding: 9px 11px;
+
+    border-radius: 8px;
+
+    background: linear-gradient(
+        135deg,
+        #7c3aed,
+        #4f46e5
+    );
+
+    color: #fff;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: all .25s ease;
+}
+
+.btn-sidebar-upgrade:hover {
+    background: linear-gradient(
+        135deg,
+        #8b5cf6,
+        #6366f1
+    );
+
+    color: #fff;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 16px rgba(124, 58, 237, 0.25);
+}
+
+.btn-sidebar-upgrade i {
+    font-size: 10px;
+    transition: transform .25s ease;
+}
+
+.btn-sidebar-upgrade:hover i {
+    transform: translateX(4px);
+}
+
+
+
+/* ==========================================================
+   SISTEMA DE TEMAS - SIGO
+   ========================================================== */
+/* TEMA ESCURO - PADRÃO */
+
+:root,
+:root[data-theme="escuro"],
+:root[data-theme="automatico"] {
+    color-scheme: dark;
+    --cor-fundo: #111827;
+    --cor-superficie: #181c24;
+    --cor-superficie-secundaria: #202631;
+    --cor-borda: #303744;
+    --cor-texto: #e5e7eb;
+    --cor-texto-secundario: #9ca3af;
+    --cor-destaque: #4dd0e1;
+    --cor-hover: #252e3a;
+    --cor-input-fundo: #202631;
+    --cor-input-texto: #e5e7eb;
+    --cor-sombra: rgba(0, 0, 0, 0.25);
+}
+
+/* TEMA CLARO */
+:root[data-theme="claro"] {
+    color-scheme: light;
+
+    --cor-fundo: #e9edf3;
+    --cor-superficie: #181c24;
+    --cor-superficie-secundaria: #181c24;
+
+    --cor-borda: #c3ccd8;
+
+    --cor-texto: #cecfd2;
+    --cor-texto-secundario: #202631;
+
+    --cor-destaque: #0891b2;
+    --cor-hover: #eaf0f5;
+
+    --cor-input-fundo: #ffffff;
+    --cor-input-texto: #202631;
+
+    --cor-sombra: rgba(15, 23, 42, 0.08);
+}
+
+/* TEMA AUTOMÁTICO - SISTEMA OPERACIONAL CLARO */
+@media (prefers-color-scheme: light) {
+
+    :root[data-theme="automatico"] {
+
+        color-scheme: light;
+
+        --cor-fundo: #f3f5f8;
+        --cor-superficie: #ffffff;
+        --cor-superficie-secundaria: #f8fafc;
+
+        --cor-borda: #dce1e8;
+
+        --cor-texto: #202631;
+        --cor-texto-secundario: #64748b;
+
+        --cor-destaque: #0891b2;
+        --cor-hover: #eaf0f5;
+
+        --cor-input-fundo: #ffffff;
+        --cor-input-texto: #202631;
+
+        --cor-sombra: rgba(15, 23, 42, 0.08);
+    }
+}
+
+/* ==========================================================
+   ESTRUTURA GLOBAL
+========================================================== */
+/* Tema escuro */
+body {
+    background: var(--cor-fundo) !important;
+    color: var(--cor-texto);
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease;
+}
+
+/* Tema claro */
+:root[data-theme="claro"] body {
+        background: linear-gradient(
+        135deg,
+        #d5dce6 0%,
+        #e0e5ed 50%,
+        #cbd4e0 100%
+    ) !important;
+
+    background-attachment: fixed !important;
+}
+
+/* Tema automático - sistema operacional claro */
+@media (prefers-color-scheme: light) {
+    :root[data-theme="automatico"] body {
+        background: linear-gradient(
+            135deg,
+            #e9edf3 0%,
+            #f3f5f9 50%,
+            #e5eaf1 100%
+        ) !important;
+
+        background-attachment: fixed !important;
+    }
+}
+/* ==========================================================
+   CAMPOS DE FORMULÁRIO
+========================================================== */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+select,
+textarea {
+    background-color: var(--cor-input-fundo) !important;
+    color: var(--cor-input-texto) !important;
+    border-color: var(--cor-borda) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--cor-input-texto) !important;
+}
+
+
+
+:root[data-theme="claro"] input,
+:root[data-theme="claro"] select,
+:root[data-theme="claro"] textarea {
+    color-scheme: light !important;
+}
+
+/* TEMA CLARO — CAMPO DE BUSCA DO MODAL DE USUÁRIOS */
+:root[data-theme="claro"] #modalTabelaUsuarios #buscaModalUsuarios {
+    background-color: var(--cor-input-fundo) !important;
+    color: var(--cor-input-texto) !important;
+    border-color: var(--cor-borda) !important;
+}
+
+:root[data-theme="claro"] #modalTabelaUsuarios #buscaModalUsuarios::placeholder,
+:root[data-theme="claro"] .modal-filtrar-produtos-input-data::placeholder,
+:root[data-theme="claro"] #tipoOrdenacaoHistorico::placeholder {
+    color: var(--cor-input-placeholder) !important;
+}
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+:root[data-theme="claro"] .sidebar-sistema {
+    background: #e8edf3;
+    border-color: #c3ccd8;
+    color: #202631;
+}
+
+:root[data-theme="claro"] .news-card {
+    background: #e8edf3;
+    border-color: #c3ccd8;
+    color: #cecfd2;
+}
+
+:root[data-theme="claro"] .dashboard-content {
+    background: #dce3ec;
+    border: 1px solid #c3ccd8;
+    color: #cecfd2;
+}
+
+:root[data-theme="claro"] .dashboard-topbar-estoque h1,
+:root[data-theme="claro"] .dashboard-topbar-verificar-usuarios h1,
+:root[data-theme="claro"] .dashboard-topbar-home h1,
+:root[data-theme="claro"] .dashboard-topbar-cadastrar-produtos h1,
+:root[data-theme="claro"] .dashboard-topbar-cadastrar-usuarios h1  {
+    color: #181d27 !important;
+}
+
+:root[data-theme="claro"] .dashboard-topbar-estoque p,
+:root[data-theme="claro"] .dashboard-topbar-verificar-usuarios p,
+:root[data-theme="claro"] .dashboard-topbar-cadastrar-usuarios p,
+:root[data-theme="claro"] .modal-status-pausa-historico-descricao {
+    color: #535861 !important;
+}
+
+:root[data-theme="claro"] .estoque-header h2,
+:root[data-theme="claro"] .cadastrar-produtos-header h2,
+:root[data-theme="claro"] .dashboard-card-resumo-produtos h2,
+:root[data-theme="claro"] .verificar-usuarios-header h2,
+:root[data-theme="claro"] .news-section h2,
+:root[data-theme="claro"] .cadastrar-usuarios-header h2,
+:root[data-theme="claro"] #modalTabelaUsuarios .modal-header h4 i,
+:root[data-theme="claro"] .modal-ordenar-usuarios .modal-ordenar-usuarios-titulo i,
+:root[data-theme="claro"] .modal-ordenar-historico-produtos-header h5 i,
+:root[data-theme="claro"] .modal-filtrar-historico-produtos-titulo i,
+:root[data-theme="claro"] .modal-filtrar-produtos-legend,
+:root[data-theme="claro"] .modal-status-pausa-historico-titulo,
+:root[data-theme="claro"] .modal-ordenar-historico-header h5 i,
+:root[data-theme="claro"] .modal-filtrar-historico-titulo,
+:root[data-theme="claro"] .modal-filtrar-historico-titulo i  {
+    color: #181d27 !important;
+}
+
+
+
+:root[data-theme="claro"] .news-card  h4 {
+    color: #181d27 !important;
+    
+}
+
+:root[data-theme="claro"] #modalOrdenarUsuarios h5,
+:root[data-theme="claro"] .modal-ordenar-historico-produtos-header h5,
+:root[data-theme="claro"] .modal-ordenar-historico-header h5,
+:root[data-theme="claro"] #modalFiltrarProdutos .modal-header h5{
+    color: #181d27 !important;
+}
+
+:root[data-theme="claro"] .ajuda-planilha-secao h6 {
+    color: #181d27 !important;
+}
+
+:root[data-theme="claro"] .ajuda-planilha-secao li{
+    color: #535861 !important;
+}
+
+/* TEMA CLARO — MENSAGEM SEM REGISTROS */
+:root[data-theme="claro"] .sem-registros-content-estoque {
+    color: #64748b;
+}
+
+:root[data-theme="claro"] .sem-registros-content-estoque i {
+    color: #94a3b8;
+}
+
+:root[data-theme="claro"] .dashboard-topbar-cadastrar-produtos {
+    border-color: #c3ccd8;
+    background: #e8edf3;
+}
+
+:root[data-theme="claro"] .news-card  p,
+:root[data-theme="claro"] .dashboard-topbar-home p,
+:root[data-theme="claro"] .modal-alerta-body p,
+:root[data-theme="claro"] .ajuda-planilha-secao p,
+:root[data-theme="claro"] .dashboard-topbar-cadastrar-produtos p,
+:root[data-theme="claro"] .sem-registros-content-estoque p,
+:root[data-theme="claro"] .ajuda-planilha-campo p,
+:root[data-theme="claro"] .modal-status-pausa-historico-produtos-legenda,
+:root[data-theme="claro"] .modal-status-pausa-historico-legenda {
+    color: #535861 !important;
+}
+
+:root[data-theme="claro"] .card-resumo-produto span {
+    color: #101827 !important;
+}
+
+:root[data-theme="claro"] .card-resumo-produto strong,
+:root[data-theme="claro"] .ajuda-planilha-campo strong {
+    color: #535861 !important;
+}
+
+:root[data-theme="claro"] .campo-upload-cadastrar-usuarios label,
+:root[data-theme="claro"] .upload-preview-container-cadastrar-usuarios label,
+:root[data-theme="claro"] .modal-ordenar-usuarios .label-ordenar-usuarios,
+:root[data-theme="claro"] .campo-ordenar-historico-produtos label,
+:root[data-theme="claro"] .modal-filtrar-produtos-radio-label,
+:root[data-theme="claro"] .modal-status-pausa-historico-card-label {
+    color: #101827 !important;
+}
+
+
+:root[data-theme="claro"] .contador-selecionados-historico-produtos{
+    color: #535861 !important;
+}
+
+:root[data-theme="claro"] .modal-historico-produtos-titulo,
+:root[data-theme="claro"] .modal-alerta-titulo,
+:root[data-theme="claro"] .modal-historico-titulo,
+:root[data-theme="claro"] .page-title,
+:root[data-theme="claro"] .actions-title,
+:root[data-theme="claro"] .modal-visualizar-imagem-usuarios .modal-visualizar-imagem-usuarios-titulo,
+:root[data-theme="claro"] .modal-status-pausa-historico-produtos-titulo,
+:root[data-theme="claro"] .modal-filtrar-historico-produtos-titulo,
+:root[data-theme="claro"] .modal-filtrar-legend {
+    color: #181d27 !important;
+}
+
+:root[data-theme="claro"] .modal-historico-produtos-subtitulo,
+:root[data-theme="claro"] .modal-historico-titulo,
+:root[data-theme="claro"] .page-description,
+:root[data-theme="claro"] .actions-description,
+:root[data-theme="claro"] .modal-ajuda-planilha .modal-planilhas-descricao,
+:root[data-theme="claro"] .modal-filtrar-radio-label  {
+    color: #535861 !important;
+}
+
+:root[data-theme="claro"] .dashboard-topbar-home {
+    border-color: #c3ccd8;
+    background: #e8edf3;
+}
+
+:root[data-theme="claro"] .dashboard-topbar-estoque,
+:root[data-theme="claro"] .dashboard-topbar-verificar-usuarios,
+:root[data-theme="claro"] .page-header,
+:root[data-theme="claro"] .actions-card {
+    border-color: #c3ccd8;
+    background: #e8edf3;
+}
+
+
+
+:root[data-theme="claro"] .dashboard-card {
+    color: #535861 !important;
+    border-color: #c3ccd8;
+    background: #e8edf3;
+}
+
+.verificar-usuarios-table tbody tr.linha-vazia td,
+.verificar-usuarios-table tbody td:has(.sem-registros-content) {
+    height: calc(30vh - 50px);
+    vertical-align: middle;
+    text-align: center;
+}
+
+.verificar-usuarios-table tbody tr.linha-vazia,
+.verificar-usuarios-table tbody tr.linha-vazia:hover,
+.verificar-usuarios-table tbody tr:has(.sem-registros-content),
+.verificar-usuarios-table tbody tr:has(.sem-registros-content):hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-hover-color: inherit !important;
+    --bs-table-accent-bg: transparent !important;
+    --bs-table-bg-state: transparent !important;
+    box-shadow: none !important;
+}
+
+.verificar-usuarios-table tbody tr.linha-vazia td,
+.verificar-usuarios-table tbody tr.linha-vazia:hover td,
+.verificar-usuarios-table tbody tr:has(.sem-registros-content) td,
+.verificar-usuarios-table tbody tr:has(.sem-registros-content):hover td {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: inherit !important;
+    cursor: default !important;
+    --bs-table-hover-bg: transparent !important;
+    --bs-table-accent-bg: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+
+
+/* CORPO DA TABELA - (MANTER) */
+:root[data-theme="claro"] #modalTabelaProdutos .table-responsive tbody td,
+:root[data-theme="claro"] #modalTabelaUsuarios tbody td{
+    color: #535861 !important;
+    border-color: #c3ccd8 !important;
+    background: #e8edf3 !important;
+}
+
+:root[data-theme="claro"] .produtos-card{
+    border-color: #c3ccd8 !important;
+    background: #e8edf3 !important;
+}
+:root[data-theme="claro"] .modal-status-pausa-historico-produtos-card-info,
+:root[data-theme="claro"] .modal-status-pausa-historico-card-info{
+    background: #ffffff;
+}
+
+
+:root[data-theme="claro"] .estoque-table thead th,
+:root[data-theme="claro"] .verificar-usuarios-table thead th,
+:root[data-theme="claro"] .modal-historico-produtos-table  thead th,
+:root[data-theme="claro"] #modalTabelaProdutos .table-responsive thead th,
+:root[data-theme="claro"] .produtos-table thead th,
+:root[data-theme="claro"] #modalTabelaUsuarios .table-responsive thead th {
+    color: #535861 !important;
+    border-color: #c3ccd8 !important;
+    background: #e8edf3 !important;
+}
+
+:root[data-theme="claro"] .estoque-table-container,
+:root[data-theme="claro"] .verificar-usuarios-table-container,
+:root[data-theme="claro"] .modal-historico-produtos-table {
+    border-color: #c3ccd8 !important;
+}
+
+
+:root[data-theme="claro"] .estoque-side-actions,
+:root[data-theme="claro"] .dashboard-card-cadastrar-produtos, 
+:root[data-theme="claro"] .dashboard-card-resumo-produtos,
+:root[data-theme="claro"] .dashboard-card-verificar-usuarios,
+:root[data-theme="claro"] .verificar-usuarios-side-actions,
+:root[data-theme="claro"] .modal-historico-produtos-table,
+:root[data-theme="claro"] .modal-historico-table-container,
+:root[data-theme="claro"] .modal-historico-table,
+:root[data-theme="claro"] .produtos-table-container,
+:root[data-theme="claro"] .produtos-table tbody tr > td,
+:root[data-theme="claro"] .dashboard-topbar-cadastrar-usuarios,
+:root[data-theme="claro"] .dashboard-card-cadastrar-usuarios,
+:root[data-theme="claro"] #modalTabelaUsuarios .table-responsive,
+:root[data-theme="claro"] #modalTabelaUsuarios .table-responsive table{
+    color: #535861 !important;
+    border-color: #c3ccd8 !important;
+    background: #e8edf3 !important;
+}
+
+:root[data-theme="claro"] #modalTabelaProdutos .table-responsive{
+    color: #535861 !important;
+    border-color: #c3ccd8 !important;
+    background: #e8edf3 !important;
+}
+
+:root[data-theme="claro"] #modalTabelaProdutos .modal-body,
+:root[data-theme="claro"] #modalTabelaUsuarios .modal-body,
+:root[data-theme="claro"] .modal-filtrar-historico-produtos-body {
+    color: #101827 !important;
+    background: #ffffff !important;
+}
+
+:root[data-theme="claro"] #modalTabelaProdutos .modal-header, 
+:root[data-theme="claro"] #modalTabelaUsuarios .modal-header,
+:root[data-theme="claro"] .modal-status-pausa-historico-produtos-header,
+:root[data-theme="claro"] .modal-status-pausa-historico-produtos-footer,
+:root[data-theme="claro"] .modal-filtrar-historico-produtos-header,
+:root[data-theme="claro"] .modal-status-pausa-historico-header,
+:root[data-theme="claro"] .modal-status-pausa-historico-footer,
+:root[data-theme="claro"] .modal-filtrar-historico-header{
+    color: #101827 !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #374151 !important;
+    border-color: #c3ccd8 !important;
+}
+
+:root[data-theme="claro"] .btn-side-action,
+:root[data-theme="claro"] .btn-side-actions,
+:root[data-theme="claro"] .btn-estoque-outline,
+:root[data-theme="claro"] .btn-pesquisar-tabela-estoque,
+:root[data-theme="claro"] .btn-pesquisar-tabela-saida,
+:root[data-theme="claro"] .btn-menu-mobile,
+:root[data-theme="claro"] .btn-verificar-usuarios-outline,
+:root[data-theme="claro"] .btn-pesquisar-tabela,
+:root[data-theme="claro"] .btn-historico-produtos-acao,
+:root[data-theme="claro"] .btn-cancelar-historico-produtos,
+:root[data-theme="claro"] .btn-historico-acao,
+:root[data-theme="claro"] .btn-fechar-modal-historico-usuarios,
+:root[data-theme="claro"] #modalTabelaProdutos .acoes-tabela-produtos .btn-side-action,
+:root[data-theme="claro"]  .btn-resumo-ver-produtos,
+:root[data-theme="claro"]  .btn-resumo-ver-clientes,
+:root[data-theme="claro"]  .btn-secondary-action,
+:root[data-theme="claro"] .btn-cadastrar-usuarios  {
+    background-color: #b8c7d9 !important;
+    border-color: #a8b8cb;
+    color: #414651;
+}
+
+/* TEMA CLARO — COR DOS ÍCONES NO HOVER */
+:root[data-theme="claro"] .btn-resumo-ver-produtos:hover i,
+:root[data-theme="claro"] .btn-resumo-ver-clientes:hover i{
+    color:#60a5fa !important;
+}
+
+/* TEMA CLARO — COR DOS ÍCONES */
+:root[data-theme="claro"] .btn-resumo-ver-produtos i,
+:root[data-theme="claro"] .btn-resumo-ver-clientes i,
+:root[data-theme="claro"] .modal-ajuda-planilha .modal-title i,
+:root[data-theme="claro"] .ajuda-planilha-secao i  {
+    color: #414651 !important;
+}
+
+/* BOTÕES DE FECHAR MODAIS */
+:root[data-theme="claro"] .btn-modal-fechar-historico-produtos,
+:root[data-theme="claro"] .btn-modal-fechar-alerta,
+:root[data-theme="claro"] .btn-modal-fechar-historico,
+:root[data-theme="claro"] .btn-modal-fechar,
+:root[data-theme="claro"] .btn-fechar-modal-ajuda-planilha-produtos,
+:root[data-theme="claro"] .modal-visualizar-imagem-usuarios .btn-modal-fechar-visualizar-imagem-usuarios,
+:root[data-theme="claro"] .modal-ordenar-usuarios .btn-modal-fechar-ordenar-usuarios,
+:root[data-theme="claro"] .btn-modal-fechar-pausa-historico-produtos,
+:root[data-theme="claro"] .btn-modal-fechar-ordenar-historico-produtos,
+:root[data-theme="claro"] .btn-modal-fechar-filtrar-historico-produtos,
+:root[data-theme="claro"] .btn-modal-fechar-pausa-historico,
+:root[data-theme="claro"] .btn-modal-fechar-ordenar-historico,
+:root[data-theme="claro"] .btn-modal-fechar-filtrar-historico,
+:root[data-theme="claro"] .modal-filtrar-produtos .btn-modal-fechar-filtrar-produtos  {
+    background: #b8c7d9 !important;
+    color: #475569 !important;
+}
+
+/* HOVER DOS BOTÕES - TEMA CLARO */
+:root[data-theme="claro"] .btn-modal-fechar-alerta:hover,
+:root[data-theme="claro"] .btn-modal-fechar-historico-produtos:hover,
+:root[data-theme="claro"] .btn-modal-fechar-historico:hover,
+:root[data-theme="claro"] .btn-modal-fechar:hover,
+:root[data-theme="claro"] .btn-fechar-modal-ajuda-planilha-produtos:hover,
+:root[data-theme="claro"] .modal-visualizar-imagem-usuarios .btn-modal-fechar-visualizar-imagem-usuarios:hover,
+:root[data-theme="claro"] .modal-ordenar-usuarios .btn-modal-fechar-ordenar-usuarios:hover,
+:root[data-theme="claro"] .btn-modal-fechar-pausa-historico-produtos:hover,
+:root[data-theme="claro"] .btn-modal-fechar-ordenar-historico-produtos:hover,
+:root[data-theme="claro"] .btn-modal-fechar-filtrar-historico-produtos:hover,
+:root[data-theme="claro"] .btn-modal-fechar-pausa-historico:hover,
+:root[data-theme="claro"] .btn-modal-fechar-ordenar-historico:hover,
+:root[data-theme="claro"] .btn-modal-fechar-filtrar-historico:hover,
+:root[data-theme="claro"] .modal-filtrar-produtos .btn-modal-fechar-filtrar-produtos:hover {
+    background-color: #fca5a5  !important;
+    color: #cecfd2;
+    transform: scale(1.05);
+}
+
+:root[data-theme="claro"] .btn-historico-perigo:hover,
+:root[data-theme="claro"] .btn-historico-produtos-perigo:hover,
+:root[data-theme="claro"] #modalTabelaProdutos .apagar:hover,
+:root[data-theme="claro"] .btn-cadastrar-usuarios.apagar:hover {
+    background: rgba(220, 38, 38, 0.2) !important;
+    border-color: #dc2626 !important;
+    color: #7f1d1d !important;
+    transform: scale(1.05);
+}
+
+:root[data-theme="claro"] .btn-side-actions.apagar:hover {
+    background: rgba(220, 38, 38, 0.2) !important;
+    border-color: #dc2626 !important;
+    color: #7f1d1d !important;
+    transform: scale(1.05);
+}
+
+:root[data-theme="claro"] .btn-historico-exportar-csv:hover,
+:root[data-theme="claro"] .btn-historico-produtos-exportar-csv:hover {
+    background-color: #a7f3d0 !important;
+    border-color: #10b981;
+    color: #065f46;
+    transform: scale(1.05);
+}
+
+:root[data-theme="claro"] .btn-historico-exportar-pdf:hover,
+:root[data-theme="claro"] .btn-historico-produtos-exportar-pdf:hover {
+    background-color: #fca5a5 !important;
+    border-color: #ef4444 !important;
+    color: #7f1d1d !important;
+    transform: scale(1.05);
+}
+
+:root[data-theme="claro"] .btn-historico-pausar:hover,
+:root[data-theme="claro"] .btn-historico-produtos-pausar:hover {
+    background-color: #fed7aa !important;
+    border-color: #f97316 !important;
+    color: #9a3412 !important;
+    transform: scale(1.05);
+}
+
+:root[data-theme="claro"] .btn-historico-ordenar:hover,
+:root[data-theme="claro"] .btn-historico-produtos-ordenar:hover,
+:root[data-theme="claro"] #modalTabelaProdutos .ordenar:hover {
+    background-color: #ddd6fe !important;
+    border-color: #8b5cf6 !important;
+    color: #5b21b6 !important;
+    transform: scale(1.05);
+}
+
+:root[data-theme="claro"] .btn-historico-filtrar:hover,
+:root[data-theme="claro"] .btn-historico-produtos-filtrar:hover,
+:root[data-theme="claro"] #modalTabelaProdutos .filtrar:hover,
+:root[data-theme="claro"] .btn-side-actions.editar:hover,
+:root[data-theme="claro"] .btn-cadastrar-usuarios.editar:hover {
+    background-color: #bae6fd !important;
+    border-color: #0ea5e9 !important;
+    color: #075985;
+    transform: scale(1.05);
+}
+
+:root[data-theme="claro"] .btn-historico-atualizar:hover,
+:root[data-theme="claro"] .btn-historico-produtos-atualizar:hover,
+:root[data-theme="claro"] #modalTabelaProdutos .atualizar:hover,
+:root[data-theme="claro"] .btn-side-actions.atualizar:hover,
+:root[data-theme="claro"] .btn-cadastrar-usuarios.atualizar:hover {
+    background-color: #93c5fd !important;
+    color: #1e40af !important;
+    border-color: #3b82f6 !important;
+    transform: scale(1.05);
+}
+
+:root[data-theme="claro"] #modalTabelaProdutos .atualizar-tabela:hover{
+    background-color: #bfdbfe !important;
+    border-color: #3b82f6 !important;
+    color: #1e40af !important;
+    transform: scale(1.05);
+}
+
+:root[data-theme="claro"] .btn-historico-exportar-excel:hover,
+:root[data-theme="claro"] .btn-historico-produtos-exportar-excel:hover,
+:root[data-theme="claro"] #modalTabelaProdutos .gerar-arquivo-excel:hover,
+:root[data-theme="claro"] .btn-side-actions.adicionar:hover,
+:root[data-theme="claro"] .btn-cadastrar-usuarios.adicionar:hover {
+    background-color: #bbf7d0 !important;
+    color: #166534 !important;
+    border-color: #86efac !important;
+    transform: scale(1.05);
+}
+
+:root[data-theme="claro"] #modalTabelaProdutos .visualizar-imagem:hover{
+    background: #a5f3fc !important;
+    border-color: #06b6d4  !important;
+    color: #155e75 !important;
+    transform: scale(1.05);
+}
+
+:root[data-theme="claro"] #modalTabelaProdutos .duplicar-produto:hover,
+:root[data-theme="claro"] .btn-side-actions.sair:hover,
+:root[data-theme="claro"] .btn-cadastrar-usuarios.sair:hover {
+    background-color: #fed7aa  !important;
+    border-color: #f97316 !important;
+    color: #7c2d12  !important;
+    transform: scale(1.05);
+}
+
+
+:root[data-theme="claro"] .btn-pesquisar-tabela-estoque i,
+:root[data-theme="claro"] .btn-pesquisar-tabela-saida i,
+:root[data-theme="claro"] .btn-pesquisar-tabela i {
+    color: #414651;
+}
+
+/* TEMA CLARO — CONTAINER RESPONSIVO */
+:root[data-theme="claro"] .produtos-table-container,
+:root[data-theme="claro"] .modal-ajuda-planilha .modal-body {
+    scrollbar-color: #b8c7d9 #e8edf3 !important;
+}
+
+:root[data-theme="claro"] .modal-filtrar-produtos .btn-cancelar-filtrar-produtos,
+:root[data-theme="claro"] .modal-ordenar-usuarios .btn-cancelar-ordenar-usuarios{
+    background: #374151;
+    border: 1px solid #4b5563;
+}
+
+
+/* Scroll das tabelas - Tema claro */
+:root[data-theme="claro"] .estoque-table-container::-webkit-scrollbar,
+:root[data-theme="claro"] .offcanvas-body::-webkit-scrollbar,
+:root[data-theme="claro"] .verificar-usuarios-table-container::-webkit-scrollbar,
+:root[data-theme="claro"] .modal-historico-produtos-table-container::-webkit-scrollbar,
+:root[data-theme="claro"] .dashboard-card-cadastrar-produtos::-webkit-scrollbar,
+:root[data-theme="claro"] .dashboard-card-resumo-produtos::-webkit-scrollbar,
+:root[data-theme="claro"] .produtos-table-container::-webkit-scrollbar,
+:root[data-theme="claro"] .modal-ajuda-planilha .modal-body::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+:root[data-theme="claro"] .estoque-table-container::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] .offcanvas-body::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] .verificar-usuarios-table-container::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] .modal-historico-produtos-table-container::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] .dashboard-card-cadastrar-produtos::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] .dashboard-card-resumo-produtos::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] .produtos-table-container::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] .modal-ajuda-planilha .modal-body::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 20px;
+    border: 2px solid #e2e8f0;
+}
+
+:root[data-theme="claro"] .estoque-table-container::-webkit-scrollbar-thumb:hover,
+:root[data-theme="claro"] .offcanvas-body::-webkit-scrollbar-thumb:hover,
+:root[data-theme="claro"] .verificar-usuarios-table-container::-webkit-scrollbar:hover,
+:root[data-theme="claro"] .modal-historico-produtos-table-container::-webkit-scrollbar:hover,
+:root[data-theme="claro"] .dashboard-card-cadastrar-produtos::-webkit-scrollbar:hover,
+:root[data-theme="claro"] .dashboard-card-resumo-produtos::-webkit-scrollbar:hover,
+:root[data-theme="claro"] .produtos-table-container::-webkit-scrollbar:hover,
+:root[data-theme="claro"] .modal-ajuda-planilha .modal-body::-webkit-scrollbar:hover {
+    background: #64748b;
+}
+
+:root[data-theme="claro"] .estoque-table-container::-webkit-scrollbar-track,
+:root[data-theme="claro"] .offcanvas-body::-webkit-scrollbar-track,
+:root[data-theme="claro"] .verificar-usuarios-table-container::-webkit-scrollbar-track,
+:root[data-theme="claro"] .modal-historico-produtos-table-container::-webkit-scrollbar-track,
+:root[data-theme="claro"] .dashboard-card-cadastrar-produtos::-webkit-scrollbar-track,
+:root[data-theme="claro"] .dashboard-card-resumo-produtos::-webkit-scrollbar-track,
+:root[data-theme="claro"] .produtos-table-container::-webkit-scrollbar-track,
+:root[data-theme="claro"] .modal-ajuda-planilha .modal-body::-webkit-scrollbar-track {
+    background: #e2e8f0;
+    border-radius: 20px;
+}
+
+:root[data-theme="claro"] .input-pesquisa-tabela-saida,
+:root[data-theme="claro"] .input-pesquisa-tabela-estoque,
+:root[data-theme="claro"] .input-pesquisa-tabela,
+:root[data-theme="claro"] #modalTabelaUsuarios #buscaModalUsuarios {
+    border-color: #c3ccd8 !important;
+}
+
+:root[data-theme="claro"] .input-pesquisa-tabela-saida:focus,
+:root[data-theme="claro"] .input-pesquisa-tabela-estoque:focus,
+:root[data-theme="claro"] .input-pesquisa-tabela:focus,
+:root[data-theme="claro"] #modalTabelaUsuarios #buscaModalUsuarios:focus {
+    border-color: #6d28d9 !important;
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.30);
+    background-color: #e8edf3;
+    color: #202631;
+    outline: none;
+}
+
+
+
+/* =====================================================
+   TEMA CLARO — HOVER NAS TABELAS DO ESTOQUE
+===================================================== */
+:root[data-theme="claro"] .dashboard-page-estoque #tbodyEstoqueProdutos > tr:not(.linha-selecionada):not(.linha-vazia):not(:has(.sem-registros-content)):hover > *,
+:root[data-theme="claro"] .dashboard-page-estoque #tbodyEstoqueSaidas > tr:not(.linha-selecionada):not(.linha-vazia):not(:has(.sem-registros-content)):hover > * {
+    background-color: #b8c7d9 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+/* =====================================================
+   TEMA CLARO — LINHAS SELECIONADAS NO ESTOQUE
+===================================================== */
+:root[data-theme="claro"] .dashboard-page-estoque #tbodyEstoqueProdutos > tr.linha-selecionada > *,
+:root[data-theme="claro"] .dashboard-page-estoque #tbodyEstoqueSaidas > tr.linha-selecionada > * {
+    background-color: #93a9c2 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+/* =====================================================
+   HOVER — HISTÓRICO DE PRODUTOS
+===================================================== */
+:root[data-theme="claro"] #modalHistoricoProdutos #tbodyHistoricoProdutos > tr:not(.linha-selecionada-historico):not(.linha-vazia-historico-produtos):not(:has(.sem-registros-content-historico-produtos)):hover > * {
+    background-color: #b8c7d9 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+/* =====================================================
+   LINHA SELECIONADA — HISTÓRICO DE PRODUTOS
+===================================================== */
+:root[data-theme="claro"] #modalHistoricoProdutos #tbodyHistoricoProdutos > tr.linha-selecionada-historico > * {
+    background-color: #93a9c2 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+
+/* =====================================================
+   — HOVER USUÁRIOS ATIVOS E INATIVOS
+===================================================== */
+:root[data-theme="claro"] .dashboard-page-verificar-usuarios #tbodyUsuariosAtivos > tr:not(.linha-selecionada):not(:has(.sem-registros-content)):hover > *,
+:root[data-theme="claro"] .dashboard-page-verificar-usuarios #tbodyUsuariosInativos > tr:not(.linha-selecionada):not(:has(.sem-registros-content)):hover > * {
+    background-color: #b8c7d9 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+/* =====================================================
+   — LINHA SELECIONADA
+===================================================== */
+:root[data-theme="claro"] .dashboard-page-verificar-usuarios #tbodyUsuariosAtivos > tr.linha-selecionada > *,
+:root[data-theme="claro"] .dashboard-page-verificar-usuarios #tbodyUsuariosInativos > tr.linha-selecionada > * {
+    background-color: #93a9c2 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+
+/* HOVER —  TABELA HISTÓRICO USUÁRIOS */
+:root[data-theme="claro"] .table.table-hover tbody tr:not(.linha-vazia):not(.linha-selecionada):not(.produto-selecionado):not(.linha-vazia-historico):not(:has(.sem-registros-content)):not(:has(.sem-registros-content-historico)):hover > * {
+    background-color: #b8c7d9 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+
+/* SELECIONADO — LINHA CLICADA TABELA HISTÓRICO USUÁRIOS */
+:root[data-theme="claro"] #modalHistoricoUsuarios #tbodyHistoricoUsuarios > tr.linha-selecionada > * {
+    background-color: #93a9c2 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+
+
+/* TEMA CLARO — HOVER AO PASSAR O MOUSE */
+:root[data-theme="claro"] #modalTabelaProdutos .table.table-hover > tbody#tabelaProdutosBody > tr:not(.linha-vazia):not(.produto-selecionado):hover > * {
+    background-color: #b8c7d9 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+/* TEMA CLARO — LINHA SELECIONADA AO CLICAR */
+:root[data-theme="claro"] #modalTabelaProdutos .table.table-hover > tbody#tabelaProdutosBody > tr.produto-selecionado > * {
+    background-color: #93a9c2 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+/* =====================================================
+   MODAL TABELA DE USUÁRIOS — HOVER
+===================================================== */
+:root[data-theme="claro"] #modalTabelaUsuarios #tabelaModalUsuarios > tr:not(.usuario-selecionado):hover > * {
+    background-color: #b8c7d9 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+/* =====================================================
+   MODAL TABELA DE USUÁRIOS — LINHA SELECIONADA
+===================================================== */
+:root[data-theme="claro"] #modalTabelaUsuarios #tabelaModalUsuarios > tr.usuario-selecionado > * {
+    background-color: #93a9c2 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+/* Linha selecionada - Tema claro */
+:root[data-theme="claro"] .estoque-table tbody tr.linha-selecionada td,
+:root[data-theme="claro"] .verificar-usuarios-table tbody tr.linha-selecionada td {
+    background-color: #1f2937 !important;
+    color: #cecfd2 !important;
+    
+}
+
+:root[data-theme="claro"] .estoque-table td,
+:root[data-theme="claro"] .verificar-usuarios-table td {
+    color: #535861 !important;
+}
+
+:root[data-theme="claro"] .campo input,
+:root[data-theme="claro"] .campo select {
+    border-color: #c3ccd8 !important;
+}
+
+:root[data-theme="claro"] .campo input:focus{
+    border-color: #6d28d9 !important;
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.30);
+    background-color: #e8edf3;
+    color: #202631;
+    outline: none;
+}
+
+/* Select Cliente - Tema claro */
+:root[data-theme="claro"] #cliente,
+:root[data-theme="claro"] #usuarioEstado,
+:root[data-theme="claro"] #usuarioPerfil,
+:root[data-theme="claro"] #tipoOrdenacaoUsuarios,
+:root[data-theme="claro"] #tipoOrdenacaoHistoricoProdutos,
+:root[data-theme="claro"] #tipoOrdenacaoHistorico,
+:root[data-theme="claro"] #tipoFiltroProdutos {
+    background-color: #ffffff;
+    color: #202631;
+    border: 1px solid #c3ccd8;
+}
+
+/* Opções do select */
+:root[data-theme="claro"] #cliente option,
+:root[data-theme="claro"] #tipoOrdenacaoUsuarios option,
+:root[data-theme="claro"] #tipoOrdenacaoHistoricoProdutos option,
+:root[data-theme="claro"] #tipoOrdenacaoHistorico option,
+:root[data-theme="claro"] #tipoOrdenacaoHistorico option,
+:root[data-theme="claro"] #tipoFiltroProdutos option {
+    background-color: #ffffff;
+    color: #202631;
+}
+
+:root[data-theme="claro"] #cliente:focus,
+:root[data-theme="claro"] #cliente:hover,
+:root[data-theme="claro"] #usuarioEstado:focus,
+:root[data-theme="claro"] #usuarioEstado:hover,
+:root[data-theme="claro"] #usuarioPerfil:focus,
+:root[data-theme="claro"] #usuarioPerfil:hover,
+:root[data-theme="claro"] #tipoOrdenacaoUsuarios:hover,
+:root[data-theme="claro"] #tipoOrdenacaoUsuarios:focus  {
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+/* Textarea de descrição - Tema claro */
+:root[data-theme="claro"] .campo-descricao textarea {
+    background-color: #e8edf3;
+    color: #202631;
+    border: 1px solid #c3ccd8;
+}
+
+/* Placeholder */
+:root[data-theme="claro"] .campo-descricao textarea::placeholder {
+    color: #64748b;
+}
+
+/* Hover */
+:root[data-theme="claro"] .campo-descricao textarea:hover {
+    border-color: #94a3b8;
+}
+
+/* Foco */
+:root[data-theme="claro"] .campo-descricao textarea:focus {
+    background-color: #e8edf3;
+    color: #202631;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+    outline: none;
+}
+
+/* Preview Box - Tema claro */
+:root[data-theme="claro"] .preview-box,
+:root[data-theme="claro"] .preview-box-cadastrar-usuarios {
+    background-color: #e8edf3;
+    color: #202631;
+    border: 1px solid #c3ccd8;
+}
+
+/* Textos internos */
+:root[data-theme="claro"] .preview-box h4,
+:root[data-theme="claro"] .preview-box h5,
+:root[data-theme="claro"] .preview-box p,
+:root[data-theme="claro"] .preview-box span,
+:root[data-theme="claro"] .upload-box-cadastrar-usuarios span {
+    color: #202631;
+}
+
+/* Elementos secundários */
+:root[data-theme="claro"] .preview-box small,
+:root[data-theme="claro"] .ajuda-planilha-campo small {
+    color: #64748b;
+}
+
+/* Upload Box - Tema claro */
+:root[data-theme="claro"] .upload-box,
+:root[data-theme="claro"] .upload-box-cadastrar-usuarios {
+    background-color: #e8edf3;
+    color: #202631;
+    border: 1px dashed #94a3b8;
+}
+
+/* Hover */
+:root[data-theme="claro"] .upload-box:hover,
+:root[data-theme="claro"] .upload-box-cadastrar-usuarios:hover {
+    background-color: #dce3ec;
+    border-color: #64748b;
+    color: #1e293b;
+}
+
+/* Ícones e textos internos */
+:root[data-theme="claro"] .campo-upload label i,
+:root[data-theme="claro"] .upload-box i,
+:root[data-theme="claro"] .campo-upload label span,
+:root[data-theme="claro"] .upload-box span,
+:root[data-theme="claro"] .upload-box-cadastrar-usuarios i {
+    color: #334155;
+}
+
+:root[data-theme="claro"] .campo label,
+:root[data-theme="claro"] .campo-upload label,
+:root[data-theme="claro"] .upload-preview-container label {
+    color: #181d27
+}
+
+/* ==========================================================
+   MENU DO USUÁRIO
+========================================================== */
+:root[data-theme="claro"] .menu-usuario-dropdown {
+    background: var(--cor-superficie);
+    border-color: var(--cor-borda);
+    box-shadow: 0 8px 25px var(--cor-sombra);
+    color: var(--cor-texto);
+}
+
+:root[data-theme="claro"] .menu-usuario-dropdown a,
+:root[data-theme="claro"] .menu-usuario-dropdown button {
+    color: var(--cor-texto);
+}
+
+:root[data-theme="claro"] .menu-usuario-dropdown a:hover,
+:root[data-theme="claro"] .menu-usuario-dropdown button:hover {
+    background: var(--cor-hover);
+}
+
+/* ==========================================================
+   NOTIFICAÇÕES
+========================================================== */
+:root[data-theme="claro"] .painel-notificacoes {
+    background: var(--cor-superficie);
+    border-color: var(--cor-borda);
+    box-shadow: 0 8px 25px var(--cor-sombra);
+    color: var(--cor-texto);
+}
+
+:root[data-theme="claro"] .notificacoes-header,
+:root[data-theme="claro"] .lista-notificacoes {
+    background: var(--cor-superficie);
+    border-color: var(--cor-borda);
+}
+
+:root[data-theme="claro"] .notificacoes-header-titulo,
+:root[data-theme="claro"] .item-notificacao-mensagem,
+:root[data-theme="claro"] .sem-notificacoes {
+    color: var(--cor-texto);
+}
+
+:root[data-theme="claro"] .item-notificacao {
+    background: var(--cor-superficie);
+    border-color: var(--cor-borda);
+}
+
+:root[data-theme="claro"] .item-notificacao:hover {
+    background: var(--cor-hover);
+}
+
+:root[data-theme="claro"] .item-notificacao-data {
+    color: var(--cor-texto-secundario);
+}
+
+/* ==========================================================
+   MODAIS (MODO CLARO) - CORREÇÃO DE VAZAMENTO NOS CANTOS
+========================================================== */
+/* 1. Garante que o dialog seja transparente e não crie fundos retos */
+:root[data-theme="claro"] .modal-dialog {
+    background: transparent !important;
+    border: none !important;
+}
+
+/* 2. Aplica a borda, o raio e o fundo BRANCO apenas no modal-content */
+:root[data-theme="claro"] .modal-content,
+:root[data-theme="claro"] .modal-alerta-content,
+:root[data-theme="claro"] .modal-planilhas-exemplo,
+:root[data-theme="claro"] #modalConfirmacaoGlobal .modal-content {
+    background: #ffffff !important;
+    color: #101827 !important;
+    border: 1px solid #c3ccd8 !important;
+    border-radius: 12px !important; /* Força o arredondamento */
+    overflow: hidden !important;     /* Corta tudo o que passar dos cantos */
+}
+
+/* 3. Elementos internos (Header, Body, Footer) */
+:root[data-theme="claro"] .modal-header,
+:root[data-theme="claro"] .modal-footer {
+    border-color: #c3ccd8 !important;
+    background: #ffffff !important;
+}
+
+:root[data-theme="claro"] .modal-title,
+:root[data-theme="claro"] .modal-body {
+    color: #101827 !important;
+    background: #ffffff !important;
+}
+
+
+:root[data-theme="claro"] .modal-historico-toolbar,
+:root[data-theme="claro"] .modal-historico-produtos-toolbar{
+    border-bottom: 1px solid #374151 !important;
+    border-color: #c3ccd8 !important;
+    background: #ffffff !important;
+}
+
+:root[data-theme="claro"] .modal-historico-footer,
+:root[data-theme="claro"] .modal-historico-produtos-footer{
+    border-top: 1px solid #374151 !important;
+    border-color: #c3ccd8 !important;
+    background: #ffffff !important;
+}
+
+
+
+/* 4. Tabela interna */
+:root[data-theme="claro"] .table-responsive,
+:root[data-theme="claro"] .modal-historico-header {
+    border-color: #c3ccd8 !important;
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+:root[data-theme="claro"] .table-responsive table {
+    background: #ffffff !important;
+    color: var(--cor-texto) !important;
+    --bs-table-bg: #ffffff;
+    --bs-table-color: var(--cor-texto);
+    --bs-table-hover-bg: #f1f5f9;
+    --bs-table-hover-color: var(--cor-texto);
+}
+
+:root[data-theme="claro"] .table-responsive thead th {
+    background: #f8fafc !important;
+    border-bottom-color: #c3ccd8 !important;
+    color: #475569 !important;
+}
+
+
+
+:root[data-theme="claro"] .badge-historico-estorno {
+    background: #bfdbfe !important;
+    color: #475569 !important;
+}
+
+
+
+/* ==========================================================
+   CHECKBOXES
+========================================================== */
+
+/* CHECKBOXES PERSONALIZADAS — TEMA CLARO */
+:root[data-theme="claro"] input.col-checkbox-usuarios[type="checkbox"],
+:root[data-theme="claro"] input.checkbox-custom-historico[type="checkbox"],
+:root[data-theme="claro"] input.checkbox-produto[type="checkbox"],
+:root[data-theme="claro"] input.checkbox-custom-tabela-produtos[type="checkbox"],
+:root[data-theme="claro"] input.col-checkbox-produtos[type="checkbox"],
+:root[data-theme="claro"] input.checkbox-usuario[type="checkbox"],
+:root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario {
+    background-color: transparent;
+    border: 1px solid #94a3b8;
+}
+
+:root[data-theme="claro"] input.col-checkbox-usuarios[type="checkbox"]:hover,
+:root[data-theme="claro"] input.checkbox-custom-historico[type="checkbox"]:hover,
+:root[data-theme="claro"] input.checkbox-produto[type="checkbox"]:hover,
+:root[data-theme="claro"] input.checkbox-custom-tabela-produtos[type="checkbox"]:hover,
+:root[data-theme="claro"] input.col-checkbox-produtos[type="checkbox"]:hover,
+:root[data-theme="claro"] input.checkbox-usuario[type="checkbox"]:hover,
+:root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario:hover {
+    border-color: #2563eb;
+    background-color: #dce3ec;
+}
+
+:root[data-theme="claro"] input.col-checkbox-usuarios[type="checkbox"]:checked,
+:root[data-theme="claro"] input.checkbox-custom-historico[type="checkbox"]:checked,
+:root[data-theme="claro"] input.checkbox-produto[type="checkbox"]:checked,
+:root[data-theme="claro"] input.checkbox-custom-tabela-produtos[type="checkbox"]:checked,
+:root[data-theme="claro"] input.col-checkbox-produtos[type="checkbox"]:checked,
+:root[data-theme="claro"] input.checkbox-usuario[type="checkbox"]:checked,
+:root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario:checked {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+    box-shadow: 0 0 8px rgba(124, 58, 237, 0.4);
+}
+
+:root[data-theme="claro"] input.col-checkbox-usuarios[type="checkbox"]:checked::after,
+:root[data-theme="claro"] input.checkbox-custom-historico[type="checkbox"]:checked::after,
+:root[data-theme="claro"] input.checkbox-produto[type="checkbox"]:checked::after,
+:root[data-theme="claro"] input.checkbox-custom-tabela-produtos[type="checkbox"]:checked::after,
+:root[data-theme="claro"] input.col-checkbox-produtos[type="checkbox"]:checked::after,
+:root[data-theme="claro"] input.checkbox-usuario[type="checkbox"]:checked::after,
+:root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario:checked::after {
+    border-color: #ffffff;
+}
+
+
+/* ==========================================================
+   COMPONENTES BOOTSTRAP
+========================================================== */
+:root[data-theme="claro"] .card {
+    background: var(--cor-superficie);
+    color: var(--cor-texto);
+    border-color: var(--cor-borda);
+}
+
+:root[data-theme="claro"] .dropdown-menu {
+    background: var(--cor-superficie);
+    border-color: var(--cor-borda);
+    box-shadow: 0 8px 25px var(--cor-sombra);
+}
+
+:root[data-theme="claro"] .dropdown-item {
+    color: var(--cor-texto);
+}
+
+:root[data-theme="claro"] .dropdown-item:hover {
+    background: var(--cor-hover);
+    color: var(--cor-texto);
+}
+
+:root[data-theme="claro"] .table {
+    --bs-table-color: var(--cor-texto);
+    --bs-table-bg: var(--cor-superficie);
+    --bs-table-border-color: var(--cor-borda);
+}
+
+:root[data-theme="claro"] .text-muted {
+    color: var(--cor-texto-secundario) !important;
+}
+
+:root[data-theme="claro"] .border {
+    border-color: var(--cor-borda) !important;
+}
+
+:root[data-theme="claro"] .dashboard-sidebar-bar {
+    background: #ffffff;
+    border: 1px solid #c3ccd8
+}
+:root[data-theme="claro"] .sidebar-link {
+    color: #181d27 !important;
+}
+
+:root[data-theme="claro"] .offcanvas-body,
+:root[data-theme="claro"] .offcanvas-header,
+:root[data-theme="claro"] .sidebar-upgrade-container {
+    background: #ffffff;
+}
+
+:root[data-theme="claro"] .sidebar-link:hover {
+    background: #cbd5e1  !important;
+    transition: background 0.3s ease, color 0.3s ease;
+    
+    
+}
+
+:root[data-theme="claro"] .sidebar-link.active:hover {
+    background: #1d4ed8 !important;
+    
+}
+
+:root[data-theme="claro"] .sidebar-brand h5 {
+    color: #101827 !important;
+}
+
+:root[data-theme="claro"] .sidebar-brand strong {
+    color: #535861 !important;
+}
+
+:root[data-theme="claro"] .sidebar-upgrade h6 {
+    color: #101827 !important;
+}
+
+:root[data-theme="claro"] .sidebar-upgrade p {
+    color: #535861 !important;
+}
+
+:root[data-theme="claro"] .sidebar-upgrade-badge {
+    color: #535861 !important;
+}
+
+:root[data-theme="claro"] .sidebar-section-title {
+    color: #535861 !important;
+}
+
+/* ==========================================================
+   TRANSIÇÃO
+========================================================== */
+
+body,
+.sidebar-sistema,
+.menu-usuario-dropdown,
+.painel-notificacoes,
+.modal-content,
+.card {
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}

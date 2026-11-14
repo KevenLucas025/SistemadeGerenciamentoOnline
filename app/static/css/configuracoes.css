@@ -1,0 +1,953 @@
+
+/* =====================================================
+   PÁGINA CONFIGURAÇÕES
+===================================================== */
+.pagina-configuracoes {
+    --config-accent: #4dd0e1;
+    --config-bg-card: #0f172a;
+    --config-bg-hover: #20242a;
+    --config-border: #30343b;
+    --config-text: #e8eaf0;
+    --config-muted: #9299a5;
+
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 75px);
+    padding: 0 20px 20px;
+    overflow: hidden;
+    margin-left: 70px;
+    min-width: 0;
+    color: var(--config-text);
+    box-sizing: border-box;
+}
+
+.pagina-configuracoes * {
+    box-sizing: border-box;
+}
+
+.pagina-configuracoes button,
+.pagina-configuracoes input,
+.pagina-configuracoes select {
+    font-family: inherit;
+}
+
+/* =====================================================
+   BARRA MOBILE
+===================================================== */
+.pagina-configuracoes .dashboard-sidebar-bar {
+    display: none;
+}
+
+/* =====================================================
+   TOPBAR
+===================================================== */
+.dashboard-topbar-configuracoes {
+    width: 100%;
+    min-height: 70px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 16px;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.config-header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.config-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--config-muted);
+    font-size: 11px;
+}
+
+.config-breadcrumb i {
+    font-size: 9px;
+}
+
+.config-header-info h1 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--config-text);
+}
+
+.config-header-info h1 i {
+    color: var(--config-accent);
+    font-size: 19px;
+}
+
+.config-header-info p {
+    color: var(--config-muted);
+    font-size: 11px;
+    margin: 0;
+}
+
+.config-header-acoes {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-shrink: 0;
+}
+
+.config-status-salvamento {
+    font-size: 11px;
+    color: #7bd8a5;
+    white-space: nowrap;
+}
+
+.config-status-salvamento i {
+    margin-right: 5px;
+}
+
+.config-status-salvamento.pendente {
+    color: #e9bd66;
+}
+
+.config-status-salvamento.erro {
+    color: #f08080;
+}
+
+/* =====================================================
+   BOTÃO SALVAR
+===================================================== */
+.btn-config-salvar {
+    background: var(--config-accent);
+    color: #101519;
+    border: 1px solid var(--config-accent);
+    border-radius: 7px;
+    padding: 10px 17px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    cursor: pointer;
+    transition: .2s ease;
+    white-space: nowrap;
+}
+
+.btn-config-salvar:hover {
+    background: #75dce9;
+    border-color: #75dce9;
+    transform: translateY(-1px);
+}
+
+/* =====================================================
+   MENSAGENS DJANGO
+===================================================== */
+.config-mensagens {
+    width: 100%;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.config-mensagem {
+    padding: 11px 15px;
+    border-radius: 7px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    background: #1c3429;
+    color: #8be0ad;
+    border: 1px solid #315d43;
+}
+
+.config-mensagem.error {
+    background: #3b2225;
+    color: #ff9999;
+    border-color: #754045;
+}
+
+/* =====================================================
+   FORMULÁRIO
+===================================================== */
+#formConfiguracoes {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* =====================================================
+   LAYOUT PRINCIPAL
+===================================================== */
+.config-layout {
+    display: grid;
+    grid-template-columns: 225px minmax(0, 1fr);
+    gap: 15px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* =====================================================
+   MENU LATERAL
+===================================================== */
+.config-sidebar {
+    background: var(--config-bg-card);
+    border: 1px solid var(--config-border);
+    border-radius: 10px;
+    padding: 17px 12px;
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.config-sidebar-titulo {
+    padding: 4px 10px 14px;
+}
+
+.config-sidebar-titulo span {
+    color: #777f8c;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.1px;
+}
+
+.config-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.config-nav-item {
+    width: 100%;
+    min-height: 43px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 11px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: transparent;
+    color: #aab0ba;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.config-nav-item > i:first-child {
+    width: 17px;
+    text-align: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.config-nav-item span {
+    min-width: 0;
+}
+
+.config-nav-item:hover {
+    background: #1f2937 !important;
+    color: var(--config-text);
+}
+
+.config-nav-item.active {
+    background: rgba(77,208,225,.10);
+    border-color: rgba(77,208,225,.17);
+    color: var(--config-accent);
+}
+
+.config-nav-arrow {
+    margin-left: auto;
+    font-size: 10px;
+    opacity: 0;
+    transition: .2s;
+}
+
+.config-nav-item.active .config-nav-arrow {
+    opacity: 1;
+}
+
+.config-sidebar-footer {
+    display: flex;
+    gap: 10px;
+    padding: 15px 9px 2px;
+    margin-top: 18px;
+    border-top: 1px solid var(--config-border);
+}
+
+.config-sidebar-footer > i {
+    color: var(--config-accent);
+    margin-top: 3px;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.config-sidebar-footer div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.config-sidebar-footer strong {
+    font-size: 11px;
+    color: var(--config-text);
+}
+
+.config-sidebar-footer small {
+    font-size: 10px;
+    color: var(--config-muted);
+}
+
+/* =====================================================
+   ÁREA DE CONTEÚDO
+===================================================== */
+.config-content {
+    min-width: 0;
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 2px 6px 10px 0;
+}
+
+/* =====================================================
+   SCROLL PERSONALIZADO
+===================================================== */
+.config-content::-webkit-scrollbar,
+.config-sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.config-content::-webkit-scrollbar-thumb,
+.config-sidebar::-webkit-scrollbar-thumb {
+    background: #414751;
+    border-radius: 10px;
+}
+
+.config-content::-webkit-scrollbar-track,
+.config-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* =====================================================
+   SEÇÕES
+===================================================== */
+.config-section {
+    display: none;
+    animation: configFade .2s ease;
+}
+
+.config-section.active {
+    display: block;
+}
+
+@keyframes configFade {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =====================================================
+   CABEÇALHO DAS SEÇÕES
+===================================================== */
+.config-section-header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 17px;
+}
+
+.config-section-icone {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(77,208,225,.10);
+    border: 1px solid rgba(77,208,225,.16);
+    color: var(--config-accent);
+    border-radius: 9px;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.config-section-header h2 {
+    color: var(--config-text);
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 5px;
+}
+
+.config-section-header p {
+    font-size: 11px;
+    color: var(--config-muted);
+    margin: 0;
+}
+
+/* =====================================================
+   CARDS
+===================================================== */
+.config-card {
+    background: var(--config-bg-card);
+    border: 1px solid var(--config-border);
+    border-radius: 9px;
+    padding: 18px;
+    margin-bottom: 13px;
+    min-width: 0;
+}
+
+.config-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 17px;
+}
+
+.config-card-header h3 {
+    color: var(--config-text);
+    font-size: 12px;
+    font-weight: 700;
+    margin: 0 0 5px;
+}
+
+.config-card-header p {
+    color: var(--config-muted);
+    font-size: 11px;
+    margin: 0;
+}
+
+.config-card-header > i {
+    color: #68717e;
+    font-size: 16px;
+}
+
+/* =====================================================
+   CAMPOS
+===================================================== */
+/* =====================================================
+   CAMPOS LADO A LADO
+===================================================== */
+.config-card:has(> .config-field) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/* Cabeçalho ocupa toda a largura */
+.config-card:has(> .config-field) > .config-card-header {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+}
+
+/* Campos ocupam uma coluna cada */
+.config-card > .config-field {
+    min-width: 0;
+}
+
+
+
+.config-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px 20px;
+}
+
+.config-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.config-field label {
+    font-size: 11px;
+    color: #d4d8df;
+    font-weight: 600;
+}
+
+.config-field select,
+.config-field input[type="number"] {
+    width: 100%;
+    height: 38px;
+    padding: 0 11px;
+    background: #0f172a;
+    color: #e6e8ed;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    font-size: 11px;
+    outline: none;
+    transition: .2s;
+}
+
+.config-field select:focus,
+.config-field input:focus,
+.config-field select:hover,
+.config-field input:hover {
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+.config-field select option {
+    background: #202329;
+    color: #fff;
+}
+
+.config-field small {
+    font-size: 11px;
+    color: var(--config-muted);
+    line-height: 1.5;
+}
+
+.config-field .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #ff8d8d;
+    font-size: 12px;
+}
+
+.config-card .is-invalid {
+    border-color: #e56f76 !important;
+}
+
+#selectTema,
+#selectCorDestaque,
+#selectRegistrosPagina,
+#selectPaginaInicial,
+#selectFormatoData{
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+
+
+/* =====================================================
+   OPÇÕES E SWITCHES
+===================================================== */
+.config-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.config-option {
+    min-height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    border-bottom: 1px solid #2b2f36;
+    padding: 10px 2px;
+}
+
+.config-option:last-child {
+    border-bottom: none;
+}
+
+.config-option > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.config-option strong {
+    font-size: 11px;
+    color: #e1e4e9;
+    font-weight: 600;
+}
+
+.config-option small {
+    font-size: 10px;
+    color: var(--config-muted);
+    line-height: 1.5;
+}
+
+.config-switch {
+    position: relative;
+    width: 39px;
+    height: 21px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.config-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.config-switch span {
+    position: absolute;
+    inset: 0;
+    background: #414751;
+    border-radius: 30px;
+    transition: .2s;
+}
+
+.config-switch span::before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 3px;
+    top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: .2s;
+}
+
+.config-switch input:checked + span {
+    background: #4dd0e1;
+}
+
+.config-switch input:checked + span::before {
+    transform: translateX(18px);
+    background: #172125;
+}
+
+.config-switch input:focus-visible + span {
+    outline: 2px solid var(--config-accent);
+    outline-offset: 3px;
+}
+
+/* =====================================================
+   ATALHOS DE TECLADO
+===================================================== */
+.config-shortcuts {
+    display: flex;
+    flex-direction: column;
+}
+
+.config-shortcut {
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border-bottom: 1px solid #2b2f36;
+    font-size: 11px;
+}
+
+.config-shortcut:last-child {
+    border-bottom: none;
+}
+
+.config-shortcut span {
+    margin-right: auto;
+    color: #d7dbe2;
+}
+
+.config-shortcut b {
+    font-size: 10px;
+    color: #777f8c;
+}
+
+.config-shortcut kbd {
+    background: #292e36;
+    border: 1px solid #414751;
+    border-radius: 5px;
+    color: #e5e8ed;
+    min-width: 27px;
+    padding: 5px 8px;
+    text-align: center;
+    font-size: 10px;
+    font-family: inherit;
+    box-shadow: 0 2px 0 #17191d;
+}
+
+/* =====================================================
+   INFORMAÇÕES
+===================================================== */
+.config-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px;
+    margin-top: 15px;
+    background: rgba(77,208,225,.055);
+    border: 1px solid rgba(77,208,225,.12);
+    border-radius: 6px;
+    color: #aab7c2;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.config-info i {
+    color: var(--config-accent);
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.config-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.config-info-item {
+    background: #202329;
+    border: 1px solid #30353d;
+    border-radius: 7px;
+    padding: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.config-info-item small {
+    font-size: 10px;
+    color: var(--config-muted);
+}
+
+.config-info-item strong {
+    font-size: 11px;
+    color: var(--config-text);
+    overflow-wrap: anywhere;
+}
+
+.config-status-ativo {
+    color: #79dba1 !important;
+}
+
+.config-status-ativo i {
+    font-size: 8px;
+    margin-right: 5px;
+}
+
+/* =====================================================
+   RESTRIÇÃO DE ACESSO
+===================================================== */
+.config-restricao {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 15px;
+    border: 1px solid #45404a;
+    background: #252329;
+    border-radius: 7px;
+}
+
+.config-restricao > i {
+    color: #e7bd70;
+    font-size: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.config-restricao strong {
+    font-size: 11px;
+    color: #e8e4e9;
+}
+
+.config-restricao p {
+    font-size: 10px;
+    color: var(--config-muted);
+    margin: 5px 0 0;
+    line-height: 1.5;
+}
+
+/* =====================================================
+   RODAPÉ DO FORMULÁRIO
+===================================================== */
+.config-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 12px 3px 0;
+    margin-top: 10px;
+    border-top: 1px solid var(--config-border);
+    flex-shrink: 0;
+}
+
+.config-footer > span {
+    font-size: 10px;
+    color: var(--config-muted);
+}
+
+.config-footer > span i {
+    margin-right: 5px;
+    color: var(--config-accent);
+}
+
+.config-footer > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-config-reset {
+    background: #252930;
+    border: 1px solid #414751;
+    border-radius: 6px;
+    color: #d1d5dd;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-config-reset:hover {
+    background: #333943;
+    color: #fff;
+}
+
+/* =====================================================
+   RESPONSIVIDADE - NOTEBOOK
+===================================================== */
+@media (max-width: 1100px) {
+
+    .config-layout {
+        grid-template-columns: 195px minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .config-sidebar {
+        padding: 14px 9px;
+    }
+
+    .config-card {
+        padding: 15px;
+    }
+
+}
+
+/* =====================================================
+   RESPONSIVIDADE - TABLET
+===================================================== */
+@media (max-width: 768px) {
+
+    .pagina-configuracoes {
+        height: auto;
+        min-height: calc(100vh - 75px);
+        margin-left: 0;
+        padding: 0 12px 15px;
+        overflow: visible;
+    }
+
+    .pagina-configuracoes .dashboard-sidebar-bar {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .dashboard-topbar-configuracoes {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 15px;
+        min-height: auto;
+    }
+
+    .config-header-acoes {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    #formConfiguracoes {
+        overflow: visible;
+    }
+
+    .config-layout {
+        grid-template-columns: 1fr;
+        overflow: visible;
+    }
+
+    .config-sidebar {
+        height: auto;
+        overflow: visible;
+        padding: 12px;
+    }
+
+    .config-sidebar-titulo,
+    .config-sidebar-footer {
+        display: none;
+    }
+
+    .config-nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .config-nav-item {
+        padding: 0 9px;
+        font-size: 11px;
+    }
+
+    .config-nav-arrow {
+        display: none;
+    }
+
+    .config-content {
+        height: auto;
+        overflow: visible;
+        padding-right: 0;
+    }
+
+    .config-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+.config-card-titulo {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.config-card-titulo h3 {
+    margin: 0;
+}
+
+.config-card-titulo p {
+    flex-basis: 100%;
+    margin: 4px 0 0;
+}
+
+.config-recomendado {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 9px;
+    border-radius: 20px;
+
+    background: rgba(77, 208, 225, 0.10);
+    border: 1px solid rgba(77, 208, 225, 0.25);
+
+    color: #4dd0e1;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.config-recomendado i {
+    font-size: 10px;
+}

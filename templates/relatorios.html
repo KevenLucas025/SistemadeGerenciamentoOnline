@@ -4,10 +4,13 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/relatorios.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'js/relatorios.js' %}" defer></script>
+
 {% endblock %}
 
 {% block content %}
+
 <!-- BARRA MOBILE -->
 <div class="dashboard-sidebar-bar">
     <button class="btn-menu-mobile" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
@@ -25,9 +28,16 @@
 
             <button type="button"
                     class="btn-tab-relatorio ativo"
-                    data-aba="clientes">
+                    data-aba="cliente_juridico">
                 <i class="fa-solid fa-users"></i>
-                Relatórios de Clientes
+                Relatórios de Clientes Jurídicos
+            </button>
+
+            <button type="button"
+                    class="btn-tab-relatorio"
+                    data-aba="cliente_fisico">
+                <i class="fa-solid fa-user"></i>
+                Relatórios de Clientes Físicos
             </button>
 
             <button type="button"
@@ -47,213 +57,332 @@
         </div>
 
         <!-- CONTEÚDO DAS ABAS -->
+<!-- ================================================= -->
+<!-- ABA 1: RELATÓRIO CLIENTES JURÍDICOS -->
+<!-- ================================================= -->
+<div id="abaRelatorioClientesJuridicos" class="relatorio-pagina ativa">
 
-        <!-- ABA 1: CLIENTES -->
-        <div id="abaRelatorioClientes" class="relatorio-pagina ativa">
+    <!-- FILTROS -->
+    <section class="relatorio-card-secao" id="filtrosRelatorioJuridicos" data-url="{% url 'filtrar_clientes_juridicos' %}">
 
-            <!-- SEÇÃO DE FILTROS PRINCIPAIS -->
-    <section class="relatorio-card-secao">
         <div class="secao-header">
             <i class="fa-solid fa-filter"></i>
             <span>Filtros</span>
         </div>
 
         <div class="filtros-grid">
-            <!-- Período -->
+
             <div class="campo-filtro">
                 <label>Período</label>
+
                 <div class="campo-duplo">
-                    <input type="date" placeholder="Data inicial">
+                    <input
+                        type="date"
+                        id="dataInicialJuridico"
+                    >
+
                     <span>até</span>
-                    <input type="date" placeholder="Data final">
+
+                    <input
+                        type="date"
+                        id="dataFinalJuridico"
+                    >
                 </div>
             </div>
 
-            <!-- Status -->
             <div class="campo-filtro">
                 <label>Status</label>
-                <select>
+                <select id="statusClienteJuridico">
                     <option>Todos</option>
                     <option>Ativo</option>
                     <option>Inativo</option>
                 </select>
             </div>
 
-            <!-- Categoria -->
-            <div class="campo-filtro">
+            <div class="campo-filtro" >
                 <label>Categoria</label>
-                <select>
-                    <option>Todas as categorias</option>
+                <select id="categoriaClienteJuridico">
+                    <option value="todos">Todas as categorias</option>
+
+                    {% for categoria in categorias_juridicos %}
+                        <option value="{{ categoria }}">
+                            {{ categoria }}
+                        </option>
+                    {% endfor %}
                 </select>
             </div>
-
-            <!-- Cidade -->
+            
             <div class="campo-filtro">
-                <label>Cidade</label>
+                <label for="cidadeClienteJuridico">Cidade</label>
+
                 <div class="input-icon">
-                    <input type="text" placeholder="Pesquisar cidade...">
+                    <input
+                        type="text"
+                        id="cidadeClienteJuridico"
+                        placeholder="Pesquisar cidade..."
+                    >
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
             </div>
 
-            <!-- Estado -->
             <div class="campo-filtro">
-                <label>Estado</label>
-                <select>
-                    <option>Todos</option>
+                <label for="estadoClienteJuridico">Estado</label>
+                <select id="estadoClienteJuridico">
+                    <option value="">Todos</option>
+                    <option value="AC">Acre</option>
+                    <option value="AL">Alagoas</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="DF">Distrito Federal</option>
+                    <option value="ES">Espírito Santo</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="PA">Pará</option>
+                    <option value="PB">Paraíba</option>
+                    <option value="PR">Paraná</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="RR">Roraima</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="SE">Sergipe</option>
+                    <option value="TO">Tocantins</option>
                 </select>
             </div>
 
-            <!-- Pesquisar Cliente (2 colunas) -->
             <div class="campo-filtro campo-span-2">
-                <label>Pesquisar Cliente</label>
+                <label for="pesquisaClienteJuridico">Pesquisar Cliente Jurídico</label>
+
                 <div class="input-icon">
-                    <input type="text" placeholder="Nome, CPF, CNPJ, e-mail...">
+                    <input
+                        type="text"
+                        id="pesquisaClienteJuridico"
+                        placeholder="Razão social, CNPJ, e-mail..."
+                        autocomplete="off"
+                    >
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
             </div>
+
         </div>
     </section>
 
-    <!-- GRID DE OPCIONAIS DE CONFIGURAÇÃO DO RELATÓRIO (3 CARDS) -->
+    <!-- CONFIGURAÇÕES DO RELATÓRIO -->
     <div class="relatorio-config-grid">
-        
-      
-        <!-- 1. Informações que deseja incluir -->
+
+        <!-- INFORMAÇÕES -->
         <div class="relatorio-card-secao">
+
             <div class="secao-header">
                 <i class="fa-solid fa-circle-info"></i>
-                <span>Informações que deseja incluir</span>
+                <span>Colunas que precisam ser inclusas</span>
             </div>
 
-            <!-- Checkbox Master -->
             <div class="checkbox-master-container">
                 <label class="custom-checkbox">
-                    <input type="checkbox" id="masterInformacoesRelatorio" checked>
+                    <input type="checkbox" id="masterInformacoesRelatorioJuridicos" checked>
                     <span>Selecionar todas</span>
                 </label>
             </div>
 
-            <div class="checkbox-grid" id="checkboxGridInformacoes">
+            <div class="checkbox-grid" id="checkboxGridInformacoesJuridicos">
+
                 <label class="custom-checkbox">
-                    <input type="checkbox" name="informacoes[]" value="dados_pessoais" checked>
-                    <span>Dados pessoais</span>
+                    <input type="checkbox" name="informacoes_juridicos[]" value="nome_razao_social" checked>
+                    <span>NOME / RAZÃO SOCIAL</span>
                 </label>
 
                 <label class="custom-checkbox">
-                    <input type="checkbox" name="informacoes[]" value="historico_compras" checked>
-                    <span>Histórico de compras</span>
+                    <input type="checkbox" name="informacoes_juridicos[]" value="nome_tipo" checked>
+                    <span>TIPO</span>
                 </label>
 
                 <label class="custom-checkbox">
-                    <input type="checkbox" name="informacoes[]" value="endereco" checked>
-                    <span>Endereço</span>
+                    <input type="checkbox" name="informacoes_juridicos[]" value="nome_categoria" checked>
+                    <span>CATEGORIA</span>
                 </label>
 
                 <label class="custom-checkbox">
-                    <input type="checkbox" name="informacoes[]" value="valor_gasto" checked>
-                    <span>Valor gasto</span>
+                    <input type="checkbox" name="informacoes_juridicos[]" value="nome_cnpj" checked>
+                    <span>CNPJ</span>
                 </label>
 
                 <label class="custom-checkbox">
-                    <input type="checkbox" name="informacoes[]" value="contatos" checked>
-                    <span>Contatos</span>
+                    <input type="checkbox" name="informacoes_juridicos[]" value="nome_email" checked>
+                    <span>E-MAIL</span>
                 </label>
 
                 <label class="custom-checkbox">
-                    <input type="checkbox" name="informacoes[]" value="ultima_compra" checked>
-                    <span>Última compra</span>
+                    <input type="checkbox" name="informacoes_juridicos[]" value="nome_telefone" checked>
+                    <span>TELEFONE / WHATSAPP</span>
                 </label>
 
                 <label class="custom-checkbox">
-                    <input type="checkbox" name="informacoes[]" value="documentos" checked>
-                    <span>Documentos</span>
+                    <input type="checkbox" name="informacoes_juridicos[]" value="nome_cidade" checked>
+                    <span>CIDADE / ESTADO</span>
                 </label>
 
                 <label class="custom-checkbox">
-                    <input type="checkbox" name="informacoes[]" value="situacao_cliente" checked>
-                    <span>Situação do cliente</span>
+                    <input type="checkbox" name="informacoes_juridicos[]" value="nome_status" checked>
+                    <span>STATUS</span>
                 </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_juridicos[]" value="nome_data_cadastro" checked>
+                    <span>DATA DO CADASTRO</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_juridicos[]" value="nome_valor_gasto_total" checked>
+                    <span>VALOR GASTO TOTAL</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_juridicos[]" value="nome_ultima_compra" checked>
+                    <span>ÚLTIMA COMPRA</span>
+                </label>
+
             </div>
         </div>
 
-        <!-- 2. Formato do relatório -->
-        <div class="relatorio-card-secao">
-            <div class="secao-header">
-                <i class="fa-solid fa-file-export"></i>
-                <span>Formato do relatório</span>
-            </div>
-            <div class="radio-vertical-grupo">
-                <label class="custom-radio"><input type="radio" name="formato" checked> <span>PDF</span></label>
-                <label class="custom-radio"><input type="radio" name="formato"> <span>Excel (.xlsx)</span></label>
-                <label class="custom-radio"><input type="radio" name="formato"> <span>CSV</span></label>
-                <label class="custom-radio"><input type="radio" name="formato"> <span>Impressão</span></label>
-            </div>
-        </div>
+        <!-- ORDENAÇÃO -->
+        <div class="relatorio-card-secao campo-span-2">
 
-        <!-- 3. Ordenação -->
-        <div class="relatorio-card-secao">
             <div class="secao-header">
                 <i class="fa-solid fa-arrow-down-short-wide"></i>
                 <span>Ordenação</span>
             </div>
+
             <div class="ordenacao-container">
+
                 <div class="campo-filtro">
-                    <label>Ordenar por</label>
-                    <select>
-                        <option>Nome do Cliente</option>
-                        <option>Data Cadastro</option>
-                        <option>Valor Gasto</option>
+                    <label for="ordenarClientesJuridicos">Ordenar por</label>
+
+                    <select id="ordenarClientesJuridicos">
+                        <option value="razao_social">Razão Social</option>
+                        <option value="data_inclusao">Data Cadastro</option>
+                        <option value="valor_gasto">Valor Gasto</option>
                     </select>
                 </div>
+
                 <div class="campo-filtro">
                     <label>Ordem</label>
+
                     <div class="radio-grupo">
-                        <label><input type="radio" name="ordem" checked> Crescente</label>
-                        <label><input type="radio" name="ordem"> Decrescente</label>
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="ordem_juridicos"
+                                value="asc"
+                                checked
+                            >
+                            Crescente
+                        </label>
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="ordem_juridicos"
+                                value="desc"
+                            >
+                            Decrescente
+                        </label>
+
                     </div>
                 </div>
+
             </div>
         </div>
 
     </div>
 
-    <!-- CARDS RESUMO -->
+    <!-- RESUMO JURÍDICOS -->
     <section class="relatorio-resumo">
+
         <div class="card-resumo card-clientes">
-            <div class="icone-card"><i class="fa-solid fa-users"></i></div>
+            <div class="icone-card">
+                <i class="fa-solid fa-building"></i>
+            </div>
             <div>
                 <span>Clientes encontrados</span>
-                <strong>145</strong>
-                <small>Total de clientes no período</small>
+                <strong id="totalClientesJuridicos">{{ clientes_juridicos.paginator.count }}</strong>
+                <small>Total de clientes jurídicos</small>
             </div>
         </div>
 
         <div class="card-resumo card-juridica">
-            <div class="icone-card"><i class="fa-solid fa-building"></i></div>
+            <div class="icone-card">
+                <i class="fa-solid fa-building"></i>
+            </div>
             <div>
                 <span>Pessoa Jurídica</span>
-                <strong>87</strong>
-                <small>60,00% do total</small>
+                <strong id="totalPessoaJuridica">{{ clientes_juridicos.paginator.count }}</strong>
+                <small>Clientes jurídicos cadastrados</small>
             </div>
         </div>
-
-        
 
         <div class="card-resumo card-valor">
-            <div class="icone-card"><i class="fa-solid fa-dollar-sign"></i></div>
+            <div class="icone-card">
+                <i class="fa-solid fa-dollar-sign"></i>
+            </div>
             <div>
                 <span>Valor movimentado</span>
-                <strong>R$ {{ valor_movimentado }}</strong>
-                <small>Total de todos os clientes</small>
+                <strong id="valorMovimentadoJuridicos">R$ {{ valor_movimentado_juridicos }}</strong>
+                <small>Total dos clientes jurídicos</small>
             </div>
         </div>
+
     </section>
 
-    <!-- PRÉ-VISUALIZAÇÃO DOS RESULTADOS (TABELA) -->
+    <!-- TABELA JURÍDICOS COM BOTÃO E POPOVER ESTILO METABASE -->
     <section class="relatorio-card-secao">
-        <div class="secao-header">
-            <span>Pré-visualização dos resultados</span>
+
+        <div class="secao-header-com-acoes">
+            <div class="secao-header">
+                <i class="fa-solid fa-table-list"></i>
+                <span>Pré-visualização dos resultados - Clientes Jurídicos</span>
+            </div>
+
+            <!-- CONTAINER DO BOTÃO E POPUP -->
+            <div class="popover-exportar-wrapper" data-url="{% url 'exportar_clientes_juridicos' %}">
+                <button type="button" class="btn-baixar-trigger" id="btnTriggerBaixar">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Baixar dados</span>
+                </button>
+
+                <!-- CARD ESTILO IMAGEM -->
+                <div class="popover-baixar-card" id="popoverBaixarCard">
+                    <h3>Baixar dados</h3>
+
+                    <!-- SELEÇÃO DO FORMATO -->
+                    <div class="formatos-toggle-group">
+                        <button type="button" class="btn-formato-opcao ativo" data-formato="csv">.csv</button>
+                        <button type="button" class="btn-formato-opcao" data-formato="xlsx">.xlsx</button>
+                        <button type="button" class="btn-formato-opcao" data-formato="json">.json</button>
+                    </div>
+
+                    <p class="alerta-linhas">
+                        O tempo de download será baseado conforme a quantidade filtrada.
+                    </p>
+
+                    <!-- AÇÃO FINAL DE DOWNLOAD -->
+                    <div class="popover-footer">
+                        <button type="button" class="btn-confirmar-download" id="btnConfirmarDownload">
+                            Baixar
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="tabela-container">
@@ -262,51 +391,26 @@
                     <tr>
                         <th>NOME / RAZÃO SOCIAL</th>
                         <th>TIPO</th>
-                        <th>CPF / CNPJ</th>
+                        <th>CATEGORIA</th>
+                        <th>CNPJ</th>
                         <th>E-MAIL</th>
-                        <th>TELEFONE</th>
+                        <th>TELEFONE / WHATSAPP</th>
                         <th>CIDADE / ESTADO</th>
                         <th>STATUS</th>
                         <th>DATA CADASTRO</th>
-                        <th>VALOR GASTO</th>
+                        <th>VALOR GASTO TOTAL</th>
                         <th>ÚLTIMA COMPRA</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for cliente in clientes %}
+                <tbody id="tbodyClientesJuridicos">
+                    {% for cliente in clientes_juridicos %}
                     <tr>
-                        <!-- NOME / RAZÃO SOCIAL -->
-                        <td>
-                            {% if cliente.tipo_cliente == 'juridico' %}
-                                {{ cliente.razao_social|default:cliente.nome }}
-                            {% else %}
-                                {{ cliente.nome }}
-                            {% endif %}
-                        </td>
-
-                        <!-- TIPO -->
-                        <td>
-                            {% if cliente.tipo_cliente == 'juridico' %}
-                                <span class="badge-tipo juridico">Jurídico</span>
-                            {% endif %}
-                        </td>
-
-                        <!-- CPF / CNPJ -->
-                        <td>
-                            {% if cliente.tipo_cliente == 'juridico' %}
-                                {{ cliente.cnpj|default:"-" }}
-                            {% else %}
-                                {{ cliente.cpf|default:"-" }}
-                            {% endif %}
-                        </td>
-
-                        <!-- E-MAIL -->
+                        <td>{{ cliente.razao_social|default:cliente.nome }}</td>
+                        <td><span class="badge-tipo juridico">Jurídico</span></td>
+                        <td> {{ cliente.categoria|default:"-" }}</td>
+                        <td>{{ cliente.cnpj|default:"-" }}</td>
                         <td>{{ cliente.email|default:"-" }}</td>
-
-                        <!-- TELEFONE -->
                         <td>{{ cliente.telefone|default:"-" }}</td>
-
-                        <!-- CIDADE / ESTADO -->
                         <td>
                             {% if cliente.cidade or cliente.estado %}
                                 {{ cliente.cidade|default:"-" }} / {{ cliente.estado|default:"-" }}
@@ -314,31 +418,15 @@
                                 -
                             {% endif %}
                         </td>
-
-                        <!-- STATUS -->
                         <td>
                             {% if cliente.status|lower == 'ativo' %}
-                                <span class="badge-status ativo">
-                                    {{ cliente.status }}
-                                </span>
+                                <span class="badge-status ativo">{{ cliente.status|upper }}</span>
                             {% else %}
-                                <span class="badge-status inativo">
-                                    {{ cliente.status }}
-                                </span>
+                                <span class="badge-status inativo">{{ cliente.status|upper }}</span>
                             {% endif %}
                         </td>
-
-                        <!-- DATA CADASTRO -->
-                        <td>
-                            {{ cliente.data_inclusao|date:"d/m/Y" }}
-                        </td>
-
-                        <!-- VALOR GASTO -->
-                        <td>
-                            R$ {{ cliente.valor_gasto|floatformat:2 }}
-                        </td>
-
-                        <!-- ÚLTIMA COMPRA -->
+                        <td>{{ cliente.data_inclusao|date:"d/m/Y" }}</td>
+                        <td>R$ {{ cliente.valor_gasto|floatformat:2 }}</td>
                         <td>
                             {% if cliente.ultima_compra %}
                                 {{ cliente.ultima_compra|date:"d/m/Y" }}
@@ -347,11 +435,10 @@
                             {% endif %}
                         </td>
                     </tr>
-
                     {% empty %}
                     <tr>
-                        <td colspan="10" style="text-align: center; padding: 20px;">
-                            Nenhum cliente cadastrado.
+                        <td colspan="11" style="text-align: center; padding: 20px;">
+                            Nenhum cliente jurídico cadastrado.
                         </td>
                     </tr>
                     {% endfor %}
@@ -359,25 +446,20 @@
             </table>
         </div>
 
-
-        <!-- RODAPÉ DA TABELA E PAGINAÇÃO -->
+        <!-- PAGINAÇÃO JURÍDICOS -->
         <div class="tabela-rodape">
-
-            <span>
-                {% if clientes.paginator.count > 0 %}
-                    Mostrando {{ clientes.start_index }} a {{ clientes.end_index }}
-                    de {{ clientes.paginator.count }} registros
+            <span id="infoPaginacaoJuridicos">
+                {% if clientes_juridicos.paginator.count > 0 %}
+                    Mostrando {{ clientes_juridicos.start_index }} a {{ clientes_juridicos.end_index }}
+                    de {{ clientes_juridicos.paginator.count }}
                 {% else %}
-                    Nenhum registro encontrado
+                    Nenhum cliente jurídico encontrado
                 {% endif %}
             </span>
 
-            <div class="paginacao">
-
-                <!-- PÁGINA ANTERIOR -->
-                {% if clientes.has_previous %}
-                    <a href="?page={{ clientes.previous_page_number }}"
-                    class="btn-paginacao">
+            <div class="paginacao" id="paginacaoJuridicos">
+                {% if clientes_juridicos.has_previous %}
+                    <a href="?page_juridicos={{ clientes_juridicos.previous_page_number }}" class="btn-paginacao">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
                 {% else %}
@@ -386,102 +468,1648 @@
                     </button>
                 {% endif %}
 
-                <!-- NÚMEROS DAS PÁGINAS -->
-                {% for numero in clientes.paginator.page_range %}
-
-                    {% if numero == clientes.number %}
+                {% for numero in clientes_juridicos.paginator.page_range %}
+                    {% if numero == clientes_juridicos.number %}
                         <span class="btn-paginacao ativo">{{ numero }}</span>
+                    {% elif numero > clientes_juridicos.number|add:"-3" and numero < clientes_juridicos.number|add:"3" %}
+                        <a href="?page_juridicos={{ numero }}" class="btn-paginacao">{{ numero }}</a>
+                    {% endif %}
+                {% endfor %}
 
-                    {% elif numero > clientes.number|add:"-3" and numero < clientes.number|add:"3" %}
-                        <a href="?page={{ numero }}" class="btn-paginacao">
+                {% if clientes_juridicos.has_next %}
+                    <a href="?page_juridicos={{ clientes_juridicos.next_page_number }}" class="btn-paginacao">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                {% else %}
+                    <button class="btn-paginacao" disabled>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+
+        
+<!-- ================================================= -->
+<!-- ABA 2: RELATÓRIO CLIENTES FÍSICOS -->
+<!-- ================================================= -->
+
+<div id="abaRelatorioClientesFisicos" class="relatorio-pagina">
+
+    <!-- FILTROS -->
+    <section
+        class="relatorio-card-secao"
+        id="filtrosRelatorioFisicos"
+        data-url="{% url 'filtrar_clientes_fisicos' %}"
+    >
+
+        <div class="secao-header">
+            <i class="fa-solid fa-filter"></i>
+            <span>Filtros</span>
+        </div>
+
+        <div class="filtros-grid">
+
+            <!-- PERÍODO -->
+            <div class="campo-filtro">
+                <label>Período</label>
+
+                <div class="campo-duplo">
+                    <input
+                        type="date"
+                        id="dataInicialFisico"
+                    >
+
+                    <span>até</span>
+
+                    <input
+                        type="date"
+                        id="dataFinalFisico"
+                    >
+                </div>
+            </div>
+
+            <!-- STATUS -->
+            <div class="campo-filtro">
+                <label>Status</label>
+
+                <select id="statusClienteFisico">
+                    <option value="todos">Todos</option>
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
+
+            <!-- CIDADE -->
+            <div class="campo-filtro">
+                <label for="cidadeClienteFisico">Cidade</label>
+
+                <div class="input-icon">
+                    <input
+                        type="text"
+                        id="cidadeClienteFisico"
+                        placeholder="Pesquisar cidade..."
+                    >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+
+            <!-- ESTADO -->
+            <div class="campo-filtro">
+                <label for="estadoClienteFisico">Estado</label>
+
+                <select id="estadoClienteFisico">
+                    <option value="">Todos</option>
+                    <option value="AC">Acre</option>
+                    <option value="AL">Alagoas</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="DF">Distrito Federal</option>
+                    <option value="ES">Espírito Santo</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="PA">Pará</option>
+                    <option value="PB">Paraíba</option>
+                    <option value="PR">Paraná</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="RR">Roraima</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="SE">Sergipe</option>
+                    <option value="TO">Tocantins</option>
+                </select>
+            </div>
+
+            <!-- PESQUISA -->
+            <div class="campo-filtro campo-span-2">
+                <label for="pesquisaClienteFisico">
+                    Pesquisar Cliente Físico
+                </label>
+
+                <div class="input-icon">
+                    <input
+                        type="text"
+                        id="pesquisaClienteFisico"
+                        placeholder="Nome, CPF, e-mail..."
+                        autocomplete="off"
+                    >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- CONFIGURAÇÕES DO RELATÓRIO -->
+    <div class="relatorio-config-grid">
+
+        <!-- INFORMAÇÕES -->
+        <div class="relatorio-card-secao">
+
+            <div class="secao-header">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Colunas que precisam ser inclusas</span>
+            </div>
+
+            <!-- CHECKBOX MESTRE -->
+            <div class="checkbox-master-container">
+                <label class="custom-checkbox">
+                    <input
+                        type="checkbox"
+                        id="masterInformacoesRelatorioFisicos"
+                        checked
+                    >
+
+                    <span>Selecionar todas</span>
+                </label>
+            </div>
+
+            <!-- COLUNAS -->
+            <div
+                class="checkbox-grid"
+                id="checkboxGridInformacoesFisicos"
+            >
+
+                <label class="custom-checkbox">
+                    <input
+                        type="checkbox"
+                        name="informacoes_fisicos[]"
+                        value="nome"
+                        checked
+                    >
+                    <span>NOME</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input
+                        type="checkbox"
+                        name="informacoes_fisicos[]"
+                        value="tipo"
+                        checked
+                    >
+                    <span>TIPO</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input
+                        type="checkbox"
+                        name="informacoes_fisicos[]"
+                        value="cpf"
+                        checked
+                    >
+                    <span>CPF</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input
+                        type="checkbox"
+                        name="informacoes_fisicos[]"
+                        value="email"
+                        checked
+                    >
+                    <span>E-MAIL</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input
+                        type="checkbox"
+                        name="informacoes_fisicos[]"
+                        value="telefone"
+                        checked
+                    >
+                    <span>TELEFONE / WHATSAPP</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input
+                        type="checkbox"
+                        name="informacoes_fisicos[]"
+                        value="cidade_estado"
+                        checked
+                    >
+                    <span>CIDADE / ESTADO</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input
+                        type="checkbox"
+                        name="informacoes_fisicos[]"
+                        value="status"
+                        checked
+                    >
+                    <span>STATUS</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input
+                        type="checkbox"
+                        name="informacoes_fisicos[]"
+                        value="data_cadastro"
+                        checked
+                    >
+                    <span>DATA DO CADASTRO</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input
+                        type="checkbox"
+                        name="informacoes_fisicos[]"
+                        value="valor_gasto_total"
+                        checked
+                    >
+                    <span>VALOR GASTO TOTAL</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input
+                        type="checkbox"
+                        name="informacoes_fisicos[]"
+                        value="ultima_compra"
+                        checked
+                    >
+                    <span>ÚLTIMA COMPRA</span>
+                </label>
+
+            </div>
+        </div>
+
+
+        <!-- ORDENAÇÃO -->
+        <div class="relatorio-card-secao campo-span-2">
+
+            <div class="secao-header">
+                <i class="fa-solid fa-arrow-down-short-wide"></i>
+                <span>Ordenação</span>
+            </div>
+
+            <div class="ordenacao-container">
+
+                <div class="campo-filtro">
+                    <label for="ordenarClientesFisicos">
+                        Ordenar por
+                    </label>
+
+                    <select id="ordenarClientesFisicos">
+                        <option value="nome">Nome</option>
+                        <option value="data_inclusao">Data Cadastro</option>
+                        <option value="valor_gasto">Valor Gasto</option>
+                    </select>
+                </div>
+
+                <div class="campo-filtro">
+                    <label>Ordem</label>
+
+                    <div class="radio-grupo">
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="ordem_fisicos"
+                                value="asc"
+                                checked
+                            >
+
+                            Crescente
+                        </label>
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="ordem_fisicos"
+                                value="desc"
+                            >
+
+                            Decrescente
+                        </label>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- RESUMO FÍSICOS -->
+    <section class="relatorio-resumo">
+
+        <!-- CLIENTES ENCONTRADOS -->
+        <div class="card-resumo card-clientes">
+
+            <div class="icone-card">
+                <i class="fa-solid fa-users"></i>
+            </div>
+
+            <div>
+                <span>Clientes encontrados</span>
+
+                <strong id="totalClientesFisicos">
+                    {{ clientes_fisicos.paginator.count }}
+                </strong>
+
+                <small>Total de clientes físicos</small>
+            </div>
+
+        </div>
+
+        <!-- PESSOA FÍSICA -->
+        <div class="card-resumo card-fisica">
+
+            <div class="icone-card">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div>
+                <span>Pessoa Física</span>
+
+                <strong id="totalPessoaFisica">
+                    {{ clientes_fisicos.paginator.count }}
+                </strong>
+
+                <small>Clientes físicos cadastrados</small>
+            </div>
+
+        </div>
+
+        <!-- VALOR MOVIMENTADO -->
+        <div class="card-resumo card-valor">
+
+            <div class="icone-card">
+                <i class="fa-solid fa-dollar-sign"></i>
+            </div>
+
+            <div>
+                <span>Valor movimentado</span>
+
+                <strong id="valorMovimentadoFisicos">
+                    R$ {{ valor_movimentado_fisicos }}
+                </strong>
+
+                <small>Total dos clientes físicos</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TABELA FÍSICOS COM EXPORTAÇÃO -->
+    <section class="relatorio-card-secao">
+
+        <div class="secao-header-com-acoes">
+
+            <div class="secao-header">
+                <i class="fa-solid fa-table-list"></i>
+
+                <span>
+                    Pré-visualização dos resultados - Clientes Físicos
+                </span>
+            </div>
+
+            <!-- BOTÃO E POPOVER DE EXPORTAÇÃO -->
+            <div
+                class="popover-exportar-wrapper"
+                id="popoverExportarFisicos"
+                data-url="{% url 'exportar_clientes_fisicos' %}"
+            >
+
+                <button
+                    type="button"
+                    class="btn-baixar-trigger"
+                    id="btnTriggerBaixarFisicos"
+                >
+                    <i class="fa-solid fa-download"></i>
+                    <span>Baixar dados</span>
+                </button>
+
+                <!-- POPOVER -->
+                <div
+                    class="popover-baixar-card"
+                    id="popoverBaixarCardFisicos"
+                >
+
+                    <h3>Baixar dados</h3>
+
+                    <!-- FORMATOS -->
+                    <div class="formatos-toggle-group">
+
+                        <button
+                            type="button"
+                            class="btn-formato-opcao ativo"
+                            data-formato="csv"
+                        >
+                            .csv
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn-formato-opcao"
+                            data-formato="xlsx"
+                        >
+                            .xlsx
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn-formato-opcao"
+                            data-formato="json"
+                        >
+                            .json
+                        </button>
+
+                    </div>
+
+                    <p class="alerta-linhas">
+                        O tempo de download será baseado conforme a quantidade filtrada.
+                    </p>
+
+                    <!-- DOWNLOAD -->
+                    <div class="popover-footer">
+
+                        <button
+                            type="button"
+                            class="btn-confirmar-download"
+                            id="btnConfirmarDownloadFisicos"
+                        >
+                            Baixar
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- TABELA -->
+        <div class="tabela-container">
+
+            <table class="relatorio-tabela">
+
+                <thead>
+                    <tr>
+                        <th>NOME</th>
+                        <th>TIPO</th>
+                        <th>CPF</th>
+                        <th>E-MAIL</th>
+                        <th>TELEFONE / WHATSAPP</th>
+                        <th>CIDADE / ESTADO</th>
+                        <th>STATUS</th>
+                        <th>DATA CADASTRO</th>
+                        <th>VALOR GASTO TOTAL</th>
+                        <th>ÚLTIMA COMPRA</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tbodyClientesFisicos">
+
+                    {% for cliente in clientes_fisicos %}
+
+                    <tr>
+
+                        <td>{{ cliente.nome }}</td>
+
+                        <td>
+                            <span class="badge-tipo fisico">
+                                Físico
+                            </span>
+                        </td>
+
+                        <td>{{ cliente.cpf|default:"-" }}</td>
+
+                        <td>{{ cliente.email|default:"-" }}</td>
+
+                        <td>{{ cliente.telefone|default:"-" }}</td>
+
+                        <td>
+                            {% if cliente.cidade or cliente.estado %}
+                                {{ cliente.cidade|default:"-" }} / {{ cliente.estado|default:"-" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if cliente.status|lower == 'ativo' %}
+                                <span class="badge-status ativo">
+                                    {{ cliente.status|upper }}
+                                </span>
+                            {% else %}
+                                <span class="badge-status inativo">
+                                    {{ cliente.status|upper }}
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {{ cliente.data_inclusao|date:"d/m/Y" }}
+                        </td>
+
+                        <td>
+                            R$ {{ cliente.valor_gasto|floatformat:2 }}
+                        </td>
+
+                        <td>
+                            {% if cliente.ultima_compra %}
+                                {{ cliente.ultima_compra|date:"d/m/Y" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td
+                            colspan="10"
+                            style="text-align: center; padding: 20px;"
+                        >
+                            Nenhum cliente físico cadastrado.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- PAGINAÇÃO FÍSICOS -->
+        <div class="tabela-rodape">
+
+            <span id="infoPaginacaoFisicos">
+
+                {% if clientes_fisicos.paginator.count > 0 %}
+
+                    Mostrando
+                    {{ clientes_fisicos.start_index }} a
+                    {{ clientes_fisicos.end_index }}
+                    de
+                    {{ clientes_fisicos.paginator.count }}
+                    clientes físicos
+
+                {% else %}
+
+                    Nenhum cliente físico encontrado
+
+                {% endif %}
+
+            </span>
+
+            <div
+                class="paginacao"
+                id="paginacaoFisicos"
+            >
+
+                {% if clientes_fisicos.has_previous %}
+
+                    <a
+                        href="?page_fisicos={{ clientes_fisicos.previous_page_number }}"
+                        class="btn-paginacao"
+                    >
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+
+                {% else %}
+
+                    <button class="btn-paginacao" disabled>
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                {% endif %}
+
+
+                {% for numero in clientes_fisicos.paginator.page_range %}
+
+                    {% if numero == clientes_fisicos.number %}
+
+                        <span class="btn-paginacao ativo">
+                            {{ numero }}
+                        </span>
+
+                    {% elif numero > clientes_fisicos.number|add:"-3" and numero < clientes_fisicos.number|add:"3" %}
+
+                        <a
+                            href="?page_fisicos={{ numero }}"
+                            class="btn-paginacao"
+                        >
                             {{ numero }}
                         </a>
+
                     {% endif %}
 
                 {% endfor %}
 
-                <!-- PÁGINA SEGUINTE -->
-                {% if clientes.has_next %}
-                    <a href="?page={{ clientes.next_page_number }}"
-                    class="btn-paginacao">
+
+                {% if clientes_fisicos.has_next %}
+
+                    <a
+                        href="?page_fisicos={{ clientes_fisicos.next_page_number }}"
+                        class="btn-paginacao"
+                    >
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
+
                 {% else %}
+
                     <button class="btn-paginacao" disabled>
                         <i class="fa-solid fa-chevron-right"></i>
                     </button>
+
                 {% endif %}
 
             </div>
         </div>
+
     </section>
 
-    <!-- BARRA DE AÇÕES INFERIOR -->
-    <div class="relatorio-acoes-bottom">
-        <button class="btn-relatorio btn-visualizar">
-            <i class="fa-solid fa-eye"></i> Visualizar Relatório
-        </button>
-        <button class="btn-relatorio btn-pdf">
-            <i class="fa-solid fa-file-pdf"></i> Gerar PDF
-        </button>
-        <button class="btn-relatorio btn-excel">
-            <i class="fa-solid fa-file-excel"></i> Exportar Excel
-        </button>
-        <button class="btn-relatorio btn-csv">
-            <i class="fa-solid fa-file-csv"></i> Exportar CSV
-        </button>
-        <button class="btn-relatorio btn-cancelar">
-            <i class="fa-solid fa-circle-xmark"></i> Cancelar
-        </button>
+</div>
+
+        
+
+<!-- ================================================= -->
+<!-- ABA 3: RELATÓRIO DE USUÁRIOS -->
+<!-- ================================================= -->
+
+<div id="abaRelatorioUsuarios" class="relatorio-pagina">
+
+    <!-- CONFIGURAÇÃO DE PRESENÇA -->
+    <div id="configuracao-presenca"
+        data-url="{% url 'atualizar_presenca' %}"
+        hidden>
+    </div>
+
+    <!-- 1. FILTROS -->
+    <section class="relatorio-card-secao"
+             id="filtrosRelatorioUsuarios"
+             data-url="{% url 'filtrar_usuarios' %}"
+             data-url-tempo-conexao="{% url 'relatorio_tempo_conexao' %}"
+             data-url-alterar-status="{% url 'alterar_status_usuario_admin' 0 %}">
+
+        <div class="secao-header">
+            <i class="fa-solid fa-filter"></i>
+            <span>Filtros</span>
+        </div>
+
+        <div class="filtros-grid">
+
+            <div class="campo-filtro">
+                <label>Período</label>
+
+                <div class="campo-duplo">
+                    <input type="date" id="dataInicialUsuario">
+                    <span>até</span>
+                    <input type="date" id="dataFinalUsuario">
+                </div>
+            </div>
+
+            <div class="campo-filtro">
+                <label>Status da conta</label>
+                <select id="statusUsuario">
+                    <option value="todos">Todos</option>
+                    <option value="Ativo">Ativos</option>
+                    <option value="Inativo">Inativos</option>
+                </select>
+            </div>
+
+            <div class="campo-filtro">
+                <label>Status de conexão</label>
+
+                <select id="conexaoUsuario">
+                    <option value="todos">Todos</option>
+                    <option value="online">Online</option>
+                    <option value="ausente">Ausente</option>
+                    <option value="offline">Offline</option>
+                </select>
+            </div>
+
+            <div class="campo-filtro">
+                <label>Tipo de acesso</label>
+
+                <input type="text"
+                       id="acessoUsuario"
+                       placeholder="Pesquisar acesso...">
+            </div>
+
+            <div class="campo-filtro campo-span-2">
+                <label for="pesquisaUsuario">
+                    Pesquisar usuário
+                </label>
+
+                <div class="input-icon">
+                    <input type="text"
+                           id="pesquisaUsuario"
+                           placeholder="Nome, usuário, e-mail, CPF..."
+                           autocomplete="off">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- 2. CONFIGURAÇÕES DO RELATÓRIO -->
+    <div class="relatorio-config-grid">
+
+        <!-- INFORMAÇÕES -->
+        <div class="relatorio-card-secao">
+
+            <div class="secao-header">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Colunas que precisam ser inclusas</span>
+            </div>
+
+            <div class="checkbox-master-container">
+                <label class="custom-checkbox">
+                    <input type="checkbox"
+                           id="masterInformacoesRelatorioUsuarios"
+                           checked>
+
+                    <span>Selecionar todas</span>
+                </label>
+            </div>
+
+            <div class="checkbox-grid"
+                 id="checkboxGridInformacoesUsuarios">
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="nome" checked>
+                    <span>NOME COMPLETO</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="username" checked>
+                    <span>USUÁRIO</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="email" checked>
+                    <span>E-MAIL</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="telefone" checked>
+                    <span>TELEFONE</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="cpf" checked>
+                    <span>CPF</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="cnpj" checked>
+                    <span>CNPJ</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="rg" checked>
+                    <span>RG</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="acesso" checked>
+                    <span>ACESSO</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="status" checked>
+                    <span>STATUS DA CONTA</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="status_conexao" checked>
+                    <span>STATUS DE CONEXÃO</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="cidade" checked>
+                    <span>CIDADE</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="estado" checked>
+                    <span>ESTADO</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="data_cadastro" checked>
+                    <span>DATA DO CADASTRO</span>
+                </label>
+
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="informacoes_usuarios[]" value="data_nascimento" checked>
+                    <span>DATA DE NASCIMENTO</span>
+                </label>
+
+            </div>
+        </div>
+
+
+        <!-- ORDENAÇÃO -->
+        <div class="relatorio-card-secao campo-span-2">
+
+            <div class="secao-header">
+                <i class="fa-solid fa-arrow-down-short-wide"></i>
+                <span>Ordenação</span>
+            </div>
+
+            <div class="ordenacao-container">
+
+                <div class="campo-filtro">
+                    <label for="ordenarUsuarios">Ordenar por</label>
+
+                    <select id="ordenarUsuarios">
+                        <option value="nome">Nome</option>
+                        <option value="username">Usuário</option>
+                        <option value="data_cadastro">Data Cadastro</option>
+                        <option value="acesso">Acesso</option>
+                    </select>
+                </div>
+
+                <div class="campo-filtro">
+                    <label>Ordem</label>
+
+                    <div class="radio-grupo">
+
+                        <label>
+                            <input type="radio"
+                                   name="ordem_usuarios"
+                                   value="asc"
+                                   checked>
+                            Crescente
+                        </label>
+
+                        <label>
+                            <input type="radio"
+                                   name="ordem_usuarios"
+                                   value="desc">
+                            Decrescente
+                        </label>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- 3. RESUMO DOS USUÁRIOS -->
+    <section class="relatorio-resumo">
+
+        <div class="card-resumo card-clientes">
+            <div class="icone-card">
+                <i class="fa-solid fa-users"></i>
+            </div>
+
+            <div>
+                <span>Usuários encontrados</span>
+                <strong id="totalUsuarios">0</strong>
+                <small>Total de usuários cadastrados</small>
+            </div>
+        </div>
+
+        <div class="card-resumo card-juridica">
+            <div class="icone-card">
+                <i class="fa-solid fa-user-check"></i>
+            </div>
+
+            <div>
+                <span>Usuários ativos</span>
+                <strong id="totalUsuariosAtivos">0</strong>
+                <small>Contas ativas</small>
+            </div>
+        </div>
+
+        <div class="card-resumo card-valor">
+            <div class="icone-card">
+                <i class="fa-solid fa-user-xmark"></i>
+            </div>
+
+            <div>
+                <span>Usuários inativos</span>
+                <strong id="totalUsuariosInativos">0</strong>
+                <small>Contas inativas</small>
+            </div>
+        </div>
+
+    </section>
+
+<!-- =========================================
+     MODAL - TEMPO DE CONEXÃO DOS USUÁRIOS
+========================================= -->
+
+<div class="modal fade"
+     id="modalTempoConexaoUsuarios"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-tempo-conexao-dialog">
+
+        <div class="modal-content modal-tempo-conexao-content">
+
+            <!-- MENU DE ALTERAÇÃO DE STATUS -->
+            <div class="menu-status-tempo" id="menuStatusTempo">
+
+                <button type="button" data-status="online">
+                    <i class="fa-solid fa-circle"></i>
+                    Online
+                </button>
+
+                <button type="button" data-status="ausente">
+                    <i class="fa-solid fa-circle"></i>
+                    Ausente
+                </button>
+
+                <button type="button" data-status="offline">
+                    <i class="fa-solid fa-circle"></i>
+                    Offline
+                </button>
+
+            </div>
+
+            <!-- CABEÇALHO -->
+            <div class="modal-header modal-tempo-conexao-header">
+
+                <h5>
+                    <i class="fa-solid fa-clock"></i>
+                    Tempo de Conexão dos Usuários
+                </h5>
+
+                <button type="button"
+                        class="btn-modal-fechar-tempo-conexao"
+                        data-bs-dismiss="modal">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- CORPO -->
+            <div class="modal-body modal-tempo-conexao-body">
+
+                <p class="descricao-tempo-conexao">
+                    Acompanhamento do tempo de permanência dos usuários em cada status de conexão.
+                </p>
+
+
+                <!-- CARDS DE RESUMO -->
+                <div class="resumo-tempo-conexao">
+
+                    <div class="card-tempo-conexao card-total-usuarios-tempo">
+
+                        <div class="card-tempo-conexao-info">
+                            <span>Usuários</span>
+                            <strong id="totalUsuariosTempo">0</strong>
+                        </div>
+
+                        <div class="card-tempo-conexao-icone">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-tempo-conexao card-total-online-tempo">
+
+                        <div class="card-tempo-conexao-info">
+                            <span>Tempo Online</span>
+                            <strong id="totalOnlineTempo">00h 00min</strong>
+                        </div>
+
+                        <div class="card-tempo-conexao-icone">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-tempo-conexao card-total-ausente-tempo">
+
+                        <div class="card-tempo-conexao-info">
+                            <span>Tempo Ausente</span>
+                            <strong id="totalAusenteTempo">00h 00min</strong>
+                        </div>
+
+                        <div class="card-tempo-conexao-icone">
+                            <i class="fa-solid fa-moon"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- TABELA -->
+                <div class="tabela-tempo-conexao-container">
+
+                    <table class="tabela-tempo-conexao">
+
+                        <thead>
+                            <tr>
+                                <th>USUÁRIO</th>
+                                <th>ONLINE</th>
+                                <th>AUSENTE</th>
+                                <th>OFFLINE</th>
+                                <th>TEMPO TOTAL</th>
+                                <th>AÇÕES</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tbodyTempoConexaoUsuarios">
+
+                            <tr>
+                                <td colspan="6" class="td-tempo-conexao-vazio">
+                                    <i class="fa-solid fa-spinner fa-spin"></i>
+                                    Carregando usuários...
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <!-- RODAPÉ -->
+            <div class="modal-footer modal-tempo-conexao-footer">
+
+                <span id="infoTempoConexao">
+                    Exibindo 0 usuários
+                </span>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>
 
-        </div>
 
-        <!-- ABA 2: USUÁRIOS -->
-        <div id="abaRelatorioUsuarios" class="relatorio-pagina">
+    <!-- 4. PRÉ-VISUALIZAÇÃO E EXPORTAÇÃO -->
+    <section class="relatorio-card-secao">
 
-            <div class="relatorio-card-secao">
-                <div class="secao-header">
-                    <i class="fa-solid fa-user-gear"></i>
-                    <span>Relatórios de Usuários</span>
-                </div>
+        <div class="secao-header-com-acoes">
 
-                <p>Configure e gere relatórios dos usuários cadastrados no sistema.</p>
+            <div class="secao-header">
+                <i class="fa-solid fa-table-list"></i>
+                <span>Pré-visualização dos resultados - Usuários</span>
             </div>
 
-            <div class="card-resumo card-fisica">
-                <div class="icone-card"><i class="fa-solid fa-user"></i></div>
-                <div>
-                    <span>Pessoa Física</span>
-                    <strong>58</strong>
-                    <small>40,00% do total</small>
+            
+
+=
+            <!-- EXPORTAÇÃO -->
+            <div class="popover-exportar-wrapper"
+                id="popoverExportarUsuarios"
+                data-url="{% url 'exportar_usuarios' %}">
+
+                <div class="acoes-exportacao-usuarios">
+
+                    <button type="button"
+                            class="btn-tempo-conexao"
+                            id="btnTempoConexaoUsuarios">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Tempo de conexão</span>
+                    </button>
+
+                    <button type="button"
+                            class="btn-baixar-trigger"
+                            id="btnTriggerBaixarUsuarios">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Baixar dados</span>
+                    </button>
+
                 </div>
+
+                <div class="popover-baixar-card"
+                    id="popoverBaixarCardUsuarios">
+
+                    <h3>Baixar dados</h3>
+
+                    <div class="formatos-toggle-group">
+
+                        <button type="button"
+                                class="btn-formato-opcao ativo"
+                                data-formato="csv">
+                            .csv
+                        </button>
+
+                        <button type="button"
+                                class="btn-formato-opcao"
+                                data-formato="xlsx">
+                            .xlsx
+                        </button>
+
+                        <button type="button"
+                                class="btn-formato-opcao"
+                                data-formato="json">
+                            .json
+                        </button>
+
+                    </div>
+
+                    <p class="alerta-linhas">
+                        O tempo de download será baseado conforme a quantidade filtrada.
+                    </p>
+
+                    <div class="popover-footer">
+
+                        <button type="button"
+                                class="btn-confirmar-download"
+                                id="btnConfirmarDownloadUsuarios">
+                            Baixar
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- TABELA -->
+        <div class="tabela-container">
+
+            <table class="relatorio-tabela">
+
+                <thead id="theadUsuarios">
+                    <tr>
+                        <th>NOME</th>
+                        <th>USUÁRIO</th>
+                        <th>E-MAIL</th>
+                        <th>ACESSO</th>
+                        <th>STATUS</th>
+                        <th>DATA CADASTRO</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tbodyUsuarios">
+
+                    <tr>
+                        <td colspan="14" style="text-align:center; padding:20px;">
+                            Carregando usuários...
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- PAGINAÇÃO -->
+        <div class="tabela-rodape">
+
+            <span id="infoPaginacaoUsuarios">
+                Exibindo 0 de 0 usuários
+            </span>
+
+            <div class="paginacao" id="paginacaoUsuarios"></div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+
+        
+<!-- ================================================= -->
+<!-- ABA 4: BUSINESS INTELLIGENCE -->
+<!-- ================================================= -->
+<div id="abaRelatorioBI" 
+    class="relatorio-pagina" ''
+    data-url="{% url 'dados_business_intelligence' %}">
+
+    <!-- CABEÇALHO DO BI -->
+    <section class="bi-cabecalho">
+
+        <div class="bi-titulo">
+            <div class="bi-titulo-icone">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <div>
+                <h2>Painel de indicadores e análise de desempenho do sistema</h2>
+            </div>
+        </div>
+
+        <div class="bi-filtros">
+
+            <div class="bi-filtro-periodo">
+                <label for="biDataInicial">Data inicial</label>
+                <input type="date" id="biDataInicial">
+            </div>
+
+            <div class="bi-filtro-periodo">
+                <label for="biDataFinal">Data final</label>
+                <input type="date" id="biDataFinal">
+            </div>
+
+            <button type="button" id="btnFiltrarBI" class="btn-bi-filtrar">
+                <i class="fa-solid fa-filter"></i>
+                Filtrar
+            </button>
+
+            <button type="button" id="btnLimparBI" class="btn-bi-limpar">
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- INDICADORES GERAIS -->
+    <!-- ================================================= -->
+
+    <section class="bi-indicadores">
+
+        <!-- JURÍDICOS -->
+        <div class="bi-card-indicador bi-card-azul">
+
+            <div class="bi-card-topo">
+                <div class="bi-card-icone">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+
+                <span class="bi-card-legenda">Clientes jurídicos</span>
+            </div>
+
+            <div class="bi-card-valor" id="biTotalJuridicos">—</div>
+
+            <div class="bi-card-rodape">
+                <i class="fa-solid fa-arrow-trend-up bi-seta-animada"></i>
+                <span id="biVariacaoJuridicos">Aguardando dados</span>
             </div>
 
         </div>
 
-        <!-- ABA 3: BI -->
-        <div id="abaRelatorioBI" class="relatorio-pagina">
 
-            <div class="relatorio-card-secao">
-                <div class="secao-header">
+        <!-- FÍSICOS -->
+        <div class="bi-card-indicador bi-card-roxo">
+
+            <div class="bi-card-topo">
+                <div class="bi-card-icone">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <span class="bi-card-legenda">Clientes físicos</span>
+            </div>
+
+            <div class="bi-card-valor" id="biTotalFisicos">—</div>
+
+            <div class="bi-card-rodape">
+                <i class="fa-solid fa-arrow-trend-up bi-seta-animada"></i>
+                <span id="biVariacaoFisicos">Aguardando dados</span>
+            </div>
+
+        </div>
+
+
+        <!-- USUÁRIOS -->
+        <div class="bi-card-indicador bi-card-ciano">
+
+            <div class="bi-card-topo">
+                <div class="bi-card-icone">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <span class="bi-card-legenda">Usuários cadastrados</span>
+            </div>
+
+            <div class="bi-card-valor" id="biTotalUsuarios">—</div>
+
+            <div class="bi-card-rodape">
+                <i class="fa-solid fa-arrow-trend-up bi-seta-animada"></i>
+                <span id="biVariacaoUsuarios">Aguardando dados</span>
+            </div>
+
+        </div>
+
+
+        <!-- USUÁRIOS ATIVOS -->
+        <div class="bi-card-indicador bi-card-verde">
+
+            <div class="bi-card-topo">
+                <div class="bi-card-icone">
+                    <i class="fa-solid fa-user-check"></i>
+                </div>
+
+                <span class="bi-card-legenda">Usuários ativos</span>
+            </div>
+
+            <div class="bi-card-valor" id="biUsuariosAtivos">—</div>
+
+            <div class="bi-card-rodape">
+                <i class="fa-solid fa-circle-check"></i>
+                <span id="biPercentualUsuariosAtivos">Aguardando dados</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- VISÃO GERAL -->
+    <!-- ================================================= -->
+
+    <section class="bi-secao">
+
+        <div class="bi-secao-titulo">
+            <div>
+                <h3>Visão geral</h3>
+                <p>Indicadores consolidados dos relatórios</p>
+            </div>
+
+            <span class="bi-tag">
+                <i class="fa-solid fa-chart-pie"></i>
+                Geral
+            </span>
+        </div>
+
+
+        <div class="bi-graficos-grid">
+
+            <!-- EVOLUÇÃO DOS CADASTROS -->
+            <div class="bi-grafico-card bi-grafico-largo">
+
+                <div class="bi-grafico-header">
+                    <div>
+                        <h4>Evolução de cadastros</h4>
+                        <p>Comparativo mensal dos registros</p>
+                    </div>
+
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+
+                <div class="bi-grafico-area">
+                    <canvas id="graficoEvolucaoCadastros"></canvas>
+                </div>
+
+            </div>
+
+
+            <!-- DISTRIBUIÇÃO DE CLIENTES -->
+            <div class="bi-grafico-card">
+
+                <div class="bi-grafico-header">
+                    <div>
+                        <h4>Distribuição de clientes</h4>
+                        <p>Jurídicos x Físicos</p>
+                    </div>
+
                     <i class="fa-solid fa-chart-pie"></i>
-                    <span>Business Intelligence</span>
                 </div>
 
-                <p>
-                    Visualize indicadores, métricas e análises gerais
-                    do sistema.
-                </p>
+                <div class="bi-grafico-area bi-grafico-donut">
+                    <canvas id="graficoDistribuicaoClientes"></canvas>
+                </div>
+
             </div>
 
-            <!-- Aqui serão adicionados os gráficos e indicadores do BI. -->
+
+            <!-- SITUAÇÃO DOS USUÁRIOS -->
+            <div class="bi-grafico-card">
+
+                <div class="bi-grafico-header">
+                    <div>
+                        <h4>Situação dos usuários</h4>
+                        <p>Ativos e inativos</p>
+                    </div>
+
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <div class="bi-grafico-area bi-grafico-donut">
+                    <canvas id="graficoSituacaoUsuarios"></canvas>
+                </div>
+
+            </div>
 
         </div>
 
-    </div>
+    </section>
 
-    
+
+    <!-- ================================================= -->
+    <!-- ANÁLISE DE CLIENTES JURÍDICOS -->
+    <!-- ================================================= -->
+
+    <section class="bi-secao">
+
+        <div class="bi-secao-titulo">
+            <div>
+                <h3>
+                    <i class="fa-solid fa-building bi-icone-azul"></i>
+                    Análise de clientes jurídicos
+                </h3>
+
+                <p>Indicadores e distribuição dos clientes empresariais</p>
+            </div>
+
+            <span class="bi-tag bi-tag-azul">Jurídicos</span>
+        </div>
+
+
+        <div class="bi-graficos-grid">
+
+            <div class="bi-grafico-card">
+                <div class="bi-grafico-header">
+                    <div>
+                        <h4>Cadastros por período</h4>
+                        <p>Evolução dos clientes jurídicos</p>
+                    </div>
+                </div>
+
+                <div class="bi-grafico-area">
+                    <canvas id="graficoEvolucaoJuridicos"></canvas>
+                </div>
+            </div>
+
+
+            <div class="bi-grafico-card">
+                <div class="bi-grafico-header">
+                    <div>
+                        <h4>Distribuição por estado</h4>
+                        <p>Localização dos clientes</p>
+                    </div>
+                </div>
+
+                <div class="bi-grafico-area">
+                    <canvas id="graficoEstadosJuridicos"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- ANÁLISE DE CLIENTES FÍSICOS -->
+    <!-- ================================================= -->
+
+    <section class="bi-secao">
+
+        <div class="bi-secao-titulo">
+            <div>
+                <h3>
+                    <i class="fa-solid fa-user bi-icone-roxo"></i>
+                    Análise de clientes físicos
+                </h3>
+
+                <p>Indicadores e distribuição dos clientes individuais</p>
+            </div>
+
+            <span class="bi-tag bi-tag-roxo">Físicos</span>
+        </div>
+
+
+        <div class="bi-graficos-grid">
+
+            <div class="bi-grafico-card">
+                <div class="bi-grafico-header">
+                    <div>
+                        <h4>Cadastros por período</h4>
+                        <p>Evolução dos clientes físicos</p>
+                    </div>
+                </div>
+
+                <div class="bi-grafico-area">
+                    <canvas id="graficoEvolucaoFisicos"></canvas>
+                </div>
+            </div>
+
+
+            <div class="bi-grafico-card">
+                <div class="bi-grafico-header">
+                    <div>
+                        <h4>Distribuição por estado</h4>
+                        <p>Localização dos clientes</p>
+                    </div>
+                </div>
+
+                <div class="bi-grafico-area">
+                    <canvas id="graficoEstadosFisicos"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- ANÁLISE DE USUÁRIOS -->
+    <!-- ================================================= -->
+
+    <section class="bi-secao">
+
+        <div class="bi-secao-titulo">
+            <div>
+                <h3>
+                    <i class="fa-solid fa-users bi-icone-ciano"></i>
+                    Análise de usuários
+                </h3>
+
+                <p>Atividade, acessos e comportamento dos usuários</p>
+            </div>
+
+            <span class="bi-tag bi-tag-ciano">Usuários</span>
+        </div>
+
+
+        <div class="bi-graficos-grid">
+
+            <!-- STATUS DE CONEXÃO -->
+            <div class="bi-grafico-card">
+
+                <div class="bi-grafico-header">
+                    <div>
+                        <h4>Status de conexão</h4>
+                        <p>Online, ausente e offline</p>
+                    </div>
+                </div>
+
+                <div class="bi-grafico-area bi-grafico-donut">
+                    <canvas id="graficoStatusConexao"></canvas>
+                </div>
+
+            </div>
+
+
+            <!-- CADASTROS DE USUÁRIOS -->
+            <div class="bi-grafico-card">
+
+                <div class="bi-grafico-header">
+                    <div>
+                        <h4>Novos usuários</h4>
+                        <p>Evolução dos cadastros</p>
+                    </div>
+                </div>
+
+                <div class="bi-grafico-area">
+                    <canvas id="graficoEvolucaoUsuarios"></canvas>
+                </div>
+
+            </div>
+
+
+            <!-- TEMPO DE CONEXÃO -->
+            <div class="bi-grafico-card bi-grafico-largo">
+
+                <div class="bi-grafico-header">
+                    <div>
+                        <h4>Tempo de conexão</h4>
+                        <p>Distribuição do tempo online, ausente e offline</p>
+                    </div>
+                </div>
+
+                <div class="bi-grafico-area">
+                    <canvas id="graficoTempoConexao"></canvas>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+</div>
+
 {% endblock %}

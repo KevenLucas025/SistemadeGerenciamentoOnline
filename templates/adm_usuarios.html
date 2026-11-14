@@ -1,8 +1,10 @@
+
 {% extends "base.html" %}
 {% load static %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/adm_usuarios.css' %}">
+<script src="{% static 'js/adm_usuarios.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -24,19 +26,14 @@
 
 <div class="dashboard-page-adm_usuarios">
 
-    <!-- =========================================
-         CABEÇALHO
-    ========================================== -->
-
+    <!-- CABEÇALHO -->
     <div class="usuarios-header">
 
         <div class="usuarios-header-titulo">
 
             <div>
 
-                <h1>
-                    Usuários
-                </h1>
+                <h1>Usuários</h1>
 
                 <p>
                     <span>
@@ -51,49 +48,28 @@
 
         <div class="usuarios-header-acoes">
 
-            <button
-                type="button"
-                class="btn-exportar">
-
-                <i class="fa-solid fa-download"></i>
-
-                Exportar
-
-            </button>
-
-
-            <button
-                type="button"
-                class="btn-novo-usuario">
+            <a href="{% url 'cadastrar_usuarios' %}" class="btn-novo-usuario">
 
                 <i class="fa-solid fa-plus"></i>
 
                 Novo Usuário
 
-            </button>
+            </a>
 
         </div>
 
     </div>
 
 
-    <!-- =========================================
-         CARDS DE RESUMO
-    ========================================== -->
-
+    <!-- CARDS DE RESUMO -->
     <div class="usuarios-resumo">
 
-
         <!-- TOTAL -->
-
         <div class="usuario-resumo-card">
 
             <div class="resumo-icone azul">
-
                 <i class="fa-solid fa-users"></i>
-
             </div>
-
 
             <div class="resumo-conteudo">
 
@@ -115,15 +91,11 @@
 
 
         <!-- ATIVOS -->
-
         <div class="usuario-resumo-card">
 
             <div class="resumo-icone verde">
-
                 <i class="fa-solid fa-user-check"></i>
-
             </div>
-
 
             <div class="resumo-conteudo">
 
@@ -145,15 +117,11 @@
 
 
         <!-- INATIVOS -->
-
         <div class="usuario-resumo-card">
 
             <div class="resumo-icone laranja">
-
                 <i class="fa-solid fa-user-slash"></i>
-
             </div>
-
 
             <div class="resumo-conteudo">
 
@@ -175,15 +143,11 @@
 
 
         <!-- NOVOS -->
-
         <div class="usuario-resumo-card">
 
             <div class="resumo-icone roxo">
-
                 <i class="fa-solid fa-user-plus"></i>
-
             </div>
-
 
             <div class="resumo-conteudo">
 
@@ -206,25 +170,14 @@
     </div>
 
 
-    <!-- =========================================
-         CONTAINER PRINCIPAL
-    ========================================== -->
-
+    <!-- CONTAINER PRINCIPAL -->
     <div class="usuarios-container">
 
-
-        <!-- =====================================
-             FILTROS
-        ====================================== -->
-
+        <!-- FILTROS -->
         <div class="usuarios-filtros">
 
-
             <!-- BUSCA -->
-
-            <form
-                method="GET"
-                class="usuario-busca">
+            <form method="GET" class="usuario-busca">
 
                 <i class="fa-solid fa-magnifying-glass"></i>
 
@@ -234,36 +187,54 @@
                     value="{{ busca }}"
                     id="buscarUsuario"
                     placeholder="Buscar por nome, e-mail ou usuário..."
+                    autocomplete="off"
+                >
+
+                <input
+                    type="hidden"
+                    name="status"
+                    id="statusBusca"
+                    value="{{ status_selecionado }}"
                 >
 
             </form>
 
 
             <!-- PERFIL -->
+            <select id="filtroPerfil" name="perfil">
 
-            <select id="filtroPerfil">
-
-                <option value="">
+                <option value=""
+                    {% if not perfil_selecionado %}selected{% endif %}>
                     Todos os Perfis
                 </option>
 
-                <option value="administrador">
+                <option value="administrador"
+                    {% if perfil_selecionado == "administrador" %}selected{% endif %}>
                     Administrador
                 </option>
 
-                <option value="gerente">
+                <option value="gerente"
+                    {% if perfil_selecionado == "gerente" %}selected{% endif %}>
                     Gerente
                 </option>
 
-                <option value="analista">
+                <option value="analista"
+                    {% if perfil_selecionado == "analista" %}selected{% endif %}>
                     Analista
                 </option>
 
-                <option value="assistente">
+                <option value="assistente"
+                    {% if perfil_selecionado == "assistente" %}selected{% endif %}>
                     Assistente
                 </option>
 
-                <option value="visualizador">
+                <option value="comum"
+                    {% if perfil_selecionado == "comum" %}selected{% endif %}>
+                    Usuário Comum
+                </option>
+
+                <option value="visualizador"
+                    {% if perfil_selecionado == "visualizador" %}selected{% endif %}>
                     Visualizador
                 </option>
 
@@ -271,57 +242,53 @@
 
 
             <!-- STATUS -->
-
             <select
                 id="filtroStatus"
                 onchange="aplicarFiltroStatus(this.value)"
             >
 
                 <option value="">
-                    Status
+                    Todos os Status
                 </option>
 
                 <option
                     value="ativo"
-                    {% if status_selecionado == "ativo" %}
-                        selected
-                    {% endif %}
+                    {% if status_selecionado == "ativo" %}selected{% endif %}
                 >
                     Ativo
                 </option>
 
                 <option
                     value="inativo"
-                    {% if status_selecionado == "inativo" %}
-                        selected
-                    {% endif %}
+                    {% if status_selecionado == "inativo" %}selected{% endif %}
                 >
                     Inativo
+                </option>
+
+                <option
+                    value="bloqueado"
+                    {% if status_selecionado == "bloqueado" %}selected{% endif %}
+                >
+                    Bloqueado
                 </option>
 
             </select>
 
 
             <!-- FILTROS -->
-
-            <button
-                type="button"
-                class="btn-filtro">
-
+            <button type="button" class="btn-filtro" id="abrirFiltros">
                 <i class="fa-solid fa-sliders"></i>
-
                 Filtros
-
             </button>
 
 
             <!-- ATUALIZAR -->
-
             <button
                 type="button"
                 class="btn-atualizar"
                 title="Atualizar"
-                onclick="window.location.reload()">
+                onclick="window.location.reload()"
+            >
 
                 <i class="fa-solid fa-rotate-right"></i>
 
@@ -330,508 +297,285 @@
         </div>
 
 
-        <!-- =====================================
-             TABELA
-        ====================================== -->
+        <!-- TABELA E PAGINAÇÃO DINÂMICAS -->
+        <div id="usuariosTabelaContainer">
 
-        <div class="usuarios-tabela-wrapper">
-
-            <table class="usuarios-tabela">
-
-
-                <!-- CABEÇALHO -->
-
-                <thead>
-
-                    <tr>
-
-                        <th class="col-checkbox">
-
-                            <input
-                                type="checkbox"
-                                id="selecionarTodos"
-                            >
-
-                        </th>
-
-
-                        <th>
-                            USUÁRIO
-                        </th>
-
-
-                        <th>
-                            E-MAIL
-                        </th>
-
-
-                        <th>
-                            PERFIL
-                        </th>
-
-
-                        <th>
-                            STATUS
-                        </th>
-
-
-                        <th>
-                            ÚLTIMO ACESSO
-                        </th>
-
-
-                        <th class="col-acoes">
-                            AÇÕES
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <!-- =====================================
-                     USUÁRIOS REAIS
-                ====================================== -->
-
-                <tbody id="tabelaUsuarios">
-
-
-                    {% for usuario in usuarios %}
-
-                    <tr>
-
-
-                        <!-- CHECKBOX -->
-
-                        <td>
-
-                            <input
-                                type="checkbox"
-                                class="checkbox-usuario"
-                                value="{{ usuario.id }}"
-                            >
-
-                        </td>
-
-
-                        <!-- =================================
-                             USUÁRIO
-                        ================================== -->
-
-                        <td>
-
-                            <div class="usuario-info">
-
-
-                                <!-- AVATAR -->
-
-                                <div class="usuario-avatar azul">
-
-                                    {% if usuario.first_name %}
-
-                                        {{ usuario.first_name|first|upper }}
-
-                                    {% else %}
-
-                                        {{ usuario.username|first|upper }}
-
-                                    {% endif %}
-
-                                </div>
-
-
-                                <!-- INFORMAÇÕES -->
-
-                                <div>
-
-                                    <strong>
-
-                                        {% if usuario.get_full_name %}
-
-                                            {{ usuario.get_full_name }}
-
-                                        {% else %}
-
-                                            {{ usuario.username }}
-
-                                        {% endif %}
-
-                                    </strong>
-
-
-                                    <span>
-                                        @{{ usuario.username }}
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-                        </td>
-
-
-                        <!-- =================================
-                             E-MAIL
-                        ================================== -->
-
-                        <td>
-
-                            {% if usuario.email %}
-
-                                {{ usuario.email }}
-
-                            {% else %}
-
-                                <span class="texto-sem-dado">
-                                    Não informado
-                                </span>
-
-                            {% endif %}
-
-                        </td>
-
-
-                        <!-- =================================
-                             PERFIL
-                        ================================== -->
-
-                        <td>
-
-
-                            {% if usuario.is_superuser %}
-
-                                <span class="perfil-badge administrador">
-
-                                    Administrador
-
-                                </span>
-
-
-                            {% elif usuario.is_staff %}
-
-                                <span class="perfil-badge gerente">
-
-                                    Gerente
-
-                                </span>
-
-
-                            {% else %}
-
-                                <span class="perfil-badge visualizador">
-
-                                    Usuário
-
-                                </span>
-
-                            {% endif %}
-
-
-                        </td>
-
-
-                        <!-- =================================
-                             STATUS
-                        ================================== -->
-
-                        <td>
-
-
-                            {% if usuario.is_active %}
-
-                                <span class="status-badge ativo">
-
-                                    <i class="fa-solid fa-circle"></i>
-
-                                    Ativo
-
-                                </span>
-
-
-                            {% else %}
-
-                                <span class="status-badge inativo">
-
-                                    <i class="fa-solid fa-circle"></i>
-
-                                    Inativo
-
-                                </span>
-
-                            {% endif %}
-
-
-                        </td>
-
-
-                        <!-- =================================
-                             ÚLTIMO ACESSO
-                        ================================== -->
-
-                        <td>
-
-                            {% if usuario.last_login %}
-
-                                {{ usuario.last_login|date:"d/m/Y H:i" }}
-
-                            {% else %}
-
-                                <span class="texto-sem-dado">
-
-                                    Nunca acessou
-
-                                </span>
-
-                            {% endif %}
-
-                        </td>
-
-
-                        <!-- =================================
-                             AÇÕES
-                        ================================== -->
-
-                        <td>
-
-                            <div class="acoes-usuario">
-
-
-                                <!-- VISUALIZAR -->
-                                <button
-                                    type="button"
-                                    title="Visualizar"
-                                    class="btn-visualizar"
-                                    data-id="{{ usuario.id }}"
-                                    onclick="visualizarUsuario(this.dataset.id)"
-                                >
-                                    <i class="fa-regular fa-eye"></i>
-                                </button>
-
-
-                                <!-- EDITAR -->
-                                <button
-                                    type="button"
-                                    title="Editar"
-                                    class="btn-editar"
-                                    data-id="{{ usuario.id }}"
-                                    onclick="editarUsuario(this.dataset.id)"
-                                >
-                                    <i class="fa-solid fa-pen"></i>
-                                </button>
-
-
-                                <!-- EXCLUIR -->
-                                <button
-                                    type="button"
-                                    class="excluir"
-                                    title="Excluir"
-                                    data-id="{{ usuario.id }}"
-                                    onclick="excluirUsuario(this.dataset.id)"
-                                >
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-
-                    {% empty %}
-
-
-                    <!-- =================================
-                         NENHUM USUÁRIO
-                    ================================== -->
-
-                    <tr>
-
-                        <td
-                            colspan="7"
-                            class="tabela-vazia"
-                        >
-
-                            <div>
-
-                                <i class="fa-solid fa-users-slash"></i>
-
-                                <strong>
-                                    Nenhum usuário encontrado
-                                </strong>
-
-                                <span>
-                                    Não existem usuários cadastrados com os filtros selecionados.
-                                </span>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-
-                    {% endfor %}
-
-
-                </tbody>
-
-            </table>
+            {% include "adm_usuarios/tabela_usuarios_adm.html" %}
 
         </div>
-
-
-        <!-- =====================================
-             RODAPÉ DA TABELA
-        ====================================== -->
-
-        <div class="usuarios-tabela-footer">
-
-
-            <span>
-
-                Mostrando
-
-                <strong>
-                    {{ usuarios|length }}
-                </strong>
-
-                de
-
-                <strong>
-                    {{ total_usuarios|default:"0" }}
-                </strong>
-
-                usuários
-
-            </span>
-
-
-
-            <!-- PAGINAÇÃO -->
-            <div class="paginacao">
-                {% if usuarios.has_previous %}
-                    <a href="?page={{ usuarios.previous_page_number }}{% if busca %}&busca={{ busca }}{% endif %}{% if status_selecionado %}&status={{ status_selecionado }}{% endif %}">
-                        <button type="button">
-                            Anterior
-                        </button>
-                    </a>
-                {% else %}
-
-                    <button
-                        type="button"
-                        disabled>
-                        Anterior
-                    </button>
-
-                {% endif %}
-
-
-                {% for num in usuarios.paginator.page_range %}
-
-                    {% if usuarios.number == num %}
-
-                        <button
-                            type="button"
-                            class="pagina-ativa">
-                            {{ num }}
-                        </button>
-
-                    {% else %}
-
-                        <a href="?page={{ num }}{% if busca %}&busca={{ busca }}{% endif %}{% if status_selecionado %}&status={{ status_selecionado }}{% endif %}">
-                            <button type="button">
-                                {{ num }}
-                            </button>
-                        </a>
-
-                    {% endif %}
-
-                {% endfor %}
-
-
-                {% if usuarios.has_next %}
-
-                    <a href="?page={{ usuarios.next_page_number }}{% if busca %}&busca={{ busca }}{% endif %}{% if status_selecionado %}&status={{ status_selecionado }}{% endif %}">
-                        <button type="button">
-                            Próximo
-                        </button>
-                    </a>
-
-                {% else %}
-
-                    <button
-                        type="button"
-                        disabled>
-                        Próximo
-                    </button>
-
-                {% endif %}
-
-            </div>
-        </div>
-
 
     </div>
 
 </div>
 
+<!-- MODAL VISUALIZAR USUÁRIO -->
+<div class="modal-usuario-overlay" id="modalVisualizarUsuario">
 
-<!-- =========================================
-     JAVASCRIPT
-========================================= -->
+    <div class="modal-usuario">
 
-<script>
+        <div class="modal-usuario-header">
 
-function aplicarFiltroStatus(status) {
+            <div>
+                <h3>Detalhes do usuário</h3>
+                <span>Visualização das informações cadastradas</span>
+            </div>
 
-    const url = new URL(window.location.href);
+            <button
+                type="button"
+                class="modal-usuario-fechar"
+                id="fecharModalVisualizar"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
 
-    if (status) {
+        </div>
 
-        url.searchParams.set("status", status);
+        <div class="modal-usuario-body" id="conteudoVisualizarUsuario">
 
-    } else {
+            <div class="modal-usuario-carregando">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <span>Carregando informações...</span>
+            </div>
 
-        url.searchParams.delete("status");
+        </div>
 
-    }
+    </div>
 
-    window.location.href = url.toString();
+</div>
 
-}
+<div class="modal-usuario-overlay" id="modalEditarUsuario">
+    <div class="modal-usuario modal-editar-usuario">
+
+        <div class="modal-usuario-header">
+            <div>
+                <h3>Editar usuário</h3>
+                <span>Edite rapidamente as informações da conta</span>
+            </div>
+
+            <button
+                type="button"
+                class="modal-usuario-fechar"
+                id="fecharModalEditar"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form id="formEditarUsuario">
+
+            {% csrf_token %}
+
+            <div class="modal-usuario-body">
+
+                <input type="hidden" id="editarUsuarioId">
+
+                <div class="campo-editar-usuario">
+                    <label for="editarNome">Nome</label>
+                    <input
+                        type="text"
+                        id="editarNome"
+                        name="nome"
+                        maxlength="150"
+                        required
+                    >
+                </div>
+
+                <div class="campo-editar-usuario campo-pro-bloqueado">
+
+                    <div class="campo-pro-cabecalho">
+                        <label for="editarUsuario">Usuário</label>
+
+                        <span class="badge-pro">
+                            <i class="fa-solid fa-crown"></i>
+                            PRO
+                        </span>
+                    </div>
+
+                    <div class="campo-pro-input">
+                        <input
+                            type="text"
+                            id="editarUsuario"
+                            name="username"
+                            maxlength="150"
+                            readonly
+                            disabled
+                        >
+
+                        <i class="fa-solid fa-lock icone-cadeado-pro"></i>
+                    </div>
+
+                    <div class="campo-pro-aviso">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>
+                            A alteração do nome de usuário está disponível somente na versão PRO.
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="campo-editar-usuario">
+                    <label for="editarEmail">E-mail</label>
+                    <input
+                        type="email"
+                        id="editarEmail"
+                        name="email"
+                        maxlength="254"
+                        required
+                    >
+                </div>
+
+                <div class="campo-editar-usuario">
+                    <label for="editarPerfil">Perfil</label>
+                    <select id="editarPerfil" name="perfil" required>
+                        <option value="administrador">Administrador</option>
+                        <option value="comum">Usuário Comum</option>
+                        <option value="analista">Analista</option>
+                        <option value="assistente">Assitente</option>
+                        <option value="visualizador">Visualizador</option>
+                        <option value="gerente">Gerente</option>
+                        
+                    </select>
+                </div>
+
+                <div class="campo-editar-usuario">
+                    <label for="editarStatus">Status da conta</label>
+                    <select id="editarStatus" name="status" required>
+                        <option value="ativo">Ativo</option>
+                        <option value="inativo">Inativo</option>
+                        <option value="bloqueado">Bloqueado</option>
+                    </select>
+                    <small>
+                        Usuários bloqueados ou inativos não conseguem acessar o sistema.
+                    </small>
+                </div>
+
+                <div id="mensagemEditarUsuario" class="mensagem-editar-usuario"></div>
+
+            </div>
+
+            <div class="modal-usuario-footer">
+                <button
+                    type="button"
+                    class="btn-modal-cancelar"
+                    id="btnCancelarEdicao"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn-modal-salvar"
+                    id="btnSalvarEdicao"
+                >
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Salvar alterações
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
 
 
-/* =========================================
-   SELECIONAR TODOS
-========================================= */
+<!-- MODAL FILTROS AVANÇADOS -->
+<div class="modal-filtros-overlay" id="modalFiltros">
 
-document.addEventListener("DOMContentLoaded", function () {
+    <div class="modal-filtros">
 
-    const selecionarTodos =
-        document.getElementById("selecionarTodos");
+        <div class="modal-filtros-header">
+            <div>
+                <h3>Filtros avançados</h3>
+                <span>Refine a listagem de usuários</span>
+            </div>
 
-    if (!selecionarTodos) {
-        return;
-    }
+            <button type="button" id="fecharFiltros" class="btn-fechar-filtros">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
 
+        <div class="modal-filtros-body">
 
-    selecionarTodos.addEventListener("change", function () {
+            <!-- PERÍODO DE CADASTRO -->
+            <div class="grupo-filtro">
+                <label class="titulo-grupo-filtro">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    Período de cadastro
+                </label>
 
-        const checkboxes =
-            document.querySelectorAll(".checkbox-usuario");
+                <select id="filtroPeriodoCadastro">
+                    <option value="">Qualquer período</option>
+                    <option value="este_mes">Cadastrados este mês</option>
+                    <option value="mes_passado">Cadastrados mês passado</option>
+                    <option value="7_dias">Últimos 7 dias</option>
+                    <option value="30_dias">Últimos 30 dias</option>
+                    <option value="personalizado">Período personalizado</option>
+                </select>
 
-        checkboxes.forEach(function (checkbox) {
+                <div class="filtro-datas-personalizadas" id="datasPersonalizadas" hidden>
+                    <div>
+                        <label for="dataCadastroInicial">Data inicial</label>
+                        <input type="date" id="dataCadastroInicial">
+                    </div>
 
-            checkbox.checked = selecionarTodos.checked;
+                    <div>
+                        <label for="dataCadastroFinal">Data final</label>
+                        <input type="date" id="dataCadastroFinal">
+                    </div>
+                </div>
+            </div>
 
-        });
+            <!-- ÚLTIMO ACESSO -->
+            <div class="grupo-filtro">
+                <label class="titulo-grupo-filtro">
+                    <i class="fa-solid fa-clock"></i>
+                    Último acesso
+                </label>
 
-    });
+                <select id="filtroUltimoAcesso">
+                    <option value="">Qualquer acesso</option>
+                    <option value="7_dias">Acessaram nos últimos 7 dias</option>
+                    <option value="30_dias">Acessaram nos últimos 30 dias</option>
+                    <option value="sem_30_dias">Sem acesso nos últimos 30 dias</option>
+                    <option value="nunca">Nunca acessaram</option>
+                </select>
+            </div>
 
-});
+            <!-- STATUS -->
+            <div class="grupo-filtro">
+                <label class="titulo-grupo-filtro">
+                    <i class="fa-solid fa-user-check"></i>
+                    Situação da conta
+                </label>
 
-</script>
+                <select id="filtroStatusAvancado">
+                    <option value="">Todos os status</option>
+                    <option value="ativo">Ativo</option>
+                    <option value="inativo">Inativo</option>
+                    <option value="bloqueado">Bloqueado</option>
+                </select>
+            </div>
 
+        </div>
+
+        <div class="modal-filtros-footer">
+            <button type="button" class="btn-limpar-filtros" id="limparFiltros">
+                <i class="fa-solid fa-eraser"></i>
+                Limpar filtros
+            </button>
+
+            <div class="acoes-filtros">
+                <button type="button" class="btn-cancelar-filtros" id="cancelarFiltros">
+                    Cancelar
+                </button>
+
+                <button type="button" class="btn-aplicar-filtros" id="aplicarFiltros">
+                    <i class="fa-solid fa-filter"></i>
+                    Aplicar filtros
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 {% endblock %}

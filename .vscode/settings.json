@@ -1,9 +1,10 @@
 {
-    "css.lint.unknownAtRules": "ignore",
-    "scss.lint.unknownAtRules": "ignore",
-    "less.lint.unknownAtRules": "ignore",
-
-    "[html]": {
-        "css.lint.unknownAtRules": "ignore"
-    }
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore",
+  "terminal.integrated.accessibleViewEnabled": false,
+  "terminal.integrated.accessibleViewFocusOnCommandExecution": false,
+  "[html]": {
+    "css.lint.unknownAtRules": "ignore"
+  }
 }

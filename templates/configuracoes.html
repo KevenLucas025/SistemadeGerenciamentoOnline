@@ -1,0 +1,1032 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/configuracoes.css' %}">
+<script src="{% static 'js/configuracoes.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- MENU MOBILE -->
+<div class="dashboard-sidebar-bar">
+    <button class="btn-menu-mobile"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#menuLateral"
+            aria-label="Abrir menu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</div>
+
+<div class="pagina-configuracoes">
+
+    <!-- TOPBAR -->
+    <header class="dashboard-topbar-configuracoes">
+
+        <div class="config-header-info">
+            <div class="config-breadcrumb">
+                <h1>Configurações</h1>
+            </div>
+
+            <p>
+                Personalize o funcionamento e as preferências do sistema.
+            </p>
+        </div>
+
+        <div class="config-header-acoes">
+
+            <span class="config-status-salvamento" id="statusSalvamento">
+                <i class="fa-solid fa-circle-check"></i>
+                Tudo salvo
+            </span>
+
+        </div>
+
+    </header>
+
+    <!-- MENSAGENS DJANGO -->
+    {% if messages %}
+    <div class="config-mensagens">
+        {% for message in messages %}
+        <div class="config-mensagem {{ message.tags }}">
+            <i class="fa-solid fa-circle-info"></i>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- FORMULÁRIO -->
+    <form method="POST" id="formConfiguracoes">
+
+        {% csrf_token %}
+
+        <!-- ERROS GERAIS -->
+        {% if preferencias_form.non_field_errors or sistema_form.non_field_errors %}
+        <div class="config-mensagens">
+
+            {% for error in preferencias_form.non_field_errors %}
+            <div class="config-mensagem error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                {{ error }}
+            </div>
+            {% endfor %}
+
+            {% if sistema_form %}
+                {% for error in sistema_form.non_field_errors %}
+                <div class="config-mensagem error">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    {{ error }}
+                </div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+        {% endif %}
+
+        <div class="config-layout">
+
+            <!-- MENU LATERAL -->
+            <aside class="config-sidebar">
+
+                <div class="config-sidebar-titulo">
+                    <span>GERENCIAMENTO</span>
+                </div>
+
+                <nav class="config-nav">
+
+                    <button type="button" class="config-nav-item" data-section="geral">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Geral</span>
+                    </button>
+
+                    <button type="button" class="config-nav-item" data-section="atalhos">
+                        <i class="fa-solid fa-keyboard"></i>
+                        <span>Atalhos do Teclado</span>
+                    </button>
+
+                    <button type="button" class="config-nav-item" data-section="estoque">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        <span>Estoque</span>
+                    </button>
+
+                    <button type="button" class="config-nav-item" data-section="notificacoes">
+                        <i class="fa-solid fa-bell"></i>
+                        <span>Notificações</span>
+                    </button>
+
+                    <button type="button" class="config-nav-item" data-section="seguranca">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Segurança</span>
+                    </button>
+
+                    <button type="button" class="config-nav-item" data-section="sistema">
+                        <i class="fa-solid fa-database"></i>
+                        <span>Sistema</span>
+                    </button>
+                </nav>
+
+                <div class="config-sidebar-footer">
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <div>
+                        <strong>Central de configurações</strong>
+                        <small>Gerencie suas preferências.</small>
+                    </div>
+                </div>
+
+            </aside>
+
+            <!-- CONTEÚDO -->
+            <main class="config-content">
+
+                <!-- =====================================
+                     GERAL
+                ====================================== -->
+                <section class="config-section active"
+                         id="section-geral">
+
+                    <!-- APARÊNCIA -->
+                    <div class="config-card">
+
+                        <div class="config-card-header">
+                            <div>
+                                <h3>Aparência</h3>
+                                <p>Defina como o sistema será apresentado.</p>
+                            </div>
+
+                            <i class="fa-solid fa-palette"></i>
+                        </div>
+
+                        <div class="config-field">
+
+                            <label for="selectTema">
+                                Tema do sistema
+                            </label>
+
+                            <select id="selectTema"
+                                    name="tema"
+                                    class="select-configuracao">
+
+                                <option value="escuro"
+                                    {% if preferencias_form.tema.value == "escuro" %}selected{% endif %}>
+                                    Escuro
+                                </option>
+
+                                <option value="claro"
+                                    {% if preferencias_form.tema.value == "claro" %}selected{% endif %}>
+                                    Claro
+                                </option>
+
+                                <option value="automatico"
+                                    {% if preferencias_form.tema.value == "automatico" %}selected{% endif %}>
+                                    Automático
+                                </option>
+
+                            </select>
+
+                            {% for error in preferencias_form.tema.errors %}
+                            <small class="config-field-error">{{ error }}</small>
+                            {% endfor %}
+
+                            <small>
+                                Escolha entre o tema escuro, claro ou automático.
+                            </small>
+
+                        </div>
+
+                        <div class="config-field">
+
+                            <label for="selectCorDestaque">
+                                Cor de destaque
+                            </label>
+
+                            <select id="selectCorDestaque"
+                                    name="cor_destaque"
+                                    class="select-configuracao">
+
+                                <option value="cyan"
+                                    {% if preferencias_form.cor_destaque.value == "cyan" %}selected{% endif %}>
+                                    Ciano
+                                </option>
+
+                                <option value="blue"
+                                    {% if preferencias_form.cor_destaque.value == "blue" %}selected{% endif %}>
+                                    Azul
+                                </option>
+
+                                <option value="green"
+                                    {% if preferencias_form.cor_destaque.value == "green" %}selected{% endif %}>
+                                    Verde
+                                </option>
+
+                                <option value="purple"
+                                    {% if preferencias_form.cor_destaque.value == "purple" %}selected{% endif %}>
+                                    Roxo
+                                </option>
+
+                                <option value="orange"
+                                    {% if preferencias_form.cor_destaque.value == "orange" %}selected{% endif %}>
+                                    Laranja
+                                </option>
+
+                            </select>
+
+                            {% for error in preferencias_form.cor_destaque.errors %}
+                            <small class="config-field-error">{{ error }}</small>
+                            {% endfor %}
+
+                            <small>
+                                Personalize a cor utilizada nos destaques e elementos visuais.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <!-- NAVEGAÇÃO -->
+                    <div class="config-card">
+
+                        <div class="config-card-header">
+                            <div>
+                                <h3>Navegação e exibição</h3>
+                                <p>Configure a apresentação das informações.</p>
+                            </div>
+
+                            <i class="fa-solid fa-table-list"></i>
+                        </div>
+
+                        <div class="config-field">
+
+                            <label for="selectRegistrosPagina">
+                                Registros por página
+                            </label>
+
+                            <select id="selectRegistrosPagina"
+                                    name="registros_por_pagina"
+                                    class="select-configuracao">
+
+                                <option value="10"
+                                    {% if preferencias_form.registros_por_pagina.value == 10 or preferencias_form.registros_por_pagina.value == "10" %}selected{% endif %}>
+                                    10 registros
+                                </option>
+
+                                <option value="25"
+                                    {% if preferencias_form.registros_por_pagina.value == 25 or preferencias_form.registros_por_pagina.value == "25" %}selected{% endif %}>
+                                    25 registros
+                                </option>
+
+                                <option value="50"
+                                    {% if preferencias_form.registros_por_pagina.value == 50 or preferencias_form.registros_por_pagina.value == "50" %}selected{% endif %}>
+                                    50 registros
+                                </option>
+
+                                <option value="100"
+                                    {% if preferencias_form.registros_por_pagina.value == 100 or preferencias_form.registros_por_pagina.value == "100" %}selected{% endif %}>
+                                    100 registros
+                                </option>
+
+                            </select>
+
+                            {% for error in preferencias_form.registros_por_pagina.errors %}
+                            <small class="config-field-error">{{ error }}</small>
+                            {% endfor %}
+
+                            <small>
+                                Defina a quantidade de registros exibidos nas listagens.
+                            </small>
+
+                        </div>
+
+                        <div class="config-field">
+
+                            <label for="selectPaginaInicial">
+                                Página inicial
+                            </label>
+
+                            <select id="selectPaginaInicial"
+                                    name="pagina_inicial"
+                                    class="select-configuracao">
+
+                                <option value="dashboard"
+                                    {% if preferencias_form.pagina_inicial.value == "dashboard" %}selected{% endif %}>
+                                    Dashboard
+                                </option>
+
+                                <option value="estoque"
+                                    {% if preferencias_form.pagina_inicial.value == "estoque" %}selected{% endif %}>
+                                    Estoque
+                                </option>
+
+                                <option value="produtos"
+                                    {% if preferencias_form.pagina_inicial.value == "produtos" %}selected{% endif %}>
+                                    Produtos
+                                </option>
+
+                                <option value="clientes"
+                                    {% if preferencias_form.pagina_inicial.value == "clientes" %}selected{% endif %}>
+                                    Clientes
+                                </option>
+
+                                <option value="relatorios"
+                                    {% if preferencias_form.pagina_inicial.value == "relatorios" %}selected{% endif %}>
+                                    Relatórios
+                                </option>
+
+                            </select>
+
+                            {% for error in preferencias_form.pagina_inicial.errors %}
+                            <small class="config-field-error">{{ error }}</small>
+                            {% endfor %}
+
+                            <small>
+                                Página exibida após acessar o sistema.
+                            </small>
+
+                        </div>
+
+                        <div class="config-field">
+
+                            <label for="selectFormatoData">
+                                Formato de data
+                            </label>
+
+                            <select id="selectFormatoData"
+                                    name="formato_data"
+                                    class="select-configuracao">
+
+                                <option value="%d/%m/%Y"
+                                    {% if preferencias_form.formato_data.value == "%d/%m/%Y" %}selected{% endif %}>
+                                    DD/MM/AAAA
+                                </option>
+
+                                <option value="%Y-%m-%d"
+                                    {% if preferencias_form.formato_data.value == "%Y-%m-%d" %}selected{% endif %}>
+                                    AAAA-MM-DD
+                                </option>
+
+                                <option value="%m/%d/%Y"
+                                    {% if preferencias_form.formato_data.value == "%m/%d/%Y" %}selected{% endif %}>
+                                    MM/DD/AAAA
+                                </option>
+
+                            </select>
+
+                            {% for error in preferencias_form.formato_data.errors %}
+                            <small class="config-field-error">{{ error }}</small>
+                            {% endfor %}
+
+                            <small>
+                                Formato preferencial de exibição das datas.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    
+                    <!-- CONFIRMAÇÕES -->
+                    <div class="config-card">
+
+                        <div class="config-card-header">
+                            <div class="config-card-titulo">
+                                <h3>Confirmações de ações</h3>
+
+                                <span class="config-recomendado">
+                                    <i class="fa-solid fa-shield-check"></i>
+                                    Recomendado manter ativado
+                                </span>
+
+                                <p>Evite operações acidentais.</p>
+                            </div>
+
+                            <i class="fa-solid fa-circle-question"></i>
+                        </div>
+
+                        <div class="config-options">
+
+                            <div class="config-option">
+
+                                <div>
+                                    <strong>Confirmar exclusões</strong>
+                                    <small>
+                                        Solicitar confirmação antes de excluir registros.
+                                    </small>
+                                </div>
+
+                                <label class="config-switch" for="id_confirmar_exclusao">
+                                    {{ preferencias_form.confirmar_exclusao }}
+                                    <span></span>
+                                </label>
+
+                            </div>
+
+                            <div class="config-option">
+
+                                <div>
+                                    <strong>Confirmar saída de produtos</strong>
+                                    <small>
+                                        Solicitar confirmação antes de registrar uma saída.
+                                    </small>
+                                </div>
+
+                                <label class="config-switch" for="id_confirmar_saida_produto">
+                                    {{ preferencias_form.confirmar_saida_produto }}
+                                    <span></span>
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </section>
+
+                <!-- =====================================
+                     ATALHOS
+                ====================================== -->
+                <section class="config-section"
+                         id="section-atalhos">
+
+                    <div class="config-section-header">
+
+                        <div class="config-section-icone">
+                            <i class="fa-solid fa-keyboard"></i>
+                        </div>
+
+                        <div>
+                            <h2>Atalhos de teclado</h2>
+                            <p>Consulte os comandos disponíveis no sistema.</p>
+                        </div>
+
+                    </div>
+
+                    <div class="config-card">
+
+                        <div class="config-card-header">
+                            <div>
+                                <h3>Navegação rápida</h3>
+                                <p>
+                                    Utilize combinações de teclas para acessar funcionalidades.
+                                </p>
+                            </div>
+
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+
+                        <div class="config-shortcuts">
+
+                            <div class="config-shortcut">
+                                <span>Acessar dashboard</span>
+                                <div>
+                                    <kbd>Alt</kbd><b>+</b><kbd>H</kbd>
+                                </div>
+                            </div>
+
+                            <div class="config-shortcut">
+                                <span>Cadastrar produto</span>
+                                <div>
+                                    <kbd>Alt</kbd><b>+</b><kbd>N</kbd>
+                                </div>
+                            </div>
+
+                            <div class="config-shortcut">
+                                <span>Acessar estoque</span>
+                                <div>
+                                    <kbd>Alt</kbd><b>+</b><kbd>E</kbd>
+                                </div>
+                            </div>
+
+                            <div class="config-shortcut">
+                                <span>Acessar clientes</span>
+                                <div>
+                                    <kbd>Alt</kbd><b>+</b><kbd>C</kbd>
+                                </div>
+                            </div>
+
+                            <div class="config-shortcut">
+                                <span>Acessar usuários</span>
+                                <div>
+                                    <kbd>Alt</kbd><b>+</b><kbd>U</kbd>
+                                </div>
+                            </div>
+
+                            <div class="config-shortcut">
+                                <span>Acessar relatórios</span>
+                                <div>
+                                    <kbd>Alt</kbd><b>+</b><kbd>R</kbd>
+                                </div>
+                            </div>
+
+                            <div class="config-shortcut">
+                                <span>Pesquisa global</span>
+                                <div>
+                                    <kbd>Ctrl</kbd><b>+</b><kbd>K</kbd>
+                                </div>
+                            </div>
+
+                            <div class="config-shortcut">
+                                <span>Exibir atalhos</span>
+                                <div>
+                                    <kbd>Ctrl</kbd><b>+</b><kbd>/</kbd>
+                                </div>
+                            </div>
+
+                            <div class="config-shortcut">
+                                <span>Fechar janela ou modal</span>
+                                <div>
+                                    <kbd>Esc</kbd>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="config-info">
+                            <i class="fa-solid fa-circle-info"></i>
+
+                            Os atalhos serão ativados globalmente quando estiverem
+                            implementados no JavaScript do sistema.
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- =====================================
+                     ESTOQUE
+                ====================================== -->
+                <section class="config-section"
+                         id="section-estoque">
+
+                    <div class="config-section-header">
+
+                        <div class="config-section-icone">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                        </div>
+
+                        <div>
+                            <h2>Estoque</h2>
+                            <p>Gerencie as regras de controle de produtos.</p>
+                        </div>
+
+                    </div>
+
+                    <div class="config-card">
+
+                        <div class="config-card-header">
+                            <div>
+                                <h3>Controle de estoque</h3>
+                                <p>Defina os parâmetros de acompanhamento.</p>
+                            </div>
+
+                            <i class="fa-solid fa-box"></i>
+                        </div>
+
+                        {% if pode_editar_sistema %}
+
+                            <div class="config-grid">
+
+                                <div class="config-field">
+
+                                    <label for="inputQuantidadeMinimaEstoque">
+                                        Quantidade mínima de estoque
+                                    </label>
+
+                                    {{ sistema_form.quantidade_minima_estoque }}
+
+                                    {% for error in sistema_form.quantidade_minima_estoque.errors %}
+                                    <small class="config-field-error">{{ error }}</small>
+                                    {% endfor %}
+
+                                    <small>
+                                        Quantidade utilizada como limite para alertas.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                            <div class="config-options">
+
+                                <div class="config-option">
+
+                                    <div>
+                                        <strong>Alertar estoque baixo</strong>
+                                        <small>
+                                            Ativar alertas quando a quantidade atingir o limite.
+                                        </small>
+                                    </div>
+
+                                    <label class="config-switch"
+                                           for="id_alertar_estoque_baixo">
+                                        {{ sistema_form.alertar_estoque_baixo }}
+                                        <span></span>
+                                    </label>
+
+                                </div>
+
+                                <div class="config-option">
+
+                                    <div>
+                                        <strong>Exigir cliente na saída</strong>
+                                        <small>
+                                            Obrigar a seleção de um cliente ao registrar uma saída.
+                                        </small>
+                                    </div>
+
+                                    <label class="config-switch"
+                                           for="id_exigir_cliente_saida">
+                                        {{ sistema_form.exigir_cliente_saida }}
+                                        <span></span>
+                                    </label>
+
+                                </div>
+
+                                <div class="config-option">
+
+                                    <div>
+                                        <strong>Confirmar saída de produtos</strong>
+                                        <small>
+                                            Solicitar confirmação antes de concluir uma saída.
+                                        </small>
+                                    </div>
+
+                                    <label class="config-switch"
+                                           for="id_confirmar_saida_produto_sistema">
+                                        {{ sistema_form.confirmar_saida_produto }}
+                                        <span></span>
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="config-restricao">
+                                <i class="fa-solid fa-lock"></i>
+
+                                <div>
+                                    <strong>Configuração administrativa</strong>
+                                    <p>
+                                        Somente administradores podem modificar as regras gerais de estoque.
+                                    </p>
+                                </div>
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </section>
+
+                <!-- =====================================
+                     NOTIFICAÇÕES
+                ====================================== -->
+                <section class="config-section"
+                         id="section-notificacoes">
+
+                    <div class="config-section-header">
+
+                        <div class="config-section-icone">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+
+                        <div>
+                            <h2>Notificações</h2>
+                            <p>Escolha quais eventos deseja acompanhar.</p>
+                        </div>
+
+                    </div>
+
+                    <div class="config-card">
+
+                        <div class="config-card-header">
+                            <div>
+                                <h3>Notificações internas</h3>
+                                <p>Controle os alertas exibidos no sistema.</p>
+                            </div>
+
+                            <i class="fa-solid fa-bell-concierge"></i>
+                        </div>
+
+                        <div class="config-options">
+
+                            <div class="config-option">
+                                <div>
+                                    <strong>Novos cadastros</strong>
+                                    <small>
+                                        Receber alertas sobre novos registros.
+                                    </small>
+                                </div>
+
+                                <label class="config-switch"
+                                       for="id_notificar_novos_cadastros">
+                                    {{ preferencias_form.notificar_novos_cadastros }}
+                                    <span></span>
+                                </label>
+                            </div>
+
+                            <div class="config-option">
+                                <div>
+                                    <strong>Saídas de produtos</strong>
+                                    <small>
+                                        Receber alertas sobre movimentações de saída.
+                                    </small>
+                                </div>
+
+                                <label class="config-switch"
+                                       for="id_notificar_saidas">
+                                    {{ preferencias_form.notificar_saidas }}
+                                    <span></span>
+                                </label>
+                            </div>
+
+                            <div class="config-option">
+                                <div>
+                                    <strong>Estoque baixo</strong>
+                                    <small>
+                                        Receber alertas sobre produtos abaixo do limite.
+                                    </small>
+                                </div>
+
+                                <label class="config-switch"
+                                       for="id_notificar_estoque_baixo">
+                                    {{ preferencias_form.notificar_estoque_baixo }}
+                                    <span></span>
+                                </label>
+                            </div>
+
+                            <div class="config-option">
+                                <div>
+                                    <strong>Alterações importantes</strong>
+                                    <small>
+                                        Receber alertas sobre modificações no sistema.
+                                    </small>
+                                </div>
+
+                                <label class="config-switch"
+                                       for="id_notificar_alteracoes">
+                                    {{ preferencias_form.notificar_alteracoes }}
+                                    <span></span>
+                                </label>
+                            </div>
+
+                            <div class="config-option">
+                                <div>
+                                    <strong>Notificações sonoras</strong>
+                                    <small>
+                                        Reproduzir sons ao receber notificações.
+                                    </small>
+                                </div>
+
+                                <label class="config-switch"
+                                       for="id_notificacoes_sonoras">
+                                    {{ preferencias_form.notificacoes_sonoras }}
+                                    <span></span>
+                                </label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- =====================================
+                     SEGURANÇA
+                ====================================== -->
+                <section class="config-section"
+                         id="section-seguranca">
+
+                    <div class="config-section-header">
+
+                        <div class="config-section-icone">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+
+                        <div>
+                            <h2>Segurança</h2>
+                            <p>Gerencie as regras de proteção e acesso.</p>
+                        </div>
+
+                    </div>
+
+                    <div class="config-card">
+
+                        <div class="config-card-header">
+                            <div>
+                                <h3>Proteção da sessão</h3>
+                                <p>Defina os parâmetros de segurança.</p>
+                            </div>
+
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+
+                        {% if pode_editar_sistema %}
+
+                            <div class="config-grid">
+
+                                <div class="config-field">
+
+                                    <label for="inputTempoInatividade">
+                                        Tempo de inatividade
+                                    </label>
+
+                                    {{ sistema_form.tempo_inatividade_sessao }}
+
+                                    {% for error in sistema_form.tempo_inatividade_sessao.errors %}
+                                    <small class="config-field-error">{{ error }}</small>
+                                    {% endfor %}
+
+                                    <small>
+                                        Tempo em minutos até a expiração da sessão.
+                                        Mínimo: 5 minutos. Máximo: 1440 minutos.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                            <div class="config-options">
+
+                                <div class="config-option">
+
+                                    <div>
+                                        <strong>Registrar histórico de alterações</strong>
+                                        <small>
+                                            Manter o registro de modificações realizadas no sistema.
+                                        </small>
+                                    </div>
+
+                                    <label class="config-switch"
+                                           for="id_registrar_historico_alteracoes">
+                                        {{ sistema_form.registrar_historico_alteracoes }}
+                                        <span></span>
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="config-restricao">
+                                <i class="fa-solid fa-lock"></i>
+
+                                <div>
+                                    <strong>Configuração administrativa</strong>
+                                    <p>
+                                        As regras gerais de segurança são gerenciadas pelos administradores.
+                                    </p>
+                                </div>
+                            </div>
+
+                        {% endif %}
+
+                        <div class="config-info">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            A configuração do tempo de inatividade somente terá efeito
+                            quando integrada ao controle de sessões do Django.
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- =====================================
+                     SISTEMA
+                ====================================== -->
+                <section class="config-section"
+                         id="section-sistema">
+
+                    <div class="config-section-header">
+
+                        <div class="config-section-icone">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+
+                        <div>
+                            <h2>Sistema</h2>
+                            <p>Informações técnicas e gerenciamento da aplicação.</p>
+                        </div>
+
+                    </div>
+
+                    <!-- INFORMAÇÕES DA APLICAÇÃO -->
+                    <div class="config-card">
+
+                        <div class="config-card-header">
+                            <div>
+                                <h3>Informações da aplicação</h3>
+                                <p>Identificação e ambiente de funcionamento.</p>
+                            </div>
+
+                            <i class="fa-solid fa-server"></i>
+                        </div>
+
+                        <div class="config-info-grid">
+
+                            <div class="config-info-item">
+                                <small>Aplicação</small>
+                                <strong>Sistema de Gerenciamento</strong>
+                            </div>
+
+                            <div class="config-info-item">
+                                <small>Usuário conectado</small>
+                                <strong>{{ request.user.username }}</strong>
+                            </div>
+
+                            <div class="config-info-item">
+                                <small>Perfil de acesso</small>
+
+                                <strong>
+                                    {% if request.user.is_superuser %}
+                                        Superusuário
+                                    {% elif request.user.is_staff %}
+                                        Administrador
+                                    {% else %}
+                                        Usuário
+                                    {% endif %}
+                                </strong>
+                            </div>
+
+                            <div class="config-info-item">
+                                <small>Status</small>
+
+                                <strong class="config-status-ativo">
+                                    <i class="fa-solid fa-circle"></i>
+                                    Operacional
+                                </strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- MANUTENÇÃO -->
+                    <div class="config-card">
+
+                        <div class="config-card-header">
+                            <div>
+                                <h3>Manutenção e dados</h3>
+                                <p>Ferramentas para administração da aplicação.</p>
+                            </div>
+
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </div>
+
+                        <div class="config-info">
+                            <i class="fa-solid fa-circle-info"></i>
+
+                            O gerenciamento de backup, restauração e logs será
+                            implementado em uma etapa específica, com validações
+                            e permissões próprias.
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- =====================================
+                     RODAPÉ
+                ====================================== -->
+                <div class="config-footer">
+
+                    <span id="textoAlteracoes">
+                        <i class="fa-solid fa-circle-info"></i>
+                        As alterações serão aplicadas após salvar.
+                    </span>
+
+                    <div>
+
+                        <button type="reset"
+                                class="btn-config-reset"
+                                id="btnDescartarConfiguracoes">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            Descartar
+                        </button>
+
+                        <button type="submit"
+                                class="btn-config-salvar">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Salvar alterações
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -20,10 +20,6 @@
     data-acesso="{% if usuario.perfil and usuario.perfil.acesso %}{{ usuario.perfil.acesso|escape }}{% elif usuario.is_superuser %}Administrador{% else %}Usuário Comum{% endif %}"
     data-imagem="{% if usuario.perfil and usuario.perfil.imagem %}{{ usuario.perfil.imagem.url }}{% endif %}">
 
-
-
-
-
     <td class="col-selecao">
         <input
             type="checkbox"

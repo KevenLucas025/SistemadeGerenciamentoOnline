@@ -260,3 +260,101 @@ function confirmarAcao(mensagem, titulo = "Confirmação") {
 
     console.log("Teste do modal global registrado.");
 
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // =========================
+    // CONTROLE DE PRESENÇA
+    // =========================
+
+    const elementoPresenca = document.getElementById("configuracao-presenca");
+    const URL_PRESENCA = elementoPresenca?.dataset.url;
+
+    let ultimaInteracao = Date.now();
+
+    const TEMPO_AUSENCIA = 5 * 60 * 1000;
+    const INTERVALO_PING = 30 * 1000;
+
+    if (!URL_PRESENCA) {
+        console.error("URL de atualização de presença não encontrada.");
+        return;
+    }
+
+    function obterCookie(nome) {
+        const cookies = document.cookie.split(";");
+
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+
+            if (cookie.startsWith(nome + "=")) {
+                return decodeURIComponent(
+                    cookie.substring(nome.length + 1)
+                );
+            }
+        }
+
+        return null;
+    }
+
+    function registrarInteracao() {
+        ultimaInteracao = Date.now();
+    }
+
+    [
+        "mousemove",
+        "mousedown",
+        "keydown",
+        "scroll",
+        "touchstart",
+        "click"
+    ].forEach(evento => {
+        document.addEventListener(evento, registrarInteracao, {
+            passive: true
+        });
+    });
+
+    
+    async function enviarPresenca() {
+
+        try {
+            const resposta = await fetch(URL_PRESENCA, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": obterCookie("csrftoken")
+                }
+            });
+
+            if (!resposta.ok) {
+                console.error(
+                    "Erro ao atualizar presença:",
+                    resposta.status,
+                    await resposta.text()
+                );
+                return;
+            }
+
+            const resultado = await resposta.json();
+
+            console.log("Presença atualizada:", resultado.status);
+
+        } catch (erro) {
+            console.error("Erro ao atualizar presença:", erro);
+        }
+    }
+
+
+    // Envia imediatamente ao carregar
+    enviarPresenca();
+
+    // Atualiza a cada 30 segundos
+    setInterval(enviarPresenca, INTERVALO_PING);
+
+    // Ao retornar para a aba, atualiza imediatamente
+    document.addEventListener("visibilitychange", function () {
+        if (!document.hidden) {
+            enviarPresenca();
+        }
+    });
+
+});

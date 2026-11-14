@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-theme="{{ tema_usuario|default:'escuro' }}">
 
 <head>
     <meta charset="UTF-8">
@@ -17,6 +17,14 @@
 </head>
 
 <body>
+
+    {% if user.is_authenticated %}
+        <!-- CONFIGURAÇÃO GLOBAL DE PRESENÇA -->
+        <div id="configuracao-presenca"
+             data-url="{% url 'atualizar_presenca' %}"
+             hidden>
+        </div>
+    {% endif %}
 
     <!-- Menu lateral (Apenas se o usuário estiver logado) -->
     {% if not esconder_menu %}

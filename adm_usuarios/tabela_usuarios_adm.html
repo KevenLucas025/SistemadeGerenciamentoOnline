@@ -1,0 +1,172 @@
+<!-- TABELA -->
+<div class="usuarios-tabela-wrapper">
+    <table class="usuarios-tabela">
+        <thead>
+            <tr>
+                <th 
+                class="col-checkbox-tabela-usuarios-adm">
+                <input type="checkbox" 
+                id="selecionarTodos"></th>
+                <th>USUÁRIO</th>
+                <th>E-MAIL</th>
+                <th>PERFIL</th>
+                <th>STATUS</th>
+                <th>ÚLTIMO ACESSO</th>
+                <th class="col-acoes">AÇÕES</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaUsuarios">
+            {% for usuario in usuarios %}
+            <tr>
+                <!-- CHECKBOX -->
+                <td><input type="checkbox" class="checkbox-usuario-tabela-adm" value="{{ usuario.id }}"></td>
+
+                <!-- USUÁRIO -->
+                <td>
+                    <div class="usuario-info">
+                        <div class="usuario-avatar azul">
+                            {% if usuario.first_name %}
+                            {{ usuario.first_name|first|upper }}
+                            {% else %}{{ usuario.username|first|upper }}
+                            {% endif %}
+                        </div>
+                        <div>
+                            <strong>{% if usuario.get_full_name %}
+                                {{ usuario.get_full_name }}{% else %}
+                                {{ usuario.username }}{% endif %}</strong>
+                            <span>@{{ usuario.username }}</span>
+                        </div>
+                    </div>
+                </td>
+
+                <!-- E-MAIL -->
+                <td>
+                    {% if usuario.email %}
+                    {{ usuario.email }}
+                    {% else %}
+                    <span class="texto-sem-dado">Não informado</span>
+                    {% endif %}
+                </td>
+
+  
+         
+                <!-- PERFIL -->
+                <td>
+                    {% if usuario.perfil.acesso %}
+                        <span class="perfil-badge {{ usuario.perfil.acesso|slugify }}">
+                            {{ usuario.perfil.acesso }}
+                        </span>
+                    {% else %}
+                        <span class="texto-sem-dado">Não informado</span>
+                    {% endif %}
+                </td>
+
+                <!-- STATUS -->
+                <td>
+                    {% if usuario.perfil.status_conta == "ativo" %}
+                        <span class="status-ativo">Ativo</span>
+
+                    {% elif usuario.perfil.status_conta == "inativo" %}
+                        <span class="status-inativo">Inativo</span>
+
+                    {% elif usuario.perfil.status_conta == "bloqueado" %}
+                        <span class="status-bloqueado">Bloqueado</span>
+
+                    {% else %}
+                        <span class="texto-sem-dado">Não informado</span>
+                    {% endif %}
+                </td>
+
+                <!-- ÚLTIMO ACESSO -->
+                <td>
+                    {% if usuario.last_login %}{{ usuario.last_login|date:"d/m/Y H:i" }}{% else %}<span class="texto-sem-dado">Nunca acessou</span>{% endif %}
+                </td>
+
+                <!-- AÇÕES -->
+                <td>
+                    <div class="acoes-usuario">
+                        <!-- VISUALIZAR -->
+                        <button
+                            type="button"
+                            title="Visualizar"
+                            class="btn-visualizar"
+                            data-action="visualizar"
+                            data-id="{{ usuario.id }}"
+                            data-url="{% url 'visualizar_usuario' usuario.id %}"
+                        >
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                        <!-- EDITAR -->
+                        <button
+                            type="button"
+                            title="Edição Rápida"
+                            class="btn-editar"
+                            data-action="editar"
+                            data-url="{% url 'editar_usuario' usuario.id %}"
+                        >
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <!-- EXCLUIR -->
+                        <button type="button" class="excluir" title="Excluir" data-id="{{ usuario.id }}" onclick="excluirUsuario(this.dataset.id)">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <!-- NENHUM USUÁRIO -->
+            <tr>
+                <td colspan="7" class="tabela-vazia">
+                    <div>
+                        <i class="fa-solid fa-users-slash"></i>
+                        <strong>Nenhum usuário encontrado</strong>
+                        <span>Não existem usuários cadastrados com os filtros selecionados.</span>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- RODAPÉ DA TABELA -->
+<div class="usuarios-tabela-footer">
+    <span>Mostrando <strong>{{ usuarios|length }}</strong> de <strong>{{ total_resultados }}</strong> usuários encontrados</span>
+
+    <!-- PAGINAÇÃO -->
+    <div class="paginacao">
+
+        {% if usuarios.has_previous %}
+            <a href="?page={{ usuarios.previous_page_number }}{% if busca %}&busca={{ busca|urlencode }}{% endif %}{% if status_selecionado %}&status={{ status_selecionado }}{% endif %}{% if perfil_selecionado %}&perfil={{ perfil_selecionado }}{% endif %}">
+                <button type="button">Anterior</button>
+            </a>
+        {% else %}
+            <button type="button" disabled>Anterior</button>
+        {% endif %}
+
+
+        {% for num in usuarios.paginator.page_range %}
+
+            {% if usuarios.number == num %}
+                <button type="button" class="pagina-ativa">
+                    {{ num }}
+                </button>
+            {% else %}
+                <a href="?page={{ num }}{% if busca %}&busca={{ busca|urlencode }}{% endif %}{% if status_selecionado %}&status={{ status_selecionado }}{% endif %}{% if perfil_selecionado %}&perfil={{ perfil_selecionado }}{% endif %}">
+                    <button type="button">{{ num }}</button>
+                </a>
+            {% endif %}
+
+        {% endfor %}
+
+
+        {% if usuarios.has_next %}
+            <a href="?page={{ usuarios.next_page_number }}{% if busca %}&busca={{ busca|urlencode }}{% endif %}{% if status_selecionado %}&status={{ status_selecionado }}{% endif %}{% if perfil_selecionado %}&perfil={{ perfil_selecionado }}{% endif %}">
+                <button type="button">Próximo</button>
+            </a>
+        {% else %}
+            <button type="button" disabled>Próximo</button>
+        {% endif %}
+
+    </div>
+</div>

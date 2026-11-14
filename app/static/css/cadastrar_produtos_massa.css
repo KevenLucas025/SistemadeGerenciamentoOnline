@@ -451,8 +451,8 @@
 /* =====================================================
    BARRAS DE ROLAGEM
 ===================================================== */
-
-.produtos-table-container::-webkit-scrollbar {
+.produtos-table-container::-webkit-scrollbar,
+.modal-ajuda-planilha .modal-body::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }

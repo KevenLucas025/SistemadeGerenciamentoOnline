@@ -11,11 +11,29 @@ class PerfilUsuario(models.Model):
         ('ausente', 'Ausente'),
         ('offline', 'Offline'),
     ]
+    
+    STATUS_CONTA_CHOICES = [
+        ("ativo", "Ativo"),
+        ("inativo", "Inativo"),
+        ("bloqueado", "Bloqueado"),
+    
+    ]
+
+    status_conta = models.CharField(
+        max_length=15,
+        choices=STATUS_CONTA_CHOICES,
+        default="ativo"
+    )
 
     status_conexao = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
         default='online'
+    )
+    
+    ultimo_ping = models.DateTimeField(
+        null=True,
+        blank=True
     )
 
     usuario = models.OneToOneField(
@@ -114,6 +132,48 @@ class TokenPlanilha(models.Model):
 
     def __str__(self):
         return f"{self.get_tipo_display()} - {self.usuario.usuario.username}"
+    
+class HistoricoConexao(models.Model):
+
+    STATUS_CHOICES = [
+        ("online", "Online"),
+        ("ausente", "Ausente"),
+        ("offline", "Offline"),
+    ]
+
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="historicos_conexao"
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES
+    )
+
+    inicio = models.DateTimeField()
+    fim = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        ordering = ["-inicio"]
+        indexes = [
+            models.Index(fields=["usuario", "inicio"]),
+            models.Index(fields=["status", "inicio"]),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["usuario"],
+                condition=models.Q(fim__isnull=True),
+                name="unico_historico_conexao_aberto"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.status}"
 
 
 @receiver(post_save, sender=User)
