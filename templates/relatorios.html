@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="{% static 'css/relatorios.css' %}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'js/relatorios.js' %}" defer></script>
+<script src="{% static 'js/select_personalizado.js' %}"></script>
 
 {% endblock %}
 
@@ -92,24 +93,44 @@
 
             <div class="campo-filtro">
                 <label>Status</label>
-                <select id="statusClienteJuridico">
-                    <option>Todos</option>
-                    <option>Ativo</option>
-                    <option>Inativo</option>
-                </select>
+
+                <div class="select-custom-wrapper" id="selectStatusClienteJuridico">
+                    <select id="statusClienteJuridico" class="select-original-oculto">
+                        <option value="Todos" selected>Todos</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+
+                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                        <span>Todos</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div class="select-custom-options"></div>
+                </div>
             </div>
 
-            <div class="campo-filtro" >
+            <div class="campo-filtro">
                 <label>Categoria</label>
-                <select id="categoriaClienteJuridico">
-                    <option value="todos">Todas as categorias</option>
 
-                    {% for categoria in categorias_juridicos %}
-                        <option value="{{ categoria }}">
-                            {{ categoria }}
-                        </option>
-                    {% endfor %}
-                </select>
+                <div class="select-custom-wrapper" id="selectCategoriaClienteJuridico">
+                    <select id="categoriaClienteJuridico" class="select-original-oculto">
+                        <option value="todos" selected>Todas as categorias</option>
+
+                        {% for categoria in categorias_juridicos %}
+                            <option value="{{ categoria }}">
+                                {{ categoria }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                        <span>Todas as categorias</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div class="select-custom-options"></div>
+                </div>
             </div>
             
             <div class="campo-filtro">
@@ -127,36 +148,53 @@
 
             <div class="campo-filtro">
                 <label for="estadoClienteJuridico">Estado</label>
-                <select id="estadoClienteJuridico">
-                    <option value="">Todos</option>
-                    <option value="AC">Acre</option>
-                    <option value="AL">Alagoas</option>
-                    <option value="AP">Amapá</option>
-                    <option value="AM">Amazonas</option>
-                    <option value="BA">Bahia</option>
-                    <option value="CE">Ceará</option>
-                    <option value="DF">Distrito Federal</option>
-                    <option value="ES">Espírito Santo</option>
-                    <option value="GO">Goiás</option>
-                    <option value="MA">Maranhão</option>
-                    <option value="MT">Mato Grosso</option>
-                    <option value="MS">Mato Grosso do Sul</option>
-                    <option value="MG">Minas Gerais</option>
-                    <option value="PA">Pará</option>
-                    <option value="PB">Paraíba</option>
-                    <option value="PR">Paraná</option>
-                    <option value="PE">Pernambuco</option>
-                    <option value="PI">Piauí</option>
-                    <option value="RJ">Rio de Janeiro</option>
-                    <option value="RN">Rio Grande do Norte</option>
-                    <option value="RS">Rio Grande do Sul</option>
-                    <option value="RO">Rondônia</option>
-                    <option value="RR">Roraima</option>
-                    <option value="SC">Santa Catarina</option>
-                    <option value="SP">São Paulo</option>
-                    <option value="SE">Sergipe</option>
-                    <option value="TO">Tocantins</option>
-                </select>
+
+                <div class="select-custom-wrapper" id="selectEstadoJuridico">
+
+                    <!-- Select original mantido para compatibilidade -->
+                    <select id="estadoClienteJuridico" class="select-original-oculto">
+                        <option value="">Todos</option>
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                    </select>
+
+                    <button type="button"
+                            class="select-custom-trigger"
+                            aria-expanded="false">
+                        <span>Todos</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div class="select-custom-options">
+                        <!-- Opções geradas pelo JavaScript -->
+                    </div>
+
+                </div>
             </div>
 
             <div class="campo-filtro campo-span-2">
@@ -267,11 +305,20 @@
                 <div class="campo-filtro">
                     <label for="ordenarClientesJuridicos">Ordenar por</label>
 
-                    <select id="ordenarClientesJuridicos">
-                        <option value="razao_social">Razão Social</option>
-                        <option value="data_inclusao">Data Cadastro</option>
-                        <option value="valor_gasto">Valor Gasto</option>
-                    </select>
+                    <div class="select-custom-wrapper" id="selectOrdenarClientesJuridicos">
+                        <select id="ordenarClientesJuridicos" class="select-original-oculto">
+                            <option value="razao_social" selected>Razão Social</option>
+                            <option value="data_inclusao">Data Cadastro</option>
+                            <option value="valor_gasto">Valor Gasto</option>
+                        </select>
+
+                        <button type="button" class="select-custom-trigger" aria-expanded="false">
+                            <span>Razão Social</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <div class="select-custom-options"></div>
+                    </div>
                 </div>
 
                 <div class="campo-filtro">
@@ -534,11 +581,20 @@
             <div class="campo-filtro">
                 <label>Status</label>
 
-                <select id="statusClienteFisico">
-                    <option value="todos">Todos</option>
-                    <option value="Ativo">Ativo</option>
-                    <option value="Inativo">Inativo</option>
-                </select>
+                <div class="select-custom-wrapper" id="selectStatusClienteFisico">
+                    <select id="statusClienteFisico" class="select-original-oculto">
+                        <option value="todos" selected>Todos</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+
+                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                        <span>Todos</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div class="select-custom-options"></div>
+                </div>
             </div>
 
             <!-- CIDADE -->
@@ -560,36 +616,45 @@
             <div class="campo-filtro">
                 <label for="estadoClienteFisico">Estado</label>
 
-                <select id="estadoClienteFisico">
-                    <option value="">Todos</option>
-                    <option value="AC">Acre</option>
-                    <option value="AL">Alagoas</option>
-                    <option value="AP">Amapá</option>
-                    <option value="AM">Amazonas</option>
-                    <option value="BA">Bahia</option>
-                    <option value="CE">Ceará</option>
-                    <option value="DF">Distrito Federal</option>
-                    <option value="ES">Espírito Santo</option>
-                    <option value="GO">Goiás</option>
-                    <option value="MA">Maranhão</option>
-                    <option value="MT">Mato Grosso</option>
-                    <option value="MS">Mato Grosso do Sul</option>
-                    <option value="MG">Minas Gerais</option>
-                    <option value="PA">Pará</option>
-                    <option value="PB">Paraíba</option>
-                    <option value="PR">Paraná</option>
-                    <option value="PE">Pernambuco</option>
-                    <option value="PI">Piauí</option>
-                    <option value="RJ">Rio de Janeiro</option>
-                    <option value="RN">Rio Grande do Norte</option>
-                    <option value="RS">Rio Grande do Sul</option>
-                    <option value="RO">Rondônia</option>
-                    <option value="RR">Roraima</option>
-                    <option value="SC">Santa Catarina</option>
-                    <option value="SP">São Paulo</option>
-                    <option value="SE">Sergipe</option>
-                    <option value="TO">Tocantins</option>
-                </select>
+                <div class="select-custom-wrapper" id="selectEstadoClienteFisico">
+                    <select id="estadoClienteFisico" class="select-original-oculto">
+                        <option value="" selected>Todos</option>
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                    </select>
+
+                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                        <span>Todos</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div class="select-custom-options"></div>
+                </div>
             </div>
 
             <!-- PESQUISA -->
@@ -759,15 +824,22 @@
             <div class="ordenacao-container">
 
                 <div class="campo-filtro">
-                    <label for="ordenarClientesFisicos">
-                        Ordenar por
-                    </label>
+                    <label for="ordenarClientesFisicos">Ordenar por</label>
 
-                    <select id="ordenarClientesFisicos">
-                        <option value="nome">Nome</option>
-                        <option value="data_inclusao">Data Cadastro</option>
-                        <option value="valor_gasto">Valor Gasto</option>
-                    </select>
+                    <div class="select-custom-wrapper" id="selectOrdenarClientesFisicos">
+                        <select id="ordenarClientesFisicos" class="select-original-oculto">
+                            <option value="nome" selected>Nome</option>
+                            <option value="data_inclusao">Data Cadastro</option>
+                            <option value="valor_gasto">Valor Gasto</option>
+                        </select>
+
+                        <button type="button" class="select-custom-trigger" aria-expanded="false">
+                            <span>Nome</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <div class="select-custom-options"></div>
+                    </div>
                 </div>
 
                 <div class="campo-filtro">
@@ -1183,22 +1255,41 @@
 
             <div class="campo-filtro">
                 <label>Status da conta</label>
-                <select id="statusUsuario">
-                    <option value="todos">Todos</option>
-                    <option value="Ativo">Ativos</option>
-                    <option value="Inativo">Inativos</option>
-                </select>
+
+                <div class="select-custom-wrapper" id="selectStatusUsuario">
+                    <select id="statusUsuario" class="select-original-oculto">
+                        <option value="todos" selected>Todos</option>
+                        <option value="Ativo">Ativos</option>
+                        <option value="Inativo">Inativos</option>
+                    </select>
+
+                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                        <span>Todos</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div class="select-custom-options"></div>
+                </div>
             </div>
 
             <div class="campo-filtro">
                 <label>Status de conexão</label>
 
-                <select id="conexaoUsuario">
-                    <option value="todos">Todos</option>
-                    <option value="online">Online</option>
-                    <option value="ausente">Ausente</option>
-                    <option value="offline">Offline</option>
-                </select>
+                <div class="select-custom-wrapper" id="selectConexaoUsuario">
+                    <select id="conexaoUsuario" class="select-original-oculto">
+                        <option value="todos" selected>Todos</option>
+                        <option value="online">Online</option>
+                        <option value="ausente">Ausente</option>
+                        <option value="offline">Offline</option>
+                    </select>
+
+                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                        <span>Todos</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div class="select-custom-options"></div>
+                </div>
             </div>
 
             <div class="campo-filtro">
@@ -1339,12 +1430,21 @@
                 <div class="campo-filtro">
                     <label for="ordenarUsuarios">Ordenar por</label>
 
-                    <select id="ordenarUsuarios">
-                        <option value="nome">Nome</option>
-                        <option value="username">Usuário</option>
-                        <option value="data_cadastro">Data Cadastro</option>
-                        <option value="acesso">Acesso</option>
-                    </select>
+                    <div class="select-custom-wrapper" id="selectOrdenarUsuarios">
+                        <select id="ordenarUsuarios" class="select-original-oculto">
+                            <option value="nome" selected>Nome</option>
+                            <option value="username">Usuário</option>
+                            <option value="data_cadastro">Data Cadastro</option>
+                            <option value="acesso">Acesso</option>
+                        </select>
+
+                        <button type="button" class="select-custom-trigger" aria-expanded="false">
+                            <span>Nome</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <div class="select-custom-options"></div>
+                    </div>
                 </div>
 
                 <div class="campo-filtro">

@@ -1,522 +1,277 @@
-
 {% extends "base.html" %}
 {% load static %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/adm_usuarios.css' %}">
 <script src="{% static 'js/adm_usuarios.js' %}" defer></script>
+<script src="{% static 'js/select_personalizado.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-
 <!-- BARRA VERTICAL MOBILE -->
 <div class="dashboard-sidebar-bar">
-
-    <button class="btn-menu-mobile"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#menuLateral">
-
-        <i class="fa-solid fa-bars"></i>
-
-    </button>
-
+    <button class="btn-menu-mobile" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral"><i class="fa-solid fa-bars"></i></button>
 </div>
 
-
 <div class="dashboard-page-adm_usuarios">
-
     <!-- CABEÇALHO -->
     <div class="usuarios-header">
-
         <div class="usuarios-header-titulo">
-
             <div>
-
                 <h1>Usuários</h1>
-
-                <p>
-                    <span>
-                        Edite, altere e gerencie todos os usuários do sistema
-                    </span>
-                </p>
-
+                <p><span>Edite, altere e gerencie todos os usuários do sistema</span></p>
             </div>
-
         </div>
-
-
         <div class="usuarios-header-acoes">
-
-            <a href="{% url 'cadastrar_usuarios' %}" class="btn-novo-usuario">
-
-                <i class="fa-solid fa-plus"></i>
-
-                Novo Usuário
-
-            </a>
-
+            <a href="{% url 'cadastrar_usuarios' %}" class="btn-novo-usuario"><i class="fa-solid fa-plus"></i> Novo Usuário</a>
         </div>
-
     </div>
-
 
     <!-- CARDS DE RESUMO -->
     <div class="usuarios-resumo">
-
         <!-- TOTAL -->
         <div class="usuario-resumo-card">
-
-            <div class="resumo-icone azul">
-                <i class="fa-solid fa-users"></i>
-            </div>
-
+            <div class="resumo-icone azul"><i class="fa-solid fa-users"></i></div>
             <div class="resumo-conteudo">
-
-                <span class="resumo-label">
-                    Total de Usuários
-                </span>
-
-                <strong>
-                    {{ total_usuarios|default:"0" }}
-                </strong>
-
-                <small>
-                    Todos os usuários cadastrados
-                </small>
-
+                <span class="resumo-label">Total de Usuários</span>
+                <strong>{{ total_usuarios|default:"0" }}</strong>
+                <small>Todos os usuários cadastrados</small>
             </div>
-
         </div>
-
 
         <!-- ATIVOS -->
         <div class="usuario-resumo-card">
-
-            <div class="resumo-icone verde">
-                <i class="fa-solid fa-user-check"></i>
-            </div>
-
+            <div class="resumo-icone verde"><i class="fa-solid fa-user-check"></i></div>
             <div class="resumo-conteudo">
-
-                <span class="resumo-label">
-                    Usuários Ativos
-                </span>
-
-                <strong>
-                    {{ usuarios_ativos|default:"0" }}
-                </strong>
-
-                <small>
-                    Usuários com acesso ativo
-                </small>
-
+                <span class="resumo-label">Usuários Ativos</span>
+                <strong>{{ usuarios_ativos|default:"0" }}</strong>
+                <small>Usuários com acesso ativo</small>
             </div>
-
         </div>
-
 
         <!-- INATIVOS -->
         <div class="usuario-resumo-card">
-
-            <div class="resumo-icone laranja">
-                <i class="fa-solid fa-user-slash"></i>
-            </div>
-
+            <div class="resumo-icone laranja"><i class="fa-solid fa-user-slash"></i></div>
             <div class="resumo-conteudo">
-
-                <span class="resumo-label">
-                    Usuários Inativos
-                </span>
-
-                <strong>
-                    {{ usuarios_inativos|default:"0" }}
-                </strong>
-
-                <small>
-                    Usuários desativados
-                </small>
-
+                <span class="resumo-label">Usuários Inativos</span>
+                <strong>{{ usuarios_inativos|default:"0" }}</strong>
+                <small>Usuários desativados</small>
             </div>
-
         </div>
-
 
         <!-- NOVOS -->
         <div class="usuario-resumo-card">
-
-            <div class="resumo-icone roxo">
-                <i class="fa-solid fa-user-plus"></i>
-            </div>
-
+            <div class="resumo-icone roxo"><i class="fa-solid fa-user-plus"></i></div>
             <div class="resumo-conteudo">
-
-                <span class="resumo-label">
-                    Novos este mês
-                </span>
-
-                <strong>
-                    {{ usuarios_novos|default:"0" }}
-                </strong>
-
-                <small>
-                    Cadastrados nos últimos 30 dias
-                </small>
-
+                <span class="resumo-label">Novos este mês</span>
+                <strong>{{ usuarios_novos|default:"0" }}</strong>
+                <small>Cadastrados nos últimos 30 dias</small>
             </div>
-
         </div>
-
     </div>
-
 
     <!-- CONTAINER PRINCIPAL -->
     <div class="usuarios-container">
-
         <!-- FILTROS -->
         <div class="usuarios-filtros">
-
             <!-- BUSCA -->
             <form method="GET" class="usuario-busca">
-
                 <i class="fa-solid fa-magnifying-glass"></i>
-
-                <input
-                    type="text"
-                    name="busca"
-                    value="{{ busca }}"
-                    id="buscarUsuario"
-                    placeholder="Buscar por nome, e-mail ou usuário..."
-                    autocomplete="off"
-                >
-
-                <input
-                    type="hidden"
-                    name="status"
-                    id="statusBusca"
-                    value="{{ status_selecionado }}"
-                >
-
+                <input type="text" name="busca" value="{{ busca }}" id="buscarUsuario" placeholder="Buscar por nome, e-mail ou usuário..." autocomplete="off">
+                <input type="hidden" name="status" id="statusBusca" value="{{ status_selecionado }}">
             </form>
 
-
             <!-- PERFIL -->
-            <select id="filtroPerfil" name="perfil">
-
-                <option value=""
-                    {% if not perfil_selecionado %}selected{% endif %}>
-                    Todos os Perfis
-                </option>
-
-                <option value="administrador"
-                    {% if perfil_selecionado == "administrador" %}selected{% endif %}>
-                    Administrador
-                </option>
-
-                <option value="gerente"
-                    {% if perfil_selecionado == "gerente" %}selected{% endif %}>
-                    Gerente
-                </option>
-
-                <option value="analista"
-                    {% if perfil_selecionado == "analista" %}selected{% endif %}>
-                    Analista
-                </option>
-
-                <option value="assistente"
-                    {% if perfil_selecionado == "assistente" %}selected{% endif %}>
-                    Assistente
-                </option>
-
-                <option value="comum"
-                    {% if perfil_selecionado == "comum" %}selected{% endif %}>
-                    Usuário Comum
-                </option>
-
-                <option value="visualizador"
-                    {% if perfil_selecionado == "visualizador" %}selected{% endif %}>
-                    Visualizador
-                </option>
-
-            </select>
-
+            <div class="select-custom-wrapper" id="selectFiltroPerfil">
+                <select id="filtroPerfil" name="perfil" class="select-original-oculto">
+                    <option value="" {% if not perfil_selecionado %}selected{% endif %}>Todos os Perfis</option>
+                    <option value="administrador" {% if perfil_selecionado == "administrador" %}selected{% endif %}>Administrador</option>
+                    <option value="gerente" {% if perfil_selecionado == "gerente" %}selected{% endif %}>Gerente</option>
+                    <option value="analista" {% if perfil_selecionado == "analista" %}selected{% endif %}>Analista</option>
+                    <option value="assistente" {% if perfil_selecionado == "assistente" %}selected{% endif %}>Assistente</option>
+                    <option value="comum" {% if perfil_selecionado == "comum" %}selected{% endif %}>Usuário Comum</option>
+                    <option value="visualizador" {% if perfil_selecionado == "visualizador" %}selected{% endif %}>Visualizador</option>
+                </select>
+                <button type="button" class="select-custom-trigger" aria-expanded="false">
+                    <span>Todos os Perfis</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="select-custom-options"></div>
+            </div>
 
             <!-- STATUS -->
-            <select
-                id="filtroStatus"
-                onchange="aplicarFiltroStatus(this.value)"
-            >
-
-                <option value="">
-                    Todos os Status
-                </option>
-
-                <option
-                    value="ativo"
-                    {% if status_selecionado == "ativo" %}selected{% endif %}
-                >
-                    Ativo
-                </option>
-
-                <option
-                    value="inativo"
-                    {% if status_selecionado == "inativo" %}selected{% endif %}
-                >
-                    Inativo
-                </option>
-
-                <option
-                    value="bloqueado"
-                    {% if status_selecionado == "bloqueado" %}selected{% endif %}
-                >
-                    Bloqueado
-                </option>
-
-            </select>
-
+            <div class="select-custom-wrapper" id="selectFiltroStatus">
+                <select id="filtroStatus" class="select-original-oculto" onchange="aplicarFiltroStatus(this.value)">
+                    <option value="">Todos os Status</option>
+                    <option value="ativo" {% if status_selecionado == "ativo" %}selected{% endif %}>Ativo</option>
+                    <option value="inativo" {% if status_selecionado == "inativo" %}selected{% endif %}>Inativo</option>
+                    <option value="bloqueado" {% if status_selecionado == "bloqueado" %}selected{% endif %}>Bloqueado</option>
+                </select>
+                <button type="button" class="select-custom-trigger" aria-expanded="false">
+                    <span>Todos os Status</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="select-custom-options"></div>
+            </div>
 
             <!-- FILTROS -->
-            <button type="button" class="btn-filtro" id="abrirFiltros">
-                <i class="fa-solid fa-sliders"></i>
-                Filtros
-            </button>
-
+            <button type="button" class="btn-filtro" id="abrirFiltros"><i class="fa-solid fa-sliders"></i> Filtros</button>
 
             <!-- ATUALIZAR -->
-            <button
-                type="button"
-                class="btn-atualizar"
-                title="Atualizar"
-                onclick="window.location.reload()"
-            >
-
-                <i class="fa-solid fa-rotate-right"></i>
-
-            </button>
-
+            <button type="button" class="btn-atualizar" title="Atualizar" onclick="window.location.reload()"><i class="fa-solid fa-rotate-right"></i></button>
         </div>
-
 
         <!-- TABELA E PAGINAÇÃO DINÂMICAS -->
         <div id="usuariosTabelaContainer">
-
             {% include "adm_usuarios/tabela_usuarios_adm.html" %}
-
         </div>
-
     </div>
-
 </div>
 
 <!-- MODAL VISUALIZAR USUÁRIO -->
 <div class="modal-usuario-overlay" id="modalVisualizarUsuario">
-
     <div class="modal-usuario">
-
         <div class="modal-usuario-header">
-
             <div>
                 <h3>Detalhes do usuário</h3>
                 <span>Visualização das informações cadastradas</span>
             </div>
-
-            <button
-                type="button"
-                class="modal-usuario-fechar"
-                id="fecharModalVisualizar"
-            >
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
+            <button type="button" class="modal-usuario-fechar" id="fecharModalVisualizar"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
         <div class="modal-usuario-body" id="conteudoVisualizarUsuario">
-
             <div class="modal-usuario-carregando">
                 <i class="fa-solid fa-spinner fa-spin"></i>
                 <span>Carregando informações...</span>
             </div>
-
         </div>
-
     </div>
-
 </div>
 
+<!-- MODAL EDITAR USUÁRIO -->
 <div class="modal-usuario-overlay" id="modalEditarUsuario">
     <div class="modal-usuario modal-editar-usuario">
-
         <div class="modal-usuario-header">
             <div>
                 <h3>Editar usuário</h3>
                 <span>Edite rapidamente as informações da conta</span>
             </div>
-
-            <button
-                type="button"
-                class="modal-usuario-fechar"
-                id="fecharModalEditar"
-            >
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+            <button type="button" class="modal-usuario-fechar" id="fecharModalEditar"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
         <form id="formEditarUsuario">
-
             {% csrf_token %}
-
             <div class="modal-usuario-body">
-
                 <input type="hidden" id="editarUsuarioId">
 
                 <div class="campo-editar-usuario">
                     <label for="editarNome">Nome</label>
-                    <input
-                        type="text"
-                        id="editarNome"
-                        name="nome"
-                        maxlength="150"
-                        required
-                    >
+                    <input type="text" id="editarNome" name="nome" maxlength="150" required>
                 </div>
 
                 <div class="campo-editar-usuario campo-pro-bloqueado">
-
                     <div class="campo-pro-cabecalho">
                         <label for="editarUsuario">Usuário</label>
-
-                        <span class="badge-pro">
-                            <i class="fa-solid fa-crown"></i>
-                            PRO
-                        </span>
+                        <span class="badge-pro"><i class="fa-solid fa-crown"></i> PRO</span>
                     </div>
-
                     <div class="campo-pro-input">
-                        <input
-                            type="text"
-                            id="editarUsuario"
-                            name="username"
-                            maxlength="150"
-                            readonly
-                            disabled
-                        >
-
+                        <input type="text" id="editarUsuario" name="username" maxlength="150" readonly disabled>
                         <i class="fa-solid fa-lock icone-cadeado-pro"></i>
                     </div>
-
                     <div class="campo-pro-aviso">
                         <i class="fa-solid fa-lock"></i>
-                        <span>
-                            A alteração do nome de usuário está disponível somente na versão PRO.
-                        </span>
+                        <span>A alteração do nome de usuário está disponível somente na versão PRO.</span>
                     </div>
-
                 </div>
 
                 <div class="campo-editar-usuario">
                     <label for="editarEmail">E-mail</label>
-                    <input
-                        type="email"
-                        id="editarEmail"
-                        name="email"
-                        maxlength="254"
-                        required
-                    >
+                    <input type="email" id="editarEmail" name="email" maxlength="254" required>
                 </div>
 
+                <!-- PERFIL -->
                 <div class="campo-editar-usuario">
                     <label for="editarPerfil">Perfil</label>
-                    <select id="editarPerfil" name="perfil" required>
-                        <option value="administrador">Administrador</option>
-                        <option value="comum">Usuário Comum</option>
-                        <option value="analista">Analista</option>
-                        <option value="assistente">Assitente</option>
-                        <option value="visualizador">Visualizador</option>
-                        <option value="gerente">Gerente</option>
-                        
-                    </select>
+                    <div class="select-custom-wrapper" id="selectEditarPerfil">
+                        <select id="editarPerfil" name="perfil" class="select-original-oculto" required>
+                            <option value="administrador">Administrador</option>
+                            <option value="comum">Usuário Comum</option>
+                            <option value="analista">Analista</option>
+                            <option value="assistente">Assitente</option>
+                            <option value="visualizador">Visualizador</option>
+                            <option value="gerente">Gerente</option>
+                        </select>
+                        <button type="button" class="select-custom-trigger" aria-expanded="false">
+                            <span>Administrador</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="select-custom-options"></div>
+                    </div>
                 </div>
 
+                <!-- STATUS DA CONTA -->
                 <div class="campo-editar-usuario">
                     <label for="editarStatus">Status da conta</label>
-                    <select id="editarStatus" name="status" required>
-                        <option value="ativo">Ativo</option>
-                        <option value="inativo">Inativo</option>
-                        <option value="bloqueado">Bloqueado</option>
-                    </select>
-                    <small>
-                        Usuários bloqueados ou inativos não conseguem acessar o sistema.
-                    </small>
+                    <div class="select-custom-wrapper" id="selectEditarStatus">
+                        <select id="editarStatus" name="status" class="select-original-oculto" required>
+                            <option value="ativo">Ativo</option>
+                            <option value="inativo">Inativo</option>
+                            <option value="bloqueado">Bloqueado</option>
+                        </select>
+                        <button type="button" class="select-custom-trigger" aria-expanded="false">
+                            <span>Ativo</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="select-custom-options"></div>
+                    </div>
+                    <small>Usuários bloqueados ou inativos não conseguem acessar o sistema.</small>
                 </div>
 
                 <div id="mensagemEditarUsuario" class="mensagem-editar-usuario"></div>
-
             </div>
 
             <div class="modal-usuario-footer">
-                <button
-                    type="button"
-                    class="btn-modal-cancelar"
-                    id="btnCancelarEdicao"
-                >
-                    Cancelar
-                </button>
-
-                <button
-                    type="submit"
-                    class="btn-modal-salvar"
-                    id="btnSalvarEdicao"
-                >
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    Salvar alterações
-                </button>
+                <button type="button" class="btn-modal-cancelar" id="btnCancelarEdicao">Cancelar</button>
+                <button type="submit" class="btn-modal-salvar" id="btnSalvarEdicao"><i class="fa-solid fa-floppy-disk"></i> Salvar alterações</button>
             </div>
-
         </form>
     </div>
 </div>
 
-
 <!-- MODAL FILTROS AVANÇADOS -->
 <div class="modal-filtros-overlay" id="modalFiltros">
-
     <div class="modal-filtros">
-
         <div class="modal-filtros-header">
             <div>
                 <h3>Filtros avançados</h3>
                 <span>Refine a listagem de usuários</span>
             </div>
-
-            <button type="button" id="fecharFiltros" class="btn-fechar-filtros">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+            <button type="button" id="fecharFiltros" class="btn-fechar-filtros"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
         <div class="modal-filtros-body">
-
             <!-- PERÍODO DE CADASTRO -->
             <div class="grupo-filtro">
-                <label class="titulo-grupo-filtro">
-                    <i class="fa-solid fa-calendar-days"></i>
-                    Período de cadastro
-                </label>
-
-                <select id="filtroPeriodoCadastro">
-                    <option value="">Qualquer período</option>
-                    <option value="este_mes">Cadastrados este mês</option>
-                    <option value="mes_passado">Cadastrados mês passado</option>
-                    <option value="7_dias">Últimos 7 dias</option>
-                    <option value="30_dias">Últimos 30 dias</option>
-                    <option value="personalizado">Período personalizado</option>
-                </select>
+                <label class="titulo-grupo-filtro"><i class="fa-solid fa-calendar-days"></i> Período de cadastro</label>
+                <div class="select-custom-wrapper" id="selectFiltroPeriodoCadastro">
+                    <select id="filtroPeriodoCadastro" class="select-original-oculto">
+                        <option value="">Qualquer período</option>
+                        <option value="este_mes">Cadastrados este mês</option>
+                        <option value="mes_passado">Cadastrados mês passado</option>
+                        <option value="7_dias">Últimos 7 dias</option>
+                        <option value="30_dias">Últimos 30 dias</option>
+                        <option value="personalizado">Período personalizado</option>
+                    </select>
+                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                        <span>Qualquer período</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="select-custom-options"></div>
+                </div>
 
                 <div class="filtro-datas-personalizadas" id="datasPersonalizadas" hidden>
                     <div>
                         <label for="dataCadastroInicial">Data inicial</label>
                         <input type="date" id="dataCadastroInicial">
                     </div>
-
                     <div>
                         <label for="dataCadastroFinal">Data final</label>
                         <input type="date" id="dataCadastroFinal">
@@ -526,56 +281,49 @@
 
             <!-- ÚLTIMO ACESSO -->
             <div class="grupo-filtro">
-                <label class="titulo-grupo-filtro">
-                    <i class="fa-solid fa-clock"></i>
-                    Último acesso
-                </label>
-
-                <select id="filtroUltimoAcesso">
-                    <option value="">Qualquer acesso</option>
-                    <option value="7_dias">Acessaram nos últimos 7 dias</option>
-                    <option value="30_dias">Acessaram nos últimos 30 dias</option>
-                    <option value="sem_30_dias">Sem acesso nos últimos 30 dias</option>
-                    <option value="nunca">Nunca acessaram</option>
-                </select>
+                <label class="titulo-grupo-filtro"><i class="fa-solid fa-clock"></i> Último acesso</label>
+                <div class="select-custom-wrapper" id="selectFiltroUltimoAcesso">
+                    <select id="filtroUltimoAcesso" class="select-original-oculto">
+                        <option value="">Qualquer acesso</option>
+                        <option value="7_dias">Acessaram nos últimos 7 dias</option>
+                        <option value="30_dias">Acessaram nos últimos 30 dias</option>
+                        <option value="sem_30_dias">Sem acesso nos últimos 30 dias</option>
+                        <option value="nunca">Nunca acessaram</option>
+                    </select>
+                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                        <span>Qualquer acesso</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="select-custom-options"></div>
+                </div>
             </div>
 
             <!-- STATUS -->
             <div class="grupo-filtro">
-                <label class="titulo-grupo-filtro">
-                    <i class="fa-solid fa-user-check"></i>
-                    Situação da conta
-                </label>
-
-                <select id="filtroStatusAvancado">
-                    <option value="">Todos os status</option>
-                    <option value="ativo">Ativo</option>
-                    <option value="inativo">Inativo</option>
-                    <option value="bloqueado">Bloqueado</option>
-                </select>
+                <label class="titulo-grupo-filtro"><i class="fa-solid fa-user-check"></i> Situação da conta</label>
+                <div class="select-custom-wrapper" id="selectFiltroStatusAvancado">
+                    <select id="filtroStatusAvancado" class="select-original-oculto">
+                        <option value="">Todos os status</option>
+                        <option value="ativo">Ativo</option>
+                        <option value="inativo">Inativo</option>
+                        <option value="bloqueado">Bloqueado</option>
+                    </select>
+                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                        <span>Todos os status</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="select-custom-options"></div>
+                </div>
             </div>
-
         </div>
 
         <div class="modal-filtros-footer">
-            <button type="button" class="btn-limpar-filtros" id="limparFiltros">
-                <i class="fa-solid fa-eraser"></i>
-                Limpar filtros
-            </button>
-
+            <button type="button" class="btn-limpar-filtros" id="limparFiltros"><i class="fa-solid fa-eraser"></i> Limpar filtros</button>
             <div class="acoes-filtros">
-                <button type="button" class="btn-cancelar-filtros" id="cancelarFiltros">
-                    Cancelar
-                </button>
-
-                <button type="button" class="btn-aplicar-filtros" id="aplicarFiltros">
-                    <i class="fa-solid fa-filter"></i>
-                    Aplicar filtros
-                </button>
+                <button type="button" class="btn-cancelar-filtros" id="cancelarFiltros">Cancelar</button>
+                <button type="button" class="btn-aplicar-filtros" id="aplicarFiltros"><i class="fa-solid fa-filter"></i> Aplicar filtros</button>
             </div>
         </div>
-
     </div>
 </div>
-
 {% endblock %}

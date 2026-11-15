@@ -2815,7 +2815,7 @@ body {
 /* ==========================================================
    CAMPOS DE FORMULÁRIO
 ========================================================== */
-input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+:root[data-theme="claro"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
 select,
 textarea {
     background-color: var(--cor-input-fundo) !important;
@@ -2852,7 +2852,6 @@ textarea::placeholder {
 /* ==========================================================
    SIDEBAR
 ========================================================== */
-
 :root[data-theme="claro"] .sidebar-sistema {
     background: #e8edf3;
     border-color: #c3ccd8;
@@ -2875,14 +2874,16 @@ textarea::placeholder {
 :root[data-theme="claro"] .dashboard-topbar-verificar-usuarios h1,
 :root[data-theme="claro"] .dashboard-topbar-home h1,
 :root[data-theme="claro"] .dashboard-topbar-cadastrar-produtos h1,
-:root[data-theme="claro"] .dashboard-topbar-cadastrar-usuarios h1  {
+:root[data-theme="claro"] .dashboard-topbar-cadastrar-usuarios h1,
+:root[data-theme="claro"] .dashboard-topbar-clientes h1  {
     color: #181d27 !important;
 }
 
 :root[data-theme="claro"] .dashboard-topbar-estoque p,
 :root[data-theme="claro"] .dashboard-topbar-verificar-usuarios p,
 :root[data-theme="claro"] .dashboard-topbar-cadastrar-usuarios p,
-:root[data-theme="claro"] .modal-status-pausa-historico-descricao {
+:root[data-theme="claro"] .modal-status-pausa-historico-descricao,
+:root[data-theme="claro"] .dashboard-topbar-clientes p {
     color: #535861 !important;
 }
 
@@ -2900,11 +2901,34 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-status-pausa-historico-titulo,
 :root[data-theme="claro"] .modal-ordenar-historico-header h5 i,
 :root[data-theme="claro"] .modal-filtrar-historico-titulo,
-:root[data-theme="claro"] .modal-filtrar-historico-titulo i  {
+:root[data-theme="claro"] .modal-filtrar-historico-titulo i,
+:root[data-theme="claro"] .modal-filtrar-produtos .modal-filtrar-produtos-titulo i,
+:root[data-theme="claro"] .modal-filtrar-produtos .label-tipo-filtro-produtos,
+:root[data-theme="claro"] .modal-filtrar-produtos .label-valor-filtro-produtos,
+:root[data-theme="claro"] .modal-ordenar-produtos .label-ordenar-produtos,
+:root[data-theme="claro"] .modal-ordenar-produtos .modal-ordenar-produtos-titulo i,
+:root[data-theme="claro"] .modal-visualizar-imagem-produtos .modal-visualizar-imagem-produtos-titulo i,
+:root[data-theme="claro"] .modal-filtrar-usuarios .label-tipo-filtro-usuarios,
+:root[data-theme="claro"] .modal-filtrar-usuarios .label-valor-filtro-usuarios,
+:root[data-theme="claro"] .modal-filtrar-usuarios .modal-filtrar-usuarios-titulo i,
+:root[data-theme="claro"] .modal-filtrar-usuarios .modal-filtrar-usuarios-titulo i,
+:root[data-theme="claro"] .aviso-confirmacao,
+:root[data-theme="claro"] .legenda-relatorio,
+:root[data-theme="claro"] #modalRelatorioCliente .modal-title i,
+:root[data-theme="claro"] .modal-historico-clientes-titulo,
+:root[data-theme="claro"] .modal-status-pausa-historico-clientes-titulo,
+:root[data-theme="claro"] .modal-ordenar-historico-clientes-header h5 i,
+:root[data-theme="claro"] .modal-filtrar-clientes-legend,
+:root[data-theme="claro"] .modal-filtrar-historico-clientes-titulo i,
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-titulo,
+:root[data-theme="claro"] .modal-confirmar-apagar-titulo-produtos,
+:root[data-theme="claro"] .modal-logout-content h4,
+:root[data-theme="claro"] .modal-confirmar-apagar-usuarios-titulo,
+:root[data-theme="claro"] .modal-exclusao-historico-clientes-header h5,
+:root[data-theme="claro"] .modal-exclusao-historico-clientes-header h5 i,
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-titulo-clientes  {
     color: #181d27 !important;
 }
-
-
 
 :root[data-theme="claro"] .news-card  h4 {
     color: #181d27 !important;
@@ -2914,7 +2938,10 @@ textarea::placeholder {
 :root[data-theme="claro"] #modalOrdenarUsuarios h5,
 :root[data-theme="claro"] .modal-ordenar-historico-produtos-header h5,
 :root[data-theme="claro"] .modal-ordenar-historico-header h5,
-:root[data-theme="claro"] #modalFiltrarProdutos .modal-header h5{
+:root[data-theme="claro"] #modalFiltrarProdutos .modal-header h5,
+:root[data-theme="claro"] #modalOrdenarProdutos .modal-header h5,
+:root[data-theme="claro"] #modalFiltrarUsuarios .modal-header h5,
+:root[data-theme="claro"] .modal-ordenar-historico-clientes-header h5{
     color: #181d27 !important;
 }
 
@@ -2940,6 +2967,15 @@ textarea::placeholder {
     background: #e8edf3;
 }
 
+/* BOTÃO DE ABA ATIVA — TEMA CLARO */
+:root[data-theme="claro"] .btn-tab-cliente.ativo,
+:root[data-theme="claro"] .btn-tab-relatorio.ativo {
+    background: #ede9fe !important;
+    color: #6d28d9 !important;
+    border: 1px solid #c4b5fd !important;
+    box-shadow: 0 3px 10px rgba(124, 58, 237, 0.12) !important;
+}
+
 :root[data-theme="claro"] .news-card  p,
 :root[data-theme="claro"] .dashboard-topbar-home p,
 :root[data-theme="claro"] .modal-alerta-body p,
@@ -2948,16 +2984,24 @@ textarea::placeholder {
 :root[data-theme="claro"] .sem-registros-content-estoque p,
 :root[data-theme="claro"] .ajuda-planilha-campo p,
 :root[data-theme="claro"] .modal-status-pausa-historico-produtos-legenda,
-:root[data-theme="claro"] .modal-status-pausa-historico-legenda {
+:root[data-theme="claro"] .modal-status-pausa-historico-legenda,
+:root[data-theme="claro"] .modal-historico-clientes-subtitulo,
+:root[data-theme="claro"] .modal-status-pausa-historico-clientes-legenda,
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-descricao,
+:root[data-theme="claro"] .modal-confirmar-apagar-usuarios-descricao,
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-descricao-clientes   {
     color: #535861 !important;
 }
 
-:root[data-theme="claro"] .card-resumo-produto span {
+:root[data-theme="claro"] .card-resumo-produto span,
+:root[data-theme="claro"] .custom-checkbox,
+:root[data-theme="claro"] .card-resumo span {
     color: #101827 !important;
 }
 
 :root[data-theme="claro"] .card-resumo-produto strong,
-:root[data-theme="claro"] .ajuda-planilha-campo strong {
+:root[data-theme="claro"] .ajuda-planilha-campo strong,
+:root[data-theme="claro"] .card-resumo strong {
     color: #535861 !important;
 }
 
@@ -2966,7 +3010,17 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-ordenar-usuarios .label-ordenar-usuarios,
 :root[data-theme="claro"] .campo-ordenar-historico-produtos label,
 :root[data-theme="claro"] .modal-filtrar-produtos-radio-label,
-:root[data-theme="claro"] .modal-status-pausa-historico-card-label {
+:root[data-theme="claro"] .modal-status-pausa-historico-card-label,
+:root[data-theme="claro"] #modalEditarCadastroCliente .campo label,
+:root[data-theme="claro"] .item-checkbox-relatorio label,
+:root[data-theme="claro"] .campo-relatorio label,
+:root[data-theme="claro"] .campo-ordenar-historico-clientes label,
+:root[data-theme="claro"] .modal-filtrar-clientes-radio-label,
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-alerta-label,
+:root[data-theme="claro"] .modal-apagar-produtos-quantidade-label,
+:root[data-theme="claro"] .modal-apagar-usuario-quantidade-label,
+:root[data-theme="claro"] #modalCadastrarCliente .campo label,
+:root[data-theme="claro"] .campo-filtro label  {
     color: #101827 !important;
 }
 
@@ -2983,7 +3037,10 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-visualizar-imagem-usuarios .modal-visualizar-imagem-usuarios-titulo,
 :root[data-theme="claro"] .modal-status-pausa-historico-produtos-titulo,
 :root[data-theme="claro"] .modal-filtrar-historico-produtos-titulo,
-:root[data-theme="claro"] .modal-filtrar-legend {
+:root[data-theme="claro"] .modal-filtrar-legend,
+:root[data-theme="claro"] .modal-visualizar-imagem-produtos .modal-visualizar-imagem-produtos-titulo,
+:root[data-theme="claro"] .modal-filtrar-historico-clientes-titulo,
+:root[data-theme="claro"] .secao-header {
     color: #181d27 !important;
 }
 
@@ -2992,7 +3049,9 @@ textarea::placeholder {
 :root[data-theme="claro"] .page-description,
 :root[data-theme="claro"] .actions-description,
 :root[data-theme="claro"] .modal-ajuda-planilha .modal-planilhas-descricao,
-:root[data-theme="claro"] .modal-filtrar-radio-label  {
+:root[data-theme="claro"] .modal-filtrar-radio-label,
+:root[data-theme="claro"] .contador-selecionados-historico-clientes,
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-alerta-label-clientes   {
     color: #535861 !important;
 }
 
@@ -3004,7 +3063,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .dashboard-topbar-estoque,
 :root[data-theme="claro"] .dashboard-topbar-verificar-usuarios,
 :root[data-theme="claro"] .page-header,
-:root[data-theme="claro"] .actions-card {
+:root[data-theme="claro"] .actions-card,
+:root[data-theme="claro"] .dashboard-topbar-clientes {
     border-color: #c3ccd8;
     background: #e8edf3;
 }
@@ -3052,11 +3112,59 @@ textarea::placeholder {
     box-shadow: none !important;
 }
 
+/* PAGINAÇÃO — TEMA CLARO */
+:root[data-theme="claro"] .btn-paginacao {
+    background: #e2e8f0 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #475569 !important;
+    border-radius: 4px;
+    transition: 0.2s;
+}
 
+/* PAGINAÇÃO ATIVA — TEMA CLARO */
+:root[data-theme="claro"] .btn-paginacao.ativo {
+    background: #6d28d9 !important;
+    color: #ffffff !important;
+    border-color: #6d28d9 !important;
+    box-shadow: 0 2px 6px rgba(109, 40, 217, 0.18);
+}
+
+
+
+/* HOVER */
+:root[data-theme="claro"] .btn-paginacao:not(.ativo):hover {
+    background: #cbd5e1 !important;
+    border-color: #94a3b8 !important;
+    color: #1e293b !important;
+}
+
+/* CARDS DE RESUMO — TEMA CLARO */
+/* Clientes — Lilás */
+:root[data-theme="claro"] .card-resumo.card-clientes {
+    background: #c9c0e8  !important;
+}
+
+/* Jurídica — Verde-azulado */
+:root[data-theme="claro"] .card-resumo.card-juridica {
+    background: #b4d2cc  !important;
+}
+
+/* Valor — Cinza */
+:root[data-theme="claro"] .card-resumo.card-valor {
+    background: #c5c9d0  !important;
+}
+
+/* ÍCONE DO CARD VALOR — TEMA CLARO */
+:root[data-theme="claro"] .card-valor .icone-card {
+    background: #fcd34d !important;
+    color: #78350f !important;
+}
 
 /* CORPO DA TABELA - (MANTER) */
 :root[data-theme="claro"] #modalTabelaProdutos .table-responsive tbody td,
-:root[data-theme="claro"] #modalTabelaUsuarios tbody td{
+:root[data-theme="claro"] #modalTabelaUsuarios tbody td,
+:root[data-theme="claro"] .usuarios-table tbody td,
+:root[data-theme="claro"] .relatorio-tabela tbody td{
     color: #535861 !important;
     border-color: #c3ccd8 !important;
     background: #e8edf3 !important;
@@ -3066,9 +3174,22 @@ textarea::placeholder {
     border-color: #c3ccd8 !important;
     background: #e8edf3 !important;
 }
+
+/*ALERTAS OU INFOS*/
 :root[data-theme="claro"] .modal-status-pausa-historico-produtos-card-info,
-:root[data-theme="claro"] .modal-status-pausa-historico-card-info{
+:root[data-theme="claro"] .modal-status-pausa-historico-card-info,
+:root[data-theme="claro"] .modal-status-pausa-historico-clientes-card-info,
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-alerta,
+:root[data-theme="claro"] .modal-apagar-produtos-quantidade,
+:root[data-theme="claro"] .modal-apagar-usuario-quantidade,
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-alerta-clientes{
     background: #ffffff;
+}
+
+
+:root[data-theme="claro"] .modal-visualizar-imagem-produtos .mensagem-sem-imagem-produtos{
+    background: #ffffff;
+    border: none;
 }
 
 
@@ -3077,7 +3198,11 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-historico-produtos-table  thead th,
 :root[data-theme="claro"] #modalTabelaProdutos .table-responsive thead th,
 :root[data-theme="claro"] .produtos-table thead th,
-:root[data-theme="claro"] #modalTabelaUsuarios .table-responsive thead th {
+:root[data-theme="claro"] #modalTabelaUsuarios .table-responsive thead th,
+:root[data-theme="claro"] .usuarios-table thead th,
+:root[data-theme="claro"] .clientes-table thead th,
+:root[data-theme="claro"] .modal-historico-clientes-table thead th,
+:root[data-theme="claro"] .relatorio-tabela thead th {
     color: #535861 !important;
     border-color: #c3ccd8 !important;
     background: #e8edf3 !important;
@@ -3103,7 +3228,14 @@ textarea::placeholder {
 :root[data-theme="claro"] .dashboard-topbar-cadastrar-usuarios,
 :root[data-theme="claro"] .dashboard-card-cadastrar-usuarios,
 :root[data-theme="claro"] #modalTabelaUsuarios .table-responsive,
-:root[data-theme="claro"] #modalTabelaUsuarios .table-responsive table{
+:root[data-theme="claro"] #modalTabelaUsuarios .table-responsive table,
+:root[data-theme="claro"] .usuarios-table-container,
+:root[data-theme="claro"] .usuarios-card,
+:root[data-theme="claro"] .clientes-card,
+:root[data-theme="claro"] .clientes-table-container,
+:root[data-theme="claro"] .modal-historico-clientes-body,
+:root[data-theme="claro"] .modal-historico-clientes-table,
+:root[data-theme="claro"] .modal-historico-clientes-table-container{
     color: #535861 !important;
     border-color: #c3ccd8 !important;
     background: #e8edf3 !important;
@@ -3117,7 +3249,8 @@ textarea::placeholder {
 
 :root[data-theme="claro"] #modalTabelaProdutos .modal-body,
 :root[data-theme="claro"] #modalTabelaUsuarios .modal-body,
-:root[data-theme="claro"] .modal-filtrar-historico-produtos-body {
+:root[data-theme="claro"] .modal-filtrar-historico-produtos-body,
+:root[data-theme="claro"] .modal-filtrar-historico-clientes-body {
     color: #101827 !important;
     background: #ffffff !important;
 }
@@ -3129,7 +3262,21 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-filtrar-historico-produtos-header,
 :root[data-theme="claro"] .modal-status-pausa-historico-header,
 :root[data-theme="claro"] .modal-status-pausa-historico-footer,
-:root[data-theme="claro"] .modal-filtrar-historico-header{
+:root[data-theme="claro"] .modal-filtrar-historico-header,
+:root[data-theme="claro"] .modal-header-clientes-excluir,
+:root[data-theme="claro"] .modal-footer-botoes-clientes-excluir,
+:root[data-theme="claro"] .modal-header-relatorios,
+:root[data-theme="claro"] .modal-footer-botoes-relatorios,
+:root[data-theme="claro"] .modal-historico-clientes-toolbar,
+:root[data-theme="claro"] .modal-historico-clientes-footer,
+:root[data-theme="claro"] .modal-status-pausa-historico-clientes-header,
+:root[data-theme="claro"] .modal-status-pausa-historico-clientes-footer,
+:root[data-theme="claro"] .modal-filtrar-historico-clientes-header,
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-header,
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-footer,
+:root[data-theme="claro"] .relatorio-card-principal,
+:root[data-theme="claro"] .relatorio-tabs,
+:root[data-theme="claro"] .relatorio-card-secao  {
     color: #101827 !important;
     background: #ffffff !important;
     border-bottom: 1px solid #374151 !important;
@@ -3152,10 +3299,25 @@ textarea::placeholder {
 :root[data-theme="claro"]  .btn-resumo-ver-produtos,
 :root[data-theme="claro"]  .btn-resumo-ver-clientes,
 :root[data-theme="claro"]  .btn-secondary-action,
-:root[data-theme="claro"] .btn-cadastrar-usuarios  {
+:root[data-theme="claro"] .btn-cadastrar-usuarios,
+:root[data-theme="claro"] .btn-cliente,
+:root[data-theme="claro"] .btn-tab-cliente,
+:root[data-theme="claro"] .btn-relatorio-pdf,
+:root[data-theme="claro"] .btn-relatorio-excel,
+:root[data-theme="claro"] .btn-relatorio-cancelar,
+:root[data-theme="claro"] .btn-historico-clientes-acao,
+:root[data-theme="claro"] .btn-tab-relatorio   {
     background-color: #b8c7d9 !important;
     border-color: #a8b8cb;
-    color: #414651;
+    color: #414651 !important;
+}
+
+:root[data-theme="claro"] .btn-relatorio-pdf:hover,
+:root[data-theme="claro"] .btn-relatorio-excel:hover,
+:root[data-theme="claro"] .btn-relatorio-cancelar:hover{
+     background: #e2e8f0 !important;
+    border-color: #94a3b8 !important;
+    box-shadow: 0 3px 8px rgba(15, 23, 42, 0.10) !important;
 }
 
 /* TEMA CLARO — COR DOS ÍCONES NO HOVER */
@@ -3186,7 +3348,18 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-modal-fechar-pausa-historico,
 :root[data-theme="claro"] .btn-modal-fechar-ordenar-historico,
 :root[data-theme="claro"] .btn-modal-fechar-filtrar-historico,
-:root[data-theme="claro"] .modal-filtrar-produtos .btn-modal-fechar-filtrar-produtos  {
+:root[data-theme="claro"] .modal-filtrar-produtos .btn-modal-fechar-filtrar-produtos,
+:root[data-theme="claro"] .modal-ordenar-produtos .btn-modal-fechar-ordenar-produtos,
+:root[data-theme="claro"] .modal-visualizar-imagem-produtos .btn-modal-fechar-visualizar-imagem-produtos,
+:root[data-theme="claro"] .modal-filtrar-usuarios .btn-modal-fechar-filtrar-usuarios,
+:root[data-theme="claro"] .btn-fechar-modal-ajuda-planilha-usuarios,
+:root[data-theme="claro"] .btn-modal-fechar-historico-clientes,
+:root[data-theme="claro"] .btn-modal-fechar-pausa-historico-clientes,
+:root[data-theme="claro"] .btn-modal-fechar-ordenar-historico-clientes,
+:root[data-theme="claro"] .btn-modal-fechar-filtrar-historico-clientes,
+:root[data-theme="claro"] .btn-modal-fechar-apagar-historico,
+:root[data-theme="claro"] .btn-modal-fechar-apagar-produtos,
+:root[data-theme="claro"] .btn-modal-fechar-exclusao-historico-clientes  {
     background: #b8c7d9 !important;
     color: #475569 !important;
 }
@@ -3205,7 +3378,17 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-modal-fechar-pausa-historico:hover,
 :root[data-theme="claro"] .btn-modal-fechar-ordenar-historico:hover,
 :root[data-theme="claro"] .btn-modal-fechar-filtrar-historico:hover,
-:root[data-theme="claro"] .modal-filtrar-produtos .btn-modal-fechar-filtrar-produtos:hover {
+:root[data-theme="claro"] .modal-filtrar-produtos .btn-modal-fechar-filtrar-produtos:hover,
+:root[data-theme="claro"] .modal-ordenar-produtos .btn-modal-fechar-ordenar-produtos:hover,
+:root[data-theme="claro"] .modal-visualizar-imagem-produtos .btn-modal-fechar-visualizar-imagem-produtos:hover,
+:root[data-theme="claro"] .modal-filtrar-usuarios .btn-modal-fechar-filtrar-usuarios:hover,
+:root[data-theme="claro"] .btn-fechar-modal-ajuda-planilha-usuarios:hover,
+:root[data-theme="claro"] .btn-modal-fechar-historico-clientes:hover,
+:root[data-theme="claro"] .btn-modal-fechar-pausa-historico-clientes:hover,
+:root[data-theme="claro"] .btn-modal-fechar-ordenar-historico-clientes:hover,
+:root[data-theme="claro"] .btn-modal-fechar-filtrar-historico-clientes:hover,
+:root[data-theme="claro"] .btn-modal-fechar-apagar-historico:hover,
+:root[data-theme="claro"] .btn-modal-fechar-exclusao-historico-clientes:hover  {
     background-color: #fca5a5  !important;
     color: #cecfd2;
     transform: scale(1.05);
@@ -3214,7 +3397,9 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-historico-perigo:hover,
 :root[data-theme="claro"] .btn-historico-produtos-perigo:hover,
 :root[data-theme="claro"] #modalTabelaProdutos .apagar:hover,
-:root[data-theme="claro"] .btn-cadastrar-usuarios.apagar:hover {
+:root[data-theme="claro"] .btn-cadastrar-usuarios.apagar:hover,
+:root[data-theme="claro"] .btn-historico-clientes-perigo:hover,
+:root[data-theme="claro"] .btn-cliente.excluir:hover {
     background: rgba(220, 38, 38, 0.2) !important;
     border-color: #dc2626 !important;
     color: #7f1d1d !important;
@@ -3229,7 +3414,8 @@ textarea::placeholder {
 }
 
 :root[data-theme="claro"] .btn-historico-exportar-csv:hover,
-:root[data-theme="claro"] .btn-historico-produtos-exportar-csv:hover {
+:root[data-theme="claro"] .btn-historico-produtos-exportar-csv:hover,
+:root[data-theme="claro"] .btn-historico-clientes-exportar-csv:hover {
     background-color: #a7f3d0 !important;
     border-color: #10b981;
     color: #065f46;
@@ -3237,7 +3423,8 @@ textarea::placeholder {
 }
 
 :root[data-theme="claro"] .btn-historico-exportar-pdf:hover,
-:root[data-theme="claro"] .btn-historico-produtos-exportar-pdf:hover {
+:root[data-theme="claro"] .btn-historico-produtos-exportar-pdf:hover,
+:root[data-theme="claro"] .btn-historico-clientes-exportar-pdf:hover {
     background-color: #fca5a5 !important;
     border-color: #ef4444 !important;
     color: #7f1d1d !important;
@@ -3245,7 +3432,8 @@ textarea::placeholder {
 }
 
 :root[data-theme="claro"] .btn-historico-pausar:hover,
-:root[data-theme="claro"] .btn-historico-produtos-pausar:hover {
+:root[data-theme="claro"] .btn-historico-produtos-pausar:hover,
+:root[data-theme="claro"] .btn-historico-clientes-pausar:hover {
     background-color: #fed7aa !important;
     border-color: #f97316 !important;
     color: #9a3412 !important;
@@ -3254,7 +3442,8 @@ textarea::placeholder {
 
 :root[data-theme="claro"] .btn-historico-ordenar:hover,
 :root[data-theme="claro"] .btn-historico-produtos-ordenar:hover,
-:root[data-theme="claro"] #modalTabelaProdutos .ordenar:hover {
+:root[data-theme="claro"] #modalTabelaProdutos .ordenar:hover,
+:root[data-theme="claro"] .btn-historico-clientes-ordenar:hover {
     background-color: #ddd6fe !important;
     border-color: #8b5cf6 !important;
     color: #5b21b6 !important;
@@ -3265,7 +3454,10 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-historico-produtos-filtrar:hover,
 :root[data-theme="claro"] #modalTabelaProdutos .filtrar:hover,
 :root[data-theme="claro"] .btn-side-actions.editar:hover,
-:root[data-theme="claro"] .btn-cadastrar-usuarios.editar:hover {
+:root[data-theme="claro"] .btn-cadastrar-usuarios.editar:hover,
+:root[data-theme="claro"] .btn-historico-clientes-filtrar:hover,
+:root[data-theme="claro"] .btn-cliente.editar:hover,
+:root[data-theme="claro"] .btn-cliente.relatorio:hover {
     background-color: #bae6fd !important;
     border-color: #0ea5e9 !important;
     color: #075985;
@@ -3276,7 +3468,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-historico-produtos-atualizar:hover,
 :root[data-theme="claro"] #modalTabelaProdutos .atualizar:hover,
 :root[data-theme="claro"] .btn-side-actions.atualizar:hover,
-:root[data-theme="claro"] .btn-cadastrar-usuarios.atualizar:hover {
+:root[data-theme="claro"] .btn-cadastrar-usuarios.atualizar:hover,
+:root[data-theme="claro"] .btn-historico-clientes-atualizar:hover {
     background-color: #93c5fd !important;
     color: #1e40af !important;
     border-color: #3b82f6 !important;
@@ -3294,14 +3487,17 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-historico-produtos-exportar-excel:hover,
 :root[data-theme="claro"] #modalTabelaProdutos .gerar-arquivo-excel:hover,
 :root[data-theme="claro"] .btn-side-actions.adicionar:hover,
-:root[data-theme="claro"] .btn-cadastrar-usuarios.adicionar:hover {
+:root[data-theme="claro"] .btn-cadastrar-usuarios.adicionar:hover,
+:root[data-theme="claro"] .btn-historico-clientes-exportar-excel:hover,
+:root[data-theme="claro"] .btn-cliente.criar:hover {
     background-color: #bbf7d0 !important;
     color: #166534 !important;
     border-color: #86efac !important;
     transform: scale(1.05);
 }
 
-:root[data-theme="claro"] #modalTabelaProdutos .visualizar-imagem:hover{
+:root[data-theme="claro"] #modalTabelaProdutos .visualizar-imagem:hover,
+:root[data-theme="claro"] .btn-cliente.historico:hover{
     background: #a5f3fc !important;
     border-color: #06b6d4  !important;
     color: #155e75 !important;
@@ -3310,13 +3506,48 @@ textarea::placeholder {
 
 :root[data-theme="claro"] #modalTabelaProdutos .duplicar-produto:hover,
 :root[data-theme="claro"] .btn-side-actions.sair:hover,
-:root[data-theme="claro"] .btn-cadastrar-usuarios.sair:hover {
+:root[data-theme="claro"] .btn-cadastrar-usuarios.sair:hover,
+:root[data-theme="claro"] .btn-cliente.marcar:hover {
     background-color: #fed7aa  !important;
     border-color: #f97316 !important;
     color: #7c2d12  !important;
     transform: scale(1.05);
 }
+:root[data-theme="claro"] .btn-info-ajuda{
+    background-color: #ffffff;
+}
 
+/* POPOVER — TEMA CLARO */
+:root[data-theme="claro"] .popover {
+    background-color: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12) !important;
+}
+
+/* TÍTULO */
+:root[data-theme="claro"] .popover .popover-header {
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    font-weight: 600;
+}
+
+/* CONTEÚDO */
+:root[data-theme="claro"] .popover .popover-body {
+    background-color: #ffffff !important;
+    color: #475569 !important;
+}
+
+/* SETA */
+:root[data-theme="claro"] .popover .popover-arrow::before {
+    border-top-color: #d1d5db !important;
+    border-bottom-color: #d1d5db !important;
+}
+
+:root[data-theme="claro"] .popover .popover-arrow::after {
+    border-top-color: #ffffff !important;
+    border-bottom-color: #ffffff !important;
+}
 
 :root[data-theme="claro"] .btn-pesquisar-tabela-estoque i,
 :root[data-theme="claro"] .btn-pesquisar-tabela-saida i,
@@ -3324,16 +3555,31 @@ textarea::placeholder {
     color: #414651;
 }
 
-/* TEMA CLARO — CONTAINER RESPONSIVO */
-:root[data-theme="claro"] .produtos-table-container,
-:root[data-theme="claro"] .modal-ajuda-planilha .modal-body {
-    scrollbar-color: #b8c7d9 #e8edf3 !important;
-}
-
-:root[data-theme="claro"] .modal-filtrar-produtos .btn-cancelar-filtrar-produtos,
-:root[data-theme="claro"] .modal-ordenar-usuarios .btn-cancelar-ordenar-usuarios{
+:root[data-theme="claro"] .modal-ordenar-usuarios .btn-cancelar-ordenar-usuarios,
+:root[data-theme="claro"] .modal-ordenar-produtos .btn-cancelar-ordenar-produtos{
     background: #374151;
     border: 1px solid #4b5563;
+    color: #e5e7eb;
+}
+
+:root[data-theme="claro"] .modal-ordenar-produtos .btn-cancelar-ordenar-produtos:hover,
+:root[data-theme="claro"] .modal-ordenar-usuarios .btn-cancelar-ordenar-usuarios:hover{
+    background-color: #4b5563;
+    color: #cecfd2;
+}
+
+
+/* TEMA CLARO — SCROLL DE ROLAGEM FORÇAGEM */
+:root[data-theme="claro"] .produtos-table-container,
+:root[data-theme="claro"] .modal-ajuda-planilha .modal-body,
+:root[data-theme="claro"] .usuarios-table-container,
+:root[data-theme="claro"] .clientes-table-container,
+:root[data-theme="claro"] #modalEditarCadastroCliente,
+:root[data-theme="claro"] #modalRelatorioCliente,
+:root[data-theme="claro"] #modalHistoricoClientes,
+:root[data-theme="claro"] #modalCadastrarCliente{
+    scrollbar-color: #b8c7d9 #e8edf3 !important;
+    scrollbar-width: thin !important;
 }
 
 
@@ -3345,7 +3591,13 @@ textarea::placeholder {
 :root[data-theme="claro"] .dashboard-card-cadastrar-produtos::-webkit-scrollbar,
 :root[data-theme="claro"] .dashboard-card-resumo-produtos::-webkit-scrollbar,
 :root[data-theme="claro"] .produtos-table-container::-webkit-scrollbar,
-:root[data-theme="claro"] .modal-ajuda-planilha .modal-body::-webkit-scrollbar {
+:root[data-theme="claro"] .modal-ajuda-planilha .modal-body::-webkit-scrollbar,
+:root[data-theme="claro"] .usuarios-table-container::-webkit-scrollbar,
+:root[data-theme="claro"] .clientes-table-container::-webkit-scrollbar,
+:root[data-theme="claro"] #modalEditarCadastroCliente::-webkit-scrollbar,
+:root[data-theme="claro"] #modalRelatorioCliente::-webkit-scrollbar,
+:root[data-theme="claro"] #modalHistoricoClientes::-webkit-scrollbar,
+:root[data-theme="claro"] #modalCadastrarCliente::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
@@ -3357,10 +3609,17 @@ textarea::placeholder {
 :root[data-theme="claro"] .dashboard-card-cadastrar-produtos::-webkit-scrollbar-thumb,
 :root[data-theme="claro"] .dashboard-card-resumo-produtos::-webkit-scrollbar-thumb,
 :root[data-theme="claro"] .produtos-table-container::-webkit-scrollbar-thumb,
-:root[data-theme="claro"] .modal-ajuda-planilha .modal-body::-webkit-scrollbar-thumb {
-    background: #94a3b8;
-    border-radius: 20px;
-    border: 2px solid #e2e8f0;
+:root[data-theme="claro"] .modal-ajuda-planilha .modal-body::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] .usuarios-table-container::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] .clientes-table-container::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] #modalEditarCadastroCliente::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] #modalRelatorioCliente::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] #modalHistoricoClientes::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] #modalCadastrarCliente::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] .lista-estados::-webkit-scrollbar-thumb {
+    background: #94a3b8 !important;
+    border-radius: 20px !important;
+    border: 2px solid #e2e8f0 !important;
 }
 
 :root[data-theme="claro"] .estoque-table-container::-webkit-scrollbar-thumb:hover,
@@ -3370,8 +3629,15 @@ textarea::placeholder {
 :root[data-theme="claro"] .dashboard-card-cadastrar-produtos::-webkit-scrollbar:hover,
 :root[data-theme="claro"] .dashboard-card-resumo-produtos::-webkit-scrollbar:hover,
 :root[data-theme="claro"] .produtos-table-container::-webkit-scrollbar:hover,
-:root[data-theme="claro"] .modal-ajuda-planilha .modal-body::-webkit-scrollbar:hover {
-    background: #64748b;
+:root[data-theme="claro"] .modal-ajuda-planilha .modal-body::-webkit-scrollbar-thumb:hover,
+:root[data-theme="claro"] .usuarios-table-container::-webkit-scrollbar-thumb:hover,
+:root[data-theme="claro"] .clientes-table-container::-webkit-scrollbar-thumb:hover,
+:root[data-theme="claro"] #modalEditarCadastroCliente::-webkit-scrollbar-thumb:hover,
+:root[data-theme="claro"] #modalRelatorioCliente::-webkit-scrollbar-thumb:hover,
+:root[data-theme="claro"] #modalHistoricoClientes::-webkit-scrollbar-thumb:hover,
+:root[data-theme="claro"] #modalCadastrarCliente::-webkit-scrollbar-thumb:hover,
+:root[data-theme="claro"] .lista-estados::-webkit-scrollbar-thumb:hover{
+    background: #64748b !important;
 }
 
 :root[data-theme="claro"] .estoque-table-container::-webkit-scrollbar-track,
@@ -3381,9 +3647,16 @@ textarea::placeholder {
 :root[data-theme="claro"] .dashboard-card-cadastrar-produtos::-webkit-scrollbar-track,
 :root[data-theme="claro"] .dashboard-card-resumo-produtos::-webkit-scrollbar-track,
 :root[data-theme="claro"] .produtos-table-container::-webkit-scrollbar-track,
-:root[data-theme="claro"] .modal-ajuda-planilha .modal-body::-webkit-scrollbar-track {
-    background: #e2e8f0;
-    border-radius: 20px;
+:root[data-theme="claro"] .modal-ajuda-planilha .modal-body::-webkit-scrollbar-track,
+:root[data-theme="claro"] .usuarios-table-container::-webkit-scrollbar-track,
+:root[data-theme="claro"] .clientes-table-container::-webkit-scrollbar-track,
+:root[data-theme="claro"] #modalEditarCadastroCliente::-webkit-scrollbar-track,
+:root[data-theme="claro"] #modalRelatorioCliente::-webkit-scrollbar-track,
+:root[data-theme="claro"] #modalHistoricoClientes::-webkit-scrollbar-track,
+:root[data-theme="claro"] #modalCadastrarCliente::-webkit-scrollbar-track,
+:root[data-theme="claro"] .lista-estados::-webkit-scrollbar-track{
+    background: #e2e8f0 !important;
+    border-radius: 20px !important;
 }
 
 :root[data-theme="claro"] .input-pesquisa-tabela-saida,
@@ -3396,7 +3669,12 @@ textarea::placeholder {
 :root[data-theme="claro"] .input-pesquisa-tabela-saida:focus,
 :root[data-theme="claro"] .input-pesquisa-tabela-estoque:focus,
 :root[data-theme="claro"] .input-pesquisa-tabela:focus,
-:root[data-theme="claro"] #modalTabelaUsuarios #buscaModalUsuarios:focus {
+:root[data-theme="claro"] #modalTabelaUsuarios #buscaModalUsuarios:focus,
+:root[data-theme="claro"] .modal-filtrar-produtos .input-valor-filtro-produtos:focus,
+:root[data-theme="claro"] .modal-filtrar-usuarios .input-valor-filtro-usuarios:focus,
+:root[data-theme="claro"] .modal-filtrar-clientes-input-data:focus,
+:root[data-theme="claro"] .clientes-pesquisa input:focus,
+:root[data-theme="claro"] .campo-filtro input[type="text"]:focus {
     border-color: #6d28d9 !important;
     box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.30);
     background-color: #e8edf3;
@@ -3515,6 +3793,26 @@ textarea::placeholder {
     box-shadow: none !important;
 }
 
+/* =====================================================
+   TABELAS DE CLIENTES — HOVER
+===================================================== */
+:root[data-theme="claro"] .clientes-table tbody > tr.linha-cliente:not(.cliente-selecionado):hover > * {
+    background-color: #b8c7d9 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+/* TABELAS DE CLIENTES — LINHA SELECIONADA */
+:root[data-theme="claro"] .clientes-table tbody > tr.linha-cliente.linha-selecionada > *,
+:root[data-theme="claro"] .clientes-table tbody > tr.linha-cliente.linha-selecionada:hover > * {
+    background-color: #93a9c2 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+
+
+
 /* Linha selecionada - Tema claro */
 :root[data-theme="claro"] .estoque-table tbody tr.linha-selecionada td,
 :root[data-theme="claro"] .verificar-usuarios-table tbody tr.linha-selecionada td {
@@ -3524,7 +3822,8 @@ textarea::placeholder {
 }
 
 :root[data-theme="claro"] .estoque-table td,
-:root[data-theme="claro"] .verificar-usuarios-table td {
+:root[data-theme="claro"] .verificar-usuarios-table td,
+:root[data-theme="claro"] .clientes-table td {
     color: #535861 !important;
 }
 
@@ -3548,7 +3847,10 @@ textarea::placeholder {
 :root[data-theme="claro"] #tipoOrdenacaoUsuarios,
 :root[data-theme="claro"] #tipoOrdenacaoHistoricoProdutos,
 :root[data-theme="claro"] #tipoOrdenacaoHistorico,
-:root[data-theme="claro"] #tipoFiltroProdutos {
+:root[data-theme="claro"] #tipoFiltroProdutos,
+:root[data-theme="claro"] #tipoOrdenacaoProdutos,
+:root[data-theme="claro"] #tipoFiltroUsuarios,
+:root[data-theme="claro"] #tipoOrdenacaoHistoricoClientes {
     background-color: #ffffff;
     color: #202631;
     border: 1px solid #c3ccd8;
@@ -3560,7 +3862,11 @@ textarea::placeholder {
 :root[data-theme="claro"] #tipoOrdenacaoHistoricoProdutos option,
 :root[data-theme="claro"] #tipoOrdenacaoHistorico option,
 :root[data-theme="claro"] #tipoOrdenacaoHistorico option,
-:root[data-theme="claro"] #tipoFiltroProdutos option {
+:root[data-theme="claro"] #tipoFiltroProdutos option,
+:root[data-theme="claro"] #tipoOrdenacaoProdutos option,
+:root[data-theme="claro"] #tipoFiltroUsuarios option,
+:root[data-theme="claro"] #tipoOrdenacaoHistoricoClientes option,
+:root[data-theme="claro"] #estadoClienteJuridico option {
     background-color: #ffffff;
     color: #202631;
 }
@@ -3623,7 +3929,8 @@ textarea::placeholder {
 
 /* Elementos secundários */
 :root[data-theme="claro"] .preview-box small,
-:root[data-theme="claro"] .ajuda-planilha-campo small {
+:root[data-theme="claro"] .ajuda-planilha-campo small,
+:root[data-theme="claro"] .card-resumo small {
     color: #64748b;
 }
 
@@ -3808,7 +4115,11 @@ textarea::placeholder {
 :root[data-theme="claro"] input.checkbox-custom-tabela-produtos[type="checkbox"],
 :root[data-theme="claro"] input.col-checkbox-produtos[type="checkbox"],
 :root[data-theme="claro"] input.checkbox-usuario[type="checkbox"],
-:root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario {
+:root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario,
+:root[data-theme="claro"] .checkbox-selecionar-todos-clientes,
+:root[data-theme="claro"] .checkbox-cliente,
+:root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"],
+:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"] {
     background-color: transparent;
     border: 1px solid #94a3b8;
 }
@@ -3819,7 +4130,11 @@ textarea::placeholder {
 :root[data-theme="claro"] input.checkbox-custom-tabela-produtos[type="checkbox"]:hover,
 :root[data-theme="claro"] input.col-checkbox-produtos[type="checkbox"]:hover,
 :root[data-theme="claro"] input.checkbox-usuario[type="checkbox"]:hover,
-:root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario:hover {
+:root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario:hover,
+:root[data-theme="claro"] .checkbox-selecionar-todos-clientes:hover,
+:root[data-theme="claro"] .checkbox-cliente:hover,
+:root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"]:hover,
+:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]:hover {
     border-color: #2563eb;
     background-color: #dce3ec;
 }
@@ -3830,7 +4145,11 @@ textarea::placeholder {
 :root[data-theme="claro"] input.checkbox-custom-tabela-produtos[type="checkbox"]:checked,
 :root[data-theme="claro"] input.col-checkbox-produtos[type="checkbox"]:checked,
 :root[data-theme="claro"] input.checkbox-usuario[type="checkbox"]:checked,
-:root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario:checked {
+:root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario:checked,
+:root[data-theme="claro"] .checkbox-selecionar-todos-clientes:checked,
+:root[data-theme="claro"] .checkbox-cliente:checked,
+:root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"]:checked,
+:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]:checked {
     background-color: #7c3aed;
     border-color: #7c3aed;
     box-shadow: 0 0 8px rgba(124, 58, 237, 0.4);
@@ -3842,7 +4161,11 @@ textarea::placeholder {
 :root[data-theme="claro"] input.checkbox-custom-tabela-produtos[type="checkbox"]:checked::after,
 :root[data-theme="claro"] input.col-checkbox-produtos[type="checkbox"]:checked::after,
 :root[data-theme="claro"] input.checkbox-usuario[type="checkbox"]:checked::after,
-:root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario:checked::after {
+:root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario:checked::after,
+:root[data-theme="claro"] .checkbox-selecionar-todos-clientes:checked::after,
+:root[data-theme="claro"] .checkbox-cliente:checked::after,
+:root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"]::after,
+:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]::after {
     border-color: #ffffff;
 }
 
@@ -3934,6 +4257,96 @@ textarea::placeholder {
 :root[data-theme="claro"] .sidebar-section-title {
     color: #535861 !important;
 }
+
+/* BADGES DE HISTÓRICO — TEMA CLARO */
+:root[data-theme="claro"] .badge-historico-cadastro {
+    background: #7dd3fc  !important;
+    color: #0c4a6e !important;
+}
+
+/* Edição — Âmbar */
+:root[data-theme="claro"] .badge-historico-edicao {
+    background: #fde68a !important;
+    color: #92400e !important;
+    width: 150px;
+}
+
+/* =========================================
+   SELECT PERSONALIZADO — TEMA CLARO
+========================================= */
+
+/* BOTÃO */
+html[data-theme="claro"] .select-custom-trigger {
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    border: 1px solid #aab7c8 !important;
+}
+
+html[data-theme="claro"] .select-custom-trigger i {
+    color: #64748b !important;
+}
+
+html[data-theme="claro"] .select-custom-wrapper.aberto .select-custom-trigger {
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, .15) !important;
+}
+
+/* MENU */
+html[data-theme="claro"] .select-custom-options {
+    background-color: #ffffff !important;
+    border: 1px solid #b8c7d9 !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: #94a3b8 #e2e8f0 !important;
+}
+
+/* OPÇÕES */
+html[data-theme="claro"] .select-custom-option {
+    background-color: #ffffff !important;
+    color: #334155 !important;
+}
+
+html[data-theme="claro"] .select-custom-option:hover,
+html[data-theme="claro"] .select-custom-option.ativo {
+    background-color: #0d6efd !important;
+    color: #ffffff !important;
+}
+
+/* ABERTURA DO MENU */
+html[data-theme="claro"] .select-custom-wrapper.aberto .select-custom-options {
+    display: block !important;
+}
+
+html[data-theme="claro"] .select-custom-wrapper.aberto .select-custom-trigger i {
+    transform: rotate(180deg);
+}
+
+/* SELECT ORIGINAL */
+html[data-theme="claro"] .select-original-oculto {
+    display: none !important;
+}
+
+/* =========================================
+   SCROLLBAR — CHROMIUM / OPERA / EDGE
+========================================= */
+
+html[data-theme="claro"] .select-custom-options::-webkit-scrollbar {
+    width: 8px !important;
+}
+
+html[data-theme="claro"] .select-custom-options::-webkit-scrollbar-track {
+    background: #e2e8f0 !important;
+}
+
+html[data-theme="claro"] .select-custom-options::-webkit-scrollbar-thumb {
+    background-color: #94a3b8 !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+}
+
+html[data-theme="claro"] .select-custom-options::-webkit-scrollbar-thumb:hover {
+    background-color: #64748b !important;
+}
+
 
 /* ==========================================================
    TRANSIÇÃO

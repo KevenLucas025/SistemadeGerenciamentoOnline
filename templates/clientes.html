@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="{% static 'css/clientes.css' %}">
 <script src="{% static 'js/formatadores.js' %}"></script>
 <script src="{% static 'js/clientes.js' %}"></script>
+<script src="{% static 'js/select_personalizado.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -347,18 +348,30 @@
                             </div>
                             <div class="campo">
                                 <label for="editarClienteCategoriaCnh">Categoria da CNH</label>
-                                <select id="editarClienteCategoriaCnh" name="categoria_cnh">
-                                    <option value="">Selecione</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="AB">AB</option>
-                                    <option value="C">C</option>
-                                    <option value="D">D</option>
-                                    <option value="E">E</option>
-                                    <option value="AC">AC</option>
-                                    <option value="AD">AD</option>
-                                    <option value="AE">AE</option>
-                                </select>
+
+                                <div class="select-custom-wrapper" id="selectEditarClienteCategoriaCnh">
+
+                                    <select id="editarClienteCategoriaCnh" name="categoria_cnh" class="select-original-oculto">
+                                        <option value="" selected>Selecione</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="AB">AB</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="AC">AC</option>
+                                        <option value="AD">AD</option>
+                                        <option value="AE">AE</option>
+                                    </select>
+
+                                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                        <span>Selecione</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <div class="select-custom-options"></div>
+
+                                </div>
                             </div>
                             <div class="campo">
                                 <label for="editarClienteEmissaoCnh">Data de Emissão</label>
@@ -381,36 +394,48 @@
                             </div>
                             <div class="campo">
                                 <label for="editarClienteEstado">Estado</label>
-                                <select id="editarClienteEstado" name="estado">
-                                    <option value="">Selecione</option>
-                                    <option value="AC">Acre</option>
-                                    <option value="AL">Alagoas</option>
-                                    <option value="AP">Amapá</option>
-                                    <option value="AM">Amazonas</option>
-                                    <option value="BA">Bahia</option>
-                                    <option value="CE">Ceará</option>
-                                    <option value="DF">Distrito Federal</option>
-                                    <option value="ES">Espírito Santo</option>
-                                    <option value="GO">Goiás</option>
-                                    <option value="MA">Maranhão</option>
-                                    <option value="MT">Mato Grosso</option>
-                                    <option value="MS">Mato Grosso do Sul</option>
-                                    <option value="MG">Minas Gerais</option>
-                                    <option value="PA">Pará</option>
-                                    <option value="PB">Paraíba</option>
-                                    <option value="PR">Paraná</option>
-                                    <option value="PE">Pernambuco</option>
-                                    <option value="PI">Piauí</option>
-                                    <option value="RJ">Rio de Janeiro</option>
-                                    <option value="RN">Rio Grande do Norte</option>
-                                    <option value="RS">Rio Grande do Sul</option>
-                                    <option value="RO">Rondônia</option>
-                                    <option value="RR">Roraima</option>
-                                    <option value="SC">Santa Catarina</option>
-                                    <option value="SP">São Paulo</option>
-                                    <option value="SE">Sergipe</option>
-                                    <option value="TO">Tocantins</option>
-                                </select>
+
+                                <div class="select-custom-wrapper" id="selectEditarClienteEstado">
+
+                                    <select id="editarClienteEstado" name="estado" class="select-original-oculto">
+                                        <option value="" selected>Selecione</option>
+                                        <option value="AC">Acre</option>
+                                        <option value="AL">Alagoas</option>
+                                        <option value="AP">Amapá</option>
+                                        <option value="AM">Amazonas</option>
+                                        <option value="BA">Bahia</option>
+                                        <option value="CE">Ceará</option>
+                                        <option value="DF">Distrito Federal</option>
+                                        <option value="ES">Espírito Santo</option>
+                                        <option value="GO">Goiás</option>
+                                        <option value="MA">Maranhão</option>
+                                        <option value="MT">Mato Grosso</option>
+                                        <option value="MS">Mato Grosso do Sul</option>
+                                        <option value="MG">Minas Gerais</option>
+                                        <option value="PA">Pará</option>
+                                        <option value="PB">Paraíba</option>
+                                        <option value="PR">Paraná</option>
+                                        <option value="PE">Pernambuco</option>
+                                        <option value="PI">Piauí</option>
+                                        <option value="RJ">Rio de Janeiro</option>
+                                        <option value="RN">Rio Grande do Norte</option>
+                                        <option value="RS">Rio Grande do Sul</option>
+                                        <option value="RO">Rondônia</option>
+                                        <option value="RR">Roraima</option>
+                                        <option value="SC">Santa Catarina</option>
+                                        <option value="SP">São Paulo</option>
+                                        <option value="SE">Sergipe</option>
+                                        <option value="TO">Tocantins</option>
+                                    </select>
+
+                                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                        <span>Selecione</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <div class="select-custom-options"></div>
+
+                                </div>
                             </div>
                             <div class="campo campo-grande">
                                 <label for="editarClienteEndereco">Endereço</label>
@@ -443,16 +468,29 @@
                         <div class="campos-grid">
                             <div class="campo">
                                 <label for="editarClienteStatus">Status</label>
-                                <select id="editarClienteStatus" name="status">
-                                    <option value="ativo">Ativo</option>
-                                    <option value="inativo">Inativo</option>
-                                    <option value="bloqueado">Bloqueado</option>
-                                </select>
+
+                                <div class="select-custom-wrapper" id="selectEditarClienteStatus">
+
+                                    <select id="editarClienteStatus" name="status" class="select-original-oculto">
+                                        <option value="ativo">Ativo</option>
+                                        <option value="inativo">Inativo</option>
+                                        <option value="bloqueado">Bloqueado</option>
+                                    </select>
+
+                                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                        <span>Ativo</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <div class="select-custom-options"></div>
+
+                                </div>
                             </div>
 
                             <div class="campo">
                                 <div class="label-categoria">
                                     <label for="editarClienteCategoria">Categoria do Cliente</label>
+
                                     <button type="button"
                                             class="btn-info-ajuda"
                                             data-bs-toggle="popover"
@@ -464,22 +502,41 @@
                                     </button>
                                 </div>
 
-                                <select id="editarClienteCategoria" name="categoria">
-                                    <option value="">Selecione</option>
-                                    <option value="Tecnologia">Tecnologia</option>
-                                    <option value="Comércio em Geral">Comércio em Geral</option>
-                                    <option value="Varejo">Varejo</option>
-                                </select>
+                                <div class="select-custom-wrapper" id="selectEditarClienteCategoria">
+                                    <select id="editarClienteCategoria" name="categoria" class="select-original-oculto">
+                                        <option value="" selected>Selecione</option>
+                                        <option value="Tecnologia">Tecnologia</option>
+                                        <option value="Comércio em Geral">Comércio em Geral</option>
+                                        <option value="Varejo">Varejo</option>
+                                    </select>
+
+                                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                        <span>Selecione</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <div class="select-custom-options"></div>
+                                </div>
                             </div>
 
                             <!-- MODO VALOR GASTO -->
                             <div class="campo">
                                 <label for="editarClienteModoValorGasto">Modo Valor Gasto</label>
-                                <select id="editarClienteModoValorGasto" name="modo_valor_gasto">
-                                    <option value="" selected>Selecione</option>
-                                    <option value="Automático (somar produtos)">Automático (somar produtos)</option>
-                                    <option value="Manual (valor fixo)">Manual (valor fixo)</option>
-                                </select>
+
+                                <div class="select-custom-wrapper" id="selectEditarClienteModoValorGasto">
+                                    <select id="editarClienteModoValorGasto" name="modo_valor_gasto" class="select-original-oculto">
+                                        <option value="" selected>Selecione</option>
+                                        <option value="Automático (somar produtos)">Automático (somar produtos)</option>
+                                        <option value="Manual (valor fixo)">Manual (valor fixo)</option>
+                                    </select>
+
+                                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                        <span>Selecione</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <div class="select-custom-options"></div>
+                                </div>
                             </div>
 
                             <!-- VALOR GASTO TOTAL -->
@@ -578,18 +635,30 @@
                             </div>
                             <div class="campo">
                                 <label for="clienteCategoriaCnh">Categoria da CNH</label>
-                                <select id="clienteCategoriaCnh" name="categoria_cnh">
-                                    <option value="">Selecione</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="AB">AB</option>
-                                    <option value="C">C</option>
-                                    <option value="D">D</option>
-                                    <option value="E">E</option>
-                                    <option value="AC">AC</option>
-                                    <option value="AD">AD</option>
-                                    <option value="AE">AE</option>
-                                </select>
+
+                                <div class="select-custom-wrapper" id="selectClienteCategoriaCnh">
+
+                                    <select id="clienteCategoriaCnh" name="categoria_cnh" class="select-original-oculto">
+                                        <option value="" selected>Selecione</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="AB">AB</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="AC">AC</option>
+                                        <option value="AD">AD</option>
+                                        <option value="AE">AE</option>
+                                    </select>
+
+                                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                        <span>Selecione</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <div class="select-custom-options"></div>
+
+                                </div>
                             </div>
                             <div class="campo">
                                 <label for="clienteEmissaoCnh">Data de Emissão</label>
@@ -611,36 +680,48 @@
                             </div>
                             <div class="campo">
                                 <label for="clienteEstado">Estado</label>
-                                <select id="clienteEstado" name="estado">
-                                    <option value="">Selecione</option>
-                                    <option value="AC">Acre</option>
-                                    <option value="AL">Alagoas</option>
-                                    <option value="AP">Amapá</option>
-                                    <option value="AM">Amazonas</option>
-                                    <option value="BA">Bahia</option>
-                                    <option value="CE">Ceará</option>
-                                    <option value="DF">Distrito Federal</option>
-                                    <option value="ES">Espírito Santo</option>
-                                    <option value="GO">Goiás</option>
-                                    <option value="MA">Maranhão</option>
-                                    <option value="MT">Mato Grosso</option>
-                                    <option value="MS">Mato Grosso do Sul</option>
-                                    <option value="MG">Minas Gerais</option>
-                                    <option value="PA">Pará</option>
-                                    <option value="PB">Paraíba</option>
-                                    <option value="PR">Paraná</option>
-                                    <option value="PE">Pernambuco</option>
-                                    <option value="PI">Piauí</option>
-                                    <option value="RJ">Rio de Janeiro</option>
-                                    <option value="RN">Rio Grande do Norte</option>
-                                    <option value="RS">Rio Grande do Sul</option>
-                                    <option value="RO">Rondônia</option>
-                                    <option value="RR">Roraima</option>
-                                    <option value="SC">Santa Catarina</option>
-                                    <option value="SP">São Paulo</option>
-                                    <option value="SE">Sergipe</option>
-                                    <option value="TO">Tocantins</option>
-                                </select>
+
+                                <div class="select-custom-wrapper" id="selectClienteEstado">
+
+                                    <select id="clienteEstado" name="estado" class="select-original-oculto">
+                                        <option value="" selected>Selecione</option>
+                                        <option value="AC">Acre</option>
+                                        <option value="AL">Alagoas</option>
+                                        <option value="AP">Amapá</option>
+                                        <option value="AM">Amazonas</option>
+                                        <option value="BA">Bahia</option>
+                                        <option value="CE">Ceará</option>
+                                        <option value="DF">Distrito Federal</option>
+                                        <option value="ES">Espírito Santo</option>
+                                        <option value="GO">Goiás</option>
+                                        <option value="MA">Maranhão</option>
+                                        <option value="MT">Mato Grosso</option>
+                                        <option value="MS">Mato Grosso do Sul</option>
+                                        <option value="MG">Minas Gerais</option>
+                                        <option value="PA">Pará</option>
+                                        <option value="PB">Paraíba</option>
+                                        <option value="PR">Paraná</option>
+                                        <option value="PE">Pernambuco</option>
+                                        <option value="PI">Piauí</option>
+                                        <option value="RJ">Rio de Janeiro</option>
+                                        <option value="RN">Rio Grande do Norte</option>
+                                        <option value="RS">Rio Grande do Sul</option>
+                                        <option value="RO">Rondônia</option>
+                                        <option value="RR">Roraima</option>
+                                        <option value="SC">Santa Catarina</option>
+                                        <option value="SP">São Paulo</option>
+                                        <option value="SE">Sergipe</option>
+                                        <option value="TO">Tocantins</option>
+                                    </select>
+
+                                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                        <span>Selecione</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <div class="select-custom-options"></div>
+
+                                </div>
                             </div>
                             <div class="campo campo-grande">
                                 <label for="clienteEndereco">Endereço</label>
@@ -667,38 +748,63 @@
 
                     <div class="secao-modal-cliente">
                         <h6><i class="fa-solid fa-circle-info"></i> Informações</h6>
+
                         <div class="campos-grid">
+
+                            <!-- STATUS -->
                             <div class="campo">
                                 <label for="clienteStatus">Status</label>
-                                <select id="clienteStatus" name="status">
-                                    <option value="" selected>Selecione</option>
-                                    <option value="ativo">Ativo</option>
-                                    <option value="inativo">Inativo</option>
-                                    <option value="bloqueado">Bloqueado</option>
-                                </select>
+
+                                <div class="select-custom-wrapper" id="selectClienteStatus">
+                                    <select id="clienteStatus" name="status" class="select-original-oculto">
+                                        <option value="" selected>Selecione</option>
+                                        <option value="ativo">Ativo</option>
+                                        <option value="inativo">Inativo</option>
+                                        <option value="bloqueado">Bloqueado</option>
+                                    </select>
+
+                                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                        <span>Selecione</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <div class="select-custom-options"></div>
+                                </div>
                             </div>
 
+                            <!-- CATEGORIA -->
                             <div class="campo">
                                 <div class="label-categoria">
                                     <label for="clienteCategoria">Categoria do Cliente</label>
-                                    <button type="button" 
-                                            class="btn-info-ajuda" 
-                                            data-bs-toggle="popover" 
-                                            data-bs-placement="top" 
-                                            data-bs-trigger="focus" 
+
+                                    <button type="button"
+                                            class="btn-info-ajuda"
+                                            data-bs-toggle="popover"
+                                            data-bs-placement="top"
+                                            data-bs-trigger="focus"
                                             data-bs-title="Informação"
                                             data-bs-content="Caso não encontre a categoria desejada, entre em contato com o setor de T.I para solicitar o cadastro.">
                                         ?
                                     </button>
                                 </div>
 
-                                <select id="clienteCategoria" name="categoria">
-                                    <option value="">Selecione</option>
-                                    <option value="Tecnologia">Tecnologia</option>
-                                    <option value="Comércio em Geral">Comércio em Geral</option>
-                                    <option value="Varejo">Varejo</option>
-                                </select>
+                                <div class="select-custom-wrapper" id="selectClienteCategoria">
+                                    <select id="clienteCategoria" name="categoria" class="select-original-oculto">
+                                        <option value="" selected>Selecione</option>
+                                        <option value="Tecnologia">Tecnologia</option>
+                                        <option value="Comércio em Geral">Comércio em Geral</option>
+                                        <option value="Varejo">Varejo</option>
+                                    </select>
+
+                                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                        <span>Selecione</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <div class="select-custom-options"></div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </form>
@@ -771,24 +877,46 @@
                         <div class="filtros-relatorio-grid">
                             <div class="campo-relatorio">
                                 <label for="relatorioStatus">Status do Cliente:</label>
-                                <select id="relatorioStatus" name="status">
-                                    <option value="" selected>Selecione</option>
-                                    <option value="todos">Todos</option>
-                                    <option value="Ativo">Ativo</option>
-                                    <option value="Inativo">Inativo</option>
-                                    <option value="Bloqueado">Bloqueado</option>
-                                </select>
+
+                                <div class="select-custom-wrapper" id="selectRelatorioStatus">
+                                    <select id="relatorioStatus" name="status" class="select-original-oculto">
+                                        <option value="" selected>Selecione</option>
+                                        <option value="todos">Todos</option>
+                                        <option value="Ativo">Ativo</option>
+                                        <option value="Inativo">Inativo</option>
+                                        <option value="Bloqueado">Bloqueado</option>
+                                    </select>
+
+                                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                        <span>Selecione</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <div class="select-custom-options"></div>
+                                </div>
                             </div>
 
                             <div class="campo-relatorio">
                                 <label for="relatorioCategoria">Categoria do Cliente:</label>
-                                <select id="relatorioCategoria" name="categoria">
-                                    <option value="" selected>Selecione</option>
-                                    <option value="todos">Todos</option>
-                                    <option value="Tecnologia">Tecnologia</option>
-                                    <option value="Comércio em Geral">Comércio em Geral</option>
-                                    <option value="Varejo">Varejo</option>
-                                </select>
+
+                                <div class="select-custom-wrapper" id="selectRelatorioCategoria">
+
+                                    <select id="relatorioCategoria" name="categoria" class="select-original-oculto">
+                                        <option value="" selected>Selecione</option>
+                                        <option value="todos">Todos</option>
+                                        <option value="Tecnologia">Tecnologia</option>
+                                        <option value="Comércio em Geral">Comércio em Geral</option>
+                                        <option value="Varejo">Varejo</option>
+                                    </select>
+
+                                    <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                        <span>Selecione</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <div class="select-custom-options"></div>
+
+                                </div>
                             </div>
 
                             <div class="campo-relatorio">
@@ -1219,10 +1347,21 @@
             <div class="modal-body modal-ordenar-historico-clientes-body">
                 <div class="campo-ordenar-historico-clientes">
                     <label for="tipoOrdenacaoHistoricoClientes">Escolha a direção</label>
-                    <select id="tipoOrdenacaoHistoricoClientes" class="form-select-ordenar-historico-clientes">
-                        <option value="desc" selected>Decrescente (Mais recentes primeiro)</option>
-                        <option value="asc">Crescente (Mais antigos primeiro)</option>
-                    </select>
+
+                    <div class="select-custom-wrapper" id="selectTipoOrdenacaoHistoricoClientes">
+                        <select id="tipoOrdenacaoHistoricoClientes"
+                                class="form-select-ordenar-historico-clientes select-original-oculto">
+                            <option value="desc" selected>Decrescente (Mais recentes primeiro)</option>
+                            <option value="asc">Crescente (Mais antigos primeiro)</option>
+                        </select>
+
+                        <button type="button" class="select-custom-trigger" aria-expanded="false">
+                            <span>Decrescente (Mais recentes primeiro)</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <div class="select-custom-options"></div>
+                    </div>
                 </div>
             </div>
 

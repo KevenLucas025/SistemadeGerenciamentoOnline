@@ -227,7 +227,6 @@ TABELA
 /*=====================================================
 BADGES
 =====================================================*/
-
 .badge-pessoa{
     display:inline-flex;
     align-items:center;
@@ -389,13 +388,15 @@ BOTÕES DE AÇÕES
     justify-content:center;
     gap:8px;
     padding:11px 18px;
-    border:none;
+    border: 1px solid transparent;
     border-radius:10px;
     color:#cecfd2;
     font-size:13px;
     font-weight:600;
     cursor:pointer;
-    transition:.25s;
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease;
     white-space:nowrap;
     background: #1f2937;
 }
@@ -713,7 +714,9 @@ BOTÃO DA TAB ATIVA
 #modalCadastrarCliente select#clienteCategoria,
 #modalEditarCadastroCliente select#editarClienteCategoriaCnh,
 #modalCadastrarCliente select#clienteCategoriaCnh,
-#modalEditarCadastroCliente select#editarClienteModoValorGasto {
+#modalEditarCadastroCliente select#editarClienteModoValorGasto,
+#relatorioStatus,
+#relatorioCategoria {
     cursor: pointer;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
     background-repeat: no-repeat !important;
@@ -727,13 +730,15 @@ BOTÃO DA TAB ATIVA
 
 
 #modalCadastrarCliente .campo input:focus,
-#modalCadastrarCliente .campo select:focus {
+#modalCadastrarCliente .campo select:focus,
+#relatorioStatus:hover,
+#relatorioStatus:focus,
+#relatorioCategoria:focus,
+#relatorioCategoria:hover {
     border-color: #7c3aed;
-
-    box-shadow:
-        0 0 0 3px rgba(124, 58, 237, 0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
 }
-
 
 #modalCadastrarCliente .campo-grande {
     grid-column: span 2;
@@ -1850,12 +1855,12 @@ select.status-select-bloqueado {
 }
 
 .badge-historico-cadastro {
-    background: rgb(220,53,69);
+    background: rgba(56, 189, 248, 0.15);
     color: #cecfd2;
 }
 
 .badge-historico-exclusao {
-    background: rgba(56, 189, 248, 0.15);
+    background: rgb(220,53,69);
     color: #cecfd2;
 }
 
@@ -2597,4 +2602,128 @@ input.col-checkbox-clientes[type="checkbox"]:checked::after {
     border-color: #38bdf8;
     box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
 
+}
+
+/* SELECT PERSONALIZADO — PADRÃO BOOTSTRAP 5 */
+.select-custom-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* BOTÃO PRINCIPAL */
+.select-custom-trigger {
+    width: 100%;
+    height: 42px;
+    padding: 0px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #0f172a;
+    color: #cecfd2;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color .15s ease-in-out,
+                box-shadow .15s ease-in-out;
+}
+
+.select-custom-trigger:focus,
+.select-custom-trigger:hover,
+.select-custom-wrapper.aberto .select-custom-trigger {
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow:0 0 0 3px rgba(124,58,237,.20);
+}
+
+/* ÍCONE */
+.select-custom-trigger i {
+    font-size: 12px;
+    transition: transform .2s ease;
+}
+
+.select-custom-wrapper.aberto .select-custom-trigger i {
+    transform: rotate(180deg);
+}
+
+/* MENU DE OPÇÕES */
+.select-custom-options {
+    display: none;
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 1050;
+    background-color: #0f172a;
+    border: 1px solid rgba(0, 0, 0, .175);
+    border-radius: 6px;
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+    scrollbar-width: thin;
+    scrollbar-color: #adb5bd #f8f9fa;
+  
+}
+
+.select-custom-wrapper.aberto .select-custom-options {
+    display: block;
+}
+
+/* ITENS */
+.select-custom-option {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+
+    color: #cecfd2;
+    background-color: transparent;
+
+    cursor: pointer;
+    transition: background-color .15s ease-in-out,
+                color .15s ease-in-out;
+}
+
+
+/* OPÇÃO DESTACADA */
+.select-custom-option.ativo {
+    background-color: #A1C7FE !important;
+    color: #3B3B3B !important;
+}
+
+
+
+/* SCROLLBAR */
+.select-custom-options {
+    scrollbar-width: thin !important;
+    scrollbar-color: #4b5563 #141b27 !important;
+}
+
+.select-custom-options::-webkit-scrollbar {
+    width: 8px !important;
+    height:8px !important;
+}
+
+.select-custom-options::-webkit-scrollbar-track {
+    background: #141b27 !important;
+}
+
+.select-custom-options::-webkit-scrollbar-thumb {
+    background: #4b5563 !important;
+    border-radius: 20px;
+}
+
+.select-custom-options::-webkit-scrollbar-thumb:hover {
+    background: #6c757d !important;
+}
+
+/* ESCONDE O SELECT ORIGINAL */
+.select-original-oculto {
+    display: none !important;
 }

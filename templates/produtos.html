@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="{% static 'css/produtos.css' %}">
 <script src="{% static 'js/produtos.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="{% static 'js/select_personalizado.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -39,12 +40,21 @@
                         <div class="campo"><label>Quantidade</label><input type="number" id="quantidade" name="quantidade" placeholder="Ex.: 10"></div>
                         <div class="campo">
                             <label for="cliente">Cliente</label>
-                            <select id="cliente" name="cliente">
-                                <option value="" selected>Selecione um cliente</option>
-                                {% for c in clientes %}
-                                <option value="{{ c.id }}">{{ c.nome }}{% if c.tipo_cliente == "juridico" and c.cnpj %} (CNPJ: {{ c.cnpj }}){% elif c.cpf %} (CPF: {{ c.cpf }}){% endif %}</option>
-                                {% endfor %}
-                            </select>
+                            <div class="select-custom-wrapper" id="selectCliente">
+                                <select id="cliente" name="cliente" class="select-original-oculto">
+                                    <option value="" selected>Selecione um cliente</option>
+                                    {% for c in clientes %}
+                                        <option value="{{ c.id }}">
+                                            {{ c.nome }}{% if c.tipo_cliente == "juridico" and c.cnpj %} (CNPJ: {{ c.cnpj }}){% elif c.cpf %} (CPF: {{ c.cpf }}){% endif %}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                    <span>Selecione um cliente</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+                                <div class="select-custom-options"></div>
+                            </div>
                         </div>
                         <div class="campo"><label>Valor Unitário</label><input type="text" id="valor_unitario" name="valor_unitario" placeholder="R$ 0,00"></div>
                         <div class="campo"><label>Desconto (%)</label><input type="text" id="desconto" name="desconto" placeholder="0%"></div>
@@ -199,14 +209,27 @@
             </div>
             <div class="modal-body modal-filtrar-produtos-body">
                 <div class="campo-filtrar-produtos">
-                    <label for="tipoFiltroProdutos" class="label-tipo-filtro-produtos">Escolha o tipo de filtro</label>
-                    <select id="tipoFiltroProdutos" class="select-tipo-filtro-produtos">
-                        <option value="nome">Filtrar por Produto</option>
-                        <option value="data_cadastro">Filtrar por Data do Cadastro</option>
-                        <option value="criado_por">Filtrar por Usuário</option>
-                        <option value="cliente">Filtrar por Cliente</option>
-                        <option value="codigo">Filtrar por Código do Produto</option>
-                    </select>
+                    <label for="tipoFiltroProdutos" class="label-tipo-filtro-produtos">
+                        Escolha o tipo de filtro
+                    </label>
+
+                    <div class="select-custom-wrapper" id="selectTipoFiltroProdutos">
+                        <select id="tipoFiltroProdutos"
+                                class="select-tipo-filtro-produtos select-original-oculto">
+                            <option value="nome">Filtrar por Produto</option>
+                            <option value="data_cadastro">Filtrar por Data do Cadastro</option>
+                            <option value="criado_por">Filtrar por Usuário</option>
+                            <option value="cliente">Filtrar por Cliente</option>
+                            <option value="codigo">Filtrar por Código do Produto</option>
+                        </select>
+
+                        <button type="button" class="select-custom-trigger" aria-expanded="false">
+                            <span>Filtrar por Produto</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <div class="select-custom-options"></div>
+                    </div>
                 </div>
                 <div class="campo-filtrar-produtos mt-3">
                     <label id="labelValorFiltroProdutos" for="valorFiltroProdutos" class="label-valor-filtro-produtos">Nome do Produto</label>
@@ -231,11 +254,24 @@
             </div>
             <div class="modal-body modal-ordenar-produtos-body">
                 <div class="campo-ordenar-produtos">
-                    <label for="tipoOrdenacaoProdutos" class="label-ordenar-produtos">Escolha a direção</label>
-                    <select id="tipoOrdenacaoProdutos" class="select-ordenar-produtos">
-                        <option value="asc">Crescente</option>
-                        <option value="desc">Decrescente</option>
-                    </select>
+                    <label for="tipoOrdenacaoProdutos" class="label-ordenar-produtos">
+                        Escolha a direção
+                    </label>
+
+                    <div class="select-custom-wrapper" id="selectTipoOrdenacaoProdutos">
+                        <select id="tipoOrdenacaoProdutos"
+                                class="select-ordenar-produtos select-original-oculto">
+                            <option value="asc">Crescente</option>
+                            <option value="desc">Decrescente</option>
+                        </select>
+
+                        <button type="button" class="select-custom-trigger" aria-expanded="false">
+                            <span>Crescente</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <div class="select-custom-options"></div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer modal-ordenar-produtos-footer">

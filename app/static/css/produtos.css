@@ -182,7 +182,7 @@ SCROLL
 .campo textarea{
     width:100%;
     padding:10px;
-    background:#1b2230;
+    background:#0f172a !important;
     border:1px solid #313b4e;
     border-radius:10px;
     color:#cecfd2;
@@ -1791,3 +1791,149 @@ input.checkbox-custom-tabela-produtos[type="checkbox"]:checked::after {
   font-weight: 500;
   margin: 0;
 }
+
+
+/* SELECT PERSONALIZADO — CLIENTE */
+#selectCliente,
+.select-custom-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+
+#selectCliente .select-original-oculto,
+.select-original-oculto {
+    display: none !important;
+}
+
+/* BOTÃO PRINCIPAL */
+#selectCliente .select-custom-trigger,
+.select-custom-trigger {
+    width: 100%;
+    height: 43px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #0f172a;
+    color: #cecfd2;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color .15s ease-in-out,
+                box-shadow .15s ease-in-out;
+}
+
+#selectCliente .select-custom-trigger:focus,
+#selectCliente .select-custom-trigger:hover,
+#selectCliente.aberto .select-custom-trigger,
+.select-custom-trigger:focus,
+.select-custom-trigger:hover,
+.select-custom-trigger .aberto  {
+    border-color: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, .20);
+}
+
+/* ÍCONE */
+#selectCliente .select-custom-trigger i,
+.select-custom-trigger i {
+    font-size: 12px;
+    transition: transform .2s ease;
+}
+
+.select-custom-wrapper.aberto .select-custom-trigger i {
+    transform: rotate(180deg);
+}
+
+/* MENU DE OPÇÕES */
+#selectCliente .select-custom-options,
+.select-custom-options {
+    display: none;
+
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    width: 100%;
+
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 1050;
+
+    background-color: #0f172a;
+    border: 1px solid rgba(0, 0, 0, .175);
+    border-radius: 6px;
+
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+
+    scrollbar-width: thin;
+    scrollbar-color: #adb5bd #f8f9fa;
+}
+
+#selectCliente.aberto .select-custom-options,
+.select-custom-wrapper.aberto .select-custom-options {
+    display: block;
+}
+
+/* ITENS */
+#selectCliente .select-custom-option,
+.select-custom-option {
+    display: block;
+    width: 100%;
+
+    padding: 8px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+
+    color: #cecfd2;
+    background-color: transparent;
+
+    cursor: pointer;
+
+    transition: background-color .15s ease-in-out,
+                color .15s ease-in-out;
+}
+
+/* OPÇÃO DESTACADA */
+#selectCliente .select-custom-option.ativo,
+.select-custom-option.ativo {
+    background-color: #A1C7FE !important;
+    color: #3B3B3B !important;
+}
+
+/* SCROLLBAR */
+#selectCliente .select-custom-options,
+.select-custom-options {
+    scrollbar-width: thin !important;
+    scrollbar-color: #4b5563 #141b27 !important;
+}
+
+#selectCliente .select-custom-options::-webkit-scrollbar,
+.select-custom-options::-webkit-scrollbar {
+    width: 8px !important;
+    height:8px !important;
+}
+
+#selectCliente .select-custom-options::-webkit-scrollbar-track,
+.select-custom-options::-webkit-scrollbar-track {
+    background: #141b27 !important;
+}
+
+#selectCliente .select-custom-options::-webkit-scrollbar-thumb,
+.select-custom-options::-webkit-scrollbar-thumb {
+    background: #4b5563 !important;
+    border-radius: 20px;
+}
+
+#selectCliente .select-custom-options::-webkit-scrollbar-thumb:hover,
+.select-custom-options::-webkit-scrollbar-thumb:hover {
+    background: #6c757d !important;
+}
+

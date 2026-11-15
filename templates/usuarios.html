@@ -4,6 +4,7 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/usuarios.css' %}">
 <script src="{% static 'js/usuarios.js' %}" defer></script>
+<script src="{% static 'js/select_personalizado.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -527,10 +528,20 @@
             <div class="modal-body modal-ordenar-historico-body">
                 <div class="campo campo-ordenar-historico">
                     <label for="tipoOrdenacaoHistorico">Escolha a direção</label>
-                    <select id="tipoOrdenacaoHistorico">
-                        <option value="desc" selected>Decrescente (Mais recentes primeiro)</option>
-                        <option value="asc">Crescente (Mais antigos primeiro)</option>
-                    </select>
+
+                    <div class="select-custom-wrapper" id="selectTipoOrdenacaoHistorico">
+                        <select id="tipoOrdenacaoHistorico" class="select-original-oculto">
+                            <option value="desc" selected>Decrescente (Mais recentes primeiro)</option>
+                            <option value="asc">Crescente (Mais antigos primeiro)</option>
+                        </select>
+
+                        <button type="button" class="select-custom-trigger" aria-expanded="false">
+                            <span>Decrescente (Mais recentes primeiro)</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <div class="select-custom-options"></div>
+                    </div>
                 </div>
             </div>
 

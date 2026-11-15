@@ -6,6 +6,7 @@
 <script src="{% static 'js/cadastrar_usuarios.js' %}"></script>
 <script src="{% static 'js/formatadores.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="{% static 'js/select_personalizado.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -213,36 +214,48 @@
 
                         <div class="campo">
                             <label for="usuarioEstado">Estado</label>
-                            <select id="usuarioEstado" name="estado">
-                                <option value="">Selecione o estado</option>
-                                <option value="AC">AC</option>
-                                <option value="AL">AL</option>
-                                <option value="AP">AP</option>
-                                <option value="AM">AM</option>
-                                <option value="BA">BA</option>
-                                <option value="CE">CE</option>
-                                <option value="DF">DF</option>
-                                <option value="ES">ES</option>
-                                <option value="GO">GO</option>
-                                <option value="MA">MA</option>
-                                <option value="MT">MT</option>
-                                <option value="MS">MS</option>
-                                <option value="MG">MG</option>
-                                <option value="PA">PA</option>
-                                <option value="PB">PB</option>
-                                <option value="PR">PR</option>
-                                <option value="PE">PE</option>
-                                <option value="PI">PI</option>
-                                <option value="RJ">RJ</option>
-                                <option value="RN">RN</option>
-                                <option value="RS">RS</option>
-                                <option value="RO">RO</option>
-                                <option value="RR">RR</option>
-                                <option value="SC">SC</option>
-                                <option value="SP">SP</option>
-                                <option value="SE">SE</option>
-                                <option value="TO">TO</option>
-                            </select>
+
+                            <div class="select-custom-wrapper" id="selectUsuarioEstado">
+
+                                <select id="usuarioEstado" name="estado" class="select-original-oculto">
+                                    <option value="" selected>Selecione o estado</option>
+                                    <option value="AC">AC</option>
+                                    <option value="AL">AL</option>
+                                    <option value="AP">AP</option>
+                                    <option value="AM">AM</option>
+                                    <option value="BA">BA</option>
+                                    <option value="CE">CE</option>
+                                    <option value="DF">DF</option>
+                                    <option value="ES">ES</option>
+                                    <option value="GO">GO</option>
+                                    <option value="MA">MA</option>
+                                    <option value="MT">MT</option>
+                                    <option value="MS">MS</option>
+                                    <option value="MG">MG</option>
+                                    <option value="PA">PA</option>
+                                    <option value="PB">PB</option>
+                                    <option value="PR">PR</option>
+                                    <option value="PE">PE</option>
+                                    <option value="PI">PI</option>
+                                    <option value="RJ">RJ</option>
+                                    <option value="RN">RN</option>
+                                    <option value="RS">RS</option>
+                                    <option value="RO">RO</option>
+                                    <option value="RR">RR</option>
+                                    <option value="SC">SC</option>
+                                    <option value="SP">SP</option>
+                                    <option value="SE">SE</option>
+                                    <option value="TO">TO</option>
+                                </select>
+
+                                <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                    <span>Selecione o estado</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+
+                                <div class="select-custom-options"></div>
+
+                            </div>
                         </div>
                     </div>
 
@@ -312,16 +325,28 @@
 
                     <!-- PERFIL -->
                     <div class="campo">
-                        <label>Perfil de Acesso</label>
-                        <select id="usuarioPerfil">
-                            <option value="">Selecione o perfil</option>
-                            <option value="Administrador">Administrador</option>
-                            <option value="Gerente">Gerente</option>
-                            <option value="Analista">Analista</option>
-                            <option value="Assistente">Assistente</option>
-                            <option value="Usuário Comum">Usuário Comum</option>
-                            <option value="Convidado">Convidado</option>
-                        </select>
+                        <label for="usuarioPerfil">Perfil de Acesso</label>
+
+                        <div class="select-custom-wrapper" id="selectUsuarioPerfil">
+
+                            <select id="usuarioPerfil" class="select-original-oculto">
+                                <option value="" selected>Selecione o perfil</option>
+                                <option value="Administrador">Administrador</option>
+                                <option value="Gerente">Gerente</option>
+                                <option value="Analista">Analista</option>
+                                <option value="Assistente">Assistente</option>
+                                <option value="Usuário Comum">Usuário Comum</option>
+                                <option value="Convidado">Convidado</option>
+                            </select>
+
+                            <button type="button" class="select-custom-trigger" aria-expanded="false">
+                                <span>Selecione o perfil</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+
+                            <div class="select-custom-options"></div>
+
+                        </div>
                     </div>
 
                 </div>
@@ -673,19 +698,31 @@
 
             <div class="modal-body modal-filtrar-usuarios-body">
                 <div class="campo-filtrar-usuarios">
-                    <label for="tipoFiltroUsuarios" class="label-tipo-filtro-usuarios">Escolha o tipo de filtro</label>
-                    <select id="tipoFiltroUsuarios" class="select-tipo-filtro-usuarios">
-                        <option value="nome">Filtrar por Nome</option>
-                        <option value="usuario">Filtrar por Usuário</option>
-                        <option value="acesso">Filtrar por Acesso</option>
-                        <option value="telefone">Filtrar por Telefone</option>
-                        <option value="email">Filtrar por E-mail</option>
-                        <option value="rg">Filtrar por RG</option>
-                        <option value="cpf">Filtrar por CPF</option>
-                        <option value="cnpj">Filtrar por CNPJ</option>
-                    </select>
-                </div>
+                    <label for="tipoFiltroUsuarios" class="label-tipo-filtro-usuarios">
+                        Escolha o tipo de filtro
+                    </label>
 
+                    <div class="select-custom-wrapper" id="selectTipoFiltroUsuarios">
+                        <select id="tipoFiltroUsuarios"
+                                class="select-tipo-filtro-usuarios select-original-oculto">
+                            <option value="nome">Filtrar por Nome</option>
+                            <option value="usuario">Filtrar por Usuário</option>
+                            <option value="acesso">Filtrar por Acesso</option>
+                            <option value="telefone">Filtrar por Telefone</option>
+                            <option value="email">Filtrar por E-mail</option>
+                            <option value="rg">Filtrar por RG</option>
+                            <option value="cpf">Filtrar por CPF</option>
+                            <option value="cnpj">Filtrar por CNPJ</option>
+                        </select>
+
+                        <button type="button" class="select-custom-trigger" aria-expanded="false">
+                            <span>Filtrar por Nome</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <div class="select-custom-options"></div>
+                    </div>
+                </div>
                 <div class="campo-filtrar-usuarios mt-3">
                     <label id="labelValorFiltroUsuarios" for="valorFiltroUsuarios" class="label-valor-filtro-usuarios">Nome do Usuário</label>
                     <input type="text" id="valorFiltroUsuarios" class="input-valor-filtro-usuarios" placeholder="Digite o nome do usuário">
@@ -721,13 +758,23 @@
                 </button>
             </div>
 
-            <div class="modal-body modal-ordenar-usuarios-body">
-                <div class="campo-ordenar-usuarios">
-                    <label for="tipoOrdenacaoUsuarios" class="label-ordenar-usuarios">Escolha a direção</label>
-                    <select id="tipoOrdenacaoUsuarios" class="select-ordenar-usuarios">
-                        <option value="asc">Crescente</option>
-                        <option value="desc">Decrescente</option>
-                    </select>
+            <div class="modal-body modal-ordenar-historico-body">
+                <div class="campo campo-ordenar-historico">
+                    <label for="tipoOrdenacaoHistorico">Escolha a direção</label>
+
+                    <div class="select-custom-wrapper" id="selectTipoOrdenacaoHistorico">
+                        <select id="tipoOrdenacaoHistorico" class="select-original-oculto">
+                            <option value="desc" selected>Decrescente (Mais recentes primeiro)</option>
+                            <option value="asc">Crescente (Mais antigos primeiro)</option>
+                        </select>
+
+                        <button type="button" class="select-custom-trigger" aria-expanded="false">
+                            <span>Decrescente (Mais recentes primeiro)</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <div class="select-custom-options"></div>
+                    </div>
                 </div>
             </div>
 
