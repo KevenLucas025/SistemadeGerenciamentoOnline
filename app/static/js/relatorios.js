@@ -116,8 +116,18 @@ document.addEventListener("DOMContentLoaded", function () {
             chave: 'nome_status',
             titulo: 'STATUS',
             render: c => {
-                const status = String(c.status || 'Inativo').toLowerCase();
-                const classeStatus = status === 'ativo' ? 'ativo' : 'inativo';
+                const status = String(c.status || 'Inativo').trim().toLowerCase();
+
+                let classeStatus;
+
+                if (status === 'ativo') {
+                    classeStatus = 'ativo';
+                } else if (status === 'bloqueado') {
+                    classeStatus = 'bloqueado';
+                } else {
+                    classeStatus = 'inativo';
+                }
+
                 return `<span class="badge-status ${classeStatus}">${escaparHTML(status.toUpperCase())}</span>`;
             }
         },

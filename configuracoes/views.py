@@ -1,9 +1,15 @@
+
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
+from django.db import transaction
+
 from .models import PreferenciasUsuario, ConfiguracoesSistema
-from .forms import (PreferenciasUsuarioForm,ConfiguracoesSistemaForm)
+from .forms import (
+    PreferenciasUsuarioForm,
+    ConfiguracoesSistemaForm
+)
 
 
 @login_required
@@ -14,15 +20,7 @@ def configuracoes(request):
         usuario=request.user
     )
 
-    preferencias_form = PreferenciasUsuarioForm(
-        instance=preferencias
-    )
-
     configuracoes_sistema = ConfiguracoesSistema.obter_configuracoes()
-
-    sistema_form = ConfiguracoesSistemaForm(
-        instance=configuracoes_sistema
-    )
 
     if request.method == "POST":
 
@@ -31,8 +29,10 @@ def configuracoes(request):
             instance=preferencias
         )
 
-        # Somente administradores podem alterar
-        # as configurações compartilhadas.
+        # Validação das preferências pessoais
+        preferencias_validas = preferencias_form.is_valid()
+
+        # Configurações compartilhadas somente para administradores
         if request.user.is_staff:
 
             sistema_form = ConfiguracoesSistemaForm(
@@ -40,17 +40,25 @@ def configuracoes(request):
                 instance=configuracoes_sistema
             )
 
+            sistema_valido = sistema_form.is_valid()
+
         else:
+
             sistema_form = ConfiguracoesSistemaForm(
                 instance=configuracoes_sistema
             )
 
-        if preferencias_form.is_valid() and sistema_form.is_valid():
+            # Não validar formulário que não foi enviado
+            sistema_valido = True
 
-            preferencias_form.save()
+        if preferencias_validas and sistema_valido:
 
-            if request.user.is_staff:
-                sistema_form.save()
+            with transaction.atomic():
+
+                preferencias_form.save()
+
+                if request.user.is_staff:
+                    sistema_form.save()
 
             messages.success(
                 request,
@@ -58,6 +66,16 @@ def configuracoes(request):
             )
 
             return redirect("configuracoes")
+
+    else:
+
+        preferencias_form = PreferenciasUsuarioForm(
+            instance=preferencias
+        )
+
+        sistema_form = ConfiguracoesSistemaForm(
+            instance=configuracoes_sistema
+        )
 
     context = {
         "preferencias_form": preferencias_form,

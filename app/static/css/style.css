@@ -2883,7 +2883,11 @@ textarea::placeholder {
 :root[data-theme="claro"] .dashboard-topbar-verificar-usuarios p,
 :root[data-theme="claro"] .dashboard-topbar-cadastrar-usuarios p,
 :root[data-theme="claro"] .modal-status-pausa-historico-descricao,
-:root[data-theme="claro"] .dashboard-topbar-clientes p {
+:root[data-theme="claro"] .dashboard-topbar-clientes p,
+:root[data-theme="claro"] .bi-secao-titulo p,
+:root[data-theme="claro"] .bi-grafico-header p,
+:root[data-theme="claro"] .bi-card-legenda,
+:root[data-theme="claro"] .bi-card-rodape {
     color: #535861 !important;
 }
 
@@ -2926,7 +2930,11 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-confirmar-apagar-usuarios-titulo,
 :root[data-theme="claro"] .modal-exclusao-historico-clientes-header h5,
 :root[data-theme="claro"] .modal-exclusao-historico-clientes-header h5 i,
-:root[data-theme="claro"] .modal-confirmar-apagar-historico-titulo-clientes  {
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-titulo-clientes,
+:root[data-theme="claro"] .popover-baixar-card h3,
+:root[data-theme="claro"] .bi-titulo h2,
+:root[data-theme="claro"] .bi-secao-titulo h3,
+:root[data-theme="claro"] .bi-grafico-header h4   {
     color: #181d27 !important;
 }
 
@@ -2941,7 +2949,8 @@ textarea::placeholder {
 :root[data-theme="claro"] #modalFiltrarProdutos .modal-header h5,
 :root[data-theme="claro"] #modalOrdenarProdutos .modal-header h5,
 :root[data-theme="claro"] #modalFiltrarUsuarios .modal-header h5,
-:root[data-theme="claro"] .modal-ordenar-historico-clientes-header h5{
+:root[data-theme="claro"] .modal-ordenar-historico-clientes-header h5,
+:root[data-theme="claro"] .modal-tempo-conexao-header h5{
     color: #181d27 !important;
 }
 
@@ -2967,6 +2976,14 @@ textarea::placeholder {
     background: #e8edf3;
 }
 
+/* MENU STATUS TEMPO — MODO CLARO */
+:root[data-theme="claro"] .menu-status-tempo {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+}
+
 /* BOTÃO DE ABA ATIVA — TEMA CLARO */
 :root[data-theme="claro"] .btn-tab-cliente.ativo,
 :root[data-theme="claro"] .btn-tab-relatorio.ativo {
@@ -2989,7 +3006,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-status-pausa-historico-clientes-legenda,
 :root[data-theme="claro"] .modal-confirmar-apagar-historico-descricao,
 :root[data-theme="claro"] .modal-confirmar-apagar-usuarios-descricao,
-:root[data-theme="claro"] .modal-confirmar-apagar-historico-descricao-clientes   {
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-descricao-clientes,
+:root[data-theme="claro"] .descricao-tempo-conexao   {
     color: #535861 !important;
 }
 
@@ -3001,7 +3019,8 @@ textarea::placeholder {
 
 :root[data-theme="claro"] .card-resumo-produto strong,
 :root[data-theme="claro"] .ajuda-planilha-campo strong,
-:root[data-theme="claro"] .card-resumo strong {
+:root[data-theme="claro"] .card-resumo strong,
+:root[data-theme="claro"] .usuario-tempo-identificacao strong {
     color: #535861 !important;
 }
 
@@ -3020,7 +3039,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-apagar-produtos-quantidade-label,
 :root[data-theme="claro"] .modal-apagar-usuario-quantidade-label,
 :root[data-theme="claro"] #modalCadastrarCliente .campo label,
-:root[data-theme="claro"] .campo-filtro label  {
+:root[data-theme="claro"] .campo-filtro label,
+:root[data-theme="claro"] .bi-filtro-periodo label  {
     color: #101827 !important;
 }
 
@@ -3051,7 +3071,9 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-ajuda-planilha .modal-planilhas-descricao,
 :root[data-theme="claro"] .modal-filtrar-radio-label,
 :root[data-theme="claro"] .contador-selecionados-historico-clientes,
-:root[data-theme="claro"] .modal-confirmar-apagar-historico-alerta-label-clientes   {
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-alerta-label-clientes,
+:root[data-theme="claro"] .tempo-total,
+:root[data-theme="claro"] .menu-status-tempo button    {
     color: #535861 !important;
 }
 
@@ -3132,7 +3154,8 @@ textarea::placeholder {
 
 
 /* HOVER */
-:root[data-theme="claro"] .btn-paginacao:not(.ativo):hover {
+:root[data-theme="claro"] .btn-paginacao:not(.ativo):hover,
+:root[data-theme="claro"] .menu-status-tempo button:hover  {
     background: #cbd5e1 !important;
     border-color: #94a3b8 !important;
     color: #1e293b !important;
@@ -3145,7 +3168,8 @@ textarea::placeholder {
 }
 
 /* Jurídica — Verde-azulado */
-:root[data-theme="claro"] .card-resumo.card-juridica {
+:root[data-theme="claro"] .card-resumo.card-juridica,
+:root[data-theme="claro"] .card-resumo.card-fisica {
     background: #b4d2cc  !important;
 }
 
@@ -3202,7 +3226,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .usuarios-table thead th,
 :root[data-theme="claro"] .clientes-table thead th,
 :root[data-theme="claro"] .modal-historico-clientes-table thead th,
-:root[data-theme="claro"] .relatorio-tabela thead th {
+:root[data-theme="claro"] .relatorio-tabela thead th,
+:root[data-theme="claro"] .tabela-tempo-conexao thead th {
     color: #535861 !important;
     border-color: #c3ccd8 !important;
     background: #e8edf3 !important;
@@ -3235,7 +3260,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .clientes-table-container,
 :root[data-theme="claro"] .modal-historico-clientes-body,
 :root[data-theme="claro"] .modal-historico-clientes-table,
-:root[data-theme="claro"] .modal-historico-clientes-table-container{
+:root[data-theme="claro"] .modal-historico-clientes-table-container,
+:root[data-theme="claro"] .tabela-tempo-conexao-container{
     color: #535861 !important;
     border-color: #c3ccd8 !important;
     background: #e8edf3 !important;
@@ -3306,7 +3332,9 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-relatorio-excel,
 :root[data-theme="claro"] .btn-relatorio-cancelar,
 :root[data-theme="claro"] .btn-historico-clientes-acao,
-:root[data-theme="claro"] .btn-tab-relatorio   {
+:root[data-theme="claro"] .btn-tab-relatorio,
+:root[data-theme="claro"] .btn-editar-status-tempo,
+:root[data-theme="claro"] .btn-bi-limpar  {
     background-color: #b8c7d9 !important;
     border-color: #a8b8cb;
     color: #414651 !important;
@@ -3359,7 +3387,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-modal-fechar-filtrar-historico-clientes,
 :root[data-theme="claro"] .btn-modal-fechar-apagar-historico,
 :root[data-theme="claro"] .btn-modal-fechar-apagar-produtos,
-:root[data-theme="claro"] .btn-modal-fechar-exclusao-historico-clientes  {
+:root[data-theme="claro"] .btn-modal-fechar-exclusao-historico-clientes,
+:root[data-theme="claro"] .btn-modal-fechar-tempo-conexao  {
     background: #b8c7d9 !important;
     color: #475569 !important;
 }
@@ -3388,7 +3417,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-modal-fechar-ordenar-historico-clientes:hover,
 :root[data-theme="claro"] .btn-modal-fechar-filtrar-historico-clientes:hover,
 :root[data-theme="claro"] .btn-modal-fechar-apagar-historico:hover,
-:root[data-theme="claro"] .btn-modal-fechar-exclusao-historico-clientes:hover  {
+:root[data-theme="claro"] .btn-modal-fechar-exclusao-historico-clientes:hover,
+:root[data-theme="claro"] .btn-modal-fechar-tempo-conexao:hover  {
     background-color: #fca5a5  !important;
     color: #cecfd2;
     transform: scale(1.05);
@@ -3533,9 +3563,15 @@ textarea::placeholder {
 }
 
 /* CONTEÚDO */
-:root[data-theme="claro"] .popover .popover-body {
+:root[data-theme="claro"] .popover .popover-body{
     background-color: #ffffff !important;
     color: #475569 !important;
+}
+
+/* GRUPO DE FORMATOS */
+:root[data-theme="claro"] .formatos-toggle-group {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
 }
 
 /* SETA */
@@ -3554,6 +3590,36 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-pesquisar-tabela i {
     color: #414651;
 }
+
+
+
+/* POPOVER - BAIXAR DADOS */
+:root[data-theme="claro"] .popover-baixar-card,
+:root[data-theme="claro"] #popoverBaixarCardUsuarios {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+    color: #334155;
+}
+
+/* BOTÕES DE FORMATO */
+:root[data-theme="claro"] .btn-formato-opcao {
+    color: #64748b;
+}
+
+/* HOVER */
+:root[data-theme="claro"] .btn-formato-opcao:hover:not(.ativo) {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+/* FORMATO SELECIONADO */
+:root[data-theme="claro"] .btn-formato-opcao.ativo {
+    background: #dbeafe;
+    color: #1e40af;
+    box-shadow: 0 2px 5px rgba(30, 64, 175, 0.10);
+}
+
 
 :root[data-theme="claro"] .modal-ordenar-usuarios .btn-cancelar-ordenar-usuarios,
 :root[data-theme="claro"] .modal-ordenar-produtos .btn-cancelar-ordenar-produtos{
@@ -3810,6 +3876,25 @@ textarea::placeholder {
     box-shadow: none !important;
 }
 
+/* =====================================================
+   TABELA TEMPO DE CONEXÃO — MODO CLARO
+===================================================== */
+
+/* FUNDO NORMAL */
+:root[data-theme="claro"] #tbodyTempoConexaoUsuarios > tr > td {
+    background-color: #e8edf3  !important;
+    color: #1e293b !important;
+    transition: none !important;
+}
+
+/* HOVER */
+:root[data-theme="claro"] #tbodyTempoConexaoUsuarios > tr:hover > td {
+    background-color: #b8c7d9 !important;
+    color: #1e293b !important;
+    box-shadow: none !important;
+}
+
+
 
 
 
@@ -3886,7 +3971,7 @@ textarea::placeholder {
 
 /* Textarea de descrição - Tema claro */
 :root[data-theme="claro"] .campo-descricao textarea {
-    background-color: #e8edf3;
+    background-color: #ffffff !important;
     color: #202631;
     border: 1px solid #c3ccd8;
 }
@@ -3923,7 +4008,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .preview-box h5,
 :root[data-theme="claro"] .preview-box p,
 :root[data-theme="claro"] .preview-box span,
-:root[data-theme="claro"] .upload-box-cadastrar-usuarios span {
+:root[data-theme="claro"] .upload-box-cadastrar-usuarios span,
+:root[data-theme="claro"] .modal-tempo-conexao-footer span {
     color: #202631;
 }
 
@@ -4119,7 +4205,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .checkbox-selecionar-todos-clientes,
 :root[data-theme="claro"] .checkbox-cliente,
 :root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"],
-:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"] {
+:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"],
+:root[data-theme="claro"] .custom-checkbox input[type="checkbox"] {
     background-color: transparent;
     border: 1px solid #94a3b8;
 }
@@ -4134,7 +4221,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .checkbox-selecionar-todos-clientes:hover,
 :root[data-theme="claro"] .checkbox-cliente:hover,
 :root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"]:hover,
-:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]:hover {
+:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]:hover,
+:root[data-theme="claro"] .custom-checkbox input[type="checkbox"]:hover {
     border-color: #2563eb;
     background-color: #dce3ec;
 }
@@ -4149,7 +4237,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .checkbox-selecionar-todos-clientes:checked,
 :root[data-theme="claro"] .checkbox-cliente:checked,
 :root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"]:checked,
-:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]:checked {
+:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]:checked,
+:root[data-theme="claro"] .custom-checkbox input[type="checkbox"]:checked {
     background-color: #7c3aed;
     border-color: #7c3aed;
     box-shadow: 0 0 8px rgba(124, 58, 237, 0.4);
@@ -4165,7 +4254,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .checkbox-selecionar-todos-clientes:checked::after,
 :root[data-theme="claro"] .checkbox-cliente:checked::after,
 :root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"]::after,
-:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]::after {
+:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]::after,
+:root[data-theme="claro"] .custom-checkbox input[type="checkbox"]::after {
     border-color: #ffffff;
 }
 
@@ -4295,6 +4385,11 @@ html[data-theme="claro"] .select-custom-wrapper.aberto .select-custom-trigger {
 html[data-theme="claro"] .select-custom-options {
     background-color: #ffffff !important;
     border: 1px solid #b8c7d9 !important;
+
+    max-height: 220px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
     scrollbar-width: thin !important;
     scrollbar-color: #94a3b8 #e2e8f0 !important;
 }
@@ -4326,7 +4421,7 @@ html[data-theme="claro"] .select-original-oculto {
 }
 
 /* =========================================
-   SCROLLBAR — CHROMIUM / OPERA / EDGE
+   SCROLLBAR — TEMA CLARO
 ========================================= */
 
 html[data-theme="claro"] .select-custom-options::-webkit-scrollbar {
@@ -4335,18 +4430,106 @@ html[data-theme="claro"] .select-custom-options::-webkit-scrollbar {
 
 html[data-theme="claro"] .select-custom-options::-webkit-scrollbar-track {
     background: #e2e8f0 !important;
+    border-radius: 20px !important;
 }
 
 html[data-theme="claro"] .select-custom-options::-webkit-scrollbar-thumb {
-    background-color: #94a3b8 !important;
+    background: #94a3b8 !important;
     border: 2px solid #e2e8f0 !important;
     border-radius: 20px !important;
 }
 
 html[data-theme="claro"] .select-custom-options::-webkit-scrollbar-thumb:hover {
-    background-color: #64748b !important;
+    background: #64748b !important;
 }
 
+
+/* BADGES DE HISTÓRICO — TEMA CLARO */
+:root[data-theme="claro"] .badge-status.ativo,
+:root[data-theme="claro"] .badge-tipo.juridico {
+    background: rgba(34, 197, 94, 0.22);
+    color: #14532d  !important;
+    border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+:root[data-theme="claro"] .badge-tipo.fisico {
+    background: #dbeafe;
+    color: #1e40af !important;
+    border: 1px solid #93c5fd;
+}
+
+:root[data-theme="claro"] .badge-status.inativo {
+    background: #fee2e2;
+    color: #991b1b !important;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+/* =====================================================
+   CABEÇALHO BI — MODO CLARO
+===================================================== */
+:root[data-theme="claro"] .bi-cabecalho {
+    background: linear-gradient(
+        115deg,
+        #dce6f1 0%,
+        #e8eef5 65%,
+        #f1f5f9 100%
+    );
+
+    border: 1px solid #b8c7d9;
+    box-shadow: 0 5px 18px rgba(30, 41, 59, 0.10);
+    border-radius: 12px;
+}
+
+/* =====================================================
+   SEÇÕES BI — MODO CLARO
+===================================================== */
+:root[data-theme="claro"] .bi-secao {
+    background: #f8fafc;
+    border: 1px solid #d5dee9;
+    border-radius: 11px;
+    box-shadow: 0 4px 14px rgba(30, 41, 59, 0.07);
+}
+
+/* =====================================================
+   CARDS DOS GRÁFICOS BI — MODO CLARO
+===================================================== */
+:root[data-theme="claro"] .bi-grafico-card {
+    background: #ffffff;
+    border: 1px solid #dbe3ec;
+    border-radius: 9px;
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.04);
+}
+
+/* HOVER */
+:root[data-theme="claro"] .bi-grafico-card:hover {
+    border-color: #93a9c2;
+    box-shadow: 0 6px 16px rgba(30, 41, 59, 0.09);
+}
+
+
+/* =====================================================
+   CARDS INDICADORES BI — MODO CLARO
+===================================================== */
+:root[data-theme="claro"] .bi-card-indicador {
+    background: #ffffff;
+    border: 1px solid #d5dee9;
+    box-shadow: 0 4px 12px rgba(30, 41, 59, 0.07);
+}
+
+/* HOVER */
+:root[data-theme="claro"] .bi-card-indicador:hover {
+    border-color: #93a9c2;
+    box-shadow: 0 7px 18px rgba(30, 41, 59, 0.11);
+}
+
+/* =====================================================
+   TAGS BI — MODO CLARO
+===================================================== */
+:root[data-theme="claro"] .bi-tag {
+    color: #6d28d9;
+    background: #ede9fe;
+    border: 1px solid #c4b5fd;
+}
 
 /* ==========================================================
    TRANSIÇÃO

@@ -1901,39 +1901,34 @@ input.checkbox-custom-tabela-produtos[type="checkbox"]:checked::after {
                 color .15s ease-in-out;
 }
 
-/* OPÇÃO DESTACADA */
-#selectCliente .select-custom-option.ativo,
-.select-custom-option.ativo {
-    background-color: #A1C7FE !important;
-    color: #3B3B3B !important;
-}
+/* =========================================
+   SCROLLBAR — MODO ESCURO
+========================================= */
 
-/* SCROLLBAR */
-#selectCliente .select-custom-options,
 .select-custom-options {
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+
+    color-scheme: dark !important;
     scrollbar-width: thin !important;
-    scrollbar-color: #4b5563 #141b27 !important;
+    scrollbar-color: #64748b #151B27 !important;
 }
 
-#selectCliente .select-custom-options::-webkit-scrollbar,
 .select-custom-options::-webkit-scrollbar {
-    width: 8px !important;
-    height:8px !important;
+    width: 10px !important;
+    display: block !important;
 }
 
-#selectCliente .select-custom-options::-webkit-scrollbar-track,
 .select-custom-options::-webkit-scrollbar-track {
-    background: #141b27 !important;
+    background: #0f172a !important;
 }
 
-#selectCliente .select-custom-options::-webkit-scrollbar-thumb,
 .select-custom-options::-webkit-scrollbar-thumb {
-    background: #4b5563 !important;
-    border-radius: 20px;
+    background: #64748b !important;
+    border: 2px solid #0f172a !important;
+    border-radius: 20px !important;
 }
 
-#selectCliente .select-custom-options::-webkit-scrollbar-thumb:hover,
 .select-custom-options::-webkit-scrollbar-thumb:hover {
-    background: #6c757d !important;
+    background: #94a3b8 !important;
 }
-

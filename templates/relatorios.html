@@ -468,6 +468,8 @@
                         <td>
                             {% if cliente.status|lower == 'ativo' %}
                                 <span class="badge-status ativo">{{ cliente.status|upper }}</span>
+                            {% elif cliente.status|lower == 'bloqueado' %}
+                                <span class="badge-status bloqueado">{{ cliente.status|upper }}</span>
                             {% else %}
                                 <span class="badge-status inativo">{{ cliente.status|upper }}</span>
                             {% endif %}
