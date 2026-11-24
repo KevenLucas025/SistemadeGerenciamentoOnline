@@ -205,30 +205,45 @@ function confirmarAcao(mensagem, titulo = "Confirmação") {
     // =========================
     // MODAL DE LOGOUT
     // =========================
-
     function abrirModalLogout(event) {
 
-        event.preventDefault();
+        event?.preventDefault();
 
-        // Fecha o menu lateral do Bootstrap
-        const menuLateral =
-            document.getElementById("menuLateral");
+        const menuLateral = document.getElementById("menuLateral");
+        const modalElement = document.getElementById("modalLogout");
 
-        const offcanvas =
-            bootstrap.Offcanvas.getInstance(menuLateral);
-
-        if (offcanvas) {
-            offcanvas.hide();
+        // Verifica se o modal existe
+        if (!modalElement) {
+            console.error("Modal de logout não encontrado no HTML.");
+            return;
         }
 
-        // Abre o modal depois que o menu começar a fechar
-        const modalElement =
-            document.getElementById("modalLogout");
+        // Função responsável por abrir o modal
+        function exibirModal() {
+            const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+            modal.show();
+        }
 
-        const modal =
-            new bootstrap.Modal(modalElement);
+        // Se o menu lateral não existir, abre somente o modal
+        if (!menuLateral) {
+            exibirModal();
+            return;
+        }
 
-        modal.show();
+        const offcanvas = bootstrap.Offcanvas.getInstance(menuLateral);
+
+        // Se o menu não estiver aberto, abre diretamente o modal
+        if (!offcanvas || !menuLateral.classList.contains("show")) {
+            exibirModal();
+            return;
+        }
+
+        // Aguarda o fechamento completo do menu lateral
+        menuLateral.addEventListener("hidden.bs.offcanvas", function () {
+            exibirModal();
+        }, { once: true });
+
+        offcanvas.hide();
     }
 
 

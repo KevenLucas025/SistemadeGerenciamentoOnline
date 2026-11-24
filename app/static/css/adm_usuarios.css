@@ -896,6 +896,17 @@ input.checkbox-usuario-tabela-adm[type="checkbox"]:checked::after {
     padding: 24px;
 }
 
+#modalVisualizarUsuario{
+    z-index: 1075 !important;
+}
+
+.backdrop-visualizar-usuario {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1070;
+}
+
 .campo-editar-usuario {
     display: flex;
     flex-direction: column;
@@ -1476,4 +1487,48 @@ input.checkbox-usuario-tabela-adm[type="checkbox"]:checked::after {
 /* ESCONDE O SELECT ORIGINAL */
 .select-original-oculto {
     display: none !important;
+}
+
+
+/* =========================================================
+   MODAL DE EDIÇÃO — SOMENTE LEITURA
+========================================================= */
+
+/* INPUTS BLOQUEADOS */
+#formEditarUsuario.sem-permissao-edicao
+.campo-editar-usuario input:disabled:not(#editarUsuario) {
+    color: #9299a6 !important;
+    background: #111722 !important;
+    border-color: #293445 !important;
+    cursor: not-allowed !important;
+    opacity: 0.65;
+}
+
+/* SELECTS PERSONALIZADOS BLOQUEADOS */
+#formEditarUsuario.sem-permissao-edicao
+.select-custom-trigger:disabled {
+    color: #9299a6 !important;
+    background: #111722 !important;
+    border-color: #293445 !important;
+    cursor: not-allowed !important;
+    opacity: 0.65;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* IMPEDIR EFEITOS DE HOVER */
+#formEditarUsuario.sem-permissao-edicao
+.select-custom-trigger:disabled:hover {
+    cursor: not-allowed !important;
+    border-color: #293445 !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* BOTÃO SALVAR */
+#formEditarUsuario.sem-permissao-edicao
+#btnSalvarEdicao {
+    opacity: 0.4;
+    cursor: not-allowed !important;
+    filter: grayscale(0.5);
 }

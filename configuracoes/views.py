@@ -23,10 +23,22 @@ def configuracoes(request):
     configuracoes_sistema = ConfiguracoesSistema.obter_configuracoes()
 
     if request.method == "POST":
+        
+       
 
         preferencias_form = PreferenciasUsuarioForm(
             request.POST,
             instance=preferencias
+        )
+        
+        print(
+            "POST confirmar_exclusao:",
+            request.POST.get("confirmar_exclusao")
+        )
+
+        print(
+            "Valor validado pelo formulário:",
+            preferencias_form.data.get("confirmar_exclusao")
         )
 
         # Validação das preferências pessoais
@@ -48,8 +60,45 @@ def configuracoes(request):
                 instance=configuracoes_sistema
             )
 
-            # Não validar formulário que não foi enviado
             sistema_valido = True
+
+        # =====================================================
+        # DIAGNÓSTICO TEMPORÁRIO
+        # =====================================================
+
+        print("\n========== DIAGNÓSTICO CONFIGURAÇÕES ==========")
+
+        print(
+            "Página inicial recebida:",
+            request.POST.get("pagina_inicial")
+        )
+
+        print(
+            "Preferências válidas:",
+            preferencias_validas
+        )
+
+        print(
+            "Erros das preferências:",
+            preferencias_form.errors
+        )
+
+        print(
+            "Configurações do sistema válidas:",
+            sistema_valido
+        )
+
+        if request.user.is_staff:
+            print(
+                "Erros do sistema:",
+                sistema_form.errors
+            )
+
+        print("===============================================\n")
+
+        # =====================================================
+        # SALVAMENTO
+        # =====================================================
 
         if preferencias_validas and sistema_valido:
 
@@ -59,6 +108,19 @@ def configuracoes(request):
 
                 if request.user.is_staff:
                     sistema_form.save()
+            
+            print(
+                "Valor da instância após save:",
+                preferencias.confirmar_exclusao
+            )
+
+            # Confirma o valor efetivamente persistido no banco
+            preferencias.refresh_from_db()
+
+            print(
+                "Página inicial salva no banco:",
+                preferencias.pagina_inicial
+            )
 
             messages.success(
                 request,

@@ -237,11 +237,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+    // BACKDROP EXCLUSIVO DO MODAL DE VISUALIZAÇÃO
+    function criarBackdropVisualizacao() {
+        if (!document.querySelector(".backdrop-visualizar-usuario")) {
+            const backdrop = document.createElement("div");
+            backdrop.className = "backdrop-visualizar-usuario";
+            document.body.appendChild(backdrop);
+        }
+    }
+
     /* =========================================
        ABRIR MODAL
     ========================================= */
 
     async function visualizarUsuario(url) {
+
+        criarBackdropVisualizacao();
 
         modal.classList.add("ativo");
         document.body.style.overflow = "hidden";
@@ -378,25 +389,46 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    /* =========================================
-       FECHAR MODAL
+   
+        /* =========================================
+    FECHAR MODAL DE VISUALIZAÇÃO
     ========================================= */
+
     function fechar() {
         modal.classList.remove("ativo");
+
+        // Remove o backdrop, caso exista
+        document.querySelector(".backdrop-visualizar-usuario")?.remove();
+
         document.body.style.overflow = "";
     }
 
-    fecharModal?.addEventListener("click", fechar);
-    btnFechar?.addEventListener("click", fechar);
+    // Fechar pelo botão do cabeçalho
+    modal?.addEventListener("click", function (event) {
 
-    modal.addEventListener("click", function (event) {
+        const botaoFechar = event.target.closest(
+            "#fecharModalVisualizar, #btnFecharModalVisualizar"
+        );
+
+        if (botaoFechar) {
+            event.preventDefault();
+            event.stopPropagation();
+            fechar();
+            return;
+        }
+
+        // Fechar clicando fora do conteúdo
         if (event.target === modal) {
             fechar();
         }
     });
 
+    // Fechar com ESC
     document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape" && modal.classList.contains("ativo")) {
+        if (
+            event.key === "Escape" &&
+            modal?.classList.contains("ativo")
+        ) {
             fechar();
         }
     });
@@ -422,8 +454,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function fecharEdicao() {
             modalEditar.classList.remove("ativo");
+
             document.body.style.overflow = "";
+
+            document
+                .querySelector(".backdrop-editar-usuario")
+                ?.remove();
+
             formEditar.reset();
+
+            definirModoSomenteLeitura(false);
+
+            urlEdicaoAtual = "";
 
             mensagemEditar.textContent = "";
             mensagemEditar.className = "mensagem-editar-usuario";
@@ -443,67 +485,102 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        let urlEdicaoAtual = "";
-
-        // ABRIR MODAL E CARREGAR DADOS
-        async function abrirModalEdicao(url) {
-
-            urlEdicaoAtual = url;
-
-            modalEditar.classList.add("ativo");
-            document.body.style.overflow = "hidden";
-
-            mensagemEditar.textContent = "";
-            mensagemEditar.className = "mensagem-editar-usuario";
-
-            btnSalvarEdicao.disabled = true;
-            btnSalvarEdicao.innerHTML = `
-                <i class="fa-solid fa-spinner fa-spin"></i>
-                Carregando...
-            `;
-
-            try {
-
-                const resposta = await fetch(url, {
-                    method: "GET",
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest"
-                    }
-                });
-
-                const resultado = await lerRespostaJSON(resposta);
-
-                if (!resposta.ok || !resultado.sucesso) {
-                    throw new Error(
-                        resultado.mensagem || "Não foi possível carregar os dados."
-                    );
-                }
-
-                const usuario = resultado.usuario;
-                document.getElementById("editarUsuarioId").value = usuario.id;
-                document.getElementById("editarUsuario").value = usuario.username;
-                document.getElementById("editarNome").value = usuario.nome;
-                document.getElementById("editarEmail").value = usuario.email;
-                document.getElementById("editarPerfil").value = usuario.perfil;
-                document.getElementById("editarStatus").value = usuario.status;
-
-            } catch (erro) {
-
-                mensagemEditar.textContent = erro.message;
-                mensagemEditar.classList.add("erro");
-
-                console.error("Erro ao carregar usuário:", erro);
-
-            } finally {
-
-                btnSalvarEdicao.disabled = false;
-                btnSalvarEdicao.innerHTML = `
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    Salvar alterações
-                `;
-
+        // BACKDROP EXCLUSIVO DO MODAL DE EDIÇÃO
+        function criarBackdropEdicao() {
+            if (!document.querySelector(".backdrop-editar-usuario")) {
+                const backdrop = document.createElement("div");
+                backdrop.className = "backdrop-editar-usuario";
+                document.body.appendChild(backdrop);
             }
         }
+
+        let urlEdicaoAtual = "";
+
+        async function abrirModalEdicao(url) {
+
+    // Restaurar o estado inicial
+    definirModoSomenteLeitura(false);
+
+    urlEdicaoAtual = url;
+
+    criarBackdropEdicao();
+
+    modalEditar.classList.add("ativo");
+    document.body.style.overflow = "hidden";
+
+    mensagemEditar.textContent = "";
+    mensagemEditar.className = "mensagem-editar-usuario";
+
+    btnSalvarEdicao.disabled = true;
+    btnSalvarEdicao.innerHTML = `
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        Carregando...
+    `;
+
+    try {
+
+        const resposta = await fetch(url, {
+            method: "GET",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        });
+
+        const resultado = await lerRespostaJSON(resposta);
+
+        // SEM PERMISSÃO
+        if (resposta.status === 403) {
+
+            definirModoSomenteLeitura(true);
+
+            mensagemEditar.textContent =
+                resultado.mensagem ||
+                "Você não tem permissão para editar usuários.";
+
+            mensagemEditar.className =
+                "mensagem-editar-usuario erro";
+
+            return;
+        }
+
+        if (!resposta.ok || !resultado.sucesso) {
+            throw new Error(
+                resultado.mensagem ||
+                "Não foi possível carregar os dados."
+            );
+        }
+
+        // PREENCHER CAMPOS
+        const usuario = resultado.usuario;
+
+        document.getElementById("editarUsuarioId").value = usuario.id;
+        document.getElementById("editarUsuario").value = usuario.username;
+        document.getElementById("editarNome").value = usuario.nome;
+        document.getElementById("editarEmail").value = usuario.email;
+        document.getElementById("editarPerfil").value = usuario.perfil;
+        document.getElementById("editarStatus").value = usuario.status;
+
+    } catch (erro) {
+
+        mensagemEditar.textContent = erro.message;
+        mensagemEditar.className = "mensagem-editar-usuario erro";
+
+        console.error("Erro ao carregar usuário:", erro);
+
+    } finally {
+
+        // Não habilitar o botão se o formulário estiver bloqueado
+        if (!formEditar.classList.contains("sem-permissao-edicao")) {
+            btnSalvarEdicao.disabled = false;
+        }
+
+        btnSalvarEdicao.innerHTML = `
+            <i class="fa-solid fa-floppy-disk"></i>
+            Salvar alterações
+        `;
+
+    }
+}
 
         // IDENTIFICAR BOTÃO EDITAR
         tabelaContainer.addEventListener("click", function (event) {
@@ -520,6 +597,10 @@ document.addEventListener("DOMContentLoaded", function () {
         formEditar.addEventListener("submit", async function (event) {
 
             event.preventDefault();
+
+            if (formEditar.classList.contains("sem-permissao-edicao")) {
+                return;
+            }
 
             if (!urlEdicaoAtual) {
                 mensagemEditar.textContent = "URL de edição não encontrada.";
@@ -884,5 +965,46 @@ function carregarFiltrosAvancados() {
             }
         });
     }
+
+    function definirModoSomenteLeitura(bloquear) {
+    if (!formEditar) return;
+
+    // Bloquear campos editáveis, preservando o campo PRO
+    const campos = formEditar.querySelectorAll(
+        "input:not([type='hidden']):not(#editarUsuario), select, textarea"
+    );
+
+    campos.forEach(campo => {
+        campo.disabled = bloquear;
+    });
+
+    // Bloquear selects personalizados
+    const botoesSelect = formEditar.querySelectorAll(
+        ".select-custom-trigger"
+    );
+
+    botoesSelect.forEach(botao => {
+        botao.disabled = bloquear;
+        botao.setAttribute("aria-disabled", String(bloquear));
+    });
+
+    // Fechar opções abertas
+    if (bloquear) {
+        formEditar.querySelectorAll(
+            ".select-custom-wrapper"
+        ).forEach(wrapper => {
+            wrapper.classList.remove("aberto");
+        });
+    }
+
+    // Bloquear botão salvar
+    btnSalvarEdicao.disabled = bloquear;
+
+    // Classe para estilização
+    formEditar.classList.toggle(
+        "sem-permissao-edicao",
+        bloquear
+    );
+}
 
 });

@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 
+
+
+
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/estoque.css' %}">
 <script src="{% static 'js/estoque.js' %}" defer></script>
@@ -8,6 +11,8 @@
 {% endblock %}
 
 {% block content %}
+{{ preferencias.confirmar_exclusao|json_script:"preferencia-confirmar-exclusao" }}
+
 <!-- BARRA VERTICAL MOBILE -->
 <div class="dashboard-sidebar-bar">
     <button class="btn-menu-mobile" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
@@ -397,7 +402,6 @@
                     <i class="fa-solid fa-triangle-exclamation"></i>
                     Confirmar Exclusão
                 </h5>
-
                 <button
                     type="button"
                     class="btn-modal-fechar-exclusao-historico"

@@ -2875,7 +2875,11 @@ textarea::placeholder {
 :root[data-theme="claro"] .dashboard-topbar-home h1,
 :root[data-theme="claro"] .dashboard-topbar-cadastrar-produtos h1,
 :root[data-theme="claro"] .dashboard-topbar-cadastrar-usuarios h1,
-:root[data-theme="claro"] .dashboard-topbar-clientes h1  {
+:root[data-theme="claro"] .dashboard-topbar-clientes h1,
+:root[data-theme="claro"] .usuarios-header h1,
+:root[data-theme="claro"] .config-header-info h1,
+:root[data-theme="claro"] .lado-login h1,
+:root[data-theme="claro"] .password-success-card h1  {
     color: #181d27 !important;
 }
 
@@ -2887,9 +2891,31 @@ textarea::placeholder {
 :root[data-theme="claro"] .bi-secao-titulo p,
 :root[data-theme="claro"] .bi-grafico-header p,
 :root[data-theme="claro"] .bi-card-legenda,
-:root[data-theme="claro"] .bi-card-rodape {
+:root[data-theme="claro"] .bi-card-rodape,
+:root[data-theme="claro"] .modal-exclusao-historico-texto-descricao,
+:root[data-theme="claro"] .dropdown-user-status-text,
+:root[data-theme="claro"] .modal-planilhas-descricao,
+:root[data-theme="claro"] .welcome-text p,
+:root[data-theme="claro"] .btn-close-banner i,
+:root[data-theme="claro"] .config-header-info p,
+:root[data-theme="claro"] .lado-login p,
+:root[data-theme="claro"] .lado-dashboard p,
+:root[data-theme="claro"] .preview-content p,
+:root[data-theme="claro"] .password-success-description {
     color: #535861 !important;
 }
+
+:root[data-theme="claro"] .btn-close-banner:hover .fa-xmark {
+    color: #ffffff !important;
+}
+
+
+
+:root[data-theme="claro"] .usuarios-tabela td{
+    color: #535861 !important;
+    border-bottom: none;
+}
+
 
 :root[data-theme="claro"] .estoque-header h2,
 :root[data-theme="claro"] .cadastrar-produtos-header h2,
@@ -2918,7 +2944,7 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-filtrar-usuarios .modal-filtrar-usuarios-titulo i,
 :root[data-theme="claro"] .aviso-confirmacao,
 :root[data-theme="claro"] .legenda-relatorio,
-:root[data-theme="claro"] #modalRelatorioCliente .modal-title i,
+:root[data-theme="claro"]  #modalRelatorioCliente .modal-title i,
 :root[data-theme="claro"] .modal-historico-clientes-titulo,
 :root[data-theme="claro"] .modal-status-pausa-historico-clientes-titulo,
 :root[data-theme="claro"] .modal-ordenar-historico-clientes-header h5 i,
@@ -2934,7 +2960,28 @@ textarea::placeholder {
 :root[data-theme="claro"] .popover-baixar-card h3,
 :root[data-theme="claro"] .bi-titulo h2,
 :root[data-theme="claro"] .bi-secao-titulo h3,
-:root[data-theme="claro"] .bi-grafico-header h4   {
+:root[data-theme="claro"] .bi-grafico-header h4,
+:root[data-theme="claro"] .modal-exclusao-historico-header h5,
+:root[data-theme="claro"] .notificacoes-botao i,
+:root[data-theme="claro"] .modal-planilhas-exemplo .modal-title i,
+:root[data-theme="claro"] .modal-usuario-header h3,
+:root[data-theme="claro"] .modal-filtros-header h3,
+:root[data-theme="claro"] .titulo-grupo-filtro,
+:root[data-theme="claro"] .welcome-text h3,
+:root[data-theme="claro"] .config-card-header p,
+:root[data-theme="claro"] .config-card-titulo h3,
+:root[data-theme="claro"] .config-section-header h2,
+:root[data-theme="claro"] .config-card-header h3,
+:root[data-theme="claro"] .link-senha,
+:root[data-theme="claro"] .link-cadastro,
+:root[data-theme="claro"] .lado-dashboard h2,
+:root[data-theme="claro"] .register-form h1,
+:root[data-theme="claro"] .preview-content h2,
+:root[data-theme="claro"] .preview-top,
+:root[data-theme="claro"] .preview-top i,
+:root[data-theme="claro"] .reset-form h1,
+:root[data-theme="claro"] .password-reset-description,
+:root[data-theme="claro"] .password-label   {
     color: #181d27 !important;
 }
 
@@ -3007,23 +3054,32 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-confirmar-apagar-historico-descricao,
 :root[data-theme="claro"] .modal-confirmar-apagar-usuarios-descricao,
 :root[data-theme="claro"] .modal-confirmar-apagar-historico-descricao-clientes,
-:root[data-theme="claro"] .descricao-tempo-conexao   {
+:root[data-theme="claro"] .descricao-tempo-conexao,
+:root[data-theme="claro"] .credencial-login,
+:root[data-theme="claro"] .sem-notificacoes p,
+:root[data-theme="claro"] .modal-logout-content p,
+:root[data-theme="claro"] .usuarios-header p span,
+:root[data-theme="claro"] .modal-usuario-header span,
+:root[data-theme="claro"] .modal-filtros-header span,
+:root[data-theme="claro"] .btn-limpar-filtros,
+:root[data-theme="claro"] .config-section-header p,
+:root[data-theme="claro"] .config-shortcut span,
+:root[data-theme="claro"] .mini-card span,
+:root[data-theme="claro"] .register-form .subtitulo,
+:root[data-theme="claro"] .reset-form .subtitulo,
+:root[data-theme="claro"] .password-requirements span  {
     color: #535861 !important;
 }
 
 :root[data-theme="claro"] .card-resumo-produto span,
 :root[data-theme="claro"] .custom-checkbox,
-:root[data-theme="claro"] .card-resumo span {
-    color: #101827 !important;
-}
-
-:root[data-theme="claro"] .card-resumo-produto strong,
-:root[data-theme="claro"] .ajuda-planilha-campo strong,
-:root[data-theme="claro"] .card-resumo strong,
-:root[data-theme="claro"] .usuario-tempo-identificacao strong {
-    color: #535861 !important;
-}
-
+:root[data-theme="claro"] .card-resumo span,
+:root[data-theme="claro"] .sem-notificacoes span,
+:root[data-theme="claro"] .visualizar-identificacao span,
+:root[data-theme="claro"] .config-option strong,
+:root[data-theme="claro"] .config-nav-item span,
+:root[data-theme="claro"] .config-shortcut b,
+:root[data-theme="claro"] .config-info-item small,
 :root[data-theme="claro"] .campo-upload-cadastrar-usuarios label,
 :root[data-theme="claro"] .upload-preview-container-cadastrar-usuarios label,
 :root[data-theme="claro"] .modal-ordenar-usuarios .label-ordenar-usuarios,
@@ -3040,10 +3096,48 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-apagar-usuario-quantidade-label,
 :root[data-theme="claro"] #modalCadastrarCliente .campo label,
 :root[data-theme="claro"] .campo-filtro label,
-:root[data-theme="claro"] .bi-filtro-periodo label  {
+:root[data-theme="claro"] .bi-filtro-periodo label,
+:root[data-theme="claro"] #modalCredenciaisUsuarios .modal-credenciais-usuarios-resumo-label,
+:root[data-theme="claro"] .credencial-card-cabecalho,
+:root[data-theme="claro"] .resumo-label,
+:root[data-theme="claro"] .visualizar-avatar,
+:root[data-theme="claro"] .campo-editar-usuario label,
+:root[data-theme="claro"] .campo-login label,
+:root[data-theme="claro"] .preview-statistics small,
+:root[data-theme="claro"] .password-reset-card h1{
     color: #101827 !important;
 }
 
+:root[data-theme="claro"] .card-resumo-produto strong,
+:root[data-theme="claro"] .ajuda-planilha-campo strong,
+:root[data-theme="claro"] .card-resumo strong,
+:root[data-theme="claro"] .usuario-tempo-identificacao strong,
+:root[data-theme="claro"] #modalCredenciaisUsuarios .modal-credenciais-usuarios-resumo strong,
+:root[data-theme="claro"] .opcao-planilha-texto strong,
+:root[data-theme="claro"] .resumo-conteudo strong,
+:root[data-theme="claro"] .resumo-conteudo small,
+:root[data-theme="claro"] .usuario-info strong,
+:root[data-theme="claro"] .visualizar-identificacao strong,
+:root[data-theme="claro"] .visualizar-valor,
+:root[data-theme="claro"] .campo-editar-usuario small,
+:root[data-theme="claro"] .usuarios-tabela-footer strong,
+:root[data-theme="claro"] .config-field label,
+:root[data-theme="claro"] .config-sidebar-footer strong,
+:root[data-theme="claro"] .config-info-item strong,
+:root[data-theme="claro"] .mini-card strong,
+:root[data-theme="claro"] .preview-statistics strong,
+:root[data-theme="claro"] .link-login-reset {
+    color: #535861 !important;
+}
+
+:root[data-theme="claro"] #modalCredenciaisUsuarios .modal-credenciais-usuarios-icon {
+    color: #101827 !important;
+    background: rgba(99, 102, 241, 0.10);
+}
+
+:root[data-theme="claro"] #modalCredenciaisUsuarios .modal-credenciais-usuarios-icon i {
+    color: #101827 !important;
+}
 
 :root[data-theme="claro"] .contador-selecionados-historico-produtos{
     color: #535861 !important;
@@ -3060,7 +3154,10 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-filtrar-legend,
 :root[data-theme="claro"] .modal-visualizar-imagem-produtos .modal-visualizar-imagem-produtos-titulo,
 :root[data-theme="claro"] .modal-filtrar-historico-clientes-titulo,
-:root[data-theme="claro"] .secao-header {
+:root[data-theme="claro"] .secao-header,
+:root[data-theme="claro"] #modalCredenciaisUsuarios .modal-credenciais-usuarios-titulo,
+:root[data-theme="claro"] .visualizar-secao-titulo,
+:root[data-theme="claro"] .visualizar-rotulo {
     color: #181d27 !important;
 }
 
@@ -3073,7 +3170,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .contador-selecionados-historico-clientes,
 :root[data-theme="claro"] .modal-confirmar-apagar-historico-alerta-label-clientes,
 :root[data-theme="claro"] .tempo-total,
-:root[data-theme="claro"] .menu-status-tempo button    {
+:root[data-theme="claro"] .menu-status-tempo button,
+:root[data-theme="claro"] #modalCredenciaisUsuarios .modal-credenciais-usuarios-descricao    {
     color: #535861 !important;
 }
 
@@ -3086,9 +3184,16 @@ textarea::placeholder {
 :root[data-theme="claro"] .dashboard-topbar-verificar-usuarios,
 :root[data-theme="claro"] .page-header,
 :root[data-theme="claro"] .actions-card,
-:root[data-theme="claro"] .dashboard-topbar-clientes {
-    border-color: #c3ccd8;
-    background: #e8edf3;
+:root[data-theme="claro"] .dashboard-topbar-clientes,
+:root[data-theme="claro"] .usuarios-header,
+:root[data-theme="claro"] .usuario-resumo-card,
+:root[data-theme="claro"] .dashboard-topbar-configuracoes,
+:root[data-theme="claro"] .lado-login,
+:root[data-theme="claro"] .lado-dashboard,
+:root[data-theme="claro"] .register-form,
+:root[data-theme="claro"] .card-reset {
+    border-color: #c3ccd8 !important;
+    background: #e8edf3 !important;
 }
 
 
@@ -3206,7 +3311,9 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-confirmar-apagar-historico-alerta,
 :root[data-theme="claro"] .modal-apagar-produtos-quantidade,
 :root[data-theme="claro"] .modal-apagar-usuario-quantidade,
-:root[data-theme="claro"] .modal-confirmar-apagar-historico-alerta-clientes{
+:root[data-theme="claro"] .modal-confirmar-apagar-historico-alerta-clientes,
+:root[data-theme="claro"] #modalCredenciaisUsuarios .modal-credenciais-usuarios-resumo,
+:root[data-theme="claro"] .sem-notificacoes{
     background: #ffffff;
 }
 
@@ -3227,7 +3334,8 @@ textarea::placeholder {
 :root[data-theme="claro"] .clientes-table thead th,
 :root[data-theme="claro"] .modal-historico-clientes-table thead th,
 :root[data-theme="claro"] .relatorio-tabela thead th,
-:root[data-theme="claro"] .tabela-tempo-conexao thead th {
+:root[data-theme="claro"] .tabela-tempo-conexao thead th,
+:root[data-theme="claro"] .usuarios-tabela thead th  {
     color: #535861 !important;
     border-color: #c3ccd8 !important;
     background: #e8edf3 !important;
@@ -3261,13 +3369,20 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-historico-clientes-body,
 :root[data-theme="claro"] .modal-historico-clientes-table,
 :root[data-theme="claro"] .modal-historico-clientes-table-container,
-:root[data-theme="claro"] .tabela-tempo-conexao-container{
+:root[data-theme="claro"] .tabela-tempo-conexao-container,
+:root[data-theme="claro"] .usuarios-filtros,
+:root[data-theme="claro"] .usuarios-tabela-footer,
+:root[data-theme="claro"] .usuarios-container,
+:root[data-theme="claro"] .config-card,
+:root[data-theme="claro"] .config-sidebar{
     color: #535861 !important;
     border-color: #c3ccd8 !important;
-    background: #e8edf3 !important;
+    background: #e8edf3 !important; 
 }
 
-:root[data-theme="claro"] #modalTabelaProdutos .table-responsive{
+:root[data-theme="claro"] #modalTabelaProdutos .table-responsive,
+:root[data-theme="claro"] .usuarios-tabela,
+:root[data-theme="claro"] .usuarios-tabela-wrapper {
     color: #535861 !important;
     border-color: #c3ccd8 !important;
     background: #e8edf3 !important;
@@ -3302,7 +3417,14 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-confirmar-apagar-historico-footer,
 :root[data-theme="claro"] .relatorio-card-principal,
 :root[data-theme="claro"] .relatorio-tabs,
-:root[data-theme="claro"] .relatorio-card-secao  {
+:root[data-theme="claro"] .relatorio-card-secao,
+:root[data-theme="claro"] #modalCredenciaisUsuarios .modal-credenciais-usuarios-header,
+:root[data-theme="claro"] #modalCredenciaisUsuarios .modal-credenciais-usuarios-footer,
+:root[data-theme="claro"] .notificacoes-footer,
+:root[data-theme="claro"] .modal-usuario-header,
+:root[data-theme="claro"] .modal-editar-usuario .modal-usuario-footer,
+:root[data-theme="claro"] .modal-filtros-header,
+:root[data-theme="claro"] .modal-filtros-footer  {
     color: #101827 !important;
     background: #ffffff !important;
     border-bottom: 1px solid #374151 !important;
@@ -3314,7 +3436,6 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-estoque-outline,
 :root[data-theme="claro"] .btn-pesquisar-tabela-estoque,
 :root[data-theme="claro"] .btn-pesquisar-tabela-saida,
-:root[data-theme="claro"] .btn-menu-mobile,
 :root[data-theme="claro"] .btn-verificar-usuarios-outline,
 :root[data-theme="claro"] .btn-pesquisar-tabela,
 :root[data-theme="claro"] .btn-historico-produtos-acao,
@@ -3334,10 +3455,60 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-historico-clientes-acao,
 :root[data-theme="claro"] .btn-tab-relatorio,
 :root[data-theme="claro"] .btn-editar-status-tempo,
-:root[data-theme="claro"] .btn-bi-limpar  {
+:root[data-theme="claro"] .btn-bi-limpar,
+:root[data-theme="claro"] .btn-marcar-lidas   {
     background-color: #b8c7d9 !important;
     border-color: #a8b8cb;
     color: #414651 !important;
+}
+
+
+/*BOTÕES COM HOVER QUE PRECISAM DO HOVER*/
+:root[data-theme="claro"] .notificacoes-botao,
+:root[data-theme="claro"] .btn-menu-mobile,
+:root[data-theme="claro"] .btn-filtro,
+:root[data-theme="claro"] .btn-atualizar,
+:root[data-theme="claro"] .acoes-usuario button,
+:root[data-theme="claro"] .paginacao button{
+    background-color: #b8c7d9 !important;
+    border-color: #a8b8cb;
+    color: #414651 !important;
+}
+
+:root[data-theme="claro"] .notificacoes-botao:hover,
+:root[data-theme="claro"] .btn-menu-mobile:hover,
+:root[data-theme="claro"] .btn-filtro:hover,
+:root[data-theme="claro"] .btn-atualizar:hover,
+:root[data-theme="claro"] .acoes-usuario button:hover,
+:root[data-theme="claro"] .paginacao button:hover,
+:root[data-theme="claro"] .btn-limpar-filtros:hover  {
+    background-color: #a3b5cc !important;
+    border-color: #8ea3be;
+    color: #2c3038 !important;
+}
+
+:root[data-theme="claro"] .paginacao button.pagina-ativa {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+:root[data-theme="claro"] .perfil-badge {
+    background-color: #e8eef5;
+    border-color: #d3deea;
+    color: #475569;
+}
+
+:root[data-theme="claro"] .perfil-badge.administrador {
+    color: #1d4ed8;
+    border-color: #bfdbfe;
+    background: #eff6ff;
+}
+
+:root[data-theme="claro"] .perfil-badge.convidado {
+    color: #64748b;
+    border-color: #cbd5e1;
+    background: #f1f5f9;
 }
 
 :root[data-theme="claro"] .btn-relatorio-pdf:hover,
@@ -3360,6 +3531,16 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-ajuda-planilha .modal-title i,
 :root[data-theme="claro"] .ajuda-planilha-secao i  {
     color: #414651 !important;
+}
+
+:root[data-theme="claro"] .btn-cancelar-filtros{
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #cecfd2;
+}
+
+:root[data-theme="claro"] .btn-cancelar-filtros:hover{
+    background-color: #4b5563;
 }
 
 /* BOTÕES DE FECHAR MODAIS */
@@ -3388,7 +3569,12 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-modal-fechar-apagar-historico,
 :root[data-theme="claro"] .btn-modal-fechar-apagar-produtos,
 :root[data-theme="claro"] .btn-modal-fechar-exclusao-historico-clientes,
-:root[data-theme="claro"] .btn-modal-fechar-tempo-conexao  {
+:root[data-theme="claro"] .btn-modal-fechar-tempo-conexao,
+:root[data-theme="claro"] #modalCredenciaisUsuarios .btn-modal-fechar-credenciais-usuarios,
+:root[data-theme="claro"] .btn-modal-fechar-exclusao-historico,
+:root[data-theme="claro"] .btn-fechar-menu,
+:root[data-theme="claro"] .modal-usuario-fechar,
+:root[data-theme="claro"] .btn-fechar-filtros   {
     background: #b8c7d9 !important;
     color: #475569 !important;
 }
@@ -3418,7 +3604,12 @@ textarea::placeholder {
 :root[data-theme="claro"] .btn-modal-fechar-filtrar-historico-clientes:hover,
 :root[data-theme="claro"] .btn-modal-fechar-apagar-historico:hover,
 :root[data-theme="claro"] .btn-modal-fechar-exclusao-historico-clientes:hover,
-:root[data-theme="claro"] .btn-modal-fechar-tempo-conexao:hover  {
+:root[data-theme="claro"] .btn-modal-fechar-tempo-conexao:hover,
+:root[data-theme="claro"] #modalCredenciaisUsuarios .btn-modal-fechar-credenciais-usuarios:hover,
+:root[data-theme="claro"] .btn-modal-fechar-exclusao-historico:hover,
+:root[data-theme="claro"] .btn-fechar-menu:hover,
+:root[data-theme="claro"] .modal-usuario-fechar:hover,
+:root[data-theme="claro"] .btn-fechar-filtros:hover  {
     background-color: #fca5a5  !important;
     color: #cecfd2;
     transform: scale(1.05);
@@ -3643,7 +3834,9 @@ textarea::placeholder {
 :root[data-theme="claro"] #modalEditarCadastroCliente,
 :root[data-theme="claro"] #modalRelatorioCliente,
 :root[data-theme="claro"] #modalHistoricoClientes,
-:root[data-theme="claro"] #modalCadastrarCliente{
+:root[data-theme="claro"] #modalCadastrarCliente,
+:root[data-theme="claro"] #modalCredenciaisUsuarios,
+:root[data-theme="claro"] #modalEditarUsuario{
     scrollbar-color: #b8c7d9 #e8edf3 !important;
     scrollbar-width: thin !important;
 }
@@ -3663,7 +3856,9 @@ textarea::placeholder {
 :root[data-theme="claro"] #modalEditarCadastroCliente::-webkit-scrollbar,
 :root[data-theme="claro"] #modalRelatorioCliente::-webkit-scrollbar,
 :root[data-theme="claro"] #modalHistoricoClientes::-webkit-scrollbar,
-:root[data-theme="claro"] #modalCadastrarCliente::-webkit-scrollbar {
+:root[data-theme="claro"] #modalCadastrarCliente::-webkit-scrollbar,
+:root[data-theme="claro"] #modalCredenciaisUsuarios::-webkit-scrollbar,
+:root[data-theme="claro"] #modalEditarUsuario::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
@@ -3682,7 +3877,9 @@ textarea::placeholder {
 :root[data-theme="claro"] #modalRelatorioCliente::-webkit-scrollbar-thumb,
 :root[data-theme="claro"] #modalHistoricoClientes::-webkit-scrollbar-thumb,
 :root[data-theme="claro"] #modalCadastrarCliente::-webkit-scrollbar-thumb,
-:root[data-theme="claro"] .lista-estados::-webkit-scrollbar-thumb {
+:root[data-theme="claro"] .lista-estados::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] #modalCredenciaisUsuarios::-webkit-scrollbar-thumb,
+:root[data-theme="claro"] #modalEditarUsuario::-webkit-scrollbar-thumb {
     background: #94a3b8 !important;
     border-radius: 20px !important;
     border: 2px solid #e2e8f0 !important;
@@ -3702,7 +3899,9 @@ textarea::placeholder {
 :root[data-theme="claro"] #modalRelatorioCliente::-webkit-scrollbar-thumb:hover,
 :root[data-theme="claro"] #modalHistoricoClientes::-webkit-scrollbar-thumb:hover,
 :root[data-theme="claro"] #modalCadastrarCliente::-webkit-scrollbar-thumb:hover,
-:root[data-theme="claro"] .lista-estados::-webkit-scrollbar-thumb:hover{
+:root[data-theme="claro"] .lista-estados::-webkit-scrollbar-thumb:hover,
+:root[data-theme="claro"] #modalCredenciaisUsuarios::-webkit-scrollbar-thumb:hover,
+:root[data-theme="claro"] #modalEditarUsuario::-webkit-scrollbar-thumb:hover{
     background: #64748b !important;
 }
 
@@ -3720,7 +3919,9 @@ textarea::placeholder {
 :root[data-theme="claro"] #modalRelatorioCliente::-webkit-scrollbar-track,
 :root[data-theme="claro"] #modalHistoricoClientes::-webkit-scrollbar-track,
 :root[data-theme="claro"] #modalCadastrarCliente::-webkit-scrollbar-track,
-:root[data-theme="claro"] .lista-estados::-webkit-scrollbar-track{
+:root[data-theme="claro"] .lista-estados::-webkit-scrollbar-track,
+:root[data-theme="claro"] #modalCredenciaisUsuarios::-webkit-scrollbar-track,
+:root[data-theme="claro"] #modalEditarUsuario::-webkit-scrollbar-track{
     background: #e2e8f0 !important;
     border-radius: 20px !important;
 }
@@ -3728,7 +3929,10 @@ textarea::placeholder {
 :root[data-theme="claro"] .input-pesquisa-tabela-saida,
 :root[data-theme="claro"] .input-pesquisa-tabela-estoque,
 :root[data-theme="claro"] .input-pesquisa-tabela,
-:root[data-theme="claro"] #modalTabelaUsuarios #buscaModalUsuarios {
+:root[data-theme="claro"] #modalTabelaUsuarios #buscaModalUsuarios,
+:root[data-theme="claro"] .campo-login input,
+:root[data-theme="claro"] .campo-reset-senha input,
+:root[data-theme="claro"] .password-input-wrapper input {
     border-color: #c3ccd8 !important;
 }
 
@@ -3740,7 +3944,10 @@ textarea::placeholder {
 :root[data-theme="claro"] .modal-filtrar-usuarios .input-valor-filtro-usuarios:focus,
 :root[data-theme="claro"] .modal-filtrar-clientes-input-data:focus,
 :root[data-theme="claro"] .clientes-pesquisa input:focus,
-:root[data-theme="claro"] .campo-filtro input[type="text"]:focus {
+:root[data-theme="claro"] .campo-filtro input[type="text"]:focus,
+:root[data-theme="claro"] .campo-login input:focus,
+:root[data-theme="claro"] .campo-reset-senha input:focus,
+:root[data-theme="claro"] .password-input-wrapper input:focus {
     border-color: #6d28d9 !important;
     box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.30);
     background-color: #e8edf3;
@@ -3879,7 +4086,6 @@ textarea::placeholder {
 /* =====================================================
    TABELA TEMPO DE CONEXÃO — MODO CLARO
 ===================================================== */
-
 /* FUNDO NORMAL */
 :root[data-theme="claro"] #tbodyTempoConexaoUsuarios > tr > td {
     background-color: #e8edf3  !important;
@@ -3893,9 +4099,6 @@ textarea::placeholder {
     color: #1e293b !important;
     box-shadow: none !important;
 }
-
-
-
 
 
 /* Linha selecionada - Tema claro */
@@ -4016,7 +4219,8 @@ textarea::placeholder {
 /* Elementos secundários */
 :root[data-theme="claro"] .preview-box small,
 :root[data-theme="claro"] .ajuda-planilha-campo small,
-:root[data-theme="claro"] .card-resumo small {
+:root[data-theme="claro"] .card-resumo small,
+:root[data-theme="claro"] .opcao-planilha-texto small {
     color: #64748b;
 }
 
@@ -4055,7 +4259,7 @@ textarea::placeholder {
    MENU DO USUÁRIO
 ========================================================== */
 :root[data-theme="claro"] .menu-usuario-dropdown {
-    background: var(--cor-superficie);
+    background: #ffffff;
     border-color: var(--cor-borda);
     box-shadow: 0 8px 25px var(--cor-sombra);
     color: var(--cor-texto);
@@ -4083,18 +4287,65 @@ textarea::placeholder {
 
 :root[data-theme="claro"] .notificacoes-header,
 :root[data-theme="claro"] .lista-notificacoes {
-    background: var(--cor-superficie);
-    border-color: var(--cor-borda);
+    background: #ffffff;
+    border-color: #c3ccd8;
 }
+
+:root[data-theme="claro"] .dropdown-user-header{
+    color: #101827 !important;
+    border-bottom: 1px solid #dce1e8;
+}
+
+
+:root[data-theme="claro"] .dropdown-user-name{
+    color: #101827 !important;
+}
+
+
+:root[data-theme="claro"] .status-opcao {
+    color: #101827 !important;
+    
+}
+
+/* MENU DO USUÁRIO — MODO CLARO */
+:root[data-theme="claro"] .menu-opcao {
+    color: #101827 !important;
+    border: none;
+}
+
+:root[data-theme="claro"] #menuUsuarioDropdown > hr {
+    border: 0;
+}
+
+/* Borda superior do grupo */
+:root[data-theme="claro"] #menuUsuarioDropdown > hr + .menu-opcao {
+    border-top: 1px solid #dce1e8;
+}
+
+/* Borda inferior do grupo */
+:root[data-theme="claro"] #btnPlanilhasExemplo {
+    border-bottom: 1px solid #dce1e8;
+}
+
+/*HOVER NO ÍCONE*/
+:root[data-theme="claro"] #menuUsuarioDropdown .menu-opcao:hover i {
+    color: #ffffff !important;
+}
+
+:root[data-theme="claro"] #menuUsuarioDropdown .menu-opcao .sair:hover i,
+:root[data-theme="claro"] #menuUsuarioDropdown .menu-opcao .sair:hover  {
+    color: #cecfd2 !important;
+}
+
+
 
 :root[data-theme="claro"] .notificacoes-header-titulo,
 :root[data-theme="claro"] .item-notificacao-mensagem,
 :root[data-theme="claro"] .sem-notificacoes {
-    color: var(--cor-texto);
+    color: #101827;
 }
 
 :root[data-theme="claro"] .item-notificacao {
-    background: var(--cor-superficie);
     border-color: var(--cor-borda);
 }
 
@@ -4102,8 +4353,21 @@ textarea::placeholder {
     background: var(--cor-hover);
 }
 
+
+
 :root[data-theme="claro"] .item-notificacao-data {
     color: var(--cor-texto-secundario);
+}
+
+
+/* MENU DO USUÁRIO */
+
+:root[data-theme="claro"] .status-opcao:hover > span {
+    color: #cecfd2;
+}
+
+:root[data-theme="claro"] .menu-opcao:hover span {
+    color: #cecfd2;
 }
 
 /* ==========================================================
@@ -4135,9 +4399,17 @@ textarea::placeholder {
 }
 
 :root[data-theme="claro"] .modal-title,
-:root[data-theme="claro"] .modal-body {
+:root[data-theme="claro"] .modal-body,
+:root[data-theme="claro"] .modal-usuario-body {
     color: #101827 !important;
     background: #ffffff !important;
+}
+
+
+:root[data-theme="claro"] .modal-usuario {
+    border: none !important;
+    border-radius: 14px !important;
+    overflow: hidden;
 }
 
 
@@ -4206,7 +4478,9 @@ textarea::placeholder {
 :root[data-theme="claro"] .checkbox-cliente,
 :root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"],
 :root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"],
-:root[data-theme="claro"] .custom-checkbox input[type="checkbox"] {
+:root[data-theme="claro"] .custom-checkbox input[type="checkbox"],
+:root[data-theme="claro"] input#selecionarTodos[type="checkbox"],
+:root[data-theme="claro"] input.checkbox-usuario-tabela-adm[type="checkbox"] {
     background-color: transparent;
     border: 1px solid #94a3b8;
 }
@@ -4222,7 +4496,9 @@ textarea::placeholder {
 :root[data-theme="claro"] .checkbox-cliente:hover,
 :root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"]:hover,
 :root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]:hover,
-:root[data-theme="claro"] .custom-checkbox input[type="checkbox"]:hover {
+:root[data-theme="claro"] .custom-checkbox input[type="checkbox"]:hover,
+:root[data-theme="claro"] input#selecionarTodos[type="checkbox"]:hover,
+:root[data-theme="claro"] input.checkbox-usuario-tabela-adm[type="checkbox"]:hover {
     border-color: #2563eb;
     background-color: #dce3ec;
 }
@@ -4238,7 +4514,9 @@ textarea::placeholder {
 :root[data-theme="claro"] .checkbox-cliente:checked,
 :root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"]:checked,
 :root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]:checked,
-:root[data-theme="claro"] .custom-checkbox input[type="checkbox"]:checked {
+:root[data-theme="claro"] .custom-checkbox input[type="checkbox"]:checked,
+:root[data-theme="claro"] input#selecionarTodos[type="checkbox"]:checked,
+:root[data-theme="claro"] input.checkbox-usuario-tabela-adm[type="checkbox"]:checked {
     background-color: #7c3aed;
     border-color: #7c3aed;
     box-shadow: 0 0 8px rgba(124, 58, 237, 0.4);
@@ -4253,9 +4531,11 @@ textarea::placeholder {
 :root[data-theme="claro"] #modalTabelaUsuarios .checkbox-usuario:checked::after,
 :root[data-theme="claro"] .checkbox-selecionar-todos-clientes:checked::after,
 :root[data-theme="claro"] .checkbox-cliente:checked::after,
-:root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"]::after,
-:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]::after,
-:root[data-theme="claro"] .custom-checkbox input[type="checkbox"]::after {
+:root[data-theme="claro"] .item-checkbox-relatorio input[type="checkbox"]:checked::after,
+:root[data-theme="claro"] input.col-checkbox-clientes[type="checkbox"]:checked::after,
+:root[data-theme="claro"] .custom-checkbox input[type="checkbox"]:checked::after,
+:root[data-theme="claro"] input#selecionarTodos[type="checkbox"]:checked::after,
+:root[data-theme="claro"] input.checkbox-usuario-tabela-adm[type="checkbox"]:checked::after {
     border-color: #ffffff;
 }
 
@@ -4308,7 +4588,8 @@ textarea::placeholder {
 
 :root[data-theme="claro"] .offcanvas-body,
 :root[data-theme="claro"] .offcanvas-header,
-:root[data-theme="claro"] .sidebar-upgrade-container {
+:root[data-theme="claro"] .sidebar-upgrade-container,
+:root[data-theme="claro"] .modal-filtros-body {
     background: #ffffff;
 }
 
@@ -4529,6 +4810,231 @@ html[data-theme="claro"] .select-custom-options::-webkit-scrollbar-thumb:hover {
     color: #6d28d9;
     background: #ede9fe;
     border: 1px solid #c4b5fd;
+}
+
+
+/* =========================================
+   PROGRESSO DA IMPORTAÇÃO - MODO CLARO
+========================================= */
+[data-theme="claro"] .progresso-importacao {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+[data-theme="claro"] #textoProgressoImportacao {
+    color: #64748b;
+}
+
+[data-theme="claro"] #percentualProgressoImportacao {
+    color: #4f46e5;
+}
+
+[data-theme="claro"] .progresso-importacao-trilho {
+    background: #e2e8f0;
+}
+
+[data-theme="claro"] .progresso-importacao-preenchimento {
+    background: linear-gradient(90deg, #6366f1, #0ea5e9);
+}
+[data-theme="claro"] #modalCredenciaisUsuarios .modal-credenciais-usuarios-aviso{
+    background: rgba(245, 158, 11, 0.08) !important;
+    border: 1px solid rgba(217, 119, 6, 0.22) !important;
+    color: #92400e;
+}
+
+
+:root[data-theme="claro"] .mensagem-editar-usuario.erro {
+    display: block;
+    color: #b91c1c;
+    background: rgba(220, 38, 38, 0.07);
+    border: 1px solid rgba(220, 38, 38, 0.20);
+}
+
+:root[data-theme="claro"] .badge-pro,
+:root[data-theme="claro"] .campo-pro-aviso{
+    color: #a855f7;
+    background: rgba(168, 85, 247, .14);
+}
+
+/* MODO CLARO */
+:root[data-theme="claro"]
+#formEditarUsuario.sem-permissao-edicao
+.campo-editar-usuario input:disabled:not(#editarUsuario) {
+    color: #64748b !important;
+    background: #f1f5f9 !important;
+    border-color: #dbe2ea !important;
+}
+
+:root[data-theme="claro"]
+#formEditarUsuario.sem-permissao-edicao
+.select-custom-trigger:disabled {
+    color: #64748b !important;
+    background: #f1f5f9 !important;
+    border-color: #dbe2ea !important;
+}
+
+/* =========================================
+   WELCOME BANNER — MODO CLARO
+========================================= */
+:root[data-theme="claro"] .welcome-banner {
+    background: linear-gradient(
+        135deg,
+        rgba(99, 102, 241, 0.20),
+        rgba(37, 99, 235, 0.13)
+    );
+
+    border: 1px solid rgba(99, 102, 241, 0.30);
+    backdrop-filter: blur(8px);
+    
+}
+
+/* Hover - modo claro */
+:root[data-theme="claro"] .config-nav-item:hover {
+    background: #ddd6fe  !important;
+    border-color: #d5d9f5 !important;
+    color: #4338ca !important;
+}
+
+:root[data-theme="claro"] .config-nav-item:hover span,
+:root[data-theme="claro"] .config-nav-item:hover > i {
+    color: #4338ca !important;
+}
+
+:root[data-theme="claro"] .config-nav-item i{
+    color: #101827;
+}
+
+/* Badge recomendado - modo claro */
+:root[data-theme="claro"] .config-recomendado,
+:root[data-theme="claro"] .config-info {
+    background: rgba(8, 145, 178, 0.10);
+    border: 1px solid rgba(8, 145, 178, 0.25);
+    color: #0e7490;
+}
+
+/* Info item - modo claro */
+:root[data-theme="claro"] .config-info-item {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+}
+
+:root[data-theme="claro"] .config-info-item strong.config-status-ativo {
+    color: #79dba1 !important;
+}
+
+:root[data-theme="claro"] .config-status-salvamento.pendente {
+    color: #b45309 !important;
+}
+
+:root[data-theme="claro"] .badge-sistema,
+:root[data-theme="claro"] .preview-badge {
+    background: rgba(59, 130, 246, 0.08);
+    color: #475569;
+    border: 1px solid rgba(59, 130, 246, 0.16);
+}
+
+:root[data-theme="claro"] .mini-card {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(203, 213, 225, 0.65);
+    backdrop-filter: blur(12px);
+}
+
+
+:root[data-theme="claro"] i.toggle-password.olho-login,
+:root[data-theme="claro"] i.toggle-password.olho-cadastro,
+:root[data-theme="claro"] i.olho-confirmar-senha-nova {
+    color: #64748b;
+}
+
+:root[data-theme="claro"] i.toggle-password.olho-login:hover,
+:root[data-theme="claro"] i.toggle-password.olho-cadastro:hover,
+:root[data-theme="claro"] i.olho-confirmar-senha-nova:hover {
+    color: #2563eb;
+}
+
+
+:root[data-theme="claro"] .messages-container .error,
+:root[data-theme="claro"] .messages-container .error-messages {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+/* MENSAGENS - MODO CLARO */
+:root[data-theme="claro"] .messages-container .success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+:root[data-theme="claro"] .campo-cadastro .fa-user,
+:root[data-theme="claro"] .campo-cadastro .fa-at,
+:root[data-theme="claro"] .campo-cadastro .fa-envelope,
+:root[data-theme="claro"] .campo-cadastro .fa-lock,
+:root[data-theme="claro"] .campo-cadastro .fa-lock,
+:root[data-theme="claro"] .campo-reset-senha .fa-envelope,
+:root[data-theme="claro"] .password-lock-icon {
+    color: #101827;
+}
+
+/* REGISTER PREVIEW - MODO CLARO */
+:root[data-theme="claro"] .register-preview {
+    background:
+        radial-gradient(
+            circle at 80% 10%,
+            rgba(99, 102, 241, .13),
+            transparent 42%
+        ),
+        linear-gradient(
+            145deg,
+            #f0f4ff,
+            #e8edfa
+        );
+
+    border-left: 1px solid #dce3f3;
+}
+
+/* PREVIEW STATISTICS - MODO CLARO */
+:root[data-theme="claro"] .preview-statistics div {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(99, 102, 241, 0.12);
+    border-radius: 13px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.04);
+}
+
+[data-theme="claro"] .password-reset-card,
+[data-theme="claro"] .password-success-card{
+    width: 100%;
+    max-width: 480px;
+    padding: 42px;
+
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+
+    box-shadow:
+        0 25px 60px rgba(15, 23, 42, 0.08),
+        0 8px 20px rgba(15, 23, 42, 0.04);
+
+    
+}
+
+[data-theme="claro"] .password-success-icon {
+    width: 76px;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 22px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.12);
+    color: #059669;
+    font-size: 32px;
+    box-shadow:
+        0 0 0 8px rgba(16, 185, 129, 0.05);
 }
 
 /* ==========================================================

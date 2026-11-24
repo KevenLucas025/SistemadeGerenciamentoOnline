@@ -13,23 +13,32 @@ from datetime import timedelta
 from accounts.models import HistoricoConexao
 
 
+
 def login_view(request):
-    active_pane = 'register' if 'register' in request.GET or 'cadastro' in request.GET else 'login'
-    # Contexto padrão que SEMPRE oculta o menu na tela de login
+    active_pane = (
+        'register'
+        if 'register' in request.GET or 'cadastro' in request.GET
+        else 'login'
+    )
+
     context = {
         'active_pane': active_pane,
-        'esconder_menu': True
+        'esconder_menu': True,
     }
 
     if request.method == 'POST':
         usuario_input = request.POST.get('username', '').strip()
         senha_input = request.POST.get('password', '').strip()
 
+        # Preserva o usuário digitado caso ocorra algum erro.
+        context['usuario_digitado'] = usuario_input
+
         if not usuario_input or not senha_input:
             messages.error(request, 'Por favor, preencha todos os campos.')
             return render(request, 'accounts/login.html', context)
 
         user_obj = User.objects.filter(username=usuario_input).first()
+
         if not user_obj:
             user_obj = User.objects.filter(email=usuario_input).first()
 
@@ -37,15 +46,21 @@ def login_view(request):
             messages.error(request, 'Usuário ou e-mail não cadastrado.')
             return render(request, 'accounts/login.html', context)
 
-        user = authenticate(request, username=user_obj.username, password=senha_input)
+        user = authenticate(
+            request,
+            username=user_obj.username,
+            password=senha_input
+        )
+
         if user is not None:
             login(request, user)
-            return redirect('dashboard')
+            return redirect('pagina_inicial')
 
         messages.error(request, 'Usuário ou senha inválidos.')
         return render(request, 'accounts/login.html', context)
 
     return render(request, 'accounts/login.html', context)
+
 
 
 def register(request):

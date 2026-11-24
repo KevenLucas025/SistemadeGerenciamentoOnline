@@ -22,7 +22,6 @@ import json
 from .ia.conhecimento import CONHECIMENTO_SISTEMA
 from django.core.exceptions import ValidationError
 from django.db import transaction
-from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from datetime import datetime, date
 import logging
@@ -46,7 +45,9 @@ from cadastrar_usuarios_massa.views import (
     somente_numeros,
     
 )
-
+from django.shortcuts import redirect
+from configuracoes.models import PreferenciasUsuario
+from django.urls import reverse, NoReverseMatch
 
 
 logger = logging.getLogger(__name__)
@@ -96,8 +97,16 @@ def dashboard(request):
 def estoque(request):
 
     produtos = Produto.objects.all().order_by("-data_cadastro")
+    
+    preferencias,_ = PreferenciasUsuario.objects.get_or_create(
+        usuario=request.user
+    )
 
-    return render(request,"estoque.html",{"produtos": produtos,"saidas": []})
+    return render(request, "estoque.html", {
+        "produtos": produtos,
+        "saidas": [],
+        "preferencias": preferencias,
+    })
 
 
 @login_required
@@ -106,7 +115,16 @@ def usuarios(request):
     usuarios_ativos = User.objects.filter(is_active=True)
     usuarios_inativos = User.objects.filter(is_active=False)
     
-    return render(request, 'usuarios.html',{'usuarios': usuarios_ativos, 'usuarios_inativos': usuarios_inativos})
+    preferencias,_ = PreferenciasUsuario.objects.get_or_create(
+            usuario=request.user
+        )
+    
+    return render(request, 'usuarios.html',
+                  {'usuarios': usuarios_ativos, 
+                   'usuarios_inativos': usuarios_inativos,
+                   "preferencias": preferencias,
+                   
+            })
 
 @login_required
 def cadastrar_produtos(request):
@@ -2623,6 +2641,35 @@ def gerar_senha_temporaria(usuario):
     raise RuntimeError(
         "Não foi possível gerar uma senha válida."
     )
+    
+    
+@login_required
+def pagina_inicial_usuario(request):
+
+    preferencias, _ = PreferenciasUsuario.objects.get_or_create(
+        usuario=request.user
+    )
+
+    paginas = {
+        "dashboard": "dashboard",
+        "estoque": "estoque",
+        "produtos": "produtos",
+        "clientes": "clientes",
+        "relatorios": "relatorios",
+    }
+
+    destino = paginas.get(
+        preferencias.pagina_inicial,
+        "dashboard"
+    )
+    
+    try:
+        reverse(destino)
+    
+    except NoReverseMatch:
+        destino = "dashboard"
+
+    return redirect(destino)
 
 '''@login_required
 def listar_produtos(request):

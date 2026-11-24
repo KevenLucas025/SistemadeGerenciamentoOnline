@@ -1,5 +1,42 @@
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    /* =========================================
+    PREFERÊNCIAS DO USUÁRIO
+    ========================================= */
+
+    function obterPreferencia(id, valorPadrao = true) {
+        const elemento = document.getElementById(id);
+
+        if (!elemento) return valorPadrao;
+
+        try {
+            return JSON.parse(elemento.textContent);
+        } catch (erro) {
+            console.error(`Erro ao carregar preferência ${id}:`, erro);
+            return valorPadrao;
+        }
+    }
+
+    const confirmarExclusaoAtiva = obterPreferencia(
+        "preferencia-confirmar-exclusao"
+    );
+
+    const confirmarSaidaUsuarioAtiva = obterPreferencia(
+        "preferencia-confirmar-saida-usuario"
+    );
+
+    console.log(
+        "Preferência Confirmar Exclusões:",
+        confirmarExclusaoAtiva
+    );
+
+    console.log(
+        "Preferência Confirmar Saída de Usuários:",
+        confirmarSaidaUsuarioAtiva
+    );
+
+    
     /* =========================================
        1. ELEMENTOS PRINCIPAIS DO DOM
     ========================================= */
@@ -24,7 +61,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Modal de Confirmação de Exclusão do Histórico
     const modalApagarHistEl = document.getElementById("modalConfirmarApagarHistorico");
-    const modalApagarHist = modalApagarHistEl ? bootstrap.Modal.getOrCreateInstance(modalApagarHistEl) : null;
+    const modalApagarHist = modalApagarHistEl
+    ? bootstrap.Modal.getOrCreateInstance(
+        modalApagarHistEl,
+        { backdrop: false }
+    )
+    : null; 
     const btnConfirmarApagarHistoricoDefinitivo = document.getElementById("btnConfirmarApagarHistoricoDefinitivo");
     const qtdHistoricoApagarModal = document.getElementById("qtdHistoricoApagarModal");
 
@@ -288,18 +330,26 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    
     /* =========================================
-       6. FLUXO: GERAR SAÍDA DE USUÁRIO
+    6. FLUXO: GERAR SAÍDA DE USUÁRIO
     ========================================= */
+
+    // Clique no botão de gerar saída
     if (btnGerarSaida) {
-        btnGerarSaida.addEventListener("click", function () {
-            const temLinhaVazia = tbodyAtivos?.querySelectorAll(".linha-vazia").length > 0;
+        btnGerarSaida.addEventListener("click", async function () {
+
+            const temLinhaVazia =
+                tbodyAtivos?.querySelectorAll(".linha-vazia").length > 0;
 
             if (temLinhaVazia || !linhaAtivaSelecionada) {
                 if (typeof mostrarAlerta === "function") {
-                    mostrarAlerta("Selecione um usuário para gerar a saída", "erro");
+                    mostrarAlerta(
+                        "Selecione um usuário para gerar a saída.",
+                        "erro"
+                    );
                 } else {
-                    alert("Selecione um usuário ativo na tabela para gerar a saída.");
+                    alert("Selecione um usuário ativo na tabela.");
                 }
                 return;
             }
@@ -312,79 +362,122 @@ document.addEventListener("DOMContentLoaded", function () {
                 nomeUsuarioSaidaModal.textContent = nomeUsuario;
             }
 
+            // Preferência desativada: executa diretamente
+            if (!confirmarSaidaUsuarioAtiva) {
+                console.log(
+                    "Confirmação de saída desativada. Executando diretamente."
+                );
+
+                await executarSaidaUsuario();
+                return;
+            }
+
+            // Preferência ativada: abre o modal
             if (modalSaida) {
                 modalSaida.show();
             }
         });
     }
 
+
+   // CONFIRMAÇÃO DEFINITIVA DA SAÍDA
     if (btnConfirmarSaidaDefinitiva) {
         btnConfirmarSaidaDefinitiva.addEventListener("click", async function () {
-            if (!linhaAtivaSelecionada) return;
+            await executarSaidaUsuario();
+        });
+    }
 
-            const usuarioId = linhaAtivaSelecionada.getAttribute("data-usuario-id");
-            if (!usuarioId) return;
+    // EXECUTAR SAÍDA DO USUÁRIO
+    async function executarSaidaUsuario() {
 
-            const csrfToken = getCSRFToken();
+        if (!linhaAtivaSelecionada) return;
+
+        const usuarioId = linhaAtivaSelecionada.getAttribute("data-usuario-id");
+
+        if (!usuarioId) return;
+
+        const csrfToken = getCSRFToken();
+
+        try {
+
+            if (btnGerarSaida) {
+                btnGerarSaida.disabled = true;
+            }
+
+            if (btnConfirmarSaidaDefinitiva) {
+                btnConfirmarSaidaDefinitiva.disabled = true;
+            }
+
+            const resposta = await fetch(`/usuarios/gerar-saida/${usuarioId}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const textoResposta = await resposta.text();
+
+            let dados;
 
             try {
-                btnConfirmarSaidaDefinitiva.disabled = true;
-
-                const resposta = await fetch(`/usuarios/gerar-saida/${usuarioId}/`, {
-                    method: "POST",
-                    headers: {
-                        "X-CSRFToken": csrfToken,
-                        "Content-Type": "application/json"
-                    }
-                });
-
-                const textoResposta = await resposta.text();
-                let dados;
-
-                try {
-                    dados = JSON.parse(textoResposta);
-                } catch (e) {
-                    console.error("Servidor não respondeu com JSON:", textoResposta);
-
-                    if (typeof mostrarAlerta === "function") {
-                        mostrarAlerta("Erro interno no servidor ao processar saída.", "erro");
-                    }
-
-                    return;
-                }
-
-                if (!resposta.ok || !dados.sucesso) {
-                    if (typeof mostrarAlerta === "function") {
-                        mostrarAlerta(dados.mensagem || "Erro ao gerar saída do usuário.", "erro");
-                    } else {
-                        alert(dados.mensagem || "Erro ao gerar saída do usuário.");
-                    }
-
-                    return;
-                }
-
-                if (modalSaida) modalSaida.hide();
-
-                if (typeof mostrarAlerta === "function") {
-                    mostrarAlerta(dados.mensagem, "sucesso");
-                }
-
-                desmarcarLinhaAtiva();
-
-                await atualizarTabela("ativos", btnAtualizarAtivos, tbodyAtivos, true);
-                await atualizarTabela("inativos", btnAtualizarInativos, tbodyInativos, true);
-
+                dados = JSON.parse(textoResposta);
             } catch (erro) {
-                console.error("Erro na requisição de saída:", erro);
+                console.error("Servidor não respondeu com JSON:", textoResposta);
+                throw new Error("Erro interno no servidor ao processar saída.");
+            }
 
-                if (typeof mostrarAlerta === "function") {
-                    mostrarAlerta("Erro de comunicação ao processar saída.", "erro");
-                }
+            if (!resposta.ok || !dados.sucesso) {
+                throw new Error(
+                    dados.mensagem || "Erro ao gerar saída do usuário."
+                );
+            }
 
-            } finally {
+            if (modalSaida) {
+                modalSaida.hide();
+            }
+
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta(dados.mensagem, "sucesso");
+            }
+
+            desmarcarLinhaAtiva();
+
+            await atualizarTabela(
+                "ativos",
+                btnAtualizarAtivos,
+                tbodyAtivos,
+                true
+            );
+
+            await atualizarTabela(
+                "inativos",
+                btnAtualizarInativos,
+                tbodyInativos,
+                true
+            );
+
+        } catch (erro) {
+
+            console.error("Erro na requisição de saída:", erro);
+
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta(erro.message, "erro");
+            } else {
+                alert(erro.message);
+            }
+
+        } finally {
+
+            if (btnGerarSaida) {
+                btnGerarSaida.disabled = false;
+            }
+
+            if (btnConfirmarSaidaDefinitiva) {
                 btnConfirmarSaidaDefinitiva.disabled = false;
             }
-        });
+
+        }
     }
 
     /* =========================================
@@ -664,18 +757,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =========================================
-    9. APAGAR HISTÓRICO SELECIONADO
+        9. APAGAR HISTÓRICO SELECIONADO
     ========================================= */
+
+    // BOTÃO APAGAR HISTÓRICO
     if (btnApagarHistorico) {
-        btnApagarHistorico.addEventListener("click", function (e) {
+
+        btnApagarHistorico.addEventListener("click", async function (e) {
+
             e.preventDefault();
             e.stopPropagation();
 
-            const selecionados = tbodyHistorico?.querySelectorAll(
-                ".check-item-historico:checked"
-            );
+            const ids = obterIdsHistoricoSelecionados();
 
-            if (!selecionados || selecionados.length === 0) {
+            if (ids.length === 0) {
                 if (typeof mostrarAlerta === "function") {
                     mostrarAlerta(
                         "Selecione pelo menos um registro para apagar.",
@@ -688,33 +783,49 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            if (qtdHistoricoApagarModal) {
-                qtdHistoricoApagarModal.textContent =
-                    `${selecionados.length} item${selecionados.length === 1 ? "" : "s"}`;
+            // Preferência desativada: apaga diretamente
+            if (!confirmarExclusaoAtiva) {
+
+                console.log(
+                    "Confirmação de exclusão desativada. Executando exclusão diretamente."
+                );
+
+                await executarExclusaoHistoricoUsuarios(ids);
+                return;
             }
 
-            const modalElemento = document.getElementById("modalConfirmarApagarHistorico");
+            // Atualiza a quantidade no modal
+            if (qtdHistoricoApagarModal) {
+                qtdHistoricoApagarModal.textContent =
+                    `${ids.length} item${ids.length === 1 ? "" : "s"}`;
+            }
+
+            const modalElemento = document.getElementById(
+                "modalConfirmarApagarHistorico"
+            );
 
             if (!modalElemento) {
                 console.error("Modal de exclusão do histórico não encontrado.");
                 return;
             }
 
-            // Cria um backdrop exclusivo para a confirmação de exclusão
+            // Cria backdrop exclusivo
             if (!document.querySelector(".backdrop-apagar-historico")) {
                 const backdrop = document.createElement("div");
                 backdrop.className = "backdrop-apagar-historico";
                 document.body.appendChild(backdrop);
             }
 
-            // Desativa o backdrop automático do Bootstrap
+            // Abre o modal de confirmação
             const modal = bootstrap.Modal.getOrCreateInstance(
                 modalElemento,
                 { backdrop: false }
             );
 
             modal.show();
+
         });
+
     }
 
     /* =========================================
@@ -735,59 +846,104 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
+    // CONFIRMAÇÃO DEFINITIVA DA EXCLUSÃO
     if (btnConfirmarApagarHistoricoDefinitivo) {
-        btnConfirmarApagarHistoricoDefinitivo.addEventListener("click", async function () {
-            const selecionados = tbodyHistorico?.querySelectorAll(
-                ".check-item-historico:checked"
-            );
 
-            if (!selecionados || selecionados.length === 0) return;
+        btnConfirmarApagarHistoricoDefinitivo.addEventListener(
+            "click",
+            async function () {
 
-            const ids = Array.from(selecionados).map(cb => parseInt(cb.value, 10));
-            const csrfToken = getCSRFToken();
+                const ids = obterIdsHistoricoSelecionados();
+
+                if (ids.length === 0) return;
+
+                await executarExclusaoHistoricoUsuarios(ids);
+
+            }
+        );
+
+    }
+
+    // EXECUTAR EXCLUSÃO DO HISTÓRICO
+    async function executarExclusaoHistoricoUsuarios(ids) {
+
+        const csrfToken = getCSRFToken();
+
+        try {
+
+            if (btnApagarHistorico) {
+                btnApagarHistorico.disabled = true;
+            }
+
+            if (btnConfirmarApagarHistoricoDefinitivo) {
+                btnConfirmarApagarHistoricoDefinitivo.disabled = true;
+            }
+
+            const resposta = await fetch("/usuarios/historico/apagar/", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ ids: ids })
+            });
+
+            const texto = await resposta.text();
+
+            let dados;
 
             try {
-                btnConfirmarApagarHistoricoDefinitivo.disabled = true;
-
-                const resposta = await fetch("/usuarios/historico/apagar/", {
-                    method: "POST",
-                    headers: {
-                        "X-CSRFToken": csrfToken,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ ids: ids })
-                });
-
-                const dados = await resposta.json();
-
-                if (!resposta.ok || !dados.sucesso) {
-                    throw new Error(dados.mensagem || "Erro ao apagar histórico.");
-                }
-
-                if (modalApagarHist) {
-                    modalApagarHist.hide();
-                }
-
-                if (typeof mostrarAlerta === "function") {
-                    mostrarAlerta(dados.mensagem, "sucesso");
-                }
-
-                await carregarHistoricoUsuarios(true);
-
+                dados = JSON.parse(texto);
             } catch (erro) {
-                console.error("Erro ao apagar histórico:", erro);
+                console.error("Resposta inválida ao apagar histórico:", texto);
+                throw new Error("Erro no servidor ao processar exclusão.");
+            }
 
-                if (typeof mostrarAlerta === "function") {
-                    mostrarAlerta(
-                        erro.message || "Erro de comunicação ao apagar registros.",
-                        "erro"
-                    );
-                }
+            if (!resposta.ok || !dados.sucesso) {
+                throw new Error(
+                    dados.mensagem || "Erro ao apagar histórico."
+                );
+            }
 
-            } finally {
+            // Fecha o modal, caso esteja aberto
+            if (modalApagarHist) {
+                modalApagarHist.hide();
+            }
+
+            // Remove o backdrop personalizado
+            document
+                .querySelector(".backdrop-apagar-historico")
+                ?.remove();
+
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta(dados.mensagem, "sucesso");
+            }
+
+            // Atualiza o histórico
+            await carregarHistoricoUsuarios(true);
+
+        } catch (erro) {
+
+            console.error("Erro ao apagar histórico:", erro);
+
+            if (typeof mostrarAlerta === "function") {
+                mostrarAlerta(erro.message, "erro");
+            } else {
+                alert(erro.message);
+            }
+
+        } finally {
+
+            if (btnApagarHistorico) {
+                btnApagarHistorico.disabled = false;
+            }
+
+            if (btnConfirmarApagarHistoricoDefinitivo) {
                 btnConfirmarApagarHistoricoDefinitivo.disabled = false;
             }
-        });
+
+        }
+
     }
 
     /* =========================================
@@ -1406,4 +1562,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    
 });

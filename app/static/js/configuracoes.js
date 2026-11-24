@@ -86,36 +86,56 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
+    
     // =====================================================
     // GERENCIAMENTO DE TEMA
     // =====================================================
 
     const campoTema = form.querySelector('[name="tema"]');
 
-    const temaOriginal = document.documentElement.dataset.theme || "escuro";
+    const CHAVE_TEMA = "tema_usuario";
 
-    function aplicarTema(tema) {
+    // Recupera o tema salvo anteriormente no navegador.
+    const temaOriginal =
+        localStorage.getItem(CHAVE_TEMA) ||
+        document.documentElement.dataset.theme ||
+        "escuro";
 
-        const temasValidos = ["escuro", "claro", "automatico"];
+    function aplicarTema(tema, salvarLocal = true) {
+
+        const temasValidos = [
+            "escuro",
+            "claro",
+            "automatico"
+        ];
 
         if (!temasValidos.includes(tema)) {
             tema = "escuro";
         }
 
+        // Aplica o tema visualmente.
         document.documentElement.dataset.theme = tema;
+
+        // Salva a preferência no navegador.
+        if (salvarLocal) {
+            localStorage.setItem(CHAVE_TEMA, tema);
+        }
     }
 
-    // Pré-visualização ao alterar o campo
     if (campoTema) {
 
+        // Recupera e aplica o tema selecionado.
+        aplicarTema(campoTema.value);
+
+        // Pré-visualização e persistência ao alterar.
         campoTema.addEventListener("change", function () {
+
             aplicarTema(this.value);
+
         });
 
-        // Garante que o tema selecionado no formulário
-        // seja aplicado mesmo quando houver erro de validação.
-        aplicarTema(campoTema.value);
     }
+
 
 
     // =====================================================
@@ -218,7 +238,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Restaura o tema que estava salvo no banco
             if (campoTema) {
+
                 aplicarTema(temaOriginal);
+
+                campoTema.value = temaOriginal;
+
             }
 
             atualizarStatus(false);

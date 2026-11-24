@@ -10,12 +10,10 @@ class PreferenciasUsuarioForm(forms.ModelForm):
 
         fields = [
             'tema',
-            'cor_destaque',
-            'registros_por_pagina',
             'pagina_inicial',
-            'formato_data',
             'confirmar_exclusao',
             'confirmar_saida_produto',
+            'confirmar_saida_usuario',
             'notificar_novos_cadastros',
             'notificar_saidas',
             'notificar_estoque_baixo',
@@ -31,24 +29,10 @@ class PreferenciasUsuarioForm(forms.ModelForm):
                 'class': 'select-configuracao',
             }),
 
-            'cor_destaque': forms.Select(attrs={
-                'id': 'selectCorDestaque',
-                'class': 'select-configuracao',
-            }),
-
             # NAVEGAÇÃO
-            'registros_por_pagina': forms.Select(attrs={
-                'id': 'selectRegistrosPagina',
-                'class': 'select-configuracao',
-            }),
 
             'pagina_inicial': forms.Select(attrs={
                 'id': 'selectPaginaInicial',
-                'class': 'select-configuracao',
-            }),
-
-            'formato_data': forms.Select(attrs={
-                'id': 'selectFormatoData',
                 'class': 'select-configuracao',
             }),
 
@@ -60,6 +44,10 @@ class PreferenciasUsuarioForm(forms.ModelForm):
             'confirmar_saida_produto': forms.CheckboxInput(attrs={
                 'id': 'id_confirmar_saida_produto',
             }),
+            
+            'confirmar_saida_usuario': forms.CheckboxInput(attrs={
+                            'id': 'id_confirmar_saida_usuario',
+                        }),
 
             # NOTIFICAÇÕES
             'notificar_novos_cadastros': forms.CheckboxInput(attrs={
@@ -94,6 +82,7 @@ class ConfiguracoesSistemaForm(forms.ModelForm):
             'alertar_estoque_baixo',
             'exigir_cliente_saida',
             'confirmar_saida_produto',
+            'confirmar_saida_usuario',
             'tempo_inatividade_sessao',
             'registrar_historico_alteracoes',
         ]
@@ -119,6 +108,10 @@ class ConfiguracoesSistemaForm(forms.ModelForm):
             'confirmar_saida_produto': forms.CheckboxInput(attrs={
                 'id': 'id_confirmar_saida_produto_sistema',
             }),
+            
+            'confirmar_saida_usuario': forms.CheckboxInput(attrs={
+                            'id': 'id_confirmar_saida_usuario_sistema',
+                        }),
 
             # SEGURANÇA
             'tempo_inatividade_sessao': forms.NumberInput(attrs={

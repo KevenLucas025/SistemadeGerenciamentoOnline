@@ -11,20 +11,6 @@ class PreferenciasUsuario(models.Model):
         ("automatico", "Automático"),
     ]
 
-    COR_CHOICES = [
-        ("cyan", "Ciano"),
-        ("blue", "Azul"),
-        ("green", "Verde"),
-        ("purple", "Roxo"),
-        ("orange", "Laranja"),
-    ]
-
-    REGISTROS_CHOICES = [
-        (10, "10 registros"),
-        (25, "25 registros"),
-        (50, "50 registros"),
-        (100, "100 registros"),
-    ]
 
     PAGINA_CHOICES = [
         ("dashboard", "Dashboard"),
@@ -32,12 +18,6 @@ class PreferenciasUsuario(models.Model):
         ("produtos", "Produtos"),
         ("clientes", "Clientes"),
         ("relatorios", "Relatórios"),
-    ]
-
-    DATA_CHOICES = [
-        ("%d/%m/%Y", "DD/MM/AAAA"),
-        ("%Y-%m-%d", "AAAA-MM-DD"),
-        ("%m/%d/%Y", "MM/DD/AAAA"),
     ]
 
     usuario = models.OneToOneField(
@@ -57,35 +37,15 @@ class PreferenciasUsuario(models.Model):
         default="escuro"
     )
 
-    cor_destaque = models.CharField(
-        "Cor de destaque",
-        max_length=15,
-        choices=COR_CHOICES,
-        default="cyan"
-    )
-
     # ==========================================
     # NAVEGAÇÃO
     # ==========================================
-
-    registros_por_pagina = models.PositiveSmallIntegerField(
-        "Registros por página",
-        choices=REGISTROS_CHOICES,
-        default=25
-    )
 
     pagina_inicial = models.CharField(
         "Página inicial",
         max_length=20,
         choices=PAGINA_CHOICES,
         default="dashboard"
-    )
-
-    formato_data = models.CharField(
-        "Formato de data",
-        max_length=15,
-        choices=DATA_CHOICES,
-        default="%d/%m/%Y"
     )
 
     # ==========================================
@@ -101,6 +61,11 @@ class PreferenciasUsuario(models.Model):
         "Confirmar saída de produtos",
         default=True
     )
+    
+    confirmar_saida_usuario = models.BooleanField(
+            "Confirmar saída de Usuários",
+            default=True
+        )
 
     # ==========================================
     # NOTIFICAÇÕES
@@ -182,6 +147,11 @@ class ConfiguracoesSistema(models.Model):
 
     confirmar_saida_produto = models.BooleanField(
         "Confirmar saída de produtos",
+        default=True
+    )
+    
+    confirmar_saida_usuario = models.BooleanField(
+        "Confirmar saída de Usuários",
         default=True
     )
 

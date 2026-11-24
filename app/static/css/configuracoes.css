@@ -17,7 +17,6 @@
     overflow: hidden;
     margin-left: 70px;
     min-width: 0;
-    color: var(--config-text);
     box-sizing: border-box;
 }
 
@@ -224,6 +223,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    color: #cecfd2 !important;
 }
 
 .config-nav-item {
@@ -236,7 +236,7 @@
     border: 1px solid transparent;
     border-radius: 7px;
     background: transparent;
-    color: #aab0ba;
+    color: #cecfd2 !important;
     font-size: 12px;
     font-weight: 500;
     text-align: left;
@@ -255,15 +255,31 @@
     min-width: 0;
 }
 
-.config-nav-item:hover {
-    background: #1f2937 !important;
-    color: var(--config-text);
+/* Hover normal - modo escuro */
+.config-nav-item:hover,
+.config-nav-item:hover span,
+.config-nav-item:hover > i {
+    color: #ffffff !important;
 }
 
+.config-nav-item:hover {
+    background: #293548 !important;
+}
+
+/* Item ativo */
 .config-nav-item.active {
-    background: rgba(77,208,225,.10);
-    border-color: rgba(77,208,225,.17);
-    color: var(--config-accent);
+    background: #7c3aed !important;
+    border-color: #8b5cf6 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.30) !important;
+    color: #ffffff !important;
+}
+
+/* Hover no item ativo */
+.config-nav-item.active:hover,
+.config-nav-item.active:hover span,
+.config-nav-item.active:hover > i {
+    color: #ffffff !important;
 }
 
 .config-nav-arrow {
@@ -791,7 +807,7 @@
 
 .config-footer > span i {
     margin-right: 5px;
-    color: var(--config-accent);
+    color: #4dd0e1;
 }
 
 .config-footer > div {
@@ -815,104 +831,6 @@
 .btn-config-reset:hover {
     background: #333943;
     color: #fff;
-}
-
-/* =====================================================
-   RESPONSIVIDADE - NOTEBOOK
-===================================================== */
-@media (max-width: 1100px) {
-
-    .config-layout {
-        grid-template-columns: 195px minmax(0, 1fr);
-        gap: 12px;
-    }
-
-    .config-sidebar {
-        padding: 14px 9px;
-    }
-
-    .config-card {
-        padding: 15px;
-    }
-
-}
-
-/* =====================================================
-   RESPONSIVIDADE - TABLET
-===================================================== */
-@media (max-width: 768px) {
-
-    .pagina-configuracoes {
-        height: auto;
-        min-height: calc(100vh - 75px);
-        margin-left: 0;
-        padding: 0 12px 15px;
-        overflow: visible;
-    }
-
-    .pagina-configuracoes .dashboard-sidebar-bar {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .dashboard-topbar-configuracoes {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 15px;
-        min-height: auto;
-    }
-
-    .config-header-acoes {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    #formConfiguracoes {
-        overflow: visible;
-    }
-
-    .config-layout {
-        grid-template-columns: 1fr;
-        overflow: visible;
-    }
-
-    .config-sidebar {
-        height: auto;
-        overflow: visible;
-        padding: 12px;
-    }
-
-    .config-sidebar-titulo,
-    .config-sidebar-footer {
-        display: none;
-    }
-
-    .config-nav {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 6px;
-    }
-
-    .config-nav-item {
-        padding: 0 9px;
-        font-size: 11px;
-    }
-
-    .config-nav-arrow {
-        display: none;
-    }
-
-    .config-content {
-        height: auto;
-        overflow: visible;
-        padding-right: 0;
-    }
-
-    .config-grid {
-        grid-template-columns: 1fr;
-    }
-
 }
 
 

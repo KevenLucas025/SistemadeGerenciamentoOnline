@@ -1,5 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+    // Preferências do usuário
+    const elementoPreferenciaExclusao = document.getElementById(
+        "preferencia-confirmar-exclusao"
+    );
+
+    const confirmarExclusaoAtiva = elementoPreferenciaExclusao
+        ? JSON.parse(elementoPreferenciaExclusao.textContent)
+        : true;
+    console.log(
+        "Preferência Confirmar Exclusões:",
+        confirmarExclusaoAtiva
+    );
 
     const btnLimparTabelasEstoque = document.getElementById("btnLimparTabelasEstoque");
     const btnAtualizarEstoque = document.getElementById("btnAtualizarEstoque");
@@ -679,68 +691,62 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
+    // EXCLUSÃO DO HISTÓRICO DE PRODUTOS
+    if (btnApagarHistorico && modalExclusaoHistorico) {
 
+        btnApagarHistorico.addEventListener("click", async function () {
 
-    // 4. Confirmação Definitiva da Exclusão
-    if (btnConfirmarExclusaoHistoricoDefinitiva) {
-        btnConfirmarExclusaoHistoricoDefinitiva.addEventListener("click", async function () {
             const ids = getIdsHistoricoSelecionados();
-            if (ids.length === 0) return;
 
-            const csrfToken = getCSRFToken();
+            console.log("Botão de apagar clicado.");
+            console.log("IDs selecionados:", ids);
 
-            try {
-                btnConfirmarExclusaoHistoricoDefinitiva.disabled = true;
-
-                const resposta = await fetch('/estoque/historico/apagar/', {
-                    method: "POST",
-                    headers: {
-                        "X-CSRFToken": csrfToken,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ ids: ids })
-                });
-
-                const texto = await resposta.text();
-                let dados;
-                try {
-                    dados = JSON.parse(texto);
-                } catch (err) {
-                    console.error("Resposta inválida ao apagar:", texto);
-                    throw new Error("Erro no servidor ao processar exclusão.");
-                }
-
-                if (!resposta.ok || !dados.sucesso) {
-                    throw new Error(dados.mensagem || "Não foi possível apagar os registros.");
-                }
-
-                if (modalExclusaoHistorico) {
-                    modalExclusaoHistorico.hide();
-                }
-
-                if (typeof mostrarAlerta === "function") {
-                    mostrarAlerta(dados.mensagem, "sucesso");
-                }
-
-                if (checkboxMasterHistorico) {
-                    checkboxMasterHistorico.checked = false;
-                    checkboxMasterHistorico.indeterminate = false;
-                }
-
-                await carregarHistoricoProdutos(true);
-
-            } catch (erro) {
-                console.error("Erro ao apagar histórico:", erro);
-                if (typeof mostrarAlerta === "function") {
-                    mostrarAlerta(erro.message, "erro");
-                } else {
-                    alert(erro.message);
-                }
-            } finally {
-                btnConfirmarExclusaoHistoricoDefinitiva.disabled = false;
+            if (ids.length === 0) {
+                mostrarAlerta(
+                    "Selecione pelo menos um registro para excluir.",
+                    "aviso"
+                );
+                return;
             }
+
+
+            // Verifica a preferência de confirmação de exclusões
+            if (!confirmarExclusaoAtiva) {
+
+                console.log("Confirmação de exclusão desativada. Executando exclusão diretamente.");
+
+                await executarExclusaoHistorico(ids);
+                return;
+            }
+
+            // Se estiver ativada, mantém o modal de confirmação
+            textoConfirmacaoExclusao.textContent =
+                `Deseja excluir definitivamente ${ids.length} registro(s) do histórico?`;
+
+            modalExclusaoHistorico.show();
+
+            console.log("Modal de confirmação solicitado.");
+
         });
+
     }
+
+
+
+    // CONFIRMAÇÃO DEFINITIVA DA EXCLUSÃO
+if (btnConfirmarExclusaoHistoricoDefinitiva) {
+
+    btnConfirmarExclusaoHistoricoDefinitiva.addEventListener("click", async function () {
+
+        const ids = getIdsHistoricoSelecionados();
+
+        if (ids.length === 0) return;
+
+        await executarExclusaoHistorico(ids);
+
+    });
+
+}
 
     function obterIdsHistoricoProdutosSelecionados() {
         if (!tbodyyHistoricoProdutos) return [];
@@ -1259,5 +1265,85 @@ document.addEventListener("DOMContentLoaded", function () {
             filtrarTabelaProdutos(tbodySaidas, inputPesquisaSaida?.value || "", 13, "saida");
         });
     }
+
+    // EXECUTAR EXCLUSÃO DO HISTÓRICO
+async function executarExclusaoHistorico(ids) {
+
+    const csrfToken = getCSRFToken();
+
+    try {
+
+        if (btnApagarHistorico) {
+            btnApagarHistorico.disabled = true;
+        }
+
+        if (btnConfirmarExclusaoHistoricoDefinitiva) {
+            btnConfirmarExclusaoHistoricoDefinitiva.disabled = true;
+        }
+
+        const resposta = await fetch('/estoque/historico/apagar/', {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrfToken,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ ids: ids })
+        });
+
+        const texto = await resposta.text();
+
+        let dados;
+
+        try {
+            dados = JSON.parse(texto);
+        } catch (err) {
+            console.error("Resposta inválida ao apagar:", texto);
+            throw new Error("Erro no servidor ao processar exclusão.");
+        }
+
+        if (!resposta.ok || !dados.sucesso) {
+            throw new Error(
+                dados.mensagem || "Não foi possível apagar os registros."
+            );
+        }
+
+        if (modalExclusaoHistorico) {
+            modalExclusaoHistorico.hide();
+        }
+
+        if (typeof mostrarAlerta === "function") {
+            mostrarAlerta(dados.mensagem, "sucesso");
+        }
+
+        if (checkboxMasterHistorico) {
+            checkboxMasterHistorico.checked = false;
+            checkboxMasterHistorico.indeterminate = false;
+        }
+
+        await carregarHistoricoProdutos(true);
+
+    } catch (erro) {
+
+        console.error("Erro ao apagar histórico:", erro);
+
+        if (typeof mostrarAlerta === "function") {
+            mostrarAlerta(erro.message, "erro");
+        } else {
+            alert(erro.message);
+        }
+
+    } finally {
+
+        if (btnApagarHistorico) {
+            btnApagarHistorico.disabled = false;
+        }
+
+        if (btnConfirmarExclusaoHistoricoDefinitiva) {
+            btnConfirmarExclusaoHistoricoDefinitiva.disabled = false;
+        }
+
+    }
+
+}
 
 });

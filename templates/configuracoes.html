@@ -119,7 +119,7 @@
                     </button>
 
                     <button type="button" class="config-nav-item" data-section="seguranca">
-                        <i class="fa-solid fa-shield-halved"></i>
+                        <i class="fa-solid fa-shield"></i>
                         <span>Segurança</span>
                     </button>
 
@@ -161,11 +161,10 @@
                             <i class="fa-solid fa-palette"></i>
                         </div>
 
+                        <!-- TEMA -->
                         <div class="config-field">
 
-                            <label for="selectTema">
-                                Tema do sistema
-                            </label>
+                            <label for="selectTema">Tema do sistema</label>
 
                             <div class="select-custom-wrapper" id="selectTemaWrapper">
 
@@ -190,9 +189,7 @@
 
                                 </select>
 
-                                <button type="button"
-                                        class="select-custom-trigger"
-                                        aria-expanded="false">
+                                <button type="button" class="select-custom-trigger" aria-expanded="false">
                                     <span>Escuro</span>
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </button>
@@ -202,149 +199,17 @@
                             </div>
 
                             {% for error in preferencias_form.tema.errors %}
-                            <small class="config-field-error">{{ error }}</small>
+                                <small class="config-field-error">{{ error }}</small>
                             {% endfor %}
 
-                            <small>
-                                Escolha entre o tema escuro, claro ou automático.
-                            </small>
+                            <small>Escolha entre o tema escuro, claro ou automático.</small>
 
                         </div>
 
+                        <!-- PÁGINA INICIAL -->
                         <div class="config-field">
 
-                            <label for="selectCorDestaque">
-                                Cor de destaque
-                            </label>
-
-                            <div class="select-custom-wrapper" id="selectCorDestaqueWrapper">
-
-                                <select id="selectCorDestaque"
-                                        name="cor_destaque"
-                                        class="select-configuracao select-original-oculto">
-
-                                    <option value="cyan"
-                                        {% if preferencias_form.cor_destaque.value == "cyan" %}selected{% endif %}>
-                                        Ciano
-                                    </option>
-
-                                    <option value="blue"
-                                        {% if preferencias_form.cor_destaque.value == "blue" %}selected{% endif %}>
-                                        Azul
-                                    </option>
-
-                                    <option value="green"
-                                        {% if preferencias_form.cor_destaque.value == "green" %}selected{% endif %}>
-                                        Verde
-                                    </option>
-
-                                    <option value="purple"
-                                        {% if preferencias_form.cor_destaque.value == "purple" %}selected{% endif %}>
-                                        Roxo
-                                    </option>
-
-                                    <option value="orange"
-                                        {% if preferencias_form.cor_destaque.value == "orange" %}selected{% endif %}>
-                                        Laranja
-                                    </option>
-
-                                </select>
-
-                                <button type="button"
-                                        class="select-custom-trigger"
-                                        aria-expanded="false">
-                                    <span>Ciano</span>
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </button>
-
-                                <div class="select-custom-options"></div>
-
-                            </div>
-
-                            {% for error in preferencias_form.cor_destaque.errors %}
-                            <small class="config-field-error">{{ error }}</small>
-                            {% endfor %}
-
-                            <small>
-                                Personalize a cor utilizada nos destaques e elementos visuais.
-                            </small>
-
-                        </div>
-
-                    </div>
-
-                    <!-- NAVEGAÇÃO -->
-                    <div class="config-card">
-
-                        <div class="config-card-header">
-                            <div>
-                                <h3>Navegação e exibição</h3>
-                                <p>Configure a apresentação das informações.</p>
-                            </div>
-
-                            <i class="fa-solid fa-table-list"></i>
-                        </div>
-
-                        <div class="config-field">
-
-                            <label for="selectRegistrosPagina">
-                                Registros por página
-                            </label>
-
-                            <div class="select-custom-wrapper" id="selectRegistrosPaginaWrapper">
-
-                                <select id="selectRegistrosPagina"
-                                        name="registros_por_pagina"
-                                        class="select-configuracao select-original-oculto">
-
-                                    <option value="10"
-                                        {% if preferencias_form.registros_por_pagina.value == 10 or preferencias_form.registros_por_pagina.value == "10" %}selected{% endif %}>
-                                        10 registros
-                                    </option>
-
-                                    <option value="25"
-                                        {% if preferencias_form.registros_por_pagina.value == 25 or preferencias_form.registros_por_pagina.value == "25" %}selected{% endif %}>
-                                        25 registros
-                                    </option>
-
-                                    <option value="50"
-                                        {% if preferencias_form.registros_por_pagina.value == 50 or preferencias_form.registros_por_pagina.value == "50" %}selected{% endif %}>
-                                        50 registros
-                                    </option>
-
-                                    <option value="100"
-                                        {% if preferencias_form.registros_por_pagina.value == 100 or preferencias_form.registros_por_pagina.value == "100" %}selected{% endif %}>
-                                        100 registros
-                                    </option>
-
-                                </select>
-
-                                <button type="button"
-                                        class="select-custom-trigger"
-                                        aria-expanded="false">
-                                    <span>10 registros</span>
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </button>
-
-                                <div class="select-custom-options"></div>
-
-                            </div>
-
-                            {% for error in preferencias_form.registros_por_pagina.errors %}
-                            <small class="config-field-error">{{ error }}</small>
-                            {% endfor %}
-
-                            <small>
-                                Defina a quantidade de registros exibidos nas listagens.
-                            </small>
-
-                        </div>
-
-                        <div class="config-field">
-
-                            <label for="selectPaginaInicial">
-                                Página inicial
-                            </label>
+                            <label for="selectPaginaInicial">Página inicial</label>
 
                             <div class="select-custom-wrapper" id="selectPaginaInicialWrapper">
 
@@ -379,9 +244,7 @@
 
                                 </select>
 
-                                <button type="button"
-                                        class="select-custom-trigger"
-                                        aria-expanded="false">
+                                <button type="button" class="select-custom-trigger" aria-expanded="false">
                                     <span>Dashboard</span>
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </button>
@@ -391,66 +254,14 @@
                             </div>
 
                             {% for error in preferencias_form.pagina_inicial.errors %}
-                            <small class="config-field-error">{{ error }}</small>
+                                <small class="config-field-error">{{ error }}</small>
                             {% endfor %}
 
-                            <small>
-                                Página exibida após acessar o sistema.
-                            </small>
+                            <small>Página exibida após acessar o sistema.</small>
 
                         </div>
 
-                        <div class="config-field">
-
-                            <label for="selectFormatoData">
-                                Formato de data
-                            </label>
-
-                            <div class="select-custom-wrapper" id="selectFormatoDataWrapper">
-
-                                <select id="selectFormatoData"
-                                        name="formato_data"
-                                        class="select-configuracao select-original-oculto">
-
-                                    <option value="%d/%m/%Y"
-                                        {% if preferencias_form.formato_data.value == "%d/%m/%Y" %}selected{% endif %}>
-                                        DD/MM/AAAA
-                                    </option>
-
-                                    <option value="%Y-%m-%d"
-                                        {% if preferencias_form.formato_data.value == "%Y-%m-%d" %}selected{% endif %}>
-                                        AAAA-MM-DD
-                                    </option>
-
-                                    <option value="%m/%d/%Y"
-                                        {% if preferencias_form.formato_data.value == "%m/%d/%Y" %}selected{% endif %}>
-                                        MM/DD/AAAA
-                                    </option>
-
-                                </select>
-
-                                <button type="button"
-                                        class="select-custom-trigger"
-                                        aria-expanded="false">
-                                    <span>DD/MM/AAAA</span>
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </button>
-
-                                <div class="select-custom-options"></div>
-
-                            </div>
-
-                            {% for error in preferencias_form.formato_data.errors %}
-                            <small class="config-field-error">{{ error }}</small>
-                            {% endfor %}
-
-                            <small>
-                                Formato preferencial de exibição das datas.
-                            </small>
-
-                        </div>
-
-                    </div>
+                    </div>                                     
 
                     
                     <!-- CONFIRMAÇÕES -->
@@ -500,6 +311,22 @@
 
                                 <label class="config-switch" for="id_confirmar_saida_produto">
                                     {{ preferencias_form.confirmar_saida_produto }}
+                                    <span></span>
+                                </label>
+
+                            </div>
+
+                            <div class="config-option">
+
+                                <div>
+                                    <strong>Confirmar saída de usuários</strong>
+                                    <small>
+                                        Solicitar confirmação antes de registrar uma saída.
+                                    </small>
+                                </div>
+
+                                <label class="config-switch" for="id_confirmar_saida_usuario">
+                                    {{ preferencias_form.confirmar_saida_usuario }}
                                     <span></span>
                                 </label>
 

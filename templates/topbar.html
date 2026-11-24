@@ -116,19 +116,18 @@
             <!-- Redireciona para a página cadastrar_usuarios com o id -->
             <div class="menu-opcao" onclick="window.location.href='/cadastrar_usuarios/?id={{ request.user.id }}'">
                 <i class="fa-solid fa-user-gear"></i>
-                Gerenciar perfil
+                <span>Gerenciar perfil</span>
             </div>
 
             <div class="menu-opcao" id="btnPlanilhasExemplo">
                 <i class="fa-solid fa-file-excel"></i>
-                Planilhas de Exemplo
+                <span>Planilhas de Exemplo</span>
             </div>
 
-            <hr>
 
             <div class="menu-opcao sair" onclick="abrirModalLogout(event)">
                 <i class="fa-solid fa-right-from-bracket"></i>
-                Sair
+                <span>Sair</span> 
             </div>
         </div>
     </div>

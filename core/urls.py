@@ -3,6 +3,7 @@ from . import views
 from usuarios.views import atualizar_tabela_usuarios_status
 
 urlpatterns = [
+    path("inicio/",views.pagina_inicial_usuario,name="pagina_inicial"),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('produtos/', views.cadastrar_produtos, name='produtos'),
     path('cadastrar_usuarios/', views.cadastrar_usuarios, name='cadastrar_usuarios'),

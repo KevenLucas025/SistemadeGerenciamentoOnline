@@ -7,7 +7,6 @@ class PreferenciasUsuarioAdmin(admin.ModelAdmin):
     list_display = (
         "usuario",
         "tema",
-        "cor_destaque",
         "atualizado_em",
     )
     search_fields = ("usuario__username",)

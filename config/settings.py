@@ -7,6 +7,7 @@ import dj_database_url
 
 
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
@@ -15,16 +16,8 @@ EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-ANYMAIL = {
-    "SENDGRID_API_KEY": os.environ.get("SENDGRID_API_KEY")
-}
-
-DEFAULT_FROM_EMAIL = os.environ.get(
-    "DEFAULT_FROM_EMAIL",
-    "suportesistemagerenciamento@outlook.com"
-)
-
 SITE_NAME = "Sistema de Gerenciamento Online"
+
 
 SECRET_KEY = 'django-insecure-*xo7w6j)#5zjetv&31l!=c9&6&qr5ex+98cg1659_v_n*7_s#t'
 
@@ -34,6 +27,7 @@ ALLOWED_HOSTS = ["*"]
 
 LOGIN_URL = '/accounts/login/'
 LOGOUT_REDIRECT_URL = 'login'
+LOGIN_REDIRECT_URL = 'pagina_inicial'
 
 # Application definition
 INSTALLED_APPS = [
@@ -180,3 +174,27 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels.layers.InMemoryChannelLayer",
     },
 }
+
+
+
+
+# ==================================================
+# E-MAIL - GMAIL SMTP
+# ==================================================
+EMAIL_BACKEND = os.getenv(
+    "EMAIL_BACKEND",
+    "django.core.mail.backends.smtp.EmailBackend"
+)
+
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() == "true"
+
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL",
+    EMAIL_HOST_USER
+)
